@@ -1,0 +1,53 @@
+.icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.footer {
+    padding-top: 70px;
+    padding-bottom: 30px;
+}
+
+img[alt=footer-logo] {
+    width: 50%;
+    margin-left: 2.5rem;
+}
+
+.social__links span a {
+    text-decoration: none;
+    color: var(--heading-color);
+    font-size: 1.2rem;
+}
+
+.footer__link-title {
+    color: var(--heading-color) !important;
+    margin-bottom: 1rem;
+}
+
+.footer__quick-links div {
+    padding-top: 12px;
+}
+
+.footer__quick-links li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.list-group-item a {
+    color: var(--text-color) !important;
+}
+
+.custom-hr {
+    border-top: 3px solid !important;
+}
+
+.custom-anchor {
+    color: black;
+    text-decoration: none;
+}
+
+.custom-anchor:hover {
+    text-decoration: underline;
+}
