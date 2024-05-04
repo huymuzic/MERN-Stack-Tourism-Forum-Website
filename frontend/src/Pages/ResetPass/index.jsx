@@ -10,7 +10,7 @@ const ResetPassword = () => {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const handleEmailSubmit = async () => {
         // API call to backend to send OTP
-        const response = await fetch(`${baseURL}/api/user/check`, {
+        const response = await fetch(`${baseURL}/api/v1/users/check`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({identifier: email})
@@ -26,7 +26,7 @@ const ResetPassword = () => {
 
     const handleVerifyOTP = async () => {
         // API call to backend to verify OTP
-        const response = await fetch(`${baseURL}//api/verify-otp`, {
+        const response = await fetch(`${baseURL}/api/v1/users/otpChecking`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, otp})
@@ -46,7 +46,7 @@ const ResetPassword = () => {
             return;
         }
         // API call to reset the password
-        const response = await fetch('/api/reset-password', {
+        const response = await fetch(`${baseURL}/api/v1/users/reset-password`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, newPassword})

@@ -1,31 +1,26 @@
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const User = require('../models/user.js'); // Adjust path as necessary
+import nodemailer from 'nodemailer';
+import User from '../models/user.js'; // Ensure the path is correct
+import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+dotenv.config();
 
+export const generateAndStoreOTP = async (email) => {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();  // Generates a 6-digit OTP
+    const expires = new Date(new Date().getTime() + 300000); // OTP expires in 5 minutes
 
-app.post('/api/user/check', async (req, res) => {
-    const { identifier } = req.body;
-    try {
-        const user = await User.findOne({
-            $or: [{ email: identifier }, { username: identifier }]
-        });
-        if (user) {
-            res.json({ success: true, user: { email: user.email, name: user.username, id: user._id, Ava: user.avatar } });
-        } else {
-            res.status(404).json({ success: false, message: "User not found" });
+    // Update the user's record with new OTP and expiration
+    await User.findOneAndUpdate({ email: email }, {
+        $set: {
+            otp: otp,
+            otpExpires: expires
         }
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Server error", error: error.message });
-    }
-});
-// Generates a 6-digit secure OTP
-function generateOTP() {
-    return crypto.randomInt(100000, 999999).toString();
-}
+    }, { new: true, upsert: true });
 
-// Sends an OTP email to a user
-async function sendOTPEmail(to) {
-    const otp = generateOTP();
+    return otp;
+};
+
+export async function sendOTPEmail(to, otp) {
+    console.log("gửi mail nè",otp)
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         host: "smtp.gmail.com",
@@ -41,42 +36,42 @@ async function sendOTPEmail(to) {
     });
 
     const mailOptions = {
-        from: { name: "Your Service Name", address: process.env.EMAIL_USERNAME },
+        from: { name: "Cosmic Travel", address: process.env.EMAIL_USERNAME },
         to: to,
         subject: "OTP for resetting password",
         html: `<p>Your OTP code is <b>${otp}</b>, please use it to continue.</p>`
     };
 
     try {
-        // Save or update the user's OTP in the database
-        const expires = new Date(new Date().getTime() + 300000); // OTP expires in 5 minutes
-        await User.findOneAndUpdate({ email: to }, { $set: { otp: otp, otpExpires: expires }}, { upsert: true });
-
-        // Send email
         await transporter.sendMail(mailOptions);
         console.log('Email sent successfully');
-        return { success: true, message: 'Email sent successfully' };
     } catch (error) {
         console.error('Error sending email:', error);
-        return { success: false, message: 'Failed to send email', error: error.message };
+        throw error;  // Re-throw the error for handling it in the calling function
     }
 }
 
-// Verifies the OTP provided by the user
-async function verifyOTP(email, otp) {
+export const checkOTPAndUpdatePassword = async (req, res) => {
+    const { email, otp, newPassword } = req.body;
     try {
-        const user = await User.findOne({ email: email });
-        if (!user || user.otp !== otp || new Date() > user.otpExpires) {
-            return { success: false, message: "Invalid or expired OTP." };
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
-        return { success: true, message: "OTP verified successfully." };
-    } catch (error) {
-        console.error('Error verifying OTP:', error);
-        return { success: false, message: "Server error.", error: error.message };
-    }
-}
 
-module.exports = {
-    sendOTPEmail,
-    verifyOTP,
+        // Check if the OTP matches and hasn't expired
+        if (user.otp === otp && new Date() <= user.otpExpires) {
+            // Hash new password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+            await User.updateOne({ _id: user._id }, { $set: { password: hashedPassword, otp: null, otpExpires: null } });
+            res.json({ success: true, message: "Password updated successfully" });
+        } else {
+            res.status(401).json({ success: false, message: "Invalid or expired OTP" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
 };

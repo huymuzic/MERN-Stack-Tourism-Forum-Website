@@ -1,5 +1,7 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
+
 const saltRounds = 10;
 // create new user
 export const createUser = async (req, res) => {
@@ -132,5 +134,73 @@ export const checkPassword = async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+export const CheckReset = async (req, res) => {
+  const { identifier } = req.body;
+  console.log("vào được r nì")
+  try {
+      const user = await User.findOne({
+          $or: [{ email: identifier }, { username: identifier }]
+      });
+      if (user) {
+          await sendOTPEmail(user.email);
+          res.json({ success: true, message: "OTP sent if user exists" });
+      } else {
+          res.status(404).json({ success: false, message: "User not found" });
+      }
+  } catch (error) {
+    console.log(error)
+      res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+// Endpoint to initiate the reset password process and send OTP
+export const checkPass = async (req, res) => {
+  const { identifier } = req.body;
+   console.log('vào r')
+  try {
+      const user = await User.findOne({
+          $or: [{ email: identifier }, { username: identifier }]
+      });
+      if (!user) {
+          return res.status(404).json({ success: false, message: "User not found" });
+      }
+      const otp = await generateAndStoreOTP(user.email);
+      await sendOTPEmail(user.email, otp);
+      res.json({ success: true, message: "OTP sent to your email." });
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ success: false, message: "Failed to send OTP", error: error.message });
+  }
+};
+
+// Endpoint to verify OTP
+export const otpChecking = async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+      const user = await User.findOne({ email });
+      if (!user || user.otp !== otp || new Date() > user.otpExpires) {
+          return res.status(401).json({ success: false, message: "Invalid or expired OTP" });
+      }
+      res.json({ success: true, message: "OTP verified successfully." });
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+// Endpoint to reset password
+export const resetpassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+  try {
+      await User.findOneAndUpdate({ email }, { $set: { password: hashedPassword } });
+      res.json({ success: true, message: "Password reset successfully." });
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };

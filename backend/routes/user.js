@@ -5,11 +5,11 @@ import {
   deleteUser,
   updateUser,
   checkPassword,
-  checkForReset
+  checkPass,
+  otpChecking,
+  resetpassword
 } from "../controllers/userController.js";
-
 const router = express.Router();
-
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
 // update user
@@ -27,4 +27,13 @@ router.get("/", verifyAdmin, getAllUser);
 // Check password
 router.post("/verify-password", verifyUser, checkPassword);
 //Get all user for resting
+
+// Endpoint to initiate the reset password process and send OTP
+router.post('/check', checkPass);
+
+// Endpoint to verify OTP
+router.post('/otpChecking', otpChecking);
+
+// Endpoint to reset password
+router.post('/reset-password', resetpassword);
 export default router;
