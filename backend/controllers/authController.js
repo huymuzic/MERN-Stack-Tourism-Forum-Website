@@ -144,7 +144,7 @@ export const logout = async (req, res) => {
     console.log("Logout request received");
 
     res.clearCookie("accessToken", { httpOnly: true });
-    console.log("cleared token and cookie");
+    console.log("Cleared token and cookie");
 
     res.status(200).json({
       success: true,

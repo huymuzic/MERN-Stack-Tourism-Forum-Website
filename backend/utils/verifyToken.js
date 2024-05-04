@@ -21,6 +21,10 @@ export const verifyToken = (req, res, next) => {
         success: false,
         message: "Token is invalid",
       });
+    } else {
+      console.log("Token is valid");
+      console.log("Decoded token:", decoded);
+      console.log("User logged in successfully");
     }
     req.user = decoded;
     next();

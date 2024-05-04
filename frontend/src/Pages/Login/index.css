@@ -1,0 +1,14 @@
+.eye-icon {
+    transform: translateY(-160%);
+    position: absolute;
+    right: 3%;
+}
+
+.eye-icon:hover {
+    cursor: pointer;
+}
+
+.is-valid,
+.is-invalid {
+    background-image: none !important;
+}

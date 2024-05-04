@@ -7,8 +7,8 @@ import { useUser } from './utils/UserContext';
 
 function App() {
 
-  const baseURL = 'http://localhost:4000';
-
+  const baseURL = import.meta.env.VITE_BASE_URL;
+  console.log(baseURL);
   const { setUser } = useUser();
 
 useEffect(() => {
