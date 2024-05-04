@@ -14,7 +14,7 @@ function App() {
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
+     const token = localStorage.getItem('accessToken');
       const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
         method: 'GET',
         credentials: 'include',
@@ -23,9 +23,12 @@ useEffect(() => {
           Authorization: `Bearer ${token}`,
         },
       });
+      const responseBody = await response.json();
+      console.log(responseBody);
       if (response.ok) {
-        setUser(true); 
+        setUser(responseBody.user); 
       }
+
       console.log("reach 2");
    } catch (error) {
       console.error('Error checking login status:', error);

@@ -40,7 +40,7 @@ function Login() {
         if (!response.ok) {
                 setError('pwd', { type: 'server', message: responseBody.message });
             } else {
-                setUser(true);
+                setUser(responseBody.data); 
                 localStorage.setItem('accessToken', responseBody.token); 
                 navigate('/');
             }

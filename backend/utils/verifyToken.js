@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import User from '../models/user.js'
 
 export const verifyToken = (req, res, next) => {
   const token =
@@ -14,7 +15,7 @@ export const verifyToken = (req, res, next) => {
   }
 
   // if token is exist then verify the token
-  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
     if (err) {
       console.log("Token is invalid");
       return res.status(401).json({
@@ -25,9 +26,9 @@ export const verifyToken = (req, res, next) => {
       console.log("Token is valid");
       console.log("Decoded token:", decoded);
       console.log("User logged in successfully");
+      req.user = await User.findOne({ _id: decoded.id });
+      next();
     }
-    req.user = decoded;
-    next();
   });
 };
 
