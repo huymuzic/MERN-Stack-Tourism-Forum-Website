@@ -5,19 +5,31 @@ import bcrypt from 'bcrypt';
 dotenv.config();
 
 export const generateAndStoreOTP = async (email) => {
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();  // Generates a 6-digit OTP
-    const expires = new Date(new Date().getTime() + 300000); // OTP expires in 5 minutes
+    try {
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const expires = new Date(new Date().getTime() + 300000);
 
-    // Update the user's record with new OTP and expiration
-    await User.findOneAndUpdate({ email: email }, {
-        $set: {
-            otp: otp,
-            otpExpires: expires
+        // Find the user first
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            console.error("User not found");
+            return null; // Or handle this case as needed
         }
-    }, { new: true, upsert: true });
 
-    return otp;
+        // Set the OTP and expiration
+        user.otp = otp;
+        user.otpExpires = expires;
+
+        // Save the user object
+        await user.save();
+        console.log(user.otp);
+        return otp;
+    } catch (error) {
+        console.error("Error in generateAndStoreOTP:", error);
+        throw error;
+    }
 };
+
 
 export async function sendOTPEmail(to, otp) {
     console.log("gửi mail nè",otp)
@@ -55,10 +67,10 @@ export const checkOTPAndUpdatePassword = async (req, res) => {
     const { email, otp, newPassword } = req.body;
     try {
         const user = await User.findOne({ email });
+        console.log(user)
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
-
         // Check if the OTP matches and hasn't expired
         if (user.otp === otp && new Date() <= user.otpExpires) {
             // Hash new password

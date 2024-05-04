@@ -159,7 +159,7 @@ export const CheckReset = async (req, res) => {
 // Endpoint to initiate the reset password process and send OTP
 export const checkPass = async (req, res) => {
   const { identifier } = req.body;
-   console.log('vào r')
+  
   try {
       const user = await User.findOne({
           $or: [{ email: identifier }, { username: identifier }]
@@ -181,6 +181,7 @@ export const otpChecking = async (req, res) => {
   const { email, otp } = req.body;
   try {
       const user = await User.findOne({ email });
+      console.log(user.otp)
       if (!user || user.otp !== otp || new Date() > user.otpExpires) {
           return res.status(401).json({ success: false, message: "Invalid or expired OTP" });
       }
