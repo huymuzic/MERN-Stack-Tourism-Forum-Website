@@ -80,8 +80,9 @@ export const login = async (req, res) => {
     }
 
     // if user is found, check password and compare with hashed password
-    const checkCorrectPassword = await bcrypt.compare(pwd, user.password);
-
+    
+    const checkCorrectPassword = bcrypt.compare(pwd, user.password);
+ 
     // if password is incorrect
     if (!checkCorrectPassword) {
       return res
@@ -96,7 +97,7 @@ export const login = async (req, res) => {
       const token = jwt.sign(
         { signInTime: Date.now(), id: user._id, role: user.role },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "365d" }
+        { expiresIn: '365d' }
       );
       res
         .cookie("accessToken", token, {
@@ -105,7 +106,7 @@ export const login = async (req, res) => {
         })
         .status(200)
         .json({
-          token,
+          token,  
           data: { ...rest },
           role,
           message: "User logged in successfully",
@@ -115,7 +116,7 @@ export const login = async (req, res) => {
       const token = jwt.sign(
         { signInTime: Date.now(), id: user._id, role: user.role },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "1s" }
+        { expiresIn: "2d" }
       );
       res
         .cookie("accessToken", token, {

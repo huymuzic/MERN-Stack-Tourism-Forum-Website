@@ -4,13 +4,13 @@ import Layout from './components/Layout/Layout';
 
 
 import { useUser } from './utils/UserContext';
-
+import { useUserInfo } from './utils/UserInforContext'
 function App() {
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   console.log(baseURL);
   const { setUser } = useUser();
-
+  const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
@@ -23,10 +23,11 @@ useEffect(() => {
           Authorization: `Bearer ${token}`,
         },
       });
+      const jsonResponse = await response.json();
       if (response.ok) {
         setUser(true); 
+        fetchUser(jsonResponse.user.id);
       }
-      console.log("reach 2");
    } catch (error) {
       console.error('Error checking login status:', error);
     }

@@ -9,7 +9,7 @@ import './index.css'
 
 //context
 import { useUser } from '../../utils/UserContext';
-
+import {useUserInfo } from '../../utils/UserInforContext'
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function Login() {
@@ -17,13 +17,13 @@ function Login() {
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useUser();
+    const { info, fetchUser, updateUser, deleteUser } = useUserInfo();
 
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
     };
 
     const onSubmit = async (data) => {
-        console.log('Submitting data:', data);
         try {
             const response = await fetch(`${baseURL}/api/v1/auth/login`, {
                 method: 'POST',
@@ -32,23 +32,21 @@ function Login() {
                 },
                 body: JSON.stringify(data),
             });
-            console.log('Response:', response);
 
             const responseBody = await response.json();
-            console.log('Response body:', responseBody);
 
         if (!response.ok) {
                 setError('pwd', { type: 'server', message: responseBody.message });
             } else {
                 setUser(true);
                 localStorage.setItem('accessToken', responseBody.token); 
+                fetchUser(responseBody.data._id);
                 navigate('/');
             }
 
         } catch (error) {
             console.error('Error:', error);
         }
-        console.log(localStorage.getItem('accessToken'));
     }
 
 

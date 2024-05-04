@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useUserInfo } from '../../../utils/UserInforContext';
-
-const Profile = () => {
-    const baseURL = import.meta.env.VITE_BASE_URL;
-    const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
+import React, { useState } from 'react';
+import { useUser } from './Data/UserData';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import { usePosts } from './Data/PostData';
+function UserInfo() {
     const [inputPassword, setInputPassword] = useState('');
-    const [newName, setNewName] = useState('');
-    const [newEmail, setNewEmail] = useState('');
-    const [newPassword, setNewPassword] = useState('');
+    const { user, updateUser } = useUser();
+    const { posts, updatePost } = usePosts();
+    const [newName, setNewName] = useState(user.name);
+    const [newEmail, setNewEmail] = useState(user.email);
+    const [newPassword, setNewPassword] = useState(user.password);
     const [isVerifying, setIsVerifying] = useState(false);
     const [isChanging, setIsChanging] = useState(false);
     const [emailValid, setEmailValid] = useState(true);
-    const [announceConfirm, setAnnounceConfirm] = useState(false);
+    const [AnnounceConfirm, setAnnounceConfirm] = useState(false);
     const [avatarModal, setAvatarModal] = useState(false);
-    const [tempAvatar, setTempAvatar] = useState(user.avatar || 'default_avatar.png'); // Default avatar if none
+    const [tempAvatar, setTempAvatar] = useState(user.avatar);
+    const [passisChange,ChangePass] = useState(false);
     const [passwordCriteria, setPasswordCriteria] = useState({
         minLength: false,
         hasUppercase: false,
@@ -21,23 +23,12 @@ const Profile = () => {
         hasNumbers: false,
         hasSpecialChars: false
     });
-    //set current data
-    useEffect(() => {
-        if (user) {
-            setNewName(user.username);
-            setNewEmail(user.email);
-            setNewPassword(user.password); // Be cautious with managing passwords like this
-        }
-    }, [user]); 
-
-    // Dynamically updates as the user types new password
-    const handleNewPasswordChange = e => {
+    const handleNewPasswordChange = (e) => {
         const newPasswordValue = e.target.value;
-        setNewPassword(newPasswordValue);
+        ChangePass(true);
+                setNewPassword(newPasswordValue);
         updatePasswordCriteria(newPasswordValue);
     };
-
-    // Validates the password based on defined criteria
     function updatePasswordCriteria(password) {
         setPasswordCriteria({
             minLength: password.length >= 8,
@@ -48,71 +39,38 @@ const Profile = () => {
         });
     }
 
-    // Validates the email format
-    const validateEmail = email => {
-        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        setEmailValid(isValid);
-        return isValid;
-    };
+    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    // Verifies password server-side before allowing profile edits
-    const handleVerifyPassword = async () => {
-        try {
-            const response = await fetch(`${baseURL}/api/v1/users/verify-password`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                },
-                body: JSON.stringify({ password: inputPassword })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setIsVerifying(false);
-                setIsChanging(true);
-            } else {
-                throw new Error(data.message || 'Incorrect password, please try again.');
-            }
-        } catch (error) {
-            alert(error.message);
+    const handleVerifyPassword = () => {
+        if (inputPassword === user.password) {
+            setIsVerifying(false);
+            setIsChanging(true);
+        } else {
+            alert('Incorrect password, please try again.');
             setInputPassword('');
         }
     };
 
-    // Handles the submission of changes to the user profile
-    const handleSubmitChanges = async () => {
-        if (!validateEmail(newEmail)) {
+    const handleSubmitChanges = () => {
+        if (!emailValid) {
             alert('Please enter a valid email address.');
             return;
         }
-        if (!newPassword || Object.values(passwordCriteria).includes(false)) {
-            alert('Please ensure the new password meets all criteria.');
-            return;
-        }
-        try {
-            const response = await fetch(`${baseURL}/api/v1/users/${user._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                },
-                body: JSON.stringify({ userId: user._id, username: newName, email: newEmail, password: newPassword })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setAnnounceConfirm(true);
-                setIsChanging(false);
-                fetchUser(user._id);  // Refresh user data
-            } else {
-                throw new Error(data.message || 'Failed to update profile.');
+        posts.forEach(post => {
+            if (post.userName === user.name) {
+              updatePost(post.id, { userName: newName });
             }
-        } catch (error) {
-            alert(error.message);
-        }
+          });
+        updateUser({
+            name: newName,
+            email: newEmail,
+            password: newPassword,
+        });
+        setAnnounceConfirm(true);
+        setIsChanging(false);
     };
 
-    // Avatar handling, opening modal and reading new avatar data
-    const handleAvatarChange = e => {
+    const handleAvatarChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -121,10 +79,20 @@ const Profile = () => {
         }
     };
 
+    const handleAvatarUrlChange = (url) => {
+        setTempAvatar(url);
+    };
+
+    const openAvatarModal = () => {
+        setAvatarModal(true);
+    };
+
+    const closeAvatarModal = () => {
+        setAvatarModal(false);
+    };
+
     return (
         <div className="container mt-4">
-            {isLoading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
             <div className="row">
                 <div className="col-md-8">
                     <h2 className="mb-3">My Profile</h2>
@@ -140,27 +108,27 @@ const Profile = () => {
                                         <div className="mb-3">
                                             <label className="form-label">Email</label>
                                             <input type="email" className="form-control" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
-                                            {!emailValid && <div className="text-danger">Invalid email format</div>}
+                                            {!validateEmail(newEmail) && <div className="text-danger">Invalid email format</div>}
                                         </div>
                                         <div className="mb-3">
-                                            <label className="form-label">New Password (if changing)</label>
-                                            <input type="password" className="form-control" value={newPassword} onChange={handleNewPasswordChange} />
-                                            <div className='checkingPass'>
-                                                <ul>
-                                                    {Object.entries(passwordCriteria).map(([key, met]) => (
-                                                        <li key={key} style={{ color: met ? 'green' : 'red' }}>
-                                                            {met ? '✓' : '✗'} {key}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
+                                            <label className="form-label">Password</label>
+                                            <input type="text" className="form-control" value={newPassword} onChange={(e) => handleNewPasswordChange(e)} />
+                                            {passisChange && ( <div className='checkingPass'>
+                                                                    <ul>
+                                                                        {Object.entries(passwordCriteria).map(([key, met]) => (
+                                                                            <li key={key} style={{ color: met ? 'green' : 'red' }}>
+                                                                                {met ? '✓' : '✗'} {key}
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </div> ) }
                                         </div>
                                         <button className="btn btn-primary" onClick={handleSubmitChanges}>Submit Changes</button>
                                         <button className="btn btn-secondary" onClick={() => setIsChanging(false)}>Cancel</button>
                                     </>
                                 ) : (
                                     <>
-                                        <p>Name: {user.username}</p>
+                                        <p>Name: {user.name}</p>
                                         <p>Email: {user.email}</p>
                                         <p>Password: *********</p>
                                         <button className="btn btn-info" onClick={() => setIsVerifying(true)}>Edit Profile</button>
@@ -168,7 +136,7 @@ const Profile = () => {
                                 )}
                             </div>
                             <div className="ms-3">
-                                <img src={tempAvatar || user.avatar} alt="User Avatar" className="rounded-circle" style={{ width: '100px', height: '100px' }} onClick={() => setAvatarModal(true)} />
+                                <img src={tempAvatar || user.Ava} alt="User Avatar" className="rounded-circle" style={{ width: '100px', height: '100px' }} onClick={openAvatarModal} />
                             </div>
                         </div>
                     </div>
@@ -180,24 +148,24 @@ const Profile = () => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Update Your Avatar</h5>
-                                <button type="button" className="close" onClick={() => setAvatarModal(false)}>
+                                <button type="button" className="close" onClick={closeAvatarModal}>
                                     &times;
                                 </button>
                             </div>
                             <div className="modal-body">
                                 <img src={tempAvatar} alt="Preview Avatar" className="img-thumbnail mb-3" />
                                 <input type="file" className="form-control" onChange={handleAvatarChange} />
-                                <input type="text" className="form-control mt-2" placeholder="Or enter image URL" onChange={(e) => setTempAvatar(e.target.value)} />
+                                <input type="text" className="form-control mt-2" placeholder="Or enter image URL" onChange={(e) => handleAvatarUrlChange(e.target.value)} />
                             </div>
                             <div className="modal-footer">
-                                <button className="btn btn-success" onClick={() => { updateUser({ avatar: tempAvatar }); setAvatarModal(false); }}>Confirm</button>
-                                <button className="btn btn-secondary" onClick={() => setAvatarModal(false)}>Cancel</button>
+                                <button className="btn btn-success" onClick={() => { updateUser({ Ava: tempAvatar }); closeAvatarModal(); }}>Confirm</button>
+                                <button className="btn btn-secondary" onClick={closeAvatarModal}>Cancel</button>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
-            {isVerifying && (
+             {isVerifying && (
                 <div className="modal show" tabIndex="-1" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -215,7 +183,7 @@ const Profile = () => {
                     </div>
                 </div>
             )}
-            {announceConfirm && (
+            {AnnounceConfirm && (
                 <div className="alert alert-success position-fixed top-50 start-50 translate-middle" style={{ zIndex: 1050 }}>
                     <strong>Success!</strong> Your profile has been updated.
                     <button type="button" className="btn-close" onClick={() => setAnnounceConfirm(false)}></button>
@@ -223,6 +191,11 @@ const Profile = () => {
             )}
         </div>
     );
-};
+}
 
-export default Profile;
+export default UserInfo;
+
+
+
+
+

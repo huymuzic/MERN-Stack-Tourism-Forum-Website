@@ -7,12 +7,15 @@ import 'remixicon/fonts/remixicon.css'
 
 import { UserProvider } from './utils/UserContext';
 import { BrowserRouter } from 'react-router-dom'
+import {UserInfoProvider } from './utils/UserInforContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <App />
+        <UserInfoProvider>
+            <App />
+        </UserInfoProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,

@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 export const verifyToken = (req, res, next) => {
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
-  console.log("Token:", token);
-
   if (!token) {
     console.log("No token found in cookies.");
     return res.status(401).json({
@@ -32,6 +30,7 @@ export const verifyToken = (req, res, next) => {
 };
 
 export const verifyUser = (req, res, next) => {
+  console.log('check')
   verifyToken(req, res, next, () => {
     if (req.user.id === req.params.id || req.user.role === "admin") {
       next();

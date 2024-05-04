@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon backend/index.js",
-    "start": "node backend/index.js",
+    "start": "concurrently \"npm run dev\" \"cd frontend && npm run dev\"",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "hihi": "npx concurrently \"nodemon backend/index.js\" \"npm run dev --prefix frontend\""
   },
