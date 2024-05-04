@@ -15,7 +15,7 @@ import Favorites from "../Pages/Account/components/Favorites";
 import Posts from "../Pages/Account/components/UserPosts";
 import PurchaseHistory from "../Pages/PurchaseHistory/index";
 import SearchResultList from "../Pages/SearchResultList/index";
-
+import ResetPassword from  "../Pages/ResetPass/index";
 const Routers = () => {
   return (
     <Routes>
@@ -34,7 +34,7 @@ const Routers = () => {
       <Route path="/account/favorites" element={<Favorites />} />      
       <Route path="/history" element={<PurchaseHistory />} />
       <Route path="/tours/search" element={<SearchResultList />} />
-      <Route path="resetPass" element={<ResetPass />} />
+      <Route path="/resetPass" element={<ResetPassword />} />
     </Routes>
   );
 };

@@ -5,6 +5,7 @@ import {
   deleteUser,
   updateUser,
   checkPassword,
+  checkForReset
 } from "../controllers/userController.js";
 
 const router = express.Router();
@@ -25,5 +26,5 @@ router.get("/", verifyAdmin, getAllUser);
 
 // Check password
 router.post("/verify-password", verifyUser, checkPassword);
-
+//Get all user for resting
 export default router;

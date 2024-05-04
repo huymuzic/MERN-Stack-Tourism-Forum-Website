@@ -92,7 +92,7 @@ function Login() {
                     {errors.pwd && <div className="invalid-feedback">{errors.pwd.message}</div>}
                 </div>
 
-                <a className="mb-3 text-end col-8" href='#'>Forgot password?</a>
+                <a className="mb-3 text-end col-8" href='/resetPass'>Forgot password?</a>
 
                 <div className="mb-3 form-check col-8">
                     <input type="checkbox" className="form-check-input" id="remember"
