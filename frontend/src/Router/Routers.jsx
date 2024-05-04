@@ -34,6 +34,7 @@ const Routers = () => {
       <Route path="/account/favorites" element={<Favorites />} />      
       <Route path="/history" element={<PurchaseHistory />} />
       <Route path="/tours/search" element={<SearchResultList />} />
+      <Route path="resetPass" element={<ResetPass />} />
     </Routes>
   );
 };
