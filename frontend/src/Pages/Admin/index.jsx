@@ -1,8 +1,21 @@
-import React from 'react'
+import { Outlet } from 'react-router-dom';
+import SideBarMenu from './components/SideBarMenu';
 import './index.css'
 
-const  Admin = () => {
-    return <div>Admin</div>;
+const Admin = () => {
+    return (
+        <div style={{ padding: "80px 40px 40px 40px" }}>
+            <div className='d-flex flex-row' >
+                <div className='pe-4' style={{ borderRight: "1px solid #ddd" }}>
+                    <SideBarMenu />
+                </div>
+
+                <div className='w-100 ps-4'>
+                    <Outlet />
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Admin;

@@ -104,3 +104,49 @@ export const getAllUser = async (req, res) => {
     });
   }
 };
+
+// get List User
+export const getListUser = async (req, res) => {
+  try {
+    let { page, limit, status, search, searchType } = req.query;
+
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    const filter = {};
+    if (status) {
+      filter.status = status;
+    }
+    if (search) {
+      if (searchType === "email") {
+        filter.email = { $regex: search, $options: "i" };
+      } else if (searchType === "username") {
+        filter.username = { $regex: search, $options: "i" };
+      } else {
+        filter.$or = [
+          { username: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+        ];
+      }
+    }
+
+    const totalCount = await User.countDocuments();
+
+    const users = await User.find(filter)
+      .limit(limit)
+      .skip((page - 1) * limit);
+
+    res.status(200).json({
+      success: true,
+      count: users.length,
+      totalCount: totalCount,
+      message: "Successfully fetched users",
+      data: users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error. Please try again.",
+    });
+  }
+};
