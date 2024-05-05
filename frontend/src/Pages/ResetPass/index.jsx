@@ -45,7 +45,7 @@ const ResetPassword = () => {
         });
         const data = await response.json();
         if (data.success) {
-            setCurrentStep(3);
+            setCurrentStep(4);
             setMessage('OTP verified successfully.');
             showNotification('OTP verified successfully.', 'success');
         } else {
@@ -68,7 +68,7 @@ const ResetPassword = () => {
         });
         const data = await response.json();
         if (data.success) {
-            setCurrentStep(4);
+            setCurrentStep(5);
             setMessage('Password reset successfully.');
             showNotification('Password reset successfully.', 'success');
         } else {
