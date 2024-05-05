@@ -14,7 +14,7 @@ function App() {
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
+     const token = localStorage.getItem('accessToken');
       const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
         method: 'GET',
         credentials: 'include',

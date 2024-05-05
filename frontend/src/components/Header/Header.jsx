@@ -34,17 +34,9 @@ const Header = () => {
 
     const { user, setUser } = useUser();
 
-    const baseURL = 'http://localhost:4000';
+    const baseURL = import.meta.env.VITE_BASE_URL;
 
     const navigate = useNavigate();
-
-        useEffect(() => {
-        // Check for authentication token on page load
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            setUser(true); // User is logged in
-        }
-    }, [setUser]);
 
     const handleLogout = async () => {
         try {
