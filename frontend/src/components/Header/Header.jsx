@@ -7,7 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
-
+import { useUserInfo } from '../../utils/UserInforContext'
 
 import logo from '../../assets/images/logo.png' 
 
@@ -32,10 +32,10 @@ const nav__links = [
 
 const Header = () => {
 
-    const { user, setUser } = useUser();
-
+    const { setUser } = useUser();
+    const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
     const baseURL = import.meta.env.VITE_BASE_URL;
-
+    const check = user?._id ? true : false;
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -90,10 +90,20 @@ const Header = () => {
                             ))}
                         </ul>
                     </div>
-                    {user ? (
+                    {check ? (
                     <div id = "user-icon-container" className="dropdown text-start">
-                        <a id = "user-icon" href="#" className="d-block link-body-emphasis      text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-                        <i className="fa-solid fa-circle-user rounded-circle fa-3x"></i>
+                        <a
+                            id="user-icon"
+                            href="#"
+                            className="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                        >
+                            <img
+                            src={user.avatar}
+                            alt="User Avatar"
+                            className="rounded-circle"
+                            style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                            />
                         </a>
                         <ul id = "dropdown-left" className="dropdown-menu text-small" style={{}}>
                             <li><a className="dropdown-item" href="/account">Account</a></li>

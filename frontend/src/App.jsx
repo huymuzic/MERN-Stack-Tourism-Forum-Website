@@ -26,7 +26,8 @@ useEffect(() => {
       const jsonResponse = await response.json();
       if (response.ok) {
         setUser(true); 
-        fetchUser(jsonResponse.user.id);
+        console.log(jsonResponse.user._id)
+        fetchUser(jsonResponse.user._id);
       }
    } catch (error) {
       console.error('Error checking login status:', error);

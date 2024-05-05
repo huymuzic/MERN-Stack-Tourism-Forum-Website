@@ -169,7 +169,7 @@ export const checkPass = async (req, res) => {
       }
       const otp = await generateAndStoreOTP(user.email);
       await sendOTPEmail(user.email, otp);
-      res.json({ success: true, message: "OTP sent to your email." });
+      res.json({ success: true, message: "OTP sent to your email." ,data:user});
   } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ success: false, message: "Failed to send OTP", error: error.message });
@@ -203,5 +203,30 @@ export const resetpassword = async (req, res) => {
   } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+//Image uplpoad? may be change in future 
+export const updateAvatar = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { avatar } = req.body;
+
+    // Validate the avatar is Base64 encoded
+    if (!avatar || !avatar.startsWith("data:image")) {
+      return res.status(400).json({ message: "Invalid avatar format" });
+    }
+
+    // Update avatar field in the user's document
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { avatar },
+      { new: true }
+    );
+
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+
+    res.json({ success: true, user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error });
   }
 };

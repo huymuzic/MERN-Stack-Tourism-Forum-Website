@@ -5,14 +5,15 @@ import Profile from './components/Profile';
 import UserPosts from './components/UserPosts';
 import Themes from './components/Themes';
 import Favorites from './components/Favorites';
+
 function UserAccount() {
     const baseURL = import.meta.env.VITE_BASE_URL;
-  const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
-  const [activeNav, setActiveNav] = useState('Profile');
-  const [confirmActive, setConfirmActive] = useState(false);
-  const [inputPassword, setInputPassword] = useState('');
-  const [announceConfirm, setAnnounceConfirm] = useState(false);
-  const NAV_ITEMS = {
+    const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
+    const [activeNav, setActiveNav] = useState('Profile');
+    const [confirmActive, setConfirmActive] = useState(false);
+    const [inputPassword, setInputPassword] = useState('');
+    const [announceConfirm, setAnnounceConfirm] = useState(false);
+    const NAV_ITEMS = {
       Profile: Profile,
       Posts: UserPosts,
       Themes: Themes,
@@ -82,7 +83,7 @@ function UserAccount() {
           <div className="container mt-5">
               <div className="row">
                   <div className="col-md-4 text-center">
-                      <img src={user.Ava} alt="User Avatar" className="img-thumbnail rounded-circle mb-3" />
+                      <img src={user.avatar} alt="User Avatar" className="img-thumbnail rounded-circle mb-3" />
                   </div>
                   <div className="col-md-8">
                       <h1>{user.username}</h1>

@@ -21,14 +21,15 @@ export const UserInfoProvider = ({ children }) => {
         setIsLoading(true);
         setError(null);
         const token = localStorage.getItem('accessToken');  // Retrieve token inside function
-    
+        console.log("🚀 ~ fetchUser ~ token:", token)
+        
         try {
             const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
-                }
+                }   
             });
             const jsonResponse = await response.json();
             if (response.ok) {
@@ -36,11 +37,12 @@ export const UserInfoProvider = ({ children }) => {
             } else {
                 throw new Error(jsonResponse.message || 'Failed to fetch user');
             }
+                console.log("🚀 ~ fetchUser ~ jsonResponse.data:", jsonResponse.data)
         } catch (error) {
             console.error('Fetch user error:', error);
             setError(error.toString());
         } finally {
-            setIsLoading(false);
+            setIsLoading(false);    
         }
     };
     useEffect(() => {

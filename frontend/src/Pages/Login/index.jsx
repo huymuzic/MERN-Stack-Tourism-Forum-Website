@@ -40,6 +40,7 @@ function Login() {
             } else {
                 setUser(responseBody.data); 
                 localStorage.setItem('accessToken', responseBody.token); 
+                console.log(responseBody.data._id);
                 fetchUser(responseBody.data._id);
                 navigate('/');
             }

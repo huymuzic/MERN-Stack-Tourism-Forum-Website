@@ -7,7 +7,8 @@ import {
   checkPassword,
   checkPass,
   otpChecking,
-  resetpassword
+  resetpassword,
+  updateAvatar
 } from "../controllers/userController.js";
 const router = express.Router();
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
@@ -36,4 +37,7 @@ router.post('/otpChecking', otpChecking);
 
 // Endpoint to reset password
 router.post('/reset-password', resetpassword);
+//Change ava
+router.put("/update-avatar/:userId", verifyUser, updateAvatar);
+
 export default router;

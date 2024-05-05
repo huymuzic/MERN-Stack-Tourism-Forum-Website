@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       default: "user",
       required: true,
     },
+    avatar: {
+      type: String,
+      default: "default_avatar.png", // Replace with a valid default avatar URL or path
+    },
     otp: String,  
     otpExpires: Date
   },
