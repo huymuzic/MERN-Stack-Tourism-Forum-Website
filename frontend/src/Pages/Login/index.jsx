@@ -1,14 +1,11 @@
 //modules
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './index.css'
-
-//context
-import { useUser } from '../../utils/UserContext';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -16,7 +13,7 @@ function Login() {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
-    const { user, setUser } = useUser();
+    
 
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
@@ -40,9 +37,9 @@ function Login() {
         if (!response.ok) {
                 setError('pwd', { type: 'server', message: responseBody.message });
             } else {
-                setUser(responseBody.data); 
                 localStorage.setItem('accessToken', responseBody.token); 
                 navigate('/');
+                window.location.reload();
             }
 
         } catch (error) {

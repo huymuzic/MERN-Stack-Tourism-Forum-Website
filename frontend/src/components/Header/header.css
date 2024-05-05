@@ -1,8 +1,8 @@
-.header {
+/* .header {
     width: 100%;
     height: 80px;
     line-height: 80px;
-}
+} */
 
 .header__container {
     margin: 0 !important;
@@ -10,12 +10,47 @@
     max-width: none !important;
 }
 
-.logo img {
-    width: 32%;
-}
+/* .logo img {
+    width: 30%;
+} */
 
 .navigation {
     margin-left: 7rem;
+}
+
+#navbarSupportedContent {
+    margin-right: 5rem !important;
+}
+
+
+.dropdown {
+    width: 85px;
+    height: 30px;
+    margin-right: 35px;
+}
+
+.dropdown button {
+    font-weight: bold;
+}
+
+#user {
+    padding: 0 !important;
+}
+
+.l {
+    margin-left: 2rem;
+}
+
+nav button,
+nav button:focus,
+nav button:active,
+nav button:focus-visible {
+    outline: none !important;
+    border: none !important;
+}
+
+.no-bullet {
+    list-style-type: none;
 }
 
 .menu {
@@ -90,3 +125,14 @@
     cursor: pointer
 }
 
+.sticky-header {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    left: 0;
+    box-shadow: 3px 3px 8px -3px #ddd;
+    z-index: 100;
+}

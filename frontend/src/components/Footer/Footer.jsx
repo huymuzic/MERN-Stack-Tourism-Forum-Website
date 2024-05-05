@@ -7,6 +7,7 @@ import facebookLogo from '../../assets/images/facebook.svg'
 import { Container, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
+// import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 
 const quick__links = [
     {
@@ -25,8 +26,8 @@ const quick__links = [
 
 const quick__links2 = [
     {
-        path:'/gallery',
-        display:'Gallery'
+        path:'',
+        display:'Contact'
     },
     {
         path:'/Login',
@@ -39,6 +40,9 @@ const quick__links2 = [
 ]
 
 const Footer = () => {
+
+    // const { handleShowModal } = useContactModal();
+
     return <>
     <footer className='footer'>
         <Container>
@@ -46,7 +50,7 @@ const Footer = () => {
                 <Col lg='3' className='logo-container'>
                     <div className='logo'>
                         <img src ={logo} alt='footer-logo' /> 
-                        <div className="social__links d-flex align-items-center">
+                        <div className="social__links d-flex align-items-center gap-5">
                         <span>
                             <Link to='#'><img className='icon' src={instaLogo} alt='' /></Link>
                         </span>
@@ -77,7 +81,11 @@ const Footer = () => {
                         {
                             quick__links2.map((item, index) => (
                                 <ListGroupItem key={index} className='ps-0 border-0'>
+                                    {item.path ? (
                                     <Link to={item.path}>{item.display}</Link>
+                                    ) : (
+                                    <span id="contact" className='contact__footer'>{item.display}</span>                                              
+                                    )}
                                 </ListGroupItem>
                             ))
                         }

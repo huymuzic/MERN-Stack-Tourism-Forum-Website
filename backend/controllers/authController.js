@@ -6,14 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 // user registration
 export const register = async (req, res) => {
-  const token = req.body.token;
-
-  if (
-    !req.body.username ||
-    !req.body.email ||
-    !req.body.pwd ||
-    !req.body.token
-  ) {
+  if (!req.body.username || !req.body.email || !req.body.pwd) {
     return res.status(400).send("Missing fields");
   }
 
@@ -24,11 +17,9 @@ export const register = async (req, res) => {
     }
   );
 
-  const recaptchaResponse = await response.json();
-
-  if (!recaptchaResponse.success || recaptchaResponse.score < 0.5) {
-    return res.status(400).send("reCAPTCHA verification failed");
-  }
+  response.success
+    ? null
+    : res.status(400).send("reCAPTCHA verification failed");
 
   const existingUser = await User.findOne({ username: req.body.username });
   if (existingUser) {
@@ -115,8 +106,7 @@ export const login = async (req, res) => {
     if (!rem) {
       const token = jwt.sign(
         { signInTime: Date.now(), id: user._id, role: user.role },
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: "1s" }
+        process.env.JWT_SECRET_KEY
       );
       res
         .cookie("accessToken", token, {
