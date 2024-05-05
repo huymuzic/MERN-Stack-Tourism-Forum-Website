@@ -1,0 +1,122 @@
+import Post from "../models/Post.js";
+import User from "../models/user.js";
+
+// Fetch all posts
+export const getAllPosts = async (req, res) => {
+    try {
+        const posts = await Post.find().populate("authorId", "username email").exec();
+        res.json(posts);
+    } catch (err) {
+        console.error("Error fetching posts:", err);
+        res.status(500).json({ message: "Server error while fetching posts", error: err.message });
+    }
+};
+
+// Fetch posts for a specific user
+export const getPostsByUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const posts = await Post.find({ authorId: userId }).populate("authorId", "username email").exec();
+        res.json(posts);
+    } catch (err) {
+        console.error("Error fetching user posts:", err);
+        res.status(500).json({ message: "Server error while fetching user posts", error: err.message });
+    }
+};
+
+// Fetch favorite posts for a specific user
+export const getFavoritePostsByUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const posts = await Post.find({ likes: userId }).populate("authorId", "username email").exec();
+        res.json(posts);
+    } catch (err) {
+        console.error("Error fetching favorite posts:", err);
+        res.status(500).json({ message: "Server error while fetching favorite posts", error: err.message });
+    }
+};
+
+// Create a new post
+export const createPost = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const newPost = new Post({ ...req.body, authorId: userId });
+        const savedPost = await newPost.save();
+        res.status(201).json(savedPost);
+    } catch (err) {
+        console.error("Error creating post:", err);
+        res.status(400).json({ message: err.message });
+    }
+};
+
+// Update a post
+export const updatePost = async (req, res) => {
+    const { postId } = req.params;
+    try {
+        const updatedPost = await Post.findByIdAndUpdate(postId, req.body, { new: true });
+        if (!updatedPost) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        res.json(updatedPost);
+    } catch (err) {
+        console.error("Error updating post:", err);
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Delete a post
+export const deletePost = async (req, res) => {
+    const { postId } = req.params;
+    try {
+        const deletedPost = await Post.findByIdAndDelete(postId);
+        if (!deletedPost) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        res.json({ message: "Post deleted successfully" });
+    } catch (err) {
+        console.error("Error deleting post:", err);
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Toggle like/favorite on a post
+export const toggleLikePost = async (req, res) => {
+    const { postId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        const likeIndex = post.likes.indexOf(userId);
+        if (likeIndex === -1) {
+            post.likes.push(userId);
+        } else {
+            post.likes.splice(likeIndex, 1);
+        }
+
+        const updatedPost = await post.save();
+        res.json(updatedPost);
+    } catch (err) {
+        console.error("Error toggling like on post:", err);
+        res.status(500).json({ message: err.message });
+    }
+};
+

@@ -22,7 +22,6 @@ export const verifyToken = (req, res, next) => {
       });
     } else {
       console.log("Token is valid");
-      console.log("Decoded token:", decoded);
       console.log("User logged in successfully");
       req.user = await User.findOne({ _id: decoded.id });
       next();
@@ -31,7 +30,6 @@ export const verifyToken = (req, res, next) => {
 };
 
 export const verifyUser = (req, res, next) => {
-  console.log('check')
   verifyToken(req, res, next, () => {
     if (req.user.id === req.params.id || req.user.role === "admin") {
       next();
