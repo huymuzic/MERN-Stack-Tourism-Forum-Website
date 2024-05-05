@@ -121,6 +121,9 @@ const Header = () => {
                             </button>
 
                             <ul className="dropdown-menu" aria-labelledby="user">
+                            {user !== null && user.role === 'admin' ? (
+                            <li><Link className="dropdown-item" to="/admin">Admin Portal</Link></li>
+                            ) : null}                      
                                 <li><Link className="dropdown-item" to="/account">Dashboard</Link></li>
                                 <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                                 <li>

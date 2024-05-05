@@ -1,5 +1,5 @@
 //modules
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message"
@@ -7,6 +7,9 @@ import { ErrorMessage } from "@hookform/error-message"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './index.css'
+
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -16,7 +19,7 @@ function Register() {
     const password = watch('pwd');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfPassword, setShowConfPassword] = useState(false);
-    const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
+    const recaptchaRef = useRef(null); 
 
     const togglePassword = (e) => {
         setShowPassword(!showPassword);
@@ -29,30 +32,22 @@ function Register() {
     useEffect(() => {
         if (!window.grecaptcha) {
             const script = document.createElement("script");
-            // @ts-ignore
-            script.src = "https://www.google.com/recaptcha/api.js?render=6LcQsMUpAAAAANQdSbjI44kGnjRrfxkC--8NQUEp";
-            script.onload = () => {
-                window.grecaptcha.ready(() => {
-                    console.log("reCAPTCHA client is ready");
-                    setRecaptchaLoaded(true);
-                });
-            };
+            script.src = "https://www.google.com/recaptcha/api.js?";
+            script.async = true;
             document.body.appendChild(script);
-        } else {
-            setRecaptchaLoaded(true);
-        }
+        } 
     }, [])
 
     const onSubmit = async (data) => {
-        if (!recaptchaLoaded) {
-            console.error("reCAPTCHA client is not loaded yet");
+        const recaptchaToken = recaptchaRef.current.getValue();
+
+        if (!recaptchaToken) {
+            console.error("Please complete the reCAPTCHA challenge");
             return;
-        }        
-        // @ts-ignore
-        const token = await window.grecaptcha.execute("6LcQsMUpAAAAANQdSbjI44kGnjRrfxkC--8NQUEp", { action: "submit" });
+        }
 
         const { confPwd, ...dataToSend } = data;
-        const dataWithToken = { ...dataToSend, token };
+        const dataWithToken = { ...dataToSend, token: recaptchaToken };
 
         try {
             const response = await fetch(`${baseURL}/api/v1/auth/register`, {
@@ -62,11 +57,10 @@ function Register() {
                 },
                 body: JSON.stringify(dataWithToken),
             });
-            console.log('Response:', response);
 
             const responseBody = await response.json();
             const responseMsg = responseBody.message;
-
+            console.log('Response:', responseBody);
             if (!response.ok) {
                 if (responseMsg === 'User already exists') {
                     setError('username', { type: 'server', message: 'This username is not available.' });
@@ -186,6 +180,10 @@ function Register() {
                         <FontAwesomeIcon className='eye-icon' icon={showConfPassword ? faEye : faEyeSlash} onClick={toggleConfPassword} />
                     </div>
                     {errors.confPwd && <div className="invalid-feedback">{errors.confPwd.message}</div>}
+                </div>
+
+                 <div className="mb-3">
+                    <ReCAPTCHA ref={recaptchaRef} sitekey={import.meta.env.VITE_SITE_KEY} />
                 </div>
 
                 <p>Already have an account? <Link to='/login'>Login</Link></p>
