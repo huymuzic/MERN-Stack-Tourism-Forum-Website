@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./PostCard.css";
 import { useUserInfo } from "../../../utils/UserInforContext";
-
+import { SlShare } from "react-icons/sl";
 function PostCard({ post, onToggleLike }) {
     const [editMode, setEditMode] = useState(false);
     const [editableContent, setEditableContent] = useState(post.content);
@@ -57,7 +57,7 @@ function PostCard({ post, onToggleLike }) {
                 <p className="card-text">{new Date(post.createdAt).toLocaleString()}</p>
                 {post.author === info.id && (
                     <div className="edit-container">
-                        <img src="src/assets/images/EditButton.png" alt="Edit Button" className="edit-button" onClick={toggleOptions}/>
+                        <SlShare alt="Edit Button" className="edit-button" onClick={toggleOptions}/>
                     </div>
                 )}
                 {showOptions && (
