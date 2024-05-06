@@ -128,3 +128,9 @@ nav button:focus-visible {
 .sign__out:hover {
     cursor: pointer
 }
+
+.user__icon__dropdown {
+    position: absolute;
+    top: 4rem !important;
+    left: -7rem !important
+}

@@ -130,7 +130,7 @@ const Header = () => {
                                 )}
                             </button>
 
-                            <ul className="dropdown-menu" aria-labelledby="user">
+                            <ul className="dropdown-menu user__icon__dropdown" aria-labelledby="user">
                             {user !== null && user.role === 'admin' ? (
                             <li><Link className="dropdown-item" to="/admin">Admin Portal</Link></li>
                             ) : null}                   
