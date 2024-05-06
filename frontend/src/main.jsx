@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'remixicon/fonts/remixicon.css'
-
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { UserProvider } from './utils/UserContext';
 import { BrowserRouter } from 'react-router-dom'
 import {UserInfoProvider } from './utils/UserInforContext'

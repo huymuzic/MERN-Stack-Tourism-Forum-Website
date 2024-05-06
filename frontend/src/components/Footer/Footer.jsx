@@ -7,7 +7,7 @@ import facebookLogo from '../../assets/images/facebook.svg'
 import { Container, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
-// import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
+import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 
 const quick__links = [
     {
@@ -41,7 +41,7 @@ const quick__links2 = [
 
 const Footer = () => {
 
-    // const { handleShowModal } = useContactModal();
+    const { handleShowModal } = useContactModal();
 
     return <>
     <footer className='footer'>
@@ -84,7 +84,7 @@ const Footer = () => {
                                     {item.path ? (
                                     <Link to={item.path}>{item.display}</Link>
                                     ) : (
-                                    <span id="contact" className='contact__footer'>{item.display}</span>                                              
+                                    <span id="contact" className='contact__footer' onClick={handleShowModal}>{item.display}</span>                                              
                                     )}
                                 </ListGroupItem>
                             ))
