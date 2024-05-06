@@ -8,11 +8,17 @@ import {
   checkPass,
   otpChecking,
   resetpassword,
-  updateAvatar
+  updateAvatar,
+  getListUser,
+  lockUser,
+  unlockUser,
 } from "../controllers/userController.js";
 const router = express.Router();
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
+
+// get list users
+router.get("/list", getListUser);
 // update user
 router.put("/:id", verifyUser, updateUser);
 
@@ -39,5 +45,9 @@ router.post('/otpChecking', otpChecking);
 router.post('/reset-password', resetpassword);
 //Change ava
 router.put("/update-avatar/:userId", verifyUser, updateAvatar);
+// Lock user
+router.put("/lock/:id", lockUser);
+// Unlock user
+router.put("/unlock/:id", unlockUser);
 
 export default router;

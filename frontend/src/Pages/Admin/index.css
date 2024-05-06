@@ -1,3 +1,38 @@
 .css {
     display: flex;
 }
+
+.side-bar-item {
+    display: flex;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: black;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.side-bar-item:hover {
+    background-color: #f5f5f5;
+}
+
+.active-sidebar-item {
+    color: var(--primary-color);
+    background-color: var(--light-primary-color);
+}
+
+.active-sidebar-item:hover {
+    background-color: var(--light-primary-color); 
+}
+
+
+.pagination-container{
+    width: 100%;
+    padding: 24px;
+}
+
+.pagigation-item {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

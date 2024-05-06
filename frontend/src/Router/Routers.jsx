@@ -16,6 +16,9 @@ import Posts from "../Pages/Account/components/UserPosts";
 import PurchaseHistory from "../Pages/PurchaseHistory/index";
 import SearchResultList from "../Pages/SearchResultList/index";
 import ResetPassword from  "../Pages/ResetPass/index";
+import ForumPostsList from "../Pages/Admin/components/forum-posts/index";
+import UsersList from "../Pages/Admin/components/users/index";
+
 const Routers = () => {
   return (
     <Routes>
@@ -26,12 +29,16 @@ const Routers = () => {
       <Route path="/tours/:id" element={<TourDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin" element={<Admin />} >
+        <Route index element={<Navigate to="users" />} />
+        <Route path="forum-posts" element={<ForumPostsList />} />
+        <Route path="users" element={<UsersList />} />
+      </Route>
       <Route path="/account" element={<UserAccount />} />
       <Route path="/account/profile" element={<Profile />} />
       <Route path="/account/themes" element={<Themes />} />
       <Route path="/account/posts" element={<Posts />} />
-      <Route path="/account/favorites" element={<Favorites />} />      
+      <Route path="/account/favorites" element={<Favorites />} />
       <Route path="/history" element={<PurchaseHistory />} />
       <Route path="/tours/search" element={<SearchResultList />} />
       <Route path="/resetPass" element={<ResetPassword />} />
