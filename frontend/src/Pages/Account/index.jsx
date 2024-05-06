@@ -38,8 +38,10 @@ function UserAccount() {
             const data = await response.json();
             if (response.ok) {
                 setAnnounceConfirm(true);
-                updateInfo(info._id, { active: !info.active });
-                setConfirmActive(false);
+                if ( info.status == "active") {
+                updateInfo(info._id, { status: "inactive"  }) }
+                else {updateInfo(info._id, { status: "active"  }) }
+                setConfirmActive(false); 
             } else {
                 throw new Error(data.message || 'Incorrect password, please try again.');
             }
@@ -117,13 +119,13 @@ function UserAccount() {
                                 <p className="card-text">Joined: {formattedDate}</p>
                                 <p className="card-text">Role: {info.role}</p>
                                 <button
-                                    className={`btn ${info.active ? 'btn-danger' : 'btn-success'}`}
+                                    className={`btn ${info.status == "active" ? 'btn-danger' : 'btn-success'}`}
                                     onClick={() => setConfirmActive(true)}
                                 >
-                                    {info.active ? 'Deactivate Account' : 'Activate Account'}
+                                    {info.status == "active" ? 'Inactivate Account' : 'Activate Account'}
                                 </button>
 
-                                {!info.active && (
+                                {info.status == "active" && (
                                     <button className="btn btn-danger" onClick={handleDeleteInfo}>Delete Account</button>
                                 )}
                             </div>
@@ -131,9 +133,9 @@ function UserAccount() {
                     </div>
 
                     <div className="col-md-12 mt-3">
-                        {info.active ?
-                            <p>Your Account is inactive right now! Please reactivate it for any action.</p> :
-                            <ActiveComponent />
+                        {info.status == "active" ?
+                            <ActiveComponent />:
+                            <p>Your Account is inactive right now! Please reactivate it for any action.</p>        
                         }
                     </div>
                 </div>
@@ -171,7 +173,7 @@ function UserAccount() {
                         <div className="checkmark-container">
                             <i className="fas fa-check"></i>
                         </div>
-                        <h3>Your account is {info.active ? "inactive" : "active"}!</h3>
+                        <h3>Your account is {info.active ? "active" : "inactive"}!</h3>
                         <button onClick={() => setAnnounceConfirm(false)} className="btn btn-success">Confirm</button>
                     </div>
                 )}

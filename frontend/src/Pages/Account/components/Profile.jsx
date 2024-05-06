@@ -14,7 +14,6 @@ const Profile = () => {
   const [announceConfirm, setAnnounceConfirm] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
   const [tempAvatar, setTempAvatar] = useState(info.avatar || "default_avatar.png");
-  const [avatarFile, setAvatarFile] = useState(null); // Store the avatar file
   const [passwordCriteria, setPasswordCriteria] = useState({
     minLength: false,
     hasUppercase: false,
