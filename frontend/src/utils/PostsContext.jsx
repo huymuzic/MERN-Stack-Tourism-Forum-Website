@@ -34,6 +34,7 @@ export const PostsProvider = ({ children }) => {
             const result = await response.json();
             if (response.ok) {
                 setPosts(result);
+                console.log("All posts fetched:", result);
             } else {
                 throw new Error(result.message || "Failed to fetch posts");
             }
@@ -60,13 +61,17 @@ export const PostsProvider = ({ children }) => {
             });
             const result = await response.json();
             if (response.ok) {
-                setPosts(result);
+                console.log("User posts fetched:", result);
+                const filteredPosts = result.filter((post) => post.parentId === null);
+                setPosts(filteredPosts);
+                return filteredPosts;
             } else {
                 throw new Error(result.message || "Failed to fetch user posts");
             }
         } catch (error) {
             console.error("Fetch user posts error:", error);
             setError(error.toString());
+            return [];
         } finally {
             setIsLoading(false);
         }
@@ -87,6 +92,7 @@ export const PostsProvider = ({ children }) => {
             });
             const result = await response.json();
             if (response.ok) {
+                console.log("Favorite posts fetched:", result);
                 return result;
             } else {
                 throw new Error(result.message || "Failed to fetch favorite posts");
@@ -117,6 +123,7 @@ export const PostsProvider = ({ children }) => {
             const result = await response.json();
             if (response.ok) {
                 setPosts((prev) => [result, ...prev]);
+                console.log("Created post:", result);
             } else {
                 throw new Error(result.message || "Failed to create post");
             }
@@ -145,6 +152,7 @@ export const PostsProvider = ({ children }) => {
             const result = await response.json();
             if (response.ok) {
                 setPosts((prev) => prev.map((post) => (post._id === postId ? result : post)));
+                console.log("Updated post:", result);
             } else {
                 throw new Error(result.message || "Failed to update post");
             }
@@ -171,6 +179,7 @@ export const PostsProvider = ({ children }) => {
             });
             if (response.ok) {
                 setPosts((prev) => prev.filter((post) => post._id !== postId));
+                console.log("Deleted post:", postId);
             } else {
                 const result = await response.json();
                 throw new Error(result.message || "Failed to delete post");
@@ -183,34 +192,48 @@ export const PostsProvider = ({ children }) => {
         }
     };
 
-    const toggleLike = async (postId, userId) => {
-        setIsLoading(true);
-        setError(null);
-        const token = localStorage.getItem("accessToken");
+const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null,updateUserLikes) => {
+    setIsLoading(true);
+    setError(null);
+    const token = localStorage.getItem("accessToken");
 
-        try {
-            const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ userId }),
-            });
-            const result = await response.json();
-            if (response.ok) {
-                setPosts((prev) => prev.map((post) => (post._id === postId ? result : post)));
-            } else {
-                throw new Error(result.message || "Failed to toggle like");
+    try {
+        const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userId }),
+        });
+        const result = await response.json();
+        if (response.ok) {
+            const { post, favoritePosts,userLikes } = result;    
+            setPosts((prev) =>
+                prev.map((p) => (p._id === postId ? post : p))
+            );
+
+            if (setUserPosts) {
+                setUserPosts((prev) =>
+                    prev.map((p) => (p._id === postId ? post : p))
+                );
             }
-        } catch (error) {
-            console.error("Toggle like error:", error);
-            setError(error.toString());
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            if (setFavoritePosts) {
+                setFavoritePosts(favoritePosts);
+            }
+            updateUserLikes(userLikes);
 
+            console.log("Toggled like:", post, "Favorite Posts:", favoritePosts);
+        } else {
+            throw new Error(result.message || "Failed to toggle like");
+        }
+    } catch (error) {
+        console.error("Toggle like error:", error);
+        setError(error.toString());
+    } finally {
+        setIsLoading(false);
+    }
+};
     const value = useMemo(
         () => ({
             posts,
@@ -218,11 +241,11 @@ export const PostsProvider = ({ children }) => {
             error,
             fetchAllPosts,
             fetchPostsByUser,
+            fetchFavoritePostsByUser,
             createPost,
             updatePost,
             deletePost,
             toggleLike,
-            fetchFavoritePostsByUser,
         }),
         [posts, isLoading, error]
     );
@@ -237,3 +260,4 @@ export const usePosts = () => {
     }
     return context;
 };
+

@@ -1,29 +1,41 @@
+// components/Favorites/Favorites.js
 import React, { useEffect, useState } from "react";
 import { usePosts } from "../../../utils/PostsContext";
 import { useUserInfo } from "../../../utils/UserInforContext";
 import PostCard from "./PostCard";
 
 function Favorites() {
-    const { fetchFavoritePostsByUser } = usePosts();
-    const { user } = useUserInfo();
+    const { fetchFavoritePostsByUser, toggleLike } = usePosts();
+    const { info } = useUserInfo();
     const [favoritePosts, setFavoritePosts] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            if (user && user._id) {
-                const posts = await fetchFavoritePostsByUser(user._id);
+            if (info && info._id) {
+                const posts = await fetchFavoritePostsByUser(info._id);
                 setFavoritePosts(posts);
+                console.log("User Favorited Posts:", posts);
             }
         };
         fetchData();
-    }, [user]);
+    }, [info]);
+
+    const handleToggleLike = (postId) => {
+        toggleLike(postId, info._id,null, setFavoritePosts);
+    };
 
     return (
         <div>
-            {favoritePosts.map((post) => (
-                <PostCard key={post._id} post={post} />
-            ))}
+            {favoritePosts.length ? (
+                favoritePosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
+            ) : (
+                <p>No favorite posts available</p>
+            )}
         </div>
     );
 }
+
 export default Favorites;
+
+
+

@@ -20,8 +20,8 @@ export const getPostsByUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
-        const posts = await Post.find({ authorId: userId }).populate("authorId", "username email").exec();
+        const postIds = user.posts;
+        const posts = await Post.find({ _id: { $in: postIds } , parentId: null }).populate("authorId", "username email").exec();
         res.json(posts);
     } catch (err) {
         console.error("Error fetching user posts:", err);
@@ -37,8 +37,8 @@ export const getFavoritePostsByUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
-        const posts = await Post.find({ likes: userId }).populate("authorId", "username email").exec();
+        const FavorpostIds = user.likes;
+        const posts = await Post.find({ _id: { $in: FavorpostIds }, parentId: null }).populate("authorId", "username email").exec();
         res.json(posts);
     } catch (err) {
         console.error("Error fetching favorite posts:", err);
@@ -100,23 +100,54 @@ export const toggleLikePost = async (req, res) => {
     const { userId } = req.body;
 
     try {
+        // Find the post by its ID
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
 
+        // Find the user by their ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Ensure that both likes arrays are initialized
+        if (!post.likes) post.likes = [];
+        if (!user.likes) user.likes = [];
+
+        // Toggle like on the post
         const likeIndex = post.likes.indexOf(userId);
         if (likeIndex === -1) {
             post.likes.push(userId);
+            if (!user.likes.includes(postId)) {
+                user.likes.push(postId); // Add postId to user's likes
+            }
         } else {
             post.likes.splice(likeIndex, 1);
+            const userLikeIndex = user.likes.indexOf(postId);
+            if (userLikeIndex !== -1) {
+                user.likes.splice(userLikeIndex, 1); // Remove postId from user's likes
+            }
         }
 
-        const updatedPost = await post.save();
-        res.json(updatedPost);
+        // Save both the updated post and user
+        await post.save();
+        await user.save();
+
+        // Fetch favorite posts by user
+        const favorPostIds = user.likes;
+        const favoritePosts = await Post.find({ _id: { $in: favorPostIds }, parentId: null })
+            .populate("authorId", "username email")
+            .exec();
+
+        res.json({ post, favoritePosts });
     } catch (err) {
         console.error("Error toggling like on post:", err);
         res.status(500).json({ message: err.message });
     }
 };
+
+
+
 

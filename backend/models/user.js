@@ -24,6 +24,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "default_avatar.png", // Replace with a valid default avatar URL or path
     },
+    likes: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+    },
+    posts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+    },
     otp: String,  
     otpExpires: Date
   },

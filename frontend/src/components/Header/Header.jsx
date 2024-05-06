@@ -50,10 +50,10 @@ const Header = () => {
     
     // const { handleShowModal } = useContactModal();
 
-    const { setUser } = useUser();
-    const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
+    const {user, setUser } = useUser();
+    const { info,setInfo, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
     const baseURL = import.meta.env.VITE_BASE_URL;
-    const check = user?._id ? true : false;
+    const check = info._id ? true : false;
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -114,7 +114,7 @@ const Header = () => {
                             ))}
                         </ul>
                     </div>
-                    {check ? (
+                    {user ? (
                     <div id = "user-icon-container" className="dropdown text-start">
                         <a
                             id="user-icon"

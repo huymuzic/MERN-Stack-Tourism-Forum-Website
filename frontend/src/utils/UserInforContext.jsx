@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useMemo, useEffect } from '
 const UserInfoContext = createContext(null);
 
 export const UserInfoProvider = ({ children }) => {
-    const [user, setUser] = useState({
+    const [info, setInfo] = useState({
         _id: '',
         username: '',
         email: '',
@@ -11,45 +11,47 @@ export const UserInfoProvider = ({ children }) => {
         role: '',
         createdAt: '',
         updatedAt: '',
+        avatar: '',
         likes: []
-    }); 
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const baseURL = import.meta.env.VITE_BASE_URL;  // Make sure this is defined in your .env files
 
-    const fetchUser = async (userId) => {
+    const fetchInfo = async (userId) => {
         setIsLoading(true);
         setError(null);
         const token = localStorage.getItem('accessToken');  // Retrieve token inside function
-        console.log("🚀 ~ fetchUser ~ token:", token)
-        
+
         try {
             const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
-                }   
+                }
             });
             const jsonResponse = await response.json();
             if (response.ok) {
-                setUser(jsonResponse.data);  // Update state
+                setInfo(jsonResponse.data);  // Update state
+                console.log("fetch done");
             } else {
-                throw new Error(jsonResponse.message || 'Failed to fetch user');
+                throw new Error(jsonResponse.message || 'Failed to fetch user info');
             }
-                console.log("🚀 ~ fetchUser ~ jsonResponse.data:", jsonResponse.data)
+            console.log("🚀 ~ fetchInfo ~ jsonResponse.data:", jsonResponse.data);
         } catch (error) {
-            console.error('Fetch user error:', error);
+            console.error('Fetch user info error:', error);
             setError(error.toString());
         } finally {
-            setIsLoading(false);    
+            setIsLoading(false);
         }
     };
+
     useEffect(() => {
-        console.log('Updated user:', user);
-    }, [user]);
-    
-    const updateUser = async (userId, updates) => {
+        console.log('Updated info:', info);
+    }, [info]);
+
+    const updateInfo = async (userId, updates) => {
         setIsLoading(true);
         setError(null);
         const token = localStorage.getItem('accessToken');  // Ensure token is refreshed from storage
@@ -63,21 +65,21 @@ export const UserInfoProvider = ({ children }) => {
                 },
                 body: JSON.stringify(updates)
             });
-            const updatedUser = await response.json();
+            const updatedInfo = await response.json();
             if (response.ok) {
-                setUser(updatedUser.data);  // Make sure to use .data if that's how your API structures responses
+                setInfo(updatedInfo.data);  // Make sure to use .data if that's how your API structures responses
             } else {
-                throw new Error(updatedUser.message || 'Failed to update user');
+                throw new Error(updatedInfo.message || 'Failed to update user info');
             }
         } catch (error) {
-            console.error('Update user error:', error);
+            console.error('Update user info error:', error);
             setError(error.toString());
         } finally {
             setIsLoading(false);
         }
     };
 
-    const deleteUser = async (userId) => {
+    const deleteInfo = async (userId) => {
         setIsLoading(true);
         setError(null);
         const token = localStorage.getItem('accessToken');
@@ -90,22 +92,27 @@ export const UserInfoProvider = ({ children }) => {
                 }
             });
             if (response.ok) {
-                setUser(null);
+                setInfo(null);
             } else {
                 const result = await response.json();
-                throw new Error(result.message || 'Failed to delete user');
+                throw new Error(result.message || 'Failed to delete user info');
             }
         } catch (error) {
-            console.error('Delete user error:', error);
+            console.error('Delete user info error:', error);
             setError(error.toString());
         } finally {
             setIsLoading(false);
         }
     };
-
+    const updateUserLikes = (likes) => {
+            setInfo((prev) => ({
+                ...prev,
+                likes,
+            }));
+        };
     const value = useMemo(() => ({
-        user, isLoading, error, fetchUser, updateUser, deleteUser
-    }), [user, isLoading, error]);
+        info, isLoading, error, fetchInfo, updateInfo, deleteInfo, updateUserLikes
+    }), [info, isLoading, error]);
 
     return (
         <UserInfoContext.Provider value={value}>
@@ -114,11 +121,11 @@ export const UserInfoProvider = ({ children }) => {
     );
 };
 
-
 export const useUserInfo = () => {
     const context = useContext(UserInfoContext);
     if (!context) {
-        throw new Error('useUserInfo must be used within a UserInfoProvider');
+        throw new Error("useUserInfo must be used within a UserInfoProvider");
     }
     return context;
 };
+

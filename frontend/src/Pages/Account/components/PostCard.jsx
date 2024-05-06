@@ -1,20 +1,16 @@
 import React, { useState } from "react";
-import { usePosts } from "../../../utils/PostsContext";
-import { useUserInfo } from "../../../utils/UserInforContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./PostCard.css";
+import { useUserInfo } from "../../../utils/UserInforContext";
 
-function PostCard({ post }) {
-    const { updatePost, deletePost, toggleLike } = usePosts();
-    const { user } = useUserInfo();
+function PostCard({ post, onToggleLike }) {
     const [editMode, setEditMode] = useState(false);
     const [editableContent, setEditableContent] = useState(post.content);
     const [editableImage, setEditableImage] = useState(post.image);
-
-    const isLiked = post.likes.includes(user._id);
+    const { info } = useUserInfo();
+    const [isLiked, setIsLiked] = useState(info.likes.includes(post._id));
 
     const handleSave = () => {
-        updatePost(post._id, { content: editableContent, image: editableImage });
         setEditMode(false);
     };
 
@@ -22,12 +18,9 @@ function PostCard({ post }) {
         setEditMode(true);
     };
 
-    const handleDelete = () => {
-        deletePost(post._id);
-    };
-
     const handleLike = () => {
-        toggleLike(post._id, user._id);
+        onToggleLike(post._id);
+        setIsLiked(!isLiked);
     };
 
     return (
@@ -37,25 +30,53 @@ function PostCard({ post }) {
                 <p className="card-text">{new Date(post.createdAt).toLocaleString()}</p>
                 {editMode ? (
                     <>
-                        <input className="form-control" type="text" value={editableContent} onChange={(e) => setEditableContent(e.target.value)} />
-                        <input className="form-control mt-2" type="text" value={editableImage} onChange={(e) => setEditableImage(e.target.value)} />
-                        <button className="btn btn-primary mt-2" onClick={handleSave}>Save</button>
+                        <input
+                            className="form-control"
+                            type="text"
+                            value={editableContent}
+                            onChange={(e) => setEditableContent(e.target.value)}
+                        />
+                        <input
+                            className="form-control mt-2"
+                            type="text"
+                            value={editableImage}
+                            onChange={(e) => setEditableImage(e.target.value)}
+                        />
+                        <button className="btn btn-primary mt-2" onClick={handleSave}>
+                            Save
+                        </button>
                     </>
                 ) : (
                     <>
                         <p>{post.content}</p>
                         {post.image && <img src={post.image} alt="Post content" className="img-fluid rounded mt-3" />}
-                        <p className="mt-2"><strong>Likes:</strong> {post.likes.length}</p>
+                        <p className="mt-2">
+                            <strong>Likes:</strong> {post.likes.length}
+                        </p>
                     </>
                 )}
-                <button className={`btn ${isLiked ? "btn-danger" : "btn-outline-danger"} mr-2`} onClick={handleLike}>
-                    <i className="fa fa-heart"></i> Like
+                <button
+                    className={`btn ${isLiked ? "btn-pink" : "btn-outline-pink"} mr-2 favorite-button`}
+                    onClick={handleLike}
+                >
+                    <i className={`fa ${isLiked ? "fa-heart" : "fa-heart-o"}`}></i> {isLiked ? "Liked" : "Like"}
                 </button>
-                <button className="btn btn-info mr-2" onClick={handleEdit}>Edit</button>
-                <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+                <button className="btn btn-info mr-2" onClick={handleEdit}>
+                    Edit
+                </button>
+                <button className="btn btn-danger">
+                    Delete
+                </button>
             </div>
         </div>
     );
 }
 
 export default PostCard;
+
+
+
+
+
+
+

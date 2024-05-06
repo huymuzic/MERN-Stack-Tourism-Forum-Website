@@ -17,8 +17,7 @@ function Login() {
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useUser();
-    const { info, fetchUser, updateUser, deleteUser } = useUserInfo();
-
+    const { info, fetchInfo, updateInfo, deleteInfo } = useUserInfo();
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
     };
@@ -34,13 +33,11 @@ function Login() {
             });
 
             const responseBody = await response.json();
-
         if (!response.ok) {
                 setError('pwd', { type: 'server', message: responseBody.message });
             } else {
                 localStorage.setItem('accessToken', responseBody.token); 
-                console.log(responseBody.data._id);
-                fetchUser(responseBody.data._id);
+                fetchInfo(responseBody.data._id);
                 navigate('/');
                 window.location.reload();
             }

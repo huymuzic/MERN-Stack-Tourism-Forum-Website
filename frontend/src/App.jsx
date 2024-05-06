@@ -8,15 +8,14 @@ function App() {
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   console.log(baseURL);
-  const { setUser } = useUser();
-  const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
+  const { user,setUser } = useUser();
+  const { info, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
     const token = localStorage.getItem('accessToken');
     if (token) {
       const decoded = jwtDecode(token);
-      console.log('Decoded token:', decoded);
       const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
         method: 'GET',
         credentials: 'include',
@@ -27,6 +26,7 @@ useEffect(() => {
       });
       const responseBody = await response.json();
       setUser(response.ok ? { id: decoded.id, ...responseBody.user } : null);
+      fetchInfo(responseBody.user._id);
     } else {
       setUser(null);
     }

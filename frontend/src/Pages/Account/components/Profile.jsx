@@ -1,10 +1,9 @@
-// components/Profile.jsx
 import React, { useState, useEffect } from "react";
 import { useUserInfo } from "../../../utils/UserInforContext";
 
 const Profile = () => {
   const baseURL = import.meta.env.VITE_BASE_URL;
-  const { user, fetchUser, updateUser, isLoading, error } = useUserInfo();
+  const { info, fetchInfo, updateInfo, isLoading, error } = useUserInfo();
   const [inputPassword, setInputPassword] = useState("");
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -14,7 +13,7 @@ const Profile = () => {
   const [emailValid, setEmailValid] = useState(true);
   const [announceConfirm, setAnnounceConfirm] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
-  const [tempAvatar, setTempAvatar] = useState(user.avatar || "default_avatar.png");
+  const [tempAvatar, setTempAvatar] = useState(info.avatar || "default_avatar.png");
   const [avatarFile, setAvatarFile] = useState(null); // Store the avatar file
   const [passwordCriteria, setPasswordCriteria] = useState({
     minLength: false,
@@ -25,13 +24,13 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    if (user) {
-      setNewName(user.username);
-      setNewEmail(user.email);
-      setNewPassword(user.password); // Be cautious with managing passwords like this
-      setTempAvatar(user.avatar);
+    if (info) {
+      setNewName(info.username);
+      setNewEmail(info.email);
+      setNewPassword(info.password); // Be cautious with managing passwords like this
+      setTempAvatar(info.avatar);
     }
-  }, [user]);
+  }, [info]);
 
   const handleNewPasswordChange = (e) => {
     const newPasswordValue = e.target.value;
@@ -88,19 +87,19 @@ const Profile = () => {
       return;
     }
     try {
-      const response = await fetch(`${baseURL}/api/v1/users/${user._id}`, {
+      const response = await fetch(`${baseURL}/api/v1/users/${info._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        body: JSON.stringify({ userId: user._id, username: newName, email: newEmail, password: newPassword }),
+        body: JSON.stringify({ userId: info._id, username: newName, email: newEmail, password: newPassword }),
       });
       const data = await response.json();
       if (response.ok) {
         setAnnounceConfirm(true);
         setIsChanging(false);
-        fetchUser(user._id); // Refresh user data
+        fetchInfo(info._id); // Refresh user data
       } else {
         throw new Error(data.message || "Failed to update profile.");
       }
@@ -108,7 +107,7 @@ const Profile = () => {
       alert(error.message);
     }
   };
-// Handele ava change
+
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -117,10 +116,10 @@ const Profile = () => {
       reader.readAsDataURL(file);
     }
   };
-  
+
   const handleAvatarUpdate = async () => {
     try {
-      const response = await fetch(`${baseURL}/api/v1/users/update-avatar/${user._id}`, {
+      const response = await fetch(`${baseURL}/api/v1/users/update-avatar/${info._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -130,7 +129,7 @@ const Profile = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        fetchUser(user._id); // Refresh user data
+        fetchInfo(info._id); // Refresh user data
         setAvatarModal(false);
         alert("Avatar updated successfully!");
       } else {
@@ -140,7 +139,6 @@ const Profile = () => {
       alert(error.message);
     }
   };
-  
 
   return (
     <div className="container mt-4">
@@ -179,15 +177,15 @@ const Profile = () => {
                   </>
                 ) : (
                   <>
-                    <p>Name: {user.username}</p>
-                    <p>Email: {user.email}</p>
+                    <p>Name: {info.username}</p>
+                    <p>Email: {info.email}</p>
                     <p>Password: *********</p>
                     <button className="btn btn-info" onClick={() => setIsVerifying(true)}>Edit Profile</button>
                   </>
                 )}
               </div>
               <div className="ms-3">
-                <img src={tempAvatar || user.avatar} alt="User Avatar" className="rounded-circle" style={{ width: "100px", height: "100px" }} onClick={() => setAvatarModal(true)} />
+                <img src={tempAvatar || info.avatar} alt="User Avatar" className="rounded-circle" style={{ width: "100px", height: "100px" }} onClick={() => setAvatarModal(true)} />
               </div>
             </div>
           </div>
@@ -197,20 +195,20 @@ const Profile = () => {
         <div className="modal show" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
           <div className="modal-dialog">
             <div className="modal-content">
-              <div className="modal-header">
+              <div class="modal-header">
                 <h5 className="modal-title">Update Your Avatar</h5>
                 <button type="button" className="close" onClick={() => setAvatarModal(false)}>
                   &times;
                 </button>
               </div>
-              <div className="modal-body">
+              <div class="modal-body">
                 <img src={tempAvatar} alt="Preview Avatar" className="img-thumbnail mb-3" />
                 <input type="file" className="form-control" onChange={handleAvatarChange} />
                 <input type="text" className="form-control mt-2" placeholder="Or enter image URL" onChange={(e) => setTempAvatar(e.target.value)} />
               </div>
-              <div className="modal-footer">
+              <div class="modal-footer">
                 <button className="btn btn-success" onClick={handleAvatarUpdate}>Confirm</button>
-                <button className="btn btn-secondary" onClick={() => setAvatarModal(false)}>Cancel</button>
+                <button class="btn btn-secondary" onClick={() => setAvatarModal(false)}>Cancel</button>
               </div>
             </div>
           </div>
@@ -220,15 +218,15 @@ const Profile = () => {
         <div className="modal show" tabIndex="-1" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
           <div className="modal-dialog">
             <div className="modal-content">
-              <div className="modal-header">
+              <div class="modal-header">
                 <h5 className="modal-title">Verify Your Password</h5>
-                <button type="button" className="btn-close" onClick={() => setIsVerifying(false)}></button>
+                <button type="button" class="btn-close" onClick={() => setIsVerifying(false)}></button>
               </div>
-              <div className="modal-body">
+              <div class="modal-body">
                 <input type="password" className="form-control" placeholder="Enter current password" value={inputPassword} onChange={(e) => setInputPassword(e.target.value)} />
               </div>
-              <div className="modal-footer">
-                <button className="btn btn-success" onClick={handleVerifyPassword}>Verify</button>
+              <div class="modal-footer">
+                <button class="btn btn-success" onClick={handleVerifyPassword}>Verify</button>
               </div>
             </div>
           </div>
@@ -237,7 +235,7 @@ const Profile = () => {
       {announceConfirm && (
         <div className="alert alert-success position-fixed top-50 start-50 translate-middle" style={{ zIndex: 1050 }}>
           <strong>Success!</strong> Your profile has been updated.
-          <button type="button" className="btn-close" onClick={() => setAnnounceConfirm(false)}></button>
+          <button type="button" class="btn-close" onClick={() => setAnnounceConfirm(false)}></button>
         </div>
       )}
     </div>
@@ -245,3 +243,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
