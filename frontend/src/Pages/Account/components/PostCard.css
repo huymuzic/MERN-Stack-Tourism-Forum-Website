@@ -1,0 +1,101 @@
+.post-card {
+    position: relative;
+    width: 400px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Arial', sans-serif;
+}
+
+.post-card h3,
+.post-card p {
+    color: #666;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.post-card img:not(.edit-button) {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.edit-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.edit-button {
+    width: 25px;
+    cursor: pointer;
+}
+
+.favorite-button,
+.comment-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #666; /* Default icon color */
+}
+
+.favorite-button .fa-heart-o {
+    color: gray;
+}
+
+.favorite-button.favorited .fa-heart {
+    color: #ff4563;
+}
+
+.comment-button .fa-chart-bar {
+    color: #2c7be5; /* Example color for the comment icon */
+}
+
+.options-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.notification-card i {
+    color: green;
+}
+
+.notification-card .fas-fa-check-tick-active {
+    font-size: 30px;
+    color: #4CAF50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border: 3px solid #4CAF50;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.post-card .btn-pink {
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+}
+
+.post-card .btn-outline-pink {
+    border: 1px solid #ff69b4;
+    color: #ff69b4;
+    background-color: white;
+}
+

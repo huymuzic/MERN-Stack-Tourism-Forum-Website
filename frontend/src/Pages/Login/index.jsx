@@ -1,6 +1,6 @@
 //modules
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import './index.css'
 
 //context
 import { useUser } from '../../utils/UserContext';
-
+import {useUserInfo } from '../../utils/UserInforContext'
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function Login() {
@@ -17,13 +17,12 @@ function Login() {
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useUser();
-
+    const { info, fetchInfo, updateInfo, deleteInfo } = useUserInfo();
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
     };
 
     const onSubmit = async (data) => {
-        console.log('Submitting data:', data);
         try {
             const response = await fetch(`${baseURL}/api/v1/auth/login`, {
                 method: 'POST',
@@ -32,23 +31,20 @@ function Login() {
                 },
                 body: JSON.stringify(data),
             });
-            console.log('Response:', response);
 
             const responseBody = await response.json();
-            console.log('Response body:', responseBody);
-
         if (!response.ok) {
                 setError('pwd', { type: 'server', message: responseBody.message });
             } else {
-                setUser(responseBody.data); 
                 localStorage.setItem('accessToken', responseBody.token); 
+                fetchInfo(responseBody.data._id);
                 navigate('/');
+                window.location.reload();
             }
 
         } catch (error) {
             console.error('Error:', error);
         }
-        console.log(localStorage.getItem('accessToken'));
     }
 
 
@@ -94,7 +90,7 @@ function Login() {
                     {errors.pwd && <div className="invalid-feedback">{errors.pwd.message}</div>}
                 </div>
 
-                <a className="mb-3 text-end col-8" href='#'>Forgot password?</a>
+                <a className="mb-3 text-end col-8" href='/resetPass'>Forgot password?</a>
 
                 <div className="mb-3 form-check col-8">
                     <input type="checkbox" className="form-check-input" id="remember"
