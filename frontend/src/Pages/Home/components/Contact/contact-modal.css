@@ -1,0 +1,120 @@
+body {
+    box-sizing: border-box !important;
+}
+
+.contact__modal {
+    position: fixed;
+    top: 10%;
+    left: 25%;
+    width: 50%;
+    height: 80vh;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999 !important;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.contact__form {
+    background: black;
+    display: flex;
+    flex-direction: column;
+    padding: 2vw 4vw;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 50px #0ef;
+    overflow: hidden;
+}
+
+.contact__form:hover {
+    animation: animate 1s linear infinite;
+}
+
+@keyframes animate {
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+.contact__form h3 {
+    color: var(--heading-color);
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    color: #fff;
+}
+
+
+.contact__form button {
+    padding: 15px;
+    background: #0ef;
+    color: #000;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 150px;
+    margin: 20px auto 0;
+    border-radius: 30px;
+    box-shadow: 0 0 10px #0ef;
+}
+
+.input-group {
+    position: relative;
+    margin: 30px 0;
+    border-bottom: 2px solid #fff;
+}
+
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: opacity 0.6s ease-in-out;
+    opacity: 0.5;
+}
+
+.input-group input,
+textarea {
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 0 5px;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+textarea {
+    width: 100%;
+}
+
+.input-group input:focus~label,
+.input-group input:valid~label {
+    top: -5px;
+    opacity: 1;
+}
+
+.ri-close-large-line {
+    position: absolute;
+    top: 3%;
+    right: 3%;
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+    z-index: 1000;
+}
