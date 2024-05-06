@@ -3,13 +3,13 @@ import { NavLink, Link } from 'react-router-dom';
 
 import { Container, Button} from 'react-bootstrap'
 import './header.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import { useNavigate } from 'react-router-dom';
-// import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
+import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 import { useUser } from '../../utils/UserContext';
 
 import logo from '../../assets/images/logo.png' 
+
 
 const nav__links = [
     {
@@ -47,7 +47,7 @@ function toggleDropdown() {
 
 const Header = () => {
     
-    // const { handleShowModal } = useContactModal();
+    const { handleShowModal } = useContactModal();
 
     const { user, setUser } = useUser();
 
@@ -94,20 +94,21 @@ const Header = () => {
                     { /* LOGO SECTION ENDS */ }
 
                     { /* NAVIGATION SECTION STARTS */ }
-
+                <div className="d-lg-none position-absolute top-5 end-0 p-3">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
-                    </button>                
-                    <div className='collapse navbar-collapse d-flex justify-content-end' id="navbarSupportedContent">
-                        <ul className='navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end'>
+                    </button>   
+                </div>
+                    <div className='collapse navbar-collapse justify-content-end' id="navbarSupportedContent">
+                        <ul className='navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end text-center margin'>
                             {nav__links.map((item, index) => (
                                 <li className='nav__item' key={index}>
                                     {item.path ? (                                    
                                     <NavLink to={item.path} className={navClass => navClass.isActive ? "active__link" : ""} >{item.display}</NavLink>
                                     ) : (
-                                    <span id="contact" className="nav__link">{item.display}</span>
+                                    <span id="contact" className="nav__link" onClick={handleShowModal}>{item.display}</span>
                                     )}
                                 </li>
                             ))}
@@ -123,7 +124,7 @@ const Header = () => {
                             <ul className="dropdown-menu" aria-labelledby="user">
                             {user !== null && user.role === 'admin' ? (
                             <li><Link className="dropdown-item" to="/admin">Admin Portal</Link></li>
-                            ) : null}                      
+                            ) : null}                   
                                 <li><Link className="dropdown-item" to="/account">Dashboard</Link></li>
                                 <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                                 <li>
