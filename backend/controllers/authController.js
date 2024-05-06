@@ -6,17 +6,11 @@ import dotenv from "dotenv";
 dotenv.config();
 // user registration
 export const register = async (req, res) => {
-  const token = req.body.token;
-
-  if (
-    !req.body.username ||
-    !req.body.email ||
-    !req.body.pwd ||
-    !req.body.token
-  ) {
+  if (!req.body.username || !req.body.email || !req.body.pwd) {
     return res.status(400).send("Missing fields");
   }
-
+  const token = req.body.token;
+  console.log("Token:", token);
   const response = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SITE_SECRET}&response=${token}`,
     {
@@ -24,9 +18,9 @@ export const register = async (req, res) => {
     }
   );
 
-  const recaptchaResponse = await response.json();
+  const data = await response.json();
 
-  if (!recaptchaResponse.success || recaptchaResponse.score < 0.5) {
+  if (!data.success) {
     return res.status(400).send("reCAPTCHA verification failed");
   }
 
@@ -116,8 +110,7 @@ export const login = async (req, res) => {
     if (!rem) {
       const token = jwt.sign(
         { signInTime: Date.now(), id: user._id, role: user.role },
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: "2d" }
+        process.env.JWT_SECRET_KEY
       );
       res
         .cookie("accessToken", token, {

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.css'
 import Layout from './components/Layout/Layout';
-
-
+import { jwtDecode } from "jwt-decode";
 import { useUser } from './utils/UserContext';
 import { useUserInfo } from './utils/UserInforContext'
 function App() {
@@ -14,7 +13,10 @@ function App() {
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
-     const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const decoded = jwtDecode(token);
+      console.log('Decoded token:', decoded);
       const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
         method: 'GET',
         credentials: 'include',
@@ -23,12 +25,11 @@ useEffect(() => {
           Authorization: `Bearer ${token}`,
         },
       });
-      const jsonResponse = await response.json();
-      if (response.ok) {
-        setUser(true); 
-        console.log(jsonResponse.user._id)
-        fetchUser(jsonResponse.user._id);
-      }
+      const responseBody = await response.json();
+      setUser(response.ok ? { id: decoded.id, ...responseBody.user } : null);
+    } else {
+      setUser(null);
+    }
    } catch (error) {
       console.error('Error checking login status:', error);
     }
@@ -36,6 +37,10 @@ useEffect(() => {
 
   checkLoginStatus();
 }, [setUser]);
+
+  useEffect(() => {
+    console.log('Updated user:', user);
+  }, [user]);
 
   return (
       <Layout />

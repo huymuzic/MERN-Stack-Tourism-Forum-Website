@@ -1,6 +1,6 @@
 //modules
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,11 +38,11 @@ function Login() {
         if (!response.ok) {
                 setError('pwd', { type: 'server', message: responseBody.message });
             } else {
-                setUser(responseBody.data); 
                 localStorage.setItem('accessToken', responseBody.token); 
                 console.log(responseBody.data._id);
                 fetchUser(responseBody.data._id);
                 navigate('/');
+                window.location.reload();
             }
 
         } catch (error) {

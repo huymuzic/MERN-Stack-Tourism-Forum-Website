@@ -14,7 +14,7 @@ const app = express();
 const corsOptions = {
   origin: true,
   credentials: true,
-  allowedHeaders: ['Authorization', 'Content-Type']
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 // database connection

@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
-import { Container, Row, Button} from 'react-bootstrap'
+import { Container, Button} from 'react-bootstrap'
 import './header.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import { useNavigate } from 'react-router-dom';
+// import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 import { useUser } from '../../utils/UserContext';
 import { useUserInfo } from '../../utils/UserInforContext'
 
@@ -30,7 +31,24 @@ const nav__links = [
     }
 ]
 
+function toggleDropdown() {
+    var dropdownMenus = document.getElementsByClassName('dropdown-menu');
+
+    for (var i = 0; i < dropdownMenus.length; i++) {
+        var menu = dropdownMenus[i];
+
+        if (menu.style.display === 'none') {
+            menu.setAttribute('aria-hidden', 'false');
+        } else {
+            menu.setAttribute('aria-hidden', 'true');
+        }
+    }
+}
+
+
 const Header = () => {
+    
+    // const { handleShowModal } = useContactModal();
 
     const { setUser } = useUser();
     const { user, fetchUser, updateUser, deleteUser, isLoading, error } = useUserInfo();
@@ -65,20 +83,26 @@ const Header = () => {
 
 
     return (
-    <header className='header'>
-        <Container className='header__container'>
-            <Row>
+    <nav className='header navbar navbar-expand-lg'>
+        <Container className='header__container bd-gutter'>
                 { /* NAVIGATION SECTION STARTS */}
-                <div className="nav__wrapper d-flex align-items-center justfiy-content-between">
+
                     { /* LOGO SECTION STARTS */ }
-                    <div className='logo'>
-                        <Link to='/'><img src ={logo} alt='logo' /></Link>
-                    </div>
+                    <Link to="/" className='navbar-brand l'>
+                        <img alt='Website Logo' height='150' width='150' src={logo}>
+                        </img>
+                     </Link>
                     { /* LOGO SECTION ENDS */ }
 
                     { /* NAVIGATION SECTION STARTS */ }
-                    <div className='navigation'>
-                        <ul className='menu d-flex align-items-center'>
+
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>                
+                    <div className='collapse navbar-collapse d-flex justify-content-end' id="navbarSupportedContent">
+                        <ul className='navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end'>
                             {nav__links.map((item, index) => (
                                 <li className='nav__item' key={index}>
                                     {item.path ? (                                    
@@ -124,11 +148,9 @@ const Header = () => {
                         </span>                       
                     </div>                     
                     )}    
-                </div>
                 { /* NAVIGATION SECTION ENDS */}
-            </Row>
         </Container>
-    </header>
+    </nav>
     );
 };
 
