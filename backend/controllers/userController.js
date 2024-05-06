@@ -80,7 +80,13 @@ export const getSingleUser = async (req, res) => {
 
   try {
     const user = await User.findById(id);
-
+    if (!user.name) {
+      // If name is null or undefined, update it with the username
+      user.name = user.username;
+      
+      // Save the updated user document
+      user = await user.save();
+    }
     res.status(200).json({
       success: true,
       message: "Successfully fetched user",

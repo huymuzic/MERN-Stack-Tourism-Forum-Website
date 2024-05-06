@@ -25,7 +25,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (info) {
-      setNewName(info.username);
+      setNewName(info.name);
       setNewEmail(info.email);
       setNewPassword(info.password); // Be cautious with managing passwords like this
       setTempAvatar(info.avatar);
@@ -177,7 +177,7 @@ const Profile = () => {
                   </>
                 ) : (
                   <>
-                    <p>Name: {info.username}</p>
+                    <p>Name: {info.name}</p>
                     <p>Email: {info.email}</p>
                     <p>Password: *********</p>
                     <button className="btn btn-info" onClick={() => setIsVerifying(true)}>Edit Profile</button>

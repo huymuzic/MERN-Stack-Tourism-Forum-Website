@@ -79,7 +79,7 @@ function UserAccount() {
     const ActiveComponent = NAV_ITEMS[activeNav];
     const date = new Date(info.createdAt);
     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-
+    console.log(info)
     return (
         <>
             <div className="container mt-5">
@@ -88,11 +88,11 @@ function UserAccount() {
                         <img src={info.avatar} alt="User Avatar" className="img-thumbnail rounded-circle mb-3" />
                     </div>
                     <div className="col-md-8">
-                        <h1>{info.username}</h1>
-                        <p>{info.email}</p>
+                        <h1>{info.name}</h1>
+                        <p>@{info.username}</p>
                         <div className="mb-3">
-                            <span className="badge bg-primary">Posts: {info.Posts}</span>
-                            <span className="badge bg-success ms-2">Favorites: {info.Favorites}</span>
+                            <span className="badge bg-primary">Posts: {info.posts? info.posts.length : 0}</span>
+                            <span className="badge bg-success ms-2">Favorites: {info.likes? info.likes.length:0}</span>
                         </div>
                         <div className="nav nav-tabs">
                             {Object.keys(NAV_ITEMS).map(item => (

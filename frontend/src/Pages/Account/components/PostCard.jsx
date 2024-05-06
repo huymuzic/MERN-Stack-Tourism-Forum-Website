@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./PostCard.css";
 import { useUserInfo } from "../../../utils/UserInforContext";
@@ -26,7 +27,8 @@ function PostCard({ post, onToggleLike }) {
     return (
         <div className="card post-card">
             <div className="card-body">
-                <h5 className="card-title">{post.authorId.username}</h5>
+                <h5 className="card-title"><b>{post.title}</b></h5>
+                <p className="card-text">@{post.authorId.username}</p>
                 <p className="card-text">{new Date(post.createdAt).toLocaleString()}</p>
                 {editMode ? (
                     <>
@@ -48,7 +50,7 @@ function PostCard({ post, onToggleLike }) {
                     </>
                 ) : (
                     <>
-                        <p>{post.content}</p>
+                         <ReactMarkdown>{post.content}</ReactMarkdown>
                         {post.image && <img src={post.image} alt="Post content" className="img-fluid rounded mt-3" />}
                         <p className="mt-2">
                             <strong>Likes:</strong> {post.likes.length}
