@@ -10,6 +10,7 @@ function PostCard({ post, onToggleLike }) {
     const [editableImage, setEditableImage] = useState(post.image);
     const { info } = useUserInfo();
     const [isLiked, setIsLiked] = useState(info.likes.includes(post._id));
+    const [showOptions, setShowOptions] = useState(false);
 
     const handleSave = () => {
         setEditMode(false);
@@ -17,12 +18,31 @@ function PostCard({ post, onToggleLike }) {
 
     const handleEdit = () => {
         setEditMode(true);
+        setShowOptions(false);
     };
 
     const handleLike = () => {
         onToggleLike(post._id);
         setIsLiked(!isLiked);
     };
+    const handleDelete = () => {
+        deletePost(post.id);
+    };
+
+    const handleHide = () => {
+        hidePost(post.id, { locked: !post.locked } ); }
+
+    const handleClickOutside = (event) => {
+        if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+            setShowOptions(false);
+        }
+    };
+
+    useEffect(() => {
+        const handleMouseDown = (event) => handleClickOutside(event);
+        document.addEventListener('mousedown', handleMouseDown);
+        return () => document.removeEventListener('mousedown', handleMouseDown);
+    }, []);
 
     return (
         <div className="card post-card">
@@ -30,6 +50,18 @@ function PostCard({ post, onToggleLike }) {
                 <h5 className="card-title"><b>{post.title}</b></h5>
                 <p className="card-text">@{post.authorId.username}</p>
                 <p className="card-text">{new Date(post.createdAt).toLocaleString()}</p>
+                {post.author === info.id && (
+                    <div className="edit-container">
+                        <img src="src/assets/images/EditButton.png" alt="Edit Button" className="edit-button" onClick={toggleOptions}/>
+                    </div>
+                )}
+                {showOptions && (
+                    <div ref={optionsRef} className="options-bar">
+                        {!editMode && <button className="btn btn-secondary" onClick={handleEdit}>Edit Post</button>}
+                        <button className="btn btn-danger" onClick={handleDelete}>Delete Post</button>
+                        <button className="btn btn-warning" onClick={handleHide}>{post.locked ? "Hide Post" : "Unhide Post"}</button>
+                    </div>
+                )}
                 {editMode ? (
                     <>
                         <input
@@ -62,12 +94,6 @@ function PostCard({ post, onToggleLike }) {
                     onClick={handleLike}
                 >
                     <i className={`fa ${isLiked ? "fa-heart" : "fa-heart-o"}`}></i> {isLiked ? "Liked" : "Like"}
-                </button>
-                <button className="btn btn-info mr-2" onClick={handleEdit}>
-                    Edit
-                </button>
-                <button className="btn btn-danger">
-                    Delete
                 </button>
             </div>
         </div>
