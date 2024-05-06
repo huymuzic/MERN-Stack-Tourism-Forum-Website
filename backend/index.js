@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
+import forumRoute from "./routes/forum.js";
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -30,8 +31,10 @@ const connect = async () => {
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
+
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
+app.use("/api/forum", forumRoute);
 
 // testing
 app.get("/", (req, res) => {

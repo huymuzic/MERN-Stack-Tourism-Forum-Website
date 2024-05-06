@@ -112,3 +112,68 @@ ul {
   font-size: 1.7rem;
   color: var(--heading-color);
 }
+
+.category {
+  border-top: 2px solid gray;
+}
+
+.bd-announce {
+  border-left: 10px solid #E2231A;
+}
+
+.bd-discuss {
+  border-left: 10px solid #CEE741;
+}
+
+tr th {
+  padding-bottom: 10px;
+}
+
+.category-links {
+  color: #0f82af;
+}
+
+.category-date {
+  color: gray;
+}
+
+.truncate {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ws-wrap {
+  white-space: pre-wrap;
+}
+
+.ctm-btn {
+  background: none;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.ctm-btn:hover {
+  cursor: pointer;
+  background-color: rgb(174, 174, 174);
+}
+
+.heart:hover i {
+  color: rgb(249, 81, 109);
+}
+
+.fa-solid.fa-heart {
+  color: rgb(249, 81, 109);
+}
+
+.comment {
+  color: inherit;
+  transition: background-color 0.1s ease;
+}
+
+.comment:hover {
+  background-color: #e8e8e8;
+  transition: background-color 0.1s ease;
+  cursor: pointer;
+}

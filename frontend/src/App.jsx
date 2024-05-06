@@ -8,7 +8,7 @@ import { useUser } from './utils/UserContext';
 function App() {
 
   const baseURL = import.meta.env.VITE_BASE_URL;
-  console.log(baseURL);
+  
   const { setUser } = useUser();
 
 useEffect(() => {
@@ -24,12 +24,12 @@ useEffect(() => {
         },
       });
       const responseBody = await response.json();
-      console.log(responseBody);
+
       if (response.ok) {
         setUser(responseBody.user); 
       }
 
-      console.log("reach 2");
+      console.log("successfully verified token");
    } catch (error) {
       console.error('Error checking login status:', error);
     }

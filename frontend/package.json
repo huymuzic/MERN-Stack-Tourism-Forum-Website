@@ -13,6 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@hookform/error-message": "^2.0.1",
+    "@tinymce/tinymce-react": "^5.0.1",
     "bootstrap": "^5.3.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",

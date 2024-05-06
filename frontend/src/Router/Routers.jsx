@@ -2,8 +2,13 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "../Pages/Home/index";
+
 import Tours from "../Pages/Tours/index";
+
 import CommunityForum from "../Pages/CommunityForum/index";
+import ForumPosts from "../Pages/CommunityForum/ForumPosts";
+import CategoryList from "../Pages/CommunityForum/CategoryList";
+
 import TourDetails from "../Pages/TourDetails/index";
 import Login from "../Pages/Login/index";
 import Register from "../Pages/Register/index";
@@ -21,8 +26,13 @@ const Routers = () => {
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
       <Route path="/home" element={<Home />} />
+
       <Route path="/tours" element={<Tours />} />
+
       <Route path="/forum" element={<CommunityForum />} />
+      <Route path="/forum/p/:id" element={<ForumPosts />} />
+      <Route path="/forum/c/:category" element={<CategoryList />} />
+
       <Route path="/tours/:id" element={<TourDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

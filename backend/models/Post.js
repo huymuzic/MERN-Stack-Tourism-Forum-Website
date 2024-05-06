@@ -1,17 +1,18 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    default: null,
+  },
   content: {
     type: String,
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
+  childrenIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Post",
+    default: [],
   },
   parentId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -21,12 +22,26 @@ const postSchema = new mongoose.Schema({
   authorId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "User", // reference the User model for author information
+    ref: "User",
   },
   likes: {
     type: [mongoose.Schema.Types.ObjectId],
     default: [],
   },
-});
+  category: {
+    type: String,
+    default: null,
+  },
+  pinned: {
+    type: Boolean,
+    default: false,
+  },
+  locked: {
+    type: Boolean,
+    default: false,
+  },
+}, { timestamps: true });
 
-module.exports = mongoose.model("Post", postSchema);
+const Post = mongoose.model("Post", postSchema);
+
+export default Post;

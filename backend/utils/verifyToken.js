@@ -2,8 +2,7 @@ import jwt from "jsonwebtoken";
 import User from '../models/user.js'
 
 export const verifyToken = (req, res, next) => {
-  const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
   console.log("Token:", token);
 
   if (!token) {

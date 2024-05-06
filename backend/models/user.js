@@ -20,10 +20,18 @@ const userSchema = new mongoose.Schema(
       default: "user",
       required: true,
     },
+    likes: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+    },
+    posts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+    }
   },
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;
