@@ -26,9 +26,7 @@ export const createUser = async (req, res) => {
 // update user
 export const updateUser = async (req, res) => {
   const id = req.params.id;
- console.log('it work')
   try {
-    console.log('duunno man')
     if (req.body.password) {
       console.log('??')
       const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);

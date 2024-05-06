@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./PostCard.css";
@@ -11,7 +11,7 @@ function PostCard({ post, onToggleLike }) {
     const { info } = useUserInfo();
     const [isLiked, setIsLiked] = useState(info.likes.includes(post._id));
     const [showOptions, setShowOptions] = useState(false);
-
+    const optionsRef = useRef(null);
     const handleSave = () => {
         setEditMode(false);
     };
@@ -31,7 +31,12 @@ function PostCard({ post, onToggleLike }) {
 
     const handleHide = () => {
         hidePost(post.id, { locked: !post.locked } ); }
-
+    
+    const toggleOptions = (event) => {
+            event.stopPropagation();
+            setShowOptions(prev => !prev);
+        };
+    
     const handleClickOutside = (event) => {
         if (optionsRef.current && !optionsRef.current.contains(event.target)) {
             setShowOptions(false);
