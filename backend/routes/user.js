@@ -5,6 +5,8 @@ import {
   deleteUser,
   updateUser,
   getListUser,
+  lockUser,
+  unlockUser,
 } from "../controllers/userController.js";
 
 const router = express.Router();
@@ -26,6 +28,10 @@ router.get("/:id", verifyUser, getSingleUser);
 // get all user
 router.get("/", verifyAdmin, getAllUser);
 
+// Lock user
+router.put("/lock/:id", lockUser);
 
+// Unlock user
+router.put("/unlock/:id", unlockUser);
 
 export default router;

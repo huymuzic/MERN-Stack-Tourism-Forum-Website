@@ -3,7 +3,7 @@ import BaseList from "../BaseList";
 import WrapperFilter from "../WrapperFilter";
 import UserItem from "./UserItem";
 import debounce from "../../../../helper";
-import NoData from "../NoData";
+import { pushError, pushSuccess } from "../../../../components/Toast";
 
 
 const userSearchTypes = [
@@ -47,33 +47,78 @@ export default function UsersList() {
     []
   );
 
+  const handleLockConfirm = async (userId) => {
+    try {
+      const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`);
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        pushSuccess('Lock user successfully');
+        fetchUsers()
+      } else {
+        throw new Error('Failed to lock user');
+      }
+    } catch (error) {
+      pushError('Failed to lock user');
+    }
+  };
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        // Construct the URL with query parameters
-        const url = new URL('http://localhost:4000/api/v1/users/list');
-        url.searchParams.append('page', filter.page);
-        url.searchParams.append('limit', pageSize);
-        // url.searchParams.append('status', 'active'); 
-        url.searchParams.append('search', filter.searchValue);
-        url.searchParams.append('searchType', filter.searchType.value);
+  const handleUnLockConfirm = async (userId) => {
+    try {
+      const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`);
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        pushSuccess('Unlock user successfully');
+        fetchUsers()
+      } else {
+        throw new Error('Failed to unlock user');
+      }
+    } catch (error) {
+      pushError('Failed to unlock user');
+    }
+  };
+  const fetchUsers = async () => {
+    const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/list`);
+    url.searchParams.append('page', filter.page);
+    url.searchParams.append('limit', pageSize);
+    // url.searchParams.append('status', filter.status);
+    url.searchParams.append('search', filter.searchValue);
+    url.searchParams.append('searchType', filter.searchType);
 
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        const data = await response.json();
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+    const data = await response.json();
+    setPaging(data);
+    setLoading(false);
+
+    return fetch(url)
+      .then((response) => {
+        setLoading(true)
+        return response.json();
+      })
+      .then((data) => {
         setPaging(data);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error(error);
         setLoading(false);
-      }
-    };
-
+      })
+  };
+  useEffect(() => {
     fetchUsers();
-  }, [filter]);
+  }, [filter.page, filter.searchValue]);
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", gap: "32px" }}>
       <WrapperFilter onReset={handleResetFilter}>
@@ -104,20 +149,18 @@ export default function UsersList() {
           </div>
         </div>
       </WrapperFilter >
-      {
-        paging?.data?.length === 0 ? <NoData>
-          No data
-        </NoData> : <BaseList
-          titleTotal="Total users"
-          totalItems={paging.totalCount}
-          list={paging.data}
-          loading={loading}
-          renderItem={(user) => <UserItem key={user.id} user={user} />}
-          totalPages={Math.ceil(paging.totalCount / pageSize)}
-          page={filter.page}
-          onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}
-        />
-      }
+
+      <BaseList
+        titleTotal="Total users"
+        totalItems={paging.totalCount}
+        list={paging.data}
+        loading={loading}
+        renderItem={(user) => <UserItem key={user.id} user={user} handleLockConfirm={(userId) => handleLockConfirm(userId)} handleUnLockConfirm={(userId) => handleUnLockConfirm(userId)} />}
+        totalPages={Math.ceil(paging.totalCount / pageSize)}
+        page={filter.page}
+        onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}
+      />
+
     </div >
   );
 }

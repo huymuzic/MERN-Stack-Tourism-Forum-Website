@@ -150,3 +150,56 @@ export const getListUser = async (req, res) => {
     });
   }
 };
+
+// Lock user
+export const lockUser = async (req, res) => {
+  const id = req.params.id;
+  console.log("🚀 ~ lockUser ~ id:", id)
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: { status: "inactive" },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully locked user",
+      data: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to lock user. Try again",
+    });
+  }
+};
+
+// Unlock user
+export const unlockUser = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: { status: "active" },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully unlocked user",
+      data: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to unlock user. Try again",
+    });
+  }
+};

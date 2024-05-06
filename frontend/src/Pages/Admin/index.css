@@ -17,11 +17,11 @@
 
 .active-sidebar-item {
     color: var(--primary-color);
-    background-color: #f5cba3;
+    background-color: var(--light-primary-color);
 }
 
 .active-sidebar-item:hover {
-    background-color: #f5cba3; 
+    background-color: var(--light-primary-color); 
 }
 
 

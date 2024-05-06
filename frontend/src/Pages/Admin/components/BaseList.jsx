@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import CustomPagination from './CustomPagination';
-
+import NoData from './NoData'
 function BaseList({ list, loading, renderItem, totalPages, page, onChangePage, titleTotal, totalItems, renderEmpty }) {
     return (
         <div style={{ overflowY: "auto" }}>
@@ -35,6 +35,11 @@ function BaseList({ list, loading, renderItem, totalPages, page, onChangePage, t
                                         {renderItem ? renderItem(item) : <></>}
                                     </div>
                                 ))}
+                                {
+                                    !list.length &&  <NoData>
+                                        No data
+                                    </NoData> 
+                                }
                             </div>
                             {totalPages && totalPages > 1 && (
                                 <div className="row mt-3">
