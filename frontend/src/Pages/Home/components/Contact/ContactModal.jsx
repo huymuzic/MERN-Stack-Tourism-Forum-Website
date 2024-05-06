@@ -11,15 +11,15 @@ const ContactModal =  () => {
       <form className='contact__form'> 
       <span onClick={handleHideModal}><i className="ri-close-large-line"></i></span>
         <h3>GET IN TOUCH</h3>
-          <div className="input-group">
+          <div className="input-group contact__input">
             <input type="text" required />
             <label htmlFor="">Your Name</label>
           </div>
-          <div className="input-group">
+          <div className="input-group contact__input">
             <input type="email" required />
             <label htmlFor="">Email</label>
           </div>
-          <div className="input-group">
+          <div className="input-group contact__input">
             <input type="text" required />
             <label htmlFor="">Phone number</label>
           </div>

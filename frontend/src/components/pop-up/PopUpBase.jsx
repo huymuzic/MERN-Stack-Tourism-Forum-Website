@@ -17,16 +17,18 @@ export default function PopUpBase(props) {
                         <div className="modal-body">{props.desc}</div>
                         {!(props.hideClose && props.hideConfirm) && (
                             <div className="modal-footer">
-                                {!props.hideClose && (
-                                    <button type="button" className="btn btn-secondary" onClick={props.onClose}>
-                                        Close
-                                    </button>
-                                )}
-                                {!props.hideConfirm && (
-                                    <button type="button" className="btn btn-primary" onClick={props.onConfirm}>
-                                        Submit
-                                    </button>
-                                )}
+                                <div className='d-flex flex-row justify-content-between w-100'>
+                                    {!props.hideClose && (
+                                        <button type="button" className="btn btn-secondary" onClick={props.onClose}>
+                                            Cancel
+                                        </button>
+                                    )}
+                                    {!props.hideConfirm && (
+                                        <button type="button" className="btn btn-danger" onClick={props.onConfirm}>
+                                            Confirm
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         )}
                         {

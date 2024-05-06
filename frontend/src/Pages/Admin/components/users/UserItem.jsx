@@ -89,7 +89,7 @@ export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm 
 
                     <p className="card-text me-3 mb-0">
                         <strong className="text-muted">
-                            {`Role: ${user.role}`}
+                            {`Role: ${getUserRoleName(user.role)}`}
                         </strong>
                     </p>
                 </div>
@@ -127,10 +127,14 @@ UserItem.propTypes = {
 
 
 export const userStatuses = [
-    { Value: "active", Name: "Active", bgColor: "#C8E6C9", color: "green" },
-    { Value: "inactive", Name: "Inactive", bgColor: "#F5F5F5", color: "grey" }
+    { Id: 1, Value: "active", Name: "Active", bgColor: "#C8E6C9", color: "green" },
+    { Id: 2, Value: "inactive", Name: "Inactive", bgColor: "#F5F5F5", color: "grey" }
 ];
 
+export const userRoles = [
+    { Id: 1, Value: "user", Name: "User" },
+    { Id: 2, Value: "admin", Name: "Admin" }
+];
 
 export const UserStatusBox = ({ status }) => {
     const userStatus = userStatuses.find((item) => item.Value === status);
@@ -141,7 +145,10 @@ export const UserStatusBox = ({ status }) => {
         </div>
     );
 };
-
+const getUserRoleName = (role) => {
+    const userRole = userRoles.find((item) => item.Value === role);
+    return userRole ? userRole.Name : '';
+};
 UserStatusBox.propTypes = {
     status: PropTypes.string.isRequired,
 };

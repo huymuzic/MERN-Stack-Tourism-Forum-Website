@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import BaseList from "../BaseList";
 import WrapperFilter from "../WrapperFilter";
-import UserItem from "./UserItem";
+import UserItem, { userRoles, userStatuses } from "./UserItem";
 import debounce from "../../../../helper";
 import { pushError, pushSuccess } from "../../../../components/Toast";
+import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete/useCustomAutocomplete";
+import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
 
 
 const userSearchTypes = [
@@ -18,17 +20,20 @@ const userSearchTypes = [
     value: "email"
   }
 ]
+
 export default function UsersList() {
   const pageSize = 5;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState({
     searchType: userSearchTypes[0],
     page: 1,
     searchValue: '',
+    status: undefined
   });
   const [paging, setPaging] = useState({
     data: [],
-    totalCount: 0
+    totalCount: 0,
+    totalPages: 0
   })
 
   const searchRef = useRef(null);
@@ -46,6 +51,12 @@ export default function UsersList() {
     }, 300),
     []
   );
+  const handleOnChangeStatus = (c) => {
+    setFilter((prev) => ({ ...prev, status: c, page: 1 }));
+  }
+  const handleOnChangeRole = (r) => {
+    setFilter((prev) => ({ ...prev, role: r, page: 1 }));
+  }
 
   const handleLockConfirm = async (userId) => {
     try {
@@ -87,76 +98,111 @@ export default function UsersList() {
     }
   };
   const fetchUsers = async () => {
+    setLoading(true)
     const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/list`);
     url.searchParams.append('page', filter.page);
     url.searchParams.append('limit', pageSize);
-    // url.searchParams.append('status', filter.status);
+    if (filter.status) {
+      url.searchParams.append('status', filter.status.Value)
+    }
+    if (filter.role) {
+      url.searchParams.append('role', filter.role.Value)
+    }
     url.searchParams.append('search', filter.searchValue);
     url.searchParams.append('searchType', filter.searchType);
 
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch user data');
-    }
-    const data = await response.json();
-    setPaging(data);
-    setLoading(false);
-
     return fetch(url)
       .then((response) => {
-        setLoading(true)
         return response.json();
       })
       .then((data) => {
         setPaging(data);
-        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
         setLoading(false);
-      })
+      }).finally(() => setLoading(false))
   };
   useEffect(() => {
     fetchUsers();
-  }, [filter.page, filter.searchValue]);
+  }, [filter.page, filter.searchValue, filter.status, filter.role]);
+
+
+  const statusAutocomplete = useCustomAutocomplete({
+    list: {
+      options: userStatuses,
+      searchFields: ['Name'],
+    },
+  });
+
+  const roleAutocomplete = useCustomAutocomplete({
+    list: {
+      options: userRoles,
+      searchFields: ['Name']
+    }
+  })
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", gap: "32px" }}>
-      <WrapperFilter onReset={handleResetFilter}>
+      <WrapperFilter onReset={handleResetFilter} customAction={
+        <div className="input-group ps-4" >
+          <select className="form-select" style={{ maxWidth: '140px', width: "25%", cursor: "pointer" }} ref={searchTypeRef} onChange={(e) => {
+            setFilter((prev) => {
+              return ({ ...prev, searchType: e.target.value })
+            })
+          }}>
+            {userSearchTypes.map(type => (
+              <option key={type.value} value={type.value}>{type.name}</option>
+            ))}
+          </select>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search"
+            aria-label="Search"
+            ref={searchRef}
+            onChange={(e) => {
+              handleOnChangeSearch(e.target.value);
+            }}
+          />
+        </div>
+      }>
         <div className="d-flex flex-row justify-content-space-between pt-3 pb-3">
-          <div className="input-group" style={{ width: "50%" }}>
-            <select className="form-select" style={{ maxWidth: '140px', width: "25%", cursor: "pointer" }} ref={searchTypeRef} onChange={(e) => {
-              setFilter((prev) => {
-                return ({ ...prev, searchType: e.target.value })
-              })
-            }}>
-              {userSearchTypes.map(type => (
-                <option key={type.value} value={type.value}>{type.name}</option>
-              ))}
-            </select>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search"
-              aria-label="Search"
-              ref={searchRef}
-              onChange={(e) => {
-                handleOnChangeSearch(e.target.value);
+
+          <div className="pe-4" style={{ width: "50%" }}>
+            <CustomAutocomplete
+              {...statusAutocomplete}
+              getOptionLabel={(o) => o.Name}
+              // label={"Statuses"}
+              value={filter.status}
+              placeholder={"All statuses"}
+              onChange={(s) => {
+                handleOnChangeStatus(s);
               }}
             />
           </div>
-          <div>
-
+          <div className="ps-4" style={{ width: "50%" }}>
+            <CustomAutocomplete
+              {...roleAutocomplete}
+              getOptionLabel={(o) => o.Name}
+              // label={"Statuses"}
+              value={filter.role}
+              placeholder={"All roles"}
+              onChange={(r) => {
+                handleOnChangeRole(r);
+              }}
+            />
           </div>
+
+
         </div>
       </WrapperFilter >
-
       <BaseList
         titleTotal="Total users"
         totalItems={paging.totalCount}
         list={paging.data}
         loading={loading}
         renderItem={(user) => <UserItem key={user.id} user={user} handleLockConfirm={(userId) => handleLockConfirm(userId)} handleUnLockConfirm={(userId) => handleUnLockConfirm(userId)} />}
-        totalPages={Math.ceil(paging.totalCount / pageSize)}
+        totalPages={paging.totalPages}
         page={filter.page}
         onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}
       />
