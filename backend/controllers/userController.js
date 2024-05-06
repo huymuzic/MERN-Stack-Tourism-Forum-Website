@@ -108,7 +108,7 @@ export const getAllUser = async (req, res) => {
 // get List User
 export const getListUser = async (req, res) => {
   try {
-    let { page, limit, status, search, searchType } = req.query;
+    let { page, limit, status, search, searchType, role } = req.query;
 
     page = parseInt(page);
     limit = parseInt(limit);
@@ -116,6 +116,9 @@ export const getListUser = async (req, res) => {
     const filter = {};
     if (status) {
       filter.status = status;
+    }
+    if (role) {
+      filter.role = role;
     }
     if (search) {
       if (searchType === "email") {
@@ -131,14 +134,14 @@ export const getListUser = async (req, res) => {
     }
 
     const totalCount = await User.countDocuments();
-
+    const totalPages = await User.countDocuments(filter) / limit
     const users = await User.find(filter)
       .limit(limit)
       .skip((page - 1) * limit);
 
     res.status(200).json({
       success: true,
-      count: users.length,
+      totalPages: Math.ceil(totalPages),
       totalCount: totalCount,
       message: "Successfully fetched users",
       data: users,
