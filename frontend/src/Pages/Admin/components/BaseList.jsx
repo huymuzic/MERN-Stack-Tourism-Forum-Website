@@ -25,7 +25,7 @@ function BaseList({ list, loading, renderItem, totalPages, page, onChangePage, t
                             {titleTotal && (
                                 <div className="row mb-2">
                                     <div className="col text-end">
-                                        <span style={{ color: '#009D4F' }}>{titleTotal}: {totalItems || 0}</span>
+                                        <span style={{ color: 'var(--primary-color)' }}>{titleTotal}: {totalItems || 0}</span>
                                     </div>
                                 </div>
                             )}

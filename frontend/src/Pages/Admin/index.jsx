@@ -4,7 +4,7 @@ import './index.css'
 
 const Admin = () => {
     return (
-        <div style={{ padding: "80px 40px 40px 40px" }}>
+        <div>
             <div className='d-flex flex-row' >
                 <div className='pe-4' style={{ borderRight: "1px solid #ddd" }}>
                     <SideBarMenu />
