@@ -24,10 +24,6 @@ const userSchema = new mongoose.Schema(
       default: "user",
       required: true,
     },
-    avatar: {
-      type: String,
-      default: "default_avatar.png", // Replace with a valid default avatar URL or path
-    },
     likes: {
       type: [mongoose.Schema.Types.ObjectId],
       default: [],
@@ -35,19 +31,11 @@ const userSchema = new mongoose.Schema(
     posts: {
       type: [mongoose.Schema.Types.ObjectId],
       default: [],
-    },
-    otp: String,  
-    otpExpires: Date,
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "active",
-      required: true,
-    },
+    }
   },
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;
