@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import User from '../models/user.js'
+import User from "../models/user.js";
 
-export const verifyToken = (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
   console.log("Token:", token);
@@ -14,22 +14,34 @@ export const verifyToken = (req, res, next) => {
     });
   }
 
-  // if token is exist then verify the token
-  jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-    if (err) {
-      console.log("Token is invalid");
-      return res.status(401).json({
-        success: false,
-        message: "Token is invalid",
+  try {
+    const decoded = await new Promise((resolve, reject) => {
+      jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
+        if (err) {
+          console.log("Token is invalid");
+          reject(err);
+        } else {
+          resolve(decodedToken);
+          console.log("Token is valid");
+          console.log("Decoded token:", decodedToken);
+          console.log("User logged in successfully");
+        }
       });
-    } else {
-      console.log("Token is valid");
-      console.log("Decoded token:", decoded);
-      console.log("User logged in successfully");
-      req.user = await User.findOne({ _id: decoded.id });
-      next();
-    }
-  });
+    });
+    // Fetch the user object from the database based on the decoded user ID
+    const userObject = await User.findOne({ _id: decoded.id });
+
+    // Attach the user object to the request for further processing
+    req.user = userObject;
+
+    next();
+  } catch (err) {
+    console.log("Token is invalid");
+    return res.status(401).json({
+      success: false,
+      message: "Token is invalid",
+    });
+  }
 };
 
 export const verifyUser = (req, res, next) => {
