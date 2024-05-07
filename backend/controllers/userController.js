@@ -262,9 +262,8 @@ export const updateAvatar = async (req, res) => {
   try {
     const { userId } = req.params;
     const { avatar } = req.body;
-
-    // Validate the avatar is Base64 encoded
-    if (!avatar || !avatar.startsWith("data:image")) {
+ // Validate the avatar is Base64 encoded
+        if (!avatar || !avatar.startsWith("data:image")) {
       return res.status(400).json({ message: "Invalid avatar format" });
     }
 

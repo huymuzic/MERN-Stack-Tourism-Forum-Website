@@ -128,7 +128,8 @@ const Profile = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        fetchInfo(info._id); // Refresh user data
+        fetchInfo(info._id); // Refresh user dat
+        console.log(info)
         setAvatarModal(false);
         alert("Avatar updated successfully!");
       } else {
