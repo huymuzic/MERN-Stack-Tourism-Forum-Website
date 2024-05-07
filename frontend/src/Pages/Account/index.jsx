@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 import { useUserInfo } from '../../utils/UserInforContext';
 import Profile from './components/Profile';
@@ -7,18 +7,29 @@ import Themes from './components/Themes';
 import Favorites from './components/Favorites';
 
 function UserAccount() {
-    const baseURL = import.meta.env.VITE_BASE_URL;
     const { info, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
     const [activeNav, setActiveNav] = useState('Profile');
     const [confirmActive, setConfirmActive] = useState(false);
     const [inputPassword, setInputPassword] = useState('');
     const [announceConfirm, setAnnounceConfirm] = useState(false);
+    const baseURL = import.meta.env.VITE_BASE_URL;
     const NAV_ITEMS = {
         Profile: Profile,
         Posts: UserPosts,
         Themes: Themes,
         Favorites: Favorites,
     };
+
+    useEffect(() => {
+        fetchInfo(info._id); // Ensure to fetch the latest user info
+    }, []);
+
+    useEffect(() => {
+        // Reset input and confirmation state when info changes
+        setInputPassword('');
+        setAnnounceConfirm(false);
+        setConfirmActive(false);
+    }, [info]);
 
     const handleNavClick = (e, item) => {
         e.preventDefault();
@@ -38,10 +49,10 @@ function UserAccount() {
             const data = await response.json();
             if (response.ok) {
                 setAnnounceConfirm(true);
-                if ( info.status == "active") {
-                updateInfo(info._id, { status: "inactive"  }) }
-                else {updateInfo(info._id, { status: "active"  }) }
-                setConfirmActive(false); 
+                const updatedStatus = info.status === "active" ? "inactive" : "active";
+                await updateInfo(info._id, { status: updatedStatus });
+                fetchInfo(); // Refresh user info
+                setConfirmActive(false);
             } else {
                 throw new Error(data.message || 'Incorrect password, please try again.');
             }
@@ -81,7 +92,6 @@ function UserAccount() {
     const ActiveComponent = NAV_ITEMS[activeNav];
     const date = new Date(info.createdAt);
     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    console.log(info)
     return (
         <>
             <div className="container mt-5">

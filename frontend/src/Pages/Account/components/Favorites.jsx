@@ -9,16 +9,17 @@ function Favorites() {
     const { info } = useUserInfo();
     const [favoritePosts, setFavoritePosts] = useState([]);
 
+    const fetchData = async () => {
+        if (info && info._id) {
+            const posts = await fetchFavoritePostsByUser(info._id);
+            setFavoritePosts(posts);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            if (info && info._id) {
-                const posts = await fetchFavoritePostsByUser(info._id);
-                setFavoritePosts(posts);
-                console.log("User Favorited Posts:", posts);
-            }
-        };
         fetchData();
     }, [info]);
+
 
     const handleToggleLike = (postId) => {
         toggleLike(postId, info._id,null, setFavoritePosts);
@@ -36,6 +37,9 @@ function Favorites() {
 }
 
 export default Favorites;
+
+
+
 
 
 
