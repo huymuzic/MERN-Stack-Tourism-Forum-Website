@@ -52,7 +52,7 @@ const MyEditor = forwardRef((props, editorRef) => {
                         <h5 className="modal-title" id="postModalLabel">{props.create ?  'New Post' : `Replying to ${props.post.authorId && props.post.authorId.username}`}</h5>
                         <button type="button" className="btn-close" id='modalClose' data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form onSubmit={handleSubmit(() => props.func(props.post._id))}>
+                    <form onSubmit={handleSubmit(() => props.func(props.post?._id))}>
                         <div className="modal-body">
                             {props.create ? <>
                                 <input
