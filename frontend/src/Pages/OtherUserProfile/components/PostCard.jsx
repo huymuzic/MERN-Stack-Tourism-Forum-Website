@@ -99,9 +99,7 @@ function PostCard({ post, onToggleLike }) {
                     <>
                         <ReactMarkdown>{post.content}</ReactMarkdown>
                         {post.image && <img src={post.image} alt="Post content" className="img-fluid rounded mt-3" />}
-                        <p className="mt-2">
-                            <strong>Likes:</strong> {post.likes.length}
-                        </p>
+                        <p><b>Liked:</b> {post?.likes.length}   <b>Comments:</b> {post.childrenIds.length}</p>
                     </>
                 )}
                 <div className="like-comment-row">

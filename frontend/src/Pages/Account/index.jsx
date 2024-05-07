@@ -103,7 +103,7 @@ function UserAccount() {
                         <h1>{info.name}</h1>
                         <p>@{info.username}</p>
                         <div className="mb-3">
-                            <span className="badge bg-primary">Posts: {info.posts? info.posts.length : 0}</span>
+                            <span className="badge bg-primary">Posts&Comments: {info.posts? info.posts.length : 0}</span>
                             <span className="badge bg-success ms-2">Favorites: {info.likes? info.likes.length:0}</span>
                         </div>
                         <div className="nav nav-tabs">

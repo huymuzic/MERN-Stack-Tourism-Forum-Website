@@ -109,18 +109,19 @@ function PostCard({ post, onToggleLike }) {
                     <>
                         <ReactMarkdown>{post.content}</ReactMarkdown>
                         {post.image && <img src={post.image} alt="Post content" className="img-fluid rounded mt-3" />}
+                        <p><b>Liked:</b> {post?.likes.length}   <b>Comments:</b> {post.childrenIds.length}</p>
                         <div className="like-comment-row mt-2">
                             <button
                                 className={`btn ${isLiked ? "btn-pink" : "btn-outline-pink"} favorite-button mr-2`}
                                 onClick={handleLike}
                             >
-                                {isLiked ? <FaHeart /> : <FaRegHeart />} {isLiked ? "Liked" : "Like"}
+                                 {isLiked ? <FaHeart /> : <FaRegHeart />} {isLiked ? "Liked" : "Like"}
                             </button>
                             <button
                                 className="btn comment-button"
                                 onClick={handleCommentsClick}
                             >
-                                <FaComment /> {post.childrenIds.length} Comments
+                                <FaComment />{post.childrenIds.length}  Comments
                             </button>
                         </div>
                     </>

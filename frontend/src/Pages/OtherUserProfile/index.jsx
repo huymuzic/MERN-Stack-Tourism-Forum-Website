@@ -113,7 +113,7 @@ const OtherUserProfile = () => {
                     <h1>{otherUserInfo.name}</h1>
                     <p>@{otherUserInfo.username}</p>
                     <div className="mb-3">
-                        <span className="badge bg-primary">Posts: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</span>
+                        <span className="badge bg-primary">Posts&Comments: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</span>
                         <span className="badge bg-success ms-2">Favorites: {otherUserInfo.likes ? otherUserInfo.likes.length : 0}</span>
                     </div>
                     <div className="nav nav-tabs">
