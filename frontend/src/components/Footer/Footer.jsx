@@ -7,7 +7,6 @@ import facebookLogo from '../../assets/images/facebook.svg'
 import { Container, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
-import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 
 const quick__links = [
     {
@@ -40,8 +39,6 @@ const quick__links2 = [
 ]
 
 const Footer = () => {
-
-    const { handleShowModal } = useContactModal();
 
     return <>
     <footer className='footer'>
@@ -84,7 +81,7 @@ const Footer = () => {
                                     {item.path ? (
                                     <Link to={item.path}>{item.display}</Link>
                                     ) : (
-                                    <span id="contact" className='contact__footer' onClick={handleShowModal}>{item.display}</span>                                              
+                                    <span id="contact" className='contact__footer'>{item.display}</span>                                              
                                     )}
                                 </ListGroupItem>
                             ))
@@ -108,7 +105,7 @@ const Footer = () => {
                                     Email:
                                 </h6>
 
-                                <p className='mb-0'>cosmictravel@gmail.com</p>
+                                <p className='mb-0'>cosmictravel123@gmail.com</p>
                             </ListGroupItem>
                             <ListGroupItem className='ps-0 border-0 d-flex align-items-center gap-3'>
                                 <h6 className='mb-0 d-flex align-items-center gap-2'>
