@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useUserInfo } from "../../../utils/UserInforContext";
 import { useParams } from "react-router-dom";
+import { getAvatarUrl } from '../../../utils/getAvar.js';
 const Profile = () => {
   const baseURL = import.meta.env.VITE_BASE_URL;
   const { id } = useParams();
@@ -29,7 +30,7 @@ const Profile = () => {
 useEffect(() => {
     fetchOtherUserInfo(id); // Fetch user data based on the URL parameter
 }, [id]);
-
+const avatarUrl = getAvatarUrl(otherUserInfo.avatar, baseURL);
   return (
     <div className="container mt-4">
       <div className="row">
@@ -42,7 +43,7 @@ useEffect(() => {
                     <p>Email: {otherUserInfo.email}</p>
               </div>
               <div className="ms-3">
-                <img src={otherUserInfo.avatar} alt="User Avatar" className="rounded-circle" style={{ width: "100px", height: "100px" }}  />
+                <img src={avatarUrl} alt="User Avatar" className="rounded-circle" style={{ width: "100px", height: "100px" }}  />
               </div>
             </div>
           </div>

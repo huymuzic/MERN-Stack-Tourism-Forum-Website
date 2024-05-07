@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 import { useUser } from '../../utils/UserContext';
 import { useUserInfo } from '../../utils/UserInforContext'
-
+import { getAvatarUrl } from '../../utils/getAvar.js';
 import logo from '../../assets/images/logo.png' 
 
 
@@ -55,7 +55,7 @@ const Header = () => {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const check = info._id ? true : false;
     const navigate = useNavigate();
-
+    const avatarUrl = getAvatarUrl(info.avatar, baseURL);
     const handleLogout = async () => {
         try {
             const response = await fetch(`${baseURL}/api/v1/auth/logout`, {
@@ -120,7 +120,7 @@ const Header = () => {
                           <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
                                 {user.avatar ? (
                                     <img
-                                        src={user.avatar}
+                                        src={avatarUrl}
                                         alt="User Avatar"
                                         className="rounded-circle"
                                         style={{ width: "50px", height: "50px", objectFit: "cover" }}

@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import Profile from './components/Profile';
 import UserPosts from './components/UserPosts';
 import Favorites from './components/Favorites';
+import { getAvatarUrl } from '../../utils/getAvar.js';
 
 const OtherUserProfile = () => {
     const { info: loggedInInfo } = useUserInfo();
@@ -102,12 +103,12 @@ const OtherUserProfile = () => {
     const ActiveComponent = NAV_ITEMS[activeNav];
     const date = new Date(otherUserInfo.createdAt);
     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    console.log(otherUserInfo)
+    const avatarUrl = getAvatarUrl(otherUserInfo.avatar, baseURL);
     return (
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-4 text-center">
-                    <img src={otherUserInfo.avatar} alt="User Avatar" className="img-thumbnail rounded-circle mb-3" />
+                    <img src={avatarUrl} alt="User Avatar" className="img-thumbnail rounded-circle mb-3" />
                 </div>
                 <div className="col-md-8">
                     <h1>{otherUserInfo.name}</h1>
