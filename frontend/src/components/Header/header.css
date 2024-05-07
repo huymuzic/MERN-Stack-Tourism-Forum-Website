@@ -42,7 +42,7 @@
 }
 
 .margin {
-    margin-right: 1.5rem !important;
+    margin-right: 2rem !important;
 }
 
 nav button,
@@ -55,6 +55,10 @@ nav button:focus-visible {
 
 .no-bullet {
     list-style-type: none;
+}
+
+.nm {
+    margin-right: 0 !important;
 }
 
 .menu {
@@ -79,7 +83,7 @@ nav button:focus-visible {
 }
 
 .nav__item a.active__link {
-    color: var(--light-primary-color) !important;
+    color: var(--light-secondary-color) !important;
 }
 
 .nav__link {
