@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { useUserInfo } from "./UserInforContext";
-
 const PostsContext = createContext(null);
 
 export const PostsProvider = ({ children }) => {
@@ -8,7 +7,9 @@ export const PostsProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const baseURL = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
-    const { user, updateUserLikes } = useUserInfo();
+    const { info, updateUserLikes } = useUserInfo();
+    const { user } = useUserInfo();
+
 
     useEffect(() => {
         if (user && user._id) {
