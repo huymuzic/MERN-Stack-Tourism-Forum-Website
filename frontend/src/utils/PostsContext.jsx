@@ -8,7 +8,7 @@ export const PostsProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const baseURL = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
-    const { user } = useUserInfo();
+    const { user, updateUserLikes } = useUserInfo();
 
     useEffect(() => {
         if (user && user._id) {

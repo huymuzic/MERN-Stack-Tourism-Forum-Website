@@ -153,7 +153,7 @@ function Post() {
 
         fetchData();
     }, [id]);
-
+    console.log(post)
     return (
         <article className='offset-2 pt-5 col-10'>
             {post ? (
@@ -167,7 +167,7 @@ function Post() {
                     </h3>
 
                     <div className='col-7 d-flex border-2 border-bottom pb-3'>
-                        <a className='ps-3' href='#'>
+                        <a className='ps-3' href={`/profile/${post?.authorId?._id}`}>
                             <img height='45' width='45' className='rounded-5' alt='profile picture' src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'>
                             </img>
                         </a>

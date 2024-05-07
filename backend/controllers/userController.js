@@ -77,13 +77,24 @@ export const getSingleUser = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const user = await User.findById(id);
+    let user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Ensure `name` is set to `username` if it's missing
     if (!user.name) {
-      // If name is null or undefined, update it with the username
       user.name = user.username;
-      
+    }
+
+    // Generate an avatar if it's missing
+    if (!user.avatar) {
+      user.avatar = generateUIAvatar(user.name);
       // Save the updated user document
-      user = await user.save();
+      await user.save();
     }
     res.status(200).json({
       success: true,
@@ -97,6 +108,43 @@ export const getSingleUser = async (req, res) => {
     });
   }
 };
+async function updateMissingAvatars() {
+try {
+  // Find users missing either the `avatar` or `name` field
+  const users = await User.find({
+    $or: [{ avatar: { $exists: false } }, { name: { $exists: false } }, { name: null }],
+  });
+
+  for (const user of users) {
+    // Set the name to the username if `name` is missing
+    if (!user.name) {
+      user.name = user.username;
+    }
+
+    // Generate an avatar if it's missing
+    if (!user.avatar) {
+      user.avatar = generateUIAvatar(user.username);
+    }
+
+    await user.save(); // Save the updated user document
+  }
+
+  console.log("Successfully updated missing avatars and names.");
+} catch (err) {
+  console.warn("Error updating missing avatars:", err);
+}
+}
+
+function generateUIAvatar(name) {
+const baseUrl = "https://ui-avatars.com/api/";
+const size = 128;
+const background = "random";
+const rounded = true;
+const url = `${baseUrl}?name=${encodeURIComponent(name)}&size=${size}&background=${background}&rounded=${rounded}`;
+return url;
+}
+
+updateMissingAvatars();
 
 // get All User
 
