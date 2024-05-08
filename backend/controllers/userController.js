@@ -191,7 +191,6 @@ export const checkPassword = async (req, res) => {
 
 export const CheckReset = async (req, res) => {
   const { identifier } = req.body;
-  console.log("vào được r nì")
   try {
       const user = await User.findOne({
           $or: [{ email: identifier }, { username: identifier }]
@@ -360,8 +359,6 @@ export const getListUser = async (req, res) => {
 // Lock user
 export const lockUser = async (req, res) => {
   const id = req.params.id;
-  console.log("🚀 ~ lockUser ~ id:", id)
-
   try {
     const updatedUser = await User.findByIdAndUpdate(
       id,
