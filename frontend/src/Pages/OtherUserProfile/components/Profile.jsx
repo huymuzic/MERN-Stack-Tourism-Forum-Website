@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useUserInfo } from "../../../utils/UserInforContext";
 import { useParams } from "react-router-dom";
 import { getAvatarUrl } from '../../../utils/getAvar.js';
 const Profile = () => {
+
   const baseURL = import.meta.env.VITE_BASE_URL;
   const { id } = useParams();
   const [otherUserInfo, setOtherUserInfo] = useState({});

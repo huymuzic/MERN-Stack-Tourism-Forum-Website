@@ -1,22 +1,25 @@
 // Profile.js
-import React, { useState, useEffect } from 'react';
-import { useUserInfo } from '../../../utils/UserInforContext';
+import { useState, useEffect } from 'react';
 import { getAvatarUrl } from '../../../utils/getAvar.js';
+import { useUser } from "../../../utils/UserContext";
 
 const Profile = () => {
+
   const baseURL = import.meta.env.VITE_BASE_URL;
-  const { info, fetchInfo, updateInfo, isLoading, error } = useUserInfo();
+  const { user,setUser } = useUser(); 
   const [selectedAvatarFile, setSelectedAvatarFile] = useState(null);
   const [inputPassword, setInputPassword] = useState('');
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
+
   const [isVerifying, setIsVerifying] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
   const [emailValid, setEmailValid] = useState(true);
   const [announceConfirm, setAnnounceConfirm] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
-  const [tempAvatar, setTempAvatar] = useState(getAvatarUrl(info.avatar, baseURL));
+
+  const [tempAvatar, setTempAvatar] = useState(getAvatarUrl(user.avatar, baseURL));
   const [passwordCriteria, setPasswordCriteria] = useState({
     minLength: false,
     hasUppercase: false,
@@ -25,14 +28,37 @@ const Profile = () => {
     hasSpecialChars: false,
   });
 
-  useEffect(() => {
-    if (info) {
-      setNewName(info.name);
-      setNewEmail(info.email);
-      setNewPassword(info.password); // Be cautious with managing passwords like this
-      setTempAvatar(getAvatarUrl(info.avatar, baseURL));
+  
+  const fetchInfo = async (userId) => {
+    const token = localStorage.getItem('accessToken');  // Retrieve token inside function
+    try {
+        const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+        const jsonResponse = await response.json();
+        if (response.ok) {
+          setUser(jsonResponse.data);  
+        } else {
+            throw new Error(jsonResponse.message || 'Failed to fetch user info');
+        }
+    } catch (error) {
+        console.error('Fetch user info error:', error);
     }
-  }, [info]);
+};
+useEffect(() => {
+}, [user]);
+  useEffect(() => {
+    if (user) {
+      setNewName(user.name);
+      setNewEmail(user.email);
+      setNewPassword(user.password); // Be cautious with managing passwords like this
+      setTempAvatar(getAvatarUrl(user.avatar, baseURL));
+    }
+  }, [user]);
 
   const handleNewPasswordChange = (e) => {
     const newPasswordValue = e.target.value;
@@ -89,19 +115,19 @@ const Profile = () => {
       return;
     }
     try {
-      const response = await fetch(`${baseURL}/api/v1/users/${info._id}`, {
+      const response = await fetch(`${baseURL}/api/v1/users/${user._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
-        body: JSON.stringify({ userId: info._id, username: newName, email: newEmail, password: newPassword }),
+        body: JSON.stringify({ userId: user._id, name: newName, email: newEmail, password: newPassword }),
       });
       const data = await response.json();
       if (response.ok) {
         setAnnounceConfirm(true);
         setIsChanging(false);
-        fetchInfo(info._id); // Refresh user data
+        fetchInfo(user._id);
       } else {
         throw new Error(data.message || 'Failed to update profile.');
       }
@@ -125,7 +151,7 @@ const Profile = () => {
     formData.append('avatar', selectedAvatarFile);
 
     try {
-      const response = await fetch(`${baseURL}/api/v1/users/upload-avatar/${info._id}`, {
+      const response = await fetch(`${baseURL}/api/v1/users/upload-avatar/${user._id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -134,7 +160,7 @@ const Profile = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        fetchInfo(info._id); // Refresh user data
+        fetchInfo(user._id); // Refresh user data
         setAvatarModal(false);
         alert('Avatar updated successfully!');
       } else {
@@ -147,8 +173,6 @@ const Profile = () => {
 
   return (
     <div className='container mt-4'>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
       <div className='row'>
         <div className='col-md-8'>
           <h2 className='mb-3'>My Profile</h2>
@@ -201,8 +225,8 @@ const Profile = () => {
                   </>
                 ) : (
                   <>
-                    <p>Name: {info.name}</p>
-                    <p>Email: {info.email}</p>
+                    <p>Name: {user.name}</p>
+                    <p>Email: {user.email}</p>
                     <p>Password: *********</p>
                     <button className='btn btn-info' onClick={() => setIsVerifying(true)}>
                       Edit Profile

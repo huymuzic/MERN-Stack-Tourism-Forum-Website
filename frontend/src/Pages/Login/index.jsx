@@ -9,7 +9,6 @@ import './index.css'
 
 //context
 import { useUser } from '../../utils/UserContext';
-import {useUserInfo } from '../../utils/UserInforContext'
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function Login() {
@@ -17,7 +16,6 @@ function Login() {
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useUser();
-    const { info, fetchInfo, updateInfo, deleteInfo } = useUserInfo();
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
     };
@@ -37,7 +35,7 @@ function Login() {
                 setError('pwd', { type: 'server', message: responseBody.message });
             } else {
                 localStorage.setItem('accessToken', responseBody.token); 
-                fetchInfo(responseBody.data._id);
+                setUser(responseBody.data._id);
                 navigate('/');
                 window.location.reload();
             }

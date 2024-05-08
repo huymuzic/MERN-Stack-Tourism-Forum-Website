@@ -1,6 +1,6 @@
 // OtherUserProfile.jsx
 import React, { useState, useEffect } from 'react';
-import { useUserInfo } from '../../utils/UserInforContext';
+import { useUser } from '../../utils/UserContext';
 import { useParams } from 'react-router-dom';
 import Profile from './components/Profile';
 import UserPosts from './components/UserPosts';
@@ -8,8 +8,8 @@ import Favorites from './components/Favorites';
 import { getAvatarUrl } from '../../utils/getAvar.js';
 
 const OtherUserProfile = () => {
-    const { info: loggedInInfo } = useUserInfo();
-    const { id } = useParams(); // Get the ":id" from the URL
+    const { user} = useUser();
+    const { id } = useParams();
     const [otherUserInfo, setOtherUserInfo] = useState({});
     const [activeNav, setActiveNav] = useState('Profile');
     const [confirmActive, setConfirmActive] = useState(false);
@@ -37,6 +37,7 @@ const OtherUserProfile = () => {
             const data = await response.json();
             if (response.ok) {
                 setOtherUserInfo(data.data); // Adjust this according to your response structure
+                console.log(data.data)
             } else {
                 throw new Error(data.message || 'Failed to fetch user info');
             }
@@ -47,7 +48,7 @@ const OtherUserProfile = () => {
     };
 
     useEffect(() => {
-        fetchOtherUserInfo(id); // Fetch user data based on the URL parameter
+        fetchOtherUserInfo(id); 
     }, [id]);
 
     const handleToggleStatus = async () => {
@@ -138,7 +139,7 @@ const OtherUserProfile = () => {
                             <h5 className="card-title">Info</h5>
                             <p className="card-text">Joined: {formattedDate}</p>
                             <p className="card-text">Role: {otherUserInfo.role}</p>
-                            {(loggedInInfo.role === 'admin' || loggedInInfo._id === otherUserInfo._id) && (
+                            {(user?.role === 'admin' || user?._id === otherUserInfo?._id) && (
                                 <>
                                     <button
                                         className={`btn ${otherUserInfo.status === 'active' ? 'btn-danger' : 'btn-success'}`}

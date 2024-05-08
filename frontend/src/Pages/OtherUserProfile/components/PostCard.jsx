@@ -1,26 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
-import ReactMarkdown from "react-markdown";
 import "./PostCard.css";
 import { SlShare } from "react-icons/sl";
 import { FaHeart, FaRegHeart, FaComment } from "react-icons/fa";
-import { useUserInfo } from "../../../utils/UserInforContext";
+import { useUser } from "../../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
 
 function PostCard({ post, onToggleLike }) {
     const [editMode, setEditMode] = useState(false);
     const [editableContent, setEditableContent] = useState(post.content);
     const [editableImage, setEditableImage] = useState(post.image);
-    const { info } = useUserInfo();
+    const { user} = useUser();
     const [isLiked, setIsLiked] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const optionsRef = useRef(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (info && info.likes) {
-            setIsLiked(info.likes.includes(post._id));
+        if (user && user.likes) {
+            setIsLiked(user.likes.includes(post._id));
         }
-    }, [info, post._id]);
+    }, [user, post._id]);
 
     const handleSave = () => {
         setEditMode(false);
@@ -66,7 +65,7 @@ function PostCard({ post, onToggleLike }) {
                 <h5 className="card-title"><b>{post.title}</b></h5>
                 <p className="card-text">@{post.authorId.username}</p>
                 <p className="card-text">{new Date(post.createdAt).toLocaleString()}</p>
-                { ( (post.authorId._id === info?._id) || (info.role == 'admin') ) && (
+                { ( (post.authorId._id === user?._id) || (user.role == 'admin') ) && (
                     <div className="edit-container">
                         <SlShare alt="Edit Button" className="edit-button" onClick={toggleOptions} />
                     </div>

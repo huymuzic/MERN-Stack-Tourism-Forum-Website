@@ -1,15 +1,16 @@
 // UserAccount.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './index.css';
-import { useUserInfo } from '../../utils/UserInforContext';
+import { useUser } from '../../utils/UserContext';
 import Profile from './components/Profile';
 import UserPosts from './components/UserPosts';
 import Themes from './components/Themes';
 import Favorites from './components/Favorites';
 import { getAvatarUrl } from '../../utils/getAvar.js';
 
+
 function UserAccount() {
-  const { info, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
+  const { user,setUser } = useUser();
   const [activeNav, setActiveNav] = useState('Profile');
   const [confirmActive, setConfirmActive] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
@@ -21,23 +22,43 @@ function UserAccount() {
     Themes: Themes,
     Favorites: Favorites,
   };
-  const avatarUrl = getAvatarUrl(info.avatar, baseURL);
+  
+  useEffect(() => {
+  }, [user]);
 
   useEffect(() => {
-    fetchInfo(info._id); // Ensure to fetch the latest user info
-  }, []);
-
-  useEffect(() => {
-    // Reset input and confirmation state when info changes
     setInputPassword('');
     setAnnounceConfirm(false);
     setConfirmActive(false);
-  }, [info]);
+  }, [user]);
 
   const handleNavClick = (e, item) => {
     e.preventDefault();
     setActiveNav(item);
   };
+
+  const updateInfo = async (userId, updates) => {
+    const token = localStorage.getItem('accessToken');  // Ensure token is refreshed from storage
+
+    try {
+        const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(updates)
+        });
+        const updatedInfo = await response.json();
+        if (response.ok) {
+          setUser(updatedInfo.data);  // Make sure to use .data if that's how your API structures responses
+        } else {
+            throw new Error(updatedInfo.message || 'Failed to update user info');
+        }
+    } catch (error) {
+        console.error('Update user info error:', error);
+    } 
+};
 
   const handleVerifyPassword = async () => {
     try {
@@ -52,9 +73,8 @@ function UserAccount() {
       const data = await response.json();
       if (response.ok) {
         setAnnounceConfirm(true);
-        const updatedStatus = info.status === 'active' ? 'inactive' : 'active';
-        await updateInfo(info._id, { status: updatedStatus });
-        fetchInfo(); // Refresh user info
+        const updatedStatus = user.status === 'active' ? 'inactive' : 'active';
+        await updateInfo(user._id, { status: updatedStatus });
         setConfirmActive(false);
       } else {
         throw new Error(data.message || 'Incorrect password, please try again.');
@@ -73,7 +93,7 @@ function UserAccount() {
   const handleDeleteInfo = async () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       try {
-        const response = await fetch(`${baseURL}/api/v1/users/${info._id}`, {
+        const response = await fetch(`${baseURL}/api/v1/users/${user._id}`, {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -93,8 +113,9 @@ function UserAccount() {
   };
 
   const ActiveComponent = NAV_ITEMS[activeNav];
-  const date = new Date(info.createdAt);
+  const date = new Date(user?.createdAt);
   const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
   return (
     <>
       <div className='container mt-5'>
@@ -107,11 +128,11 @@ function UserAccount() {
             />
           </div>
           <div className='col-md-8'>
-            <h1>{info.name}</h1>
-            <p>@{info.username}</p>
+            <h1>{user.name}</h1>
+            <p>@{user.username}</p>
             <div className='mb-3'>
-              <span className='badge bg-primary'>Posts&Comments: {info.posts ? info.posts.length : 0}</span>
-              <span className='badge bg-success ms-2'>Favorites: {info.likes ? info.likes.length : 0}</span>
+              <span className='badge bg-primary'>Posts&Comments: {user.posts ? user.posts.length : 0}</span>
+              <span className='badge bg-success ms-2'>Favorites: {user.likes ? user.likes.length : 0}</span>
             </div>
             <div className='nav nav-tabs'>
               {Object.keys(NAV_ITEMS).map((item) => (
@@ -134,15 +155,15 @@ function UserAccount() {
               <div className='card-body'>
                 <h5 className='card-title'>Info</h5>
                 <p className='card-text'>Joined: {formattedDate}</p>
-                <p className='card-text'>Role: {info.role}</p>
+                <p className='card-text'>Role: {user.role}</p>
                 <button
-                  className={`btn ${info.status == 'active' ? 'btn-danger' : 'btn-success'}`}
+                  className={`btn ${user.status == 'active' ? 'btn-danger' : 'btn-success'}`}
                   onClick={() => setConfirmActive(true)}
                 >
-                  {info.status == 'active' ? 'Inactivate Account' : 'Activate Account'}
+                  {user.status == 'active' ? 'Inactivate Account' : 'Activate Account'}
                 </button>
 
-                {info.status == 'active' && (
+                {user.status == 'active' && (
                   <button className='btn btn-danger' onClick={handleDeleteInfo}>Delete Account</button>
                 )}
               </div>
@@ -150,7 +171,7 @@ function UserAccount() {
           </div>
 
           <div className='col-md-12 mt-3'>
-            {info.status == 'active' ? (
+            {user.status == 'active' ? (
               <ActiveComponent />
             ) : (
               <p>Your Account is inactive right now! Please reactivate it for any action.</p>
@@ -197,7 +218,7 @@ function UserAccount() {
             <div className='checkmark-container'>
               <i className='fas fa-check'></i>
             </div>
-            <h3>Your account is {info.active ? 'active' : 'inactive'}!</h3>
+            <h3>Your account is {user.active ? 'active' : 'inactive'}!</h3>
             <button onClick={() => setAnnounceConfirm(false)} className='btn btn-success'>Confirm</button>
           </div>
         )}

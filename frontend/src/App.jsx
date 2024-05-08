@@ -3,13 +3,11 @@ import './App.css'
 import Layout from './components/Layout/Layout';
 import { jwtDecode } from "jwt-decode";
 import { useUser } from './utils/UserContext';
-import { useUserInfo } from './utils/UserInforContext'
 function App() {
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   console.log(baseURL);
   const { user,setUser } = useUser();
-  const { info, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
@@ -26,7 +24,6 @@ useEffect(() => {
       });
       const responseBody = await response.json();
       setUser(response.ok ? { id: decoded.id, ...responseBody.user } : null);
-      fetchInfo(responseBody.user._id);
     } else {
       setUser(null);
     }
