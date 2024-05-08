@@ -7,17 +7,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './index.css'
 
-import {useUserInfo } from '../../utils/UserInforContext'
+
+//context
+import { useUser } from '../../utils/UserContext';
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function Login() {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
-    const { info, fetchInfo, updateInfo, deleteInfo } = useUserInfo();
+    const { user, setUser } = useUser();
+
     const [successMsg, setSuccessMsg] = useState(false);
     const [errorMsg, setErrorMsg] = useState(false);
     const [callAPI, setCallAPI] = useState(false);
+
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
     };
@@ -41,7 +45,7 @@ function Login() {
                 }   
             } else {
                 localStorage.setItem('accessToken', responseBody.token); 
-                fetchInfo(responseBody.data._id);
+                setUser(responseBody.data._id);
                 navigate('/');
                 window.location.reload();
                 if(!successMsg) {

@@ -21,7 +21,7 @@ export const getPostsByUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         const postIds = user.posts;
-        const posts = await Post.find({ _id: { $in: postIds } , parentId: null }).populate("authorId", "username email").exec();
+        const posts = await Post.find({ authorId: userId  , _id: { $in: user.posts } }).populate("authorId", "username email").exec();
         res.json(posts);
     } catch (err) {
         console.error("Error fetching user posts:", err);

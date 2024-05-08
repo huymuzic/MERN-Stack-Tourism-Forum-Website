@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
-
+import { gfs } from '../utils/gridfsconfig.js'
 const saltRounds = 10;
 // create new user
 export const createUser = async (req, res) => {
@@ -77,13 +77,24 @@ export const getSingleUser = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const user = await User.findById(id);
+    let user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Ensure `name` is set to `username` if it's missing
     if (!user.name) {
-      // If name is null or undefined, update it with the username
       user.name = user.username;
-      
+    }
+
+    // Generate an avatar if it's missing
+    if (!user.avatar) {
+      user.avatar = generateUIAvatar(user.name);
       // Save the updated user document
-      user = await user.save();
+      await user.save();
     }
     res.status(200).json({
       success: true,
@@ -97,6 +108,43 @@ export const getSingleUser = async (req, res) => {
     });
   }
 };
+async function updateMissingAvatars() {
+try {
+  // Find users missing either the `avatar` or `name` field
+  const users = await User.find({
+    $or: [{ avatar: { $exists: false } }, { name: { $exists: false } }, { name: null }],
+  });
+
+  for (const user of users) {
+    // Set the name to the username if `name` is missing
+    if (!user.name) {
+      user.name = user.username;
+    }
+
+    // Generate an avatar if it's missing
+    if (!user.avatar) {
+      user.avatar = generateUIAvatar(user.username);
+    }
+
+    await user.save(); // Save the updated user document
+  }
+
+  console.log("Successfully updated missing avatars and names.");
+} catch (err) {
+  console.warn("Error updating missing avatars:", err);
+}
+}
+
+function generateUIAvatar(name) {
+const baseUrl = "https://ui-avatars.com/api/";
+const size = 128;
+const background = "random";
+const rounded = true;
+const url = `${baseUrl}?name=${encodeURIComponent(name)}&size=${size}&background=${background}&rounded=${rounded}`;
+return url;
+}
+
+updateMissingAvatars();
 
 // get All User
 
@@ -143,7 +191,6 @@ export const checkPassword = async (req, res) => {
 
 export const CheckReset = async (req, res) => {
   const { identifier } = req.body;
-  console.log("vào được r nì")
   try {
       const user = await User.findOne({
           $or: [{ email: identifier }, { username: identifier }]
@@ -210,29 +257,55 @@ export const resetpassword = async (req, res) => {
   }
 };
 //Image uplpoad? may be change in future 
-export const updateAvatar = async (req, res) => {
+export const uploadAvatar = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { avatar } = req.body;
-
-    // Validate the avatar is Base64 encoded
-    if (!avatar || !avatar.startsWith("data:image")) {
-      return res.status(400).json({ message: "Invalid avatar format" });
+    const userId = req.params.userId;
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    // Update avatar field in the user's document
+    const { filename } = req.file;
+
+    // Update user's avatar field to reference the uploaded file
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { avatar },
+      { avatar: `/api/v1/users/avatar/${filename}` },
       { new: true }
     );
 
-    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    if (!updatedUser) return res.status(404).json({ message: 'User not found' });
 
     res.json({ success: true, user: updatedUser });
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: 'Server Error', error });
   }
+};
+//get Ava
+export const getAvatar = async (req, res) => {
+  const { filename } = req.params;
+  /*try {
+   
+    console.log("test")
+    gfs.find({ filename: filename }).toArray((err, files) => {
+      if (err) {
+        console.error('Error querying GridFS:', err);
+        return res.status(500).json({ message: 'Server Error', error: err.message });
+      }
+
+      if (!files || files.length === 0) {
+        console.log(`No files found with filename: ${filename}`);
+        return res.status(404).json({ message: 'No files found' });
+      }
+      console.log(`Streaming file: ${filename}`); */
+       gfs.openDownloadStreamByName(filename).pipe(res) /*.on('error', (error) => {
+        console.error('Error streaming file:', error);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+      });
+    });
+  } catch (error) {
+    console.error('Unexpected server error:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  } */
 };
 // get List User
 export const getListUser = async (req, res) => {
@@ -286,8 +359,6 @@ export const getListUser = async (req, res) => {
 // Lock user
 export const lockUser = async (req, res) => {
   const id = req.params.id;
-  console.log("🚀 ~ lockUser ~ id:", id)
-
   try {
     const updatedUser = await User.findByIdAndUpdate(
       id,

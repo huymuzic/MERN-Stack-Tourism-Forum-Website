@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './App.css'
 import Layout from './components/Layout/Layout';
 import { useUser } from './utils/UserContext';
-import { useUserInfo } from './utils/UserInforContext'
 import { pushSuccess } from './components/Toast';
 import { set } from 'mongoose';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
-
 function App() {
 
   const { user,setUser } = useUser();
-  const { info, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
   const [isUserSet, setIsUserSet] = useState(false);
 useEffect(() => {
   const checkLoginStatus = async () => {
@@ -27,8 +24,10 @@ useEffect(() => {
         },
       });
       const responseBody = await response.json();
+
       setUser(response.ok ? { ...responseBody.user } : null);   
       fetchInfo(responseBody.user._id);
+
     } else {
       setUser(null);
     }

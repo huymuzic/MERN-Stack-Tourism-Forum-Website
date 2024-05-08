@@ -1,12 +1,16 @@
 // components/UserPosts/UserPosts.js
-import { useEffect, useState } from "react";
-import { useUser } from "../../../utils/UserContext";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
+import { useUser } from '../../../utils/UserContext';
 
 function UserPosts() {
-    const { user,setUser } = useUser();
-    const [userPosts, setUserPosts] = useState([]);
 
+    const [userPosts, setUserPosts] = useState([]);
+    const { user,setUser } = useUser();
+    const { id } = useParams();
+
+    
     const baseURL = import.meta.env.VITE_BASE_URL
 
     const fetchPostsByUser = async (userId) => {
@@ -81,23 +85,20 @@ function UserPosts() {
         }));
     };
 
-    const fetchData = async () => {
-        if (user && user._id) {
-            const posts = await fetchPostsByUser(user._id);
-            setUserPosts(posts);
-        }
+    const handleToggleLike = (postId) => {
+        toggleLike(postId, user._id, setUserPosts); // Update posts after toggling like
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            const posts = await fetchPostsByUser(id); // Replace USER_ID with actual user ID
+            setUserPosts(posts);
+        };
         fetchData();
-    }, [user]);
-    
-    const handleToggleLike = (postId) => {
-        toggleLike(postId, user._id, setUserPosts);
-    };
+    }, []);
 
     return (
-        <div style={{ marginLeft: '10px', marginTop: "-20px" }}>
+        <div>
             {userPosts.length ? (
                 userPosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
             ) : (
@@ -106,8 +107,5 @@ function UserPosts() {
         </div>
     );
 }
-
 export default UserPosts;
-
-
 
