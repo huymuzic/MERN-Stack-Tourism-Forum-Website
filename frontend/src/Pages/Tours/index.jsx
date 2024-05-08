@@ -1,8 +1,11 @@
 import React from 'react'
-import './index.css'
+import CommonSection from '../../Shared/CommonSection';
+    
 
 const Tours = () => {
-    return <div>Tours</div>;
+    return <>
+        <CommonSection title={"All Tours"} />
+    </>;
 };
 
 export default Tours;
