@@ -222,7 +222,7 @@
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 576px) {
     .hero__slide h1 {
         width: 100% !important;
         font-size: 1.9rem !important;

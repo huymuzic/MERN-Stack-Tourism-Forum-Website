@@ -83,8 +83,7 @@ const Header = () => {
     return (
     <nav className='header navbar navbar-expand-lg'>
         <Container className='header__container bd-gutter'>
-                { /* NAVIGATION SECTION STARTS */}
-
+                { /* NAVIGATION SECTION STARTS */}        
                     { /* LOGO SECTION STARTS */ }
                     <Link to="/" className='navbar-brand l'>
                         <img alt='Website Logo' height='100' width='100' src={logo}>
@@ -93,7 +92,7 @@ const Header = () => {
                     { /* LOGO SECTION ENDS */ }
 
                     { /* NAVIGATION SECTION STARTS */ }
-                <div className="d-lg-none position-absolute top-5 end-0 p-3">
+                <div className="d-lg-none hbg">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -142,11 +141,7 @@ const Header = () => {
                         <div className='nav__btns d-flex align-items-center gap-4' >
                             <Button className='btn secondary__btn'><Link to='/login'>Login</Link></Button>
                             <Button className='btn primary__btn'><Link to='/register'>Register</Link></Button>    
-                        </div> 
-
-                        <span className='mobile__menu'>
-                            <i className="ri-menu-line"></i>    
-                        </span>                       
+                        </div>                     
                     </div>                     
                     )}    
                 { /* NAVIGATION SECTION ENDS */}
