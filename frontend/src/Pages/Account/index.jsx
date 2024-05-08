@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.css';
-import { useUserInfo } from '../../utils/UserInforContext';
+
 import Profile from './components/Profile';
 import UserPosts from './components/UserPosts';
 import Themes from './components/Themes';

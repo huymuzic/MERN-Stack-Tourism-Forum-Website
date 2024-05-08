@@ -192,3 +192,7 @@ tr th {
 #a {
   padding-top: 100px;
 }
+
+.bg-gray {
+  background-color: #efefef;
+}

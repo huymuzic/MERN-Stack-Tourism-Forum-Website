@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema(
     posts: {
       type: [mongoose.Schema.Types.ObjectId],
       default: [],
+    },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
     }
   },
   { timestamps: true }

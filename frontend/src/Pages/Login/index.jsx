@@ -9,7 +9,7 @@ import './index.css'
 
 //context
 import { useUser } from '../../utils/UserContext';
-import {useUserInfo } from '../../utils/UserInforContext'
+
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function Login() {

@@ -1,7 +1,6 @@
 // components/Favorites/Favorites.js
 import React, { useEffect, useState } from "react";
-import { usePosts } from "../../../utils/PostsContext";
-import { useUserInfo } from "../../../utils/UserInforContext";
+
 import PostCard from "./PostCard";
 
 function Favorites() {

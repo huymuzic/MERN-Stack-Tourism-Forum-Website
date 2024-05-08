@@ -2,7 +2,7 @@ import React, { useState, useEffect,useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./PostCard.css";
-import { useUserInfo } from "../../../utils/UserInforContext";
+
 import { SlShare } from "react-icons/sl";
 function PostCard({ post, onToggleLike }) {
     const [editMode, setEditMode] = useState(false);

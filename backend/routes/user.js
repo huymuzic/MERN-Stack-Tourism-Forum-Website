@@ -8,6 +8,7 @@ import {
   checkPass,
   otpChecking,
   resetpassword,
+  getAvatar,
   updateAvatar,
   getListUser,
   lockUser,
@@ -45,6 +46,8 @@ router.post('/otpChecking', otpChecking);
 router.post('/reset-password', resetpassword);
 //Change ava
 router.put("/update-avatar/:userId", verifyUser, updateAvatar);
+
+router.get('/avatar/:filename', getAvatar);
 // Lock user
 router.put("/lock/:id", lockUser);
 // Unlock user

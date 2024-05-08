@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useUserInfo } from "../../../utils/UserInforContext";
+
 
 const Profile = () => {
   const baseURL = import.meta.env.VITE_BASE_URL;

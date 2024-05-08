@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import { gfs } from '../utils/gridfsconfig.js';
 import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
 
 const saltRounds = 10;
@@ -281,6 +282,11 @@ export const getListUser = async (req, res) => {
       message: "Internal Server Error. Please try again.",
     });
   }
+};
+
+export const getAvatar = async (req, res) => {
+  const { filename } = req.params;
+  gfs.openDownloadStreamByName(filename).pipe(res)
 };
 
 // Lock user

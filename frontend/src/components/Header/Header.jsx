@@ -7,7 +7,6 @@ import './header.css'
 import { useNavigate } from 'react-router-dom';
 import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 import { useUser } from '../../utils/UserContext';
-import { useUserInfo } from '../../utils/UserInforContext'
 
 import logo from '../../assets/images/logo.png' 
 
@@ -51,9 +50,7 @@ const Header = () => {
     const { handleShowModal } = useContactModal();
 
     const {user, setUser } = useUser();
-    const { info,setInfo, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
     const baseURL = import.meta.env.VITE_BASE_URL;
-    const check = info._id ? true : false;
     const navigate = useNavigate();
 
     const handleLogout = async () => {
