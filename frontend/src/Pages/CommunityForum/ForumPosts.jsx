@@ -154,7 +154,6 @@ function Post() {
 
         fetchData();
     }, [id]);
-
     return (
         <article className='container-xxl d-flex align-items-center flex-column'>
             <div className='col-7 d-flex align-items-center'>

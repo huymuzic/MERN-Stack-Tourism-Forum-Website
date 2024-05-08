@@ -14,16 +14,16 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <App />
-        <ToastContainer
-          autoClose={3000}
-          hideProgressBar
-          closeButton={false}
-          position={'bottom-left'}
-          newestOnTop
-          pauseOnFocusLoss={false}
-          style={{ fontFamily: 'inherit' }}
-        />
+            <App />
+            <ToastContainer
+              autoClose={3000}
+              hideProgressBar
+              closeButton={false}
+              position={'bottom-left'}
+              newestOnTop
+              pauseOnFocusLoss={false}
+              style={{ fontFamily: 'inherit' }}
+            />
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,

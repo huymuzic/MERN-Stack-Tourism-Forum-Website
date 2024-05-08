@@ -1,20 +1,21 @@
-// components/UserPosts/UserPosts.js
+// components/Favorites/Favorites.js
 import { useEffect, useState } from "react";
-import { useUser } from "../../../utils/UserContext";
+import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
+import { useUser } from '../../../utils/UserContext';
 
-function UserPosts() {
+function Favorites() {
+
+    const [favoritePosts, setFavoritePosts] = useState([]);
     const { user,setUser } = useUser();
-    const [userPosts, setUserPosts] = useState([]);
-
+    const { id } = useParams();
     const baseURL = import.meta.env.VITE_BASE_URL
-
-    const fetchPostsByUser = async (userId) => {
+    const fetchFavoritePostsByUser = async (userId) => {
 
         const token = localStorage.getItem('accessToken');
 
         try {
-            const response = await fetch(`${baseURL}/api/v1/posts/user/${userId}`, {
+            const response = await fetch(`${baseURL}/api/v1/posts/favorites/${userId}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,18 +24,17 @@ function UserPosts() {
             });
             const result = await response.json();
             if (response.ok) {
-                const filteredPosts = result.filter((post) => post.parentId === null);
-                return filteredPosts;
+                return result;
             } else {
-                throw new Error(result.message || 'Failed to fetch user posts');
+                throw new Error(result.message || 'Failed to fetch favorite posts');
             }
         } catch (error) {
-            console.error('Fetch user posts error:', error);
+            console.error('Fetch favorite posts error:', error);
             return [];
         } 
     };
 
-    const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
+        const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
 
         const token = localStorage.getItem('accessToken');
 
@@ -70,6 +70,7 @@ function UserPosts() {
             }
         } catch (error) {
             console.error('Toggle like error:', error);
+            setError(error.toString());
         } 
     };
 
@@ -80,33 +81,30 @@ function UserPosts() {
         }));
     };
 
-    const fetchData = async () => {
-        if (user && user._id) {
-            const posts = await fetchPostsByUser(user._id);
-            setUserPosts(posts);
-        }
+    const handleToggleLike = (postId) => {
+        toggleLike(postId, user._id , null, setFavoritePosts); // Update favorite posts after toggling like
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            const posts = await fetchFavoritePostsByUser(id); // Replace USER_ID with actual user ID
+            setFavoritePosts(posts);
+        };
         fetchData();
-    }, [user]);
-    
-    const handleToggleLike = (postId) => {
-        toggleLike(postId, user._id, setUserPosts);
-    };
+    }, []);
 
     return (
-        <div style={{ marginLeft: '10px', marginTop: "-20px" }}>
-            {userPosts.length ? (
-                userPosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
+        <div>
+            {favoritePosts.length ? (
+                favoritePosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
             ) : (
-                <p>No posts available</p>
+                <p>No favorite posts available</p>
             )}
         </div>
     );
 }
 
-export default UserPosts;
+export default Favorites;
 
 
 

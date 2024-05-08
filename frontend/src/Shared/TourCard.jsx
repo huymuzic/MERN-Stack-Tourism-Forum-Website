@@ -12,7 +12,7 @@ const TourCard = ( {tour} ) => {
     const { totalRating, avgRating } = calculateAvgRating(reviews);
 
     return <div className='tour__card'>
-    <Card>
+    <Card className='card__tour'>
         <div className='tour__img'>
             <img src={photo} alt="tour-img" />
             {featured && <span>Featured</span>}

@@ -8,15 +8,20 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
       required: true,
     },
+    avatar: {
+      type: String,
+    },
     password: {
       type: String,
       required: true,
+    },
+    avatar: {
+      type: String,
     },
     role: {
       type: String,
@@ -36,11 +41,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["active", "inactive"],
       default: "active",
-    }
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

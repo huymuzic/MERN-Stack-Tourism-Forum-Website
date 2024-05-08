@@ -8,15 +8,15 @@ import {
   checkPass,
   otpChecking,
   resetpassword,
+  uploadAvatar,
   getAvatar,
-  updateAvatar,
   getListUser,
   lockUser,
   unlockUser,
 } from "../controllers/userController.js";
 const router = express.Router();
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
-
+import upload from '../utils/Avaupload .js';
 
 // get list users
 router.get("/list", getListUser);
@@ -27,7 +27,7 @@ router.put("/:id", verifyUser, updateUser);
 router.delete("/:id", verifyUser, deleteUser);
 
 // get single user
-router.get("/:id", verifyUser, getSingleUser);
+router.get("/:id", getSingleUser);
 
 // get all user
 router.get("/", verifyAdmin, getAllUser);
@@ -45,8 +45,8 @@ router.post('/otpChecking', otpChecking);
 // Endpoint to reset password
 router.post('/reset-password', resetpassword);
 //Change ava
-router.put("/update-avatar/:userId", verifyUser, updateAvatar);
-
+router.put('/upload-avatar/:userId', verifyUser, upload.single('avatar'), uploadAvatar);
+// get ava
 router.get('/avatar/:filename', getAvatar);
 // Lock user
 router.put("/lock/:id", lockUser);
