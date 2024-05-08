@@ -106,7 +106,7 @@ function PostCard({ post, onToggleLike }) {
                     </>
                 ) : (
                     <>
-                        <div name='content' className='ms-2'
+                        <div name='content' className='ms-2' style ={{fontSize:"22px"}}
                                 dangerouslySetInnerHTML={{ __html: post.content }}>
                         </div>
                         {post.image && <img src={post.image} alt="Post content" className="img-fluid rounded mt-3" />}

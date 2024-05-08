@@ -102,7 +102,7 @@ function Favorites() {
             {favoritePosts.length ? (
                 favoritePosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
             ) : (
-                <p>No favorite posts available</p>
+                <p style={{ fontSize:"30px", justifyContent: "center" }}>No favorite posts available</p>
             )}
         </div>
     );

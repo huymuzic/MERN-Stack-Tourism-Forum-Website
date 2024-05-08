@@ -309,8 +309,7 @@ useEffect(() => {
 
     {announceConfirm && (
       <div
-        className='alert alert-success position-fixed top-50 start-50 translate-middle'
-        style={{ zIndex: 1050 }}
+        className='alert alert-success position-fixed  bottom-0 end-0 translate-middle' style={{ zIndex: 9999 }}
       >
         <strong>Success!</strong> Your profile has been updated.
         <button type='button' className='btn-close' onClick={() => setAnnounceConfirm(false)}></button>
