@@ -12,7 +12,6 @@ function App() {
 
   const { user,setUser } = useUser();
   const { info, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
-  const [isUserSet, setIsUserSet] = useState(false);
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {

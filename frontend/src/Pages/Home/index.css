@@ -1,4 +1,4 @@
-.hero-container {
+.hero__container {
     margin: 0 !important;
     padding: 0 !important;
     padding-top: 1rem !important;
@@ -17,22 +17,25 @@
     height: 100%;
     color: #fff;
     position: absolute;
-    top: 16%;
-    left: 5%;
+    top: 0%;
+    left: 0%;
     overflow: hidden;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .hero__slide h1 {
     width: 60%;
     font-weight: 600 !important;
-    font-size: 2.9rem;
+    font-size: 2.8rem;;
 }
 
 .hero__slide p {
-    margin-top: 1rem;
     width: 40%;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 400 !important;
 }
 
@@ -83,8 +86,6 @@
 .hero__content h1 {
     font-size: 2.9rem !important;
     font-weight: 600 !important;
-    margin-top: 1rem !important;
-    margin-bottom: 2rem !important;
     color: var(--heading-color);
 }
 
@@ -181,4 +182,54 @@
     font-size: 1.1rem;
     margin-top: 0.7rem;
     color: var(--text-color);
+}
+
+@media screen and (max-width: 1200px) {
+    .hero__slide h1 {
+        width: 80% !important;
+        font-size: 2.3rem !important;
+    }
+    .hero__slide p {
+        width: 50% !important;
+        font-size: 1.4rem !important;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .hero__slide h1 {
+            width: 80% !important;
+            font-size:2.1rem !important;
+        }
+    
+    .hero__slide p {
+        width: 60% !important;
+        font-size: 1.2rem !important;
+    }
+    .custom__container {
+        height: 500px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hero__slide h1 {
+        width: 100% !important;
+        font-size: 2rem !important;
+    }
+    
+    .hero__slide p {
+        width: 70% !important;
+        font-size: 1.2rem !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .hero__slide h1 {
+        width: 100% !important;
+        font-size: 1.9rem !important;
+    }
+
+    .hero__slide p {
+        width: 80% !important;
+        font-size: 1.1rem !important;
+    }
 }

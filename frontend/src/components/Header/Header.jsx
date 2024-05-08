@@ -53,7 +53,7 @@ const Header = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('/api/v1/auth/logout', {
+            const response = await fetch(import.meta.env.VITE_BASE_URL + '/api/v1/auth/logout', {
                 method: 'GET',
                 credentials: 'include', // Send cookies with the request
             });

@@ -25,6 +25,10 @@ const ContactModal = () => {
       const resBody = await res.json();
       if (res.ok) {
         pushSuccess('Form submitted successfully!');
+        setFullName('');
+        setEmail('');
+        setPhoneNumber('');
+        setMessage('');
       } else {
         pushError('Failed to submit form. Please try again later');
       }
