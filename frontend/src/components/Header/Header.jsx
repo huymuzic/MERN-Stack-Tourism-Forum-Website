@@ -6,11 +6,9 @@ import './header.css'
 
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
-import { useUserInfo } from '../../utils/UserInforContext'
 
 import logo from '../../assets/images/logo.png' 
 import { pushError, pushSuccess } from '../Toast';
-import { set } from 'mongoose';
 
 const nav__links = [
     {
@@ -45,8 +43,6 @@ function toggleDropdown() {
 const Header = () => {
 
     const {user, setUser } = useUser();
-    const { info,setInfo, fetchInfo, updateInfo, deleteInfo, isLoading, error } = useUserInfo();
-    const check = info._id ? true : false;
     const navigate = useNavigate();
     const [successMsg, setSuccessMsg] = useState(false);
     const [errorMsg, setErrorMsg] = useState(false);

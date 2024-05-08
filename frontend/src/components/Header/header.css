@@ -51,12 +51,6 @@ nav button:focus-visible {
     margin-right: 0 !important;
 }
 
-.menu {
-    margin-bottom: 0;
-    gap: 4rem !important;
-    padding-left: 2rem !important;
-}
-
 .nav__item {
     text-decoration: none;
     font-weight: 500;
@@ -88,34 +82,10 @@ nav button:focus-visible {
     margin-right: auto;
 }
 
-.mobile__menu {
-    font-size: 1.3rem;
-    color: var(--heading-color);
-    visibility: hidden;
-}
-
 .nav__right {
     margin-bottom: .5rem;
     margin-left: auto;
     margin-right: 2rem;
-}
-
-#user-icon-container {
-    margin-left: auto !important
-}
-
-#dropdown-left {
-    width: 80%;
-}
-
-#dropdown-left li {
-    width: 100%;
-    margin: 0;
-}
-
-#dropdown-left a {
-    width: 100%;
-    line-height: 30px;
 }
 
 .sign__out:hover {
