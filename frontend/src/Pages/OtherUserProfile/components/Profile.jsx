@@ -12,7 +12,6 @@ const Profile = () => {
         const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         });
         const data = await response.json();

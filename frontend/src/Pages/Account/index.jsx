@@ -100,7 +100,11 @@ function UserAccount() {
       <div className='container mt-5'>
         <div className='row'>
           <div className='col-md-4 text-center'>
-            <img src={avatarUrl} alt='User Avatar' className='img-thumbnail rounded-circle mb-3' />
+          <img 
+              src={avatarUrl} 
+              alt='User Avatar' 
+              style={{border: '2px solid #ccc', borderRadius: '50%', width: '220px', height: '200px'}} 
+            />
           </div>
           <div className='col-md-8'>
             <h1>{info.name}</h1>

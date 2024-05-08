@@ -229,9 +229,6 @@ const Profile = () => {
             <div className='modal-content'>
               <div className='modal-header'>
                 <h5 className='modal-title'>Update Your Avatar</h5>
-                <button type='button' className='close' onClick={() => setAvatarModal(false)}>
-                  &times;
-                </button>
               </div>
               <div className='modal-body'>
                 <img src={tempAvatar} alt='Preview Avatar' className='img-thumbnail mb-3' />

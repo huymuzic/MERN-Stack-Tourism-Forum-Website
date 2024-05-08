@@ -32,7 +32,6 @@ const OtherUserProfile = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
             const data = await response.json();
