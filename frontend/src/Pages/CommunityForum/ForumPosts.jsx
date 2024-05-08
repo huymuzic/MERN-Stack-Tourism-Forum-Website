@@ -153,7 +153,6 @@ function Post() {
 
         fetchData();
     }, [id]);
-    console.log(post)
     return (
         <article className='offset-2 pt-5 col-10'>
             {post ? (
