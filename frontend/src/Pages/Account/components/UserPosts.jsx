@@ -23,7 +23,6 @@ function UserPosts() {
             });
             const result = await response.json();
             if (response.ok) {
-                console.log('User posts fetched:', result);
                 const filteredPosts = result.filter((post) => post.parentId === null);
                 return filteredPosts;
             } else {

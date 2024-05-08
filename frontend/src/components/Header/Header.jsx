@@ -44,7 +44,7 @@ function toggleDropdown() {
 const Header = () => {
 
     
-    const { handleShowModal } = useContactModal();
+    //const { handleShowModal } = useContactModal();
     const {user, setUser } = useUser();
     const baseURL = import.meta.env.VITE_BASE_URL;
     const navigate = useNavigate();
