@@ -70,7 +70,7 @@ function PostCard({ post, onToggleLike }) {
 
     return (
         <div className="card post-card">
-            <div className="card-body">
+            <div className="card-body"> 
                 <h5 className="card-title"><b>{post.title}</b></h5>
                 <p className="card-text">@{post.authorId.username}</p>
                 <p className="card-text">{new Date(post.createdAt).toLocaleString()}</p>

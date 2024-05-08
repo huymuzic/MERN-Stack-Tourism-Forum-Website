@@ -97,3 +97,15 @@
     align-items: center;
     gap: 10px;
 }
+/* Default styles */
+.card.post-card {
+    width: 40rem;
+  }
+  
+  /* Media query for mobile devices */
+  @media only screen and (max-width: 600px) {
+    .card.post-card {
+      width: 25rem;
+    }
+  }
+  

@@ -97,7 +97,7 @@ function UserPosts() {
     };
 
     return (
-        <div>
+        <div style={{ marginLeft: '10px', marginTop: "-20px" }}>
             {userPosts.length ? (
                 userPosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
             ) : (

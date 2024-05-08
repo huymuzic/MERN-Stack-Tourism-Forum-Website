@@ -98,7 +98,7 @@ function Favorites() {
     };
 
     return (
-        <div>
+        <div style={{ marginLeft: '10px', marginTop: "-20px" }}>
             {favoritePosts.length ? (
                 favoritePosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
             ) : (

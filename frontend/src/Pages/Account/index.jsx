@@ -117,113 +117,183 @@ function UserAccount() {
   const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
   return (
-    <>
-      <div className='container mt-5'>
-        <div className='row'>
-          <div className='col-md-4 text-center'>
-          <img 
-              src={avatarUrl} 
-              alt='User Avatar' 
-              style={{border: '2px solid #ccc', borderRadius: '50%', width: '220px', height: '200px'}} 
-            />
-          </div>
-          <div className='col-md-8'>
-            <h1>{user.name}</h1>
-            <p>@{user.username}</p>
-            <div className='mb-3'>
-              <span className='badge bg-primary'>Posts&Comments: {user.posts ? user.posts.length : 0}</span>
-              <span className='badge bg-success ms-2'>Favorites: {user.likes ? user.likes.length : 0}</span>
+<>
+  <div className="container mt-4" style={{ maxWidth: '1200px' }}>
+    {/* Profile Header */}
+    <div className="row justify-content-center mb-3">
+      <div className="col-md-10">
+        <div
+          className="card"
+          style={{
+            padding: '15px',
+            border: '2px solid #ccc',
+            borderRadius: '8px',
+            backgroundColor: 'white',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <div className="row align-items-center">
+            <div className="col-auto">
+              <img
+                src={avatarUrl}
+                alt="User Avatar"
+                style={{
+                  border: '3px solid #ccc',
+                  borderRadius: '50%',
+                  width: '150px',
+                  height: '150px',
+                }}
+              />
             </div>
-            <div className='nav nav-tabs'>
-              {Object.keys(NAV_ITEMS).map((item) => (
+            <div className="col">
+              <h2 style={{ fontWeight: 'bold', fontSize: '2rem' }}>{user.name}</h2>
+              <p style={{ fontSize: '1.25rem' }}>@{user.username}</p>
+              <div className="mb-3 d-flex">
+                <span className="badge bg-primary me-2" style={{ fontSize: '1.25rem', padding: '10px' }}>
+                  Posts: {user.posts ? user.posts.length : 0}
+                </span>
+                <span className="badge bg-success" style={{ fontSize: '1.25rem', padding: '10px' }}>
+                  Favorites: {user.likes ? user.likes.length : 0}
+                </span>
+              </div>
+            </div>
+          </div>
+          {/* Navigation tabs under the profile header */}
+          <ul className="nav nav-tabs mt-2">
+            {Object.keys(NAV_ITEMS).map((item) => (
+              <li key={item} className="nav-item">
                 <a
-                  key={item}
-                  className={`nav-item nav-link ${activeNav === item ? 'active' : ''}`}
-                  href='#'
+                  className={`nav-link ${activeNav === item ? 'active' : ''}`}
+                  href="#"
                   onClick={(e) => handleNavClick(e, item)}
+                  style={{ fontSize: '1.2rem', padding: '10px 15px' }}
                 >
                   {item}
                 </a>
-              ))}
-            </div>
-          </div>
+              </li>
+            ))}
+          </ul>
         </div>
+      </div>
+    </div>
 
-        <div className='row mt-3 align-items-start'>
-          <div className='col-md-12'>
-            <div className='card'>
-              <div className='card-body'>
-                <h5 className='card-title'>Info</h5>
-                <p className='card-text'>Joined: {formattedDate}</p>
-                <p className='card-text'>Role: {user.role}</p>
-                <button
-                  className={`btn ${user.status == 'active' ? 'btn-danger' : 'btn-success'}`}
-                  onClick={() => setConfirmActive(true)}
-                >
-                  {user.status == 'active' ? 'Inactivate Account' : 'Activate Account'}
-                </button>
-
-                {user.status == 'active' && (
-                  <button className='btn btn-danger' onClick={handleDeleteInfo}>Delete Account</button>
-                )}
+    {/* Info and My Profile Components */}
+    <div className="row justify-content-center">
+      <div className="col-md-10" style={{ display: 'flex'}}>
+        {/* Info Component */}
+        <div className="col-md-2" style={{ marginRight: '10px' }}>
+          <div className="card mb-3">
+            <div className="card-body text-center">
+              <h5
+                className="card-title"
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: '1.4rem',
+                  position: 'relative',
+                  left: '-20px',
+                }}
+              >
+                Info
+              </h5>
+              <div className="d-flex flex-column align-items-center">
+                <p className="mb-1" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Joined:</p>
+                <p className="mb-2" style={{ fontStyle: 'italic', fontSize: '1.1rem' }}>{formattedDate}</p>
+                <p className="mb-1" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Role:</p>
+                <p className="mb-1" style={{ fontSize: '1.1rem' }}>{user.role}</p>
               </div>
             </div>
           </div>
 
-          <div className='col-md-12 mt-3'>
-            {user.status == 'active' ? (
-              <ActiveComponent />
-            ) : (
-              <p>Your Account is inactive right now! Please reactivate it for any action.</p>
+          {/* Inactivate and Delete Buttons */}
+          <div className="d-grid gap-2">
+            <button
+              className={`btn ${user.status === 'active' ? 'btn-danger' : 'btn-success'}`}
+              style={{ fontSize: '0.9rem', width: '100%', padding: '6px' }}
+              onClick={() => setConfirmActive(true)}
+            >
+              {user.status === 'active' ? 'Inactivate Account' : 'Activate Account'}
+            </button>
+            {user.status === 'active' && (
+              <button
+                className="btn btn-danger"
+                style={{ fontSize: '0.9rem', width: '100%', padding: '6px' }}
+                onClick={handleDeleteInfo}
+              >
+                Delete Account
+              </button>
             )}
           </div>
         </div>
 
-        {confirmActive && (
-          <div className='modal show' tabIndex='-1' style={{ display: 'block', background: 'rgba(0, 0, 0, 0.5)' }}>
-            <div className='modal-dialog'>
-              <div className='modal-content'>
-                <div className='modal-header'>
-                  <h5 className='modal-title'>Please Provide Your Password</h5>
-                  <button
-                    type='button'
-                    className='close'
-                    data-dismiss='modal'
-                    aria-label='Close'
-                    onClick={handleCancel}
-                  >
-                    <span aria-hidden='true'>&times;</span>
-                  </button>
-                </div>
-                <div className='modal-body'>
-                  <input
-                    type='password'
-                    className='form-control'
-                    placeholder='Enter current password'
-                    value={inputPassword}
-                    onChange={(e) => setInputPassword(e.target.value)}
-                  />
-                </div>
-                <div className='modal-footer'>
-                  <button type='button' className='btn btn-primary' onClick={handleVerifyPassword}>Submit</button>
-                  <button type='button' className='btn btn-secondary' onClick={handleCancel}>Cancel</button>
-                </div>
+        {/* ActiveComponent or Profile Component */}
+        <div className="col-md-8" style={{ marginLeft: '10px', marginTop: "0px" }}>
+          {user.status === 'active' ? (
+            <ActiveComponent />
+          ) : (
+            <div className="card mb-3">
+              <div className="card-body text-center">
+                <h5 className="card-title">Account Inactive</h5>
+                <img
+                  src="https://img.icons8.com/ios-filled/100/000000/robot-2.png"
+                  alt="Robot Icon"
+                  style={{ width: '80px', marginBottom: '10px' }}
+                />
+                <p>Your Account is inactive right now! Please reactivate it for any action.</p>
               </div>
             </div>
-          </div>
-        )}
-
-        {announceConfirm && (
-          <div className='notification-card'>
-            <div className='checkmark-container'>
-              <i className='fas fa-check'></i>
-            </div>
-            <h3>Your account is {user.active ? 'active' : 'inactive'}!</h3>
-            <button onClick={() => setAnnounceConfirm(false)} className='btn btn-success'>Confirm</button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </>
+    </div>
+
+    {/* Modal for Password Confirmation */}
+    {confirmActive && (
+      <div className="modal show" tabIndex="-1" style={{ display: 'block', background: 'rgba(0, 0, 0, 0.5)' }}>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Please Provide Your Password</h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                onClick={handleCancel}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Enter current password"
+                value={inputPassword}
+                onChange={(e) => setInputPassword(e.target.value)}
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onClick={handleVerifyPassword}>Submit</button>
+              <button type="button" class="btn btn-secondary" onClick={handleCancel}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Notification Card */}
+    {announceConfirm && (
+      <div className="notification-card">
+        <div className="checkmark-container">
+          <i className="fas fa-check"></i>
+        </div>
+        <h3>Your account is {user.active ? 'active' : 'inactive'}!</h3>
+        <button onClick={() => setAnnounceConfirm(false)} class="btn btn-success">Confirm</button>
+      </div>
+    )}
+  </div>
+</>
+
   );
 }
 
