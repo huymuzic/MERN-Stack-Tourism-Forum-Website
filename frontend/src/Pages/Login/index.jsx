@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './index.css'
 
+
 //context
 import { useUser } from '../../utils/UserContext';
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -16,6 +17,11 @@ function Login() {
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useUser();
+
+    const [successMsg, setSuccessMsg] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(false);
+    const [callAPI, setCallAPI] = useState(false);
+
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
     };
@@ -33,15 +39,27 @@ function Login() {
             const responseBody = await response.json();
         if (!response.ok) {
                 setError('pwd', { type: 'server', message: responseBody.message });
+                if(!callAPI) {
+                    pushError('Something went wrong. Please try again')
+                    setCallAPI(true); 
+                }   
             } else {
                 localStorage.setItem('accessToken', responseBody.token); 
                 setUser(responseBody.data._id);
                 navigate('/');
                 window.location.reload();
+                if(!successMsg) {
+                    pushSuccess(`Login successfully!`)
+                    setSuccessMsg(true);
+                }
             }
 
         } catch (error) {
             console.error('Error:', error);
+            if(!errorMsg) {
+                pushError('Failed to login. Please try again')
+                setErrorMsg(true);
+            }
         }
     }
 

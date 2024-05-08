@@ -9,17 +9,17 @@ const serviceData = [
     {
         imgUrl: tourGuideImg,
         title: 'Best Tour Guide',
-        desc: 'lorem',
+        desc: '69k+ successful trips',
     },
     {
         imgUrl: customizationImg,
         title: 'Customization',
-        desc: 'lorem',
+        desc: 'Multiple color themes',
     },
     {
         imgUrl: cancellationImg,
-        title: 'Cancellation',
-        desc: 'lorem',
+        title: 'Free cancellation',
+        desc: 'Stay flexible on your trip',
     },
 ]
 

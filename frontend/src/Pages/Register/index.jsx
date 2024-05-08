@@ -20,6 +20,8 @@ function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfPassword, setShowConfPassword] = useState(false);
     const recaptchaRef = useRef(null); 
+    const [successMsg, setSuccessMsg] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(false);
 
     const togglePassword = (e) => {
         setShowPassword(!showPassword);
@@ -42,7 +44,7 @@ function Register() {
         const recaptchaToken = recaptchaRef.current.getValue();
 
         if (!recaptchaToken) {
-            console.error("Please complete the reCAPTCHA challenge");
+            pushError("Please complete the reCAPTCHA challenge");
             return;
         }
 
@@ -60,7 +62,6 @@ function Register() {
 
             const responseBody = await response.json();
             const responseMsg = responseBody.message;
-            console.log('Response:', responseBody);
             if (!response.ok) {
                 if (responseMsg === 'User already exists') {
                     setError('username', { type: 'server', message: 'This username is not available.' });
@@ -70,9 +71,18 @@ function Register() {
             } else {
                 navigate('/login');
                 console.log('Success:', responseMsg);
+                if(!successMsg) {
+                    pushSuccess('Registration successful!');
+                    pushSuccess('Please login to continue');
+                    setSuccessMsg(true);
+                }    
             }
         } catch (error) {
             console.error('Error:', error);
+            if(!errorMsg) {
+                pushError('Failed to register. Please try again')
+                setErrorMsg(true);
+            }
         }
     }
 

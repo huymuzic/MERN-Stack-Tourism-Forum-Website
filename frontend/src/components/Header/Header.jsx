@@ -1,15 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import { Container, Button} from 'react-bootstrap'
 import './header.css'
 
 import { useNavigate } from 'react-router-dom';
-import { useContactModal } from '../../Pages/Home/components/Contact/ContactModalContext';
 import { useUser } from '../../utils/UserContext';
 import { getAvatarUrl } from '../../utils/getAvar.js';
 import logo from '../../assets/images/logo.png' 
-
+import { pushError, pushSuccess } from '../Toast';
+import { set } from 'mongoose';
 
 const nav__links = [
     {
@@ -23,10 +23,6 @@ const nav__links = [
     {
         path:'/tours',
         display:'Tours'
-    },
-    {
-        path:'',
-        display:'Contact'
     }
 ]
 
@@ -46,15 +42,20 @@ function toggleDropdown() {
 
 
 const Header = () => {
+
     
     const { handleShowModal } = useContactModal();
     const {user, setUser } = useUser();
     const baseURL = import.meta.env.VITE_BASE_URL;
     const navigate = useNavigate();
     const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
+
+    const [successMsg, setSuccessMsg] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(false);
+
     const handleLogout = async () => {
         try {
-            const response = await fetch(`${baseURL}/api/v1/auth/logout`, {
+            const response = await fetch('/api/v1/auth/logout', {
                 method: 'GET',
                 credentials: 'include', // Send cookies with the request
             });
@@ -62,13 +63,16 @@ const Header = () => {
             console.log('Logout response:', response); // Log the response
             
             if (response.ok) {
-                console.log('Logout successful.');
+                pushSuccess('Logged out successfully');
+                setSuccessMsg(true);
                  // Clear token in local storage on the browser
                 localStorage.removeItem('accessToken');
                 setUser(null);
                 navigate('/');
             } else {
                 // Handle unsuccessful logout
+                pushError('Failed to log out');
+                setErrorMsg(true);
                 const responseBody = await response.json();
                 console.error('Failed to log out', responseBody.message);
             }
@@ -85,7 +89,7 @@ const Header = () => {
 
                     { /* LOGO SECTION STARTS */ }
                     <Link to="/" className='navbar-brand l'>
-                        <img alt='Website Logo' height='150' width='150' src={logo}>
+                        <img alt='Website Logo' height='100' width='100' src={logo}>
                         </img>
                      </Link>
                     { /* LOGO SECTION ENDS */ }
@@ -101,18 +105,14 @@ const Header = () => {
                     <div className='collapse navbar-collapse justify-content-end' id="navbarSupportedContent">
                         <ul className='navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end text-center margin'>
                             {nav__links.map((item, index) => (
-                                <li className='nav__item' key={index}>
-                                    {item.path ? (                                    
+                                <li className='nav__item' key={index}>                                 
                                     <NavLink to={item.path} className={navClass => navClass.isActive ? "active__link" : ""} >{item.display}</NavLink>
-                                    ) : (
-                                    <span id="contact" className="nav__link" onClick={handleShowModal}>{item.display}</span>
-                                    )}
                                 </li>
                             ))}
                         </ul>
                     </div>
                     {user !== null ? (
-                        <li className="nav-item dropdown no-bullet mb-4">
+                        <li className="nav-item dropdown no-bullet mb-4 nm">
                           <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
                                 {user?.avatar ? (
                                     <img

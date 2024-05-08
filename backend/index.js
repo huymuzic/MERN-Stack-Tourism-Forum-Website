@@ -8,6 +8,7 @@ import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
 import forumRoute from "./routes/forum.js";
 import postRoute from "./routes/post.js";
+import formRoute from "./routes/form.js";
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -39,6 +40,7 @@ app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/forum", forumRoute);
 app.use("/api/v1/posts", postRoute);
+app.use("/api/v1/form", formRoute);
 
 // testing
 app.get("/", (req, res) => {
@@ -59,4 +61,3 @@ app.listen(port, () => {
   connect();
   console.log(`Server is running on port ${port}`);
 });
-

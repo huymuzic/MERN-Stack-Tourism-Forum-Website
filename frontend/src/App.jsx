@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css'
 import Layout from './components/Layout/Layout';
-import { jwtDecode } from "jwt-decode";
 import { useUser } from './utils/UserContext';
+import { pushSuccess } from './components/Toast';
+import { set } from 'mongoose';
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 function App() {
 
-  const baseURL = import.meta.env.VITE_BASE_URL;
-  console.log(baseURL);
   const { user,setUser } = useUser();
+  const [isUserSet, setIsUserSet] = useState(false);
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
     const token = localStorage.getItem('accessToken');
     if (token) {
-      const decoded = jwtDecode(token);
       const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
         method: 'GET',
         credentials: 'include',
@@ -23,11 +24,14 @@ useEffect(() => {
         },
       });
       const responseBody = await response.json();
-      setUser(response.ok ? { id: decoded.id, ...responseBody.user } : null);
+
+      setUser(response.ok ? { ...responseBody.user } : null);   
+      fetchInfo(responseBody.user._id);
+
     } else {
       setUser(null);
     }
-   } catch (error) {
+  } catch (error) {
       console.error('Error checking login status:', error);
     }
   };
@@ -36,8 +40,16 @@ useEffect(() => {
 }, [setUser]);
 
   useEffect(() => {
-    console.log('Updated user:', user);
+    const handlePushSuccess = async () => {
+      if (user) {
+        await new Promise(resolve => setTimeout(resolve, 0));
+        pushSuccess(`Welcome back, ${user.name}!`);
+      }
+    };
+
+    handlePushSuccess();
   }, [user]);
+
 
   return (
       <Layout />
