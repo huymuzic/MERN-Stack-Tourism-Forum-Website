@@ -21,7 +21,6 @@ export const verifyToken = async (req, res, next) => {
         } else {
           resolve(decodedToken);
           console.log("Token is valid");
-          console.log("Decoded token:", decodedToken);
           console.log("User logged in successfully");
         }
       });

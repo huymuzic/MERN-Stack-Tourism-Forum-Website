@@ -10,7 +10,7 @@ import tourImg07 from "../images/tour-img07.jpg";
 const tours = [
   {
     id: "01",
-    title: "Westminister Bridge",
+    title: "Westminister Bridge, London",
     city: "London",
     distance: 300,
     price: 99,
@@ -32,7 +32,7 @@ const tours = [
   },
   {
     id: "02",
-    title: "Bali, Indonesia",
+    title: "Bali Island, Indonesia",
     city: "Indonesia",
     distance: 400,
     price: 99,
@@ -122,7 +122,7 @@ const tours = [
   },
   {
     id: "07",
-    title: "Holmen Lofoten",
+    title: "Holmen Lofoten, France",
     city: "France",
     distance: 500,
     price: 99,

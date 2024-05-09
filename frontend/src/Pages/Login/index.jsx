@@ -16,8 +16,10 @@ function Login() {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
-    const { user, setUser } = useUser();
 
+
+
+    const { user, setUser } = useUser();
     const [successMsg, setSuccessMsg] = useState(false);
     const [errorMsg, setErrorMsg] = useState(false);
     const [callAPI, setCallAPI] = useState(false);
