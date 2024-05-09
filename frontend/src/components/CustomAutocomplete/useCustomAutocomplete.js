@@ -34,8 +34,6 @@ export function useCustomAutocomplete(props) {
             setState(() => {
                 const searchText = _props?.search?.content || '';
                 const _state = {
-                    hasNextPage: false,
-                    isNextPageLoading: false,
                     paging: {
                         page: 1,
                         pageSize: 100000,
@@ -87,7 +85,6 @@ export function useCustomAutocomplete(props) {
                         ...res,
                         rows: _props?.page === 1 ? res.rows : prev.paging.rows.concat(res.rows),
                     },
-                    hasNextPage: res.page < res.totalPages,
                 }));
             } catch (error) {
                 /* empty */
