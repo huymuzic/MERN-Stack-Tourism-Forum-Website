@@ -11,11 +11,11 @@ const tours = [
   {
     id: "01",
     title: "Westminister Bridge, London",
-    city: "London",
+    city: "London, England",
     distance: 300,
     price: 99,
-    maxGroupSize: 10,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "5 days",
     reviews: [
       {
         name: "jhon doe",
