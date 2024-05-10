@@ -3,6 +3,7 @@ import AutocompleteOption from './AutoCompleteOption';
 import PropTypes from 'prop-types';
 import debounce from '../../helper';
 import { FloatingLabel, Form } from 'react-bootstrap';
+import './index.css'
 
 const isEqual = (optionA, optionB) => {
     return optionA === optionB;
@@ -14,7 +15,7 @@ function activeStyles(props, active) {
 
 function CustomAutocomplete(props) {
     const [open, setOpen] = useState(false);
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(props.placeholder);
     const [searchLoading, setSearchLoading] = useState(false);
 
     const { isRequired = false } = props;
@@ -32,14 +33,14 @@ function CustomAutocomplete(props) {
     };
 
     useEffect(() => {
-        setInputValue(props.value ? props.getOptionLabel(props.value) : '');
+        setInputValue(props.value ? props.getOptionLabel(props.value) : props.placeholder || "");
     }, [props.value]);
 
     useEffect(() => {
         if (open) {
             setInputValue('');
         } else {
-            setInputValue(props.value ? props.getOptionLabel(props.value) : '');
+            setInputValue(props.value ? props.getOptionLabel(props.value) : props.placeholder || "");
         }
     }, [open]);
 
@@ -83,6 +84,7 @@ function CustomAutocomplete(props) {
                     label={props.label}
                     className={open ? 'focused' : ''}
                     required={isRequired}
+                    id='autocomplete-input'
                 >
                     <Form.Control
                         type="text"
@@ -153,7 +155,7 @@ function CustomAutocomplete(props) {
                 )}
             </div>
 
-        </div>
+        </div >
     );
 }
 
