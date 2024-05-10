@@ -141,7 +141,7 @@ export const toggleLikePost = async (req, res) => {
             .populate("authorId", "username email")
             .exec();
 
-        res.json({ post, favoritePosts });
+        res.json({ post, favoritePosts, favorPostIds });
     } catch (err) {
         console.error("Error toggling like on post:", err);
         res.status(500).json({ message: err.message });

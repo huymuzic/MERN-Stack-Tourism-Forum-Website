@@ -111,7 +111,7 @@ const OtherUserProfile = () => {
                     <img src={avatarUrl} alt="User Avatar" className="img-thumbnail rounded-circle mb-3" />
                 </div>
                 <div className="col-md-8">
-                    <h1>{otherUserInfo.name}</h1>
+                    <h1>{otherUserInfo.name}  {otherUserInfo?.role == 'admin'&&<i className="fa-sharp fa-solid fa-shield-halved"></i>}</h1>
                     <p>@{otherUserInfo.username}</p>
                     <div className="mb-3">
                         <span className="badge bg-primary">Posts&Comments: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</span>
@@ -138,7 +138,7 @@ const OtherUserProfile = () => {
                         <div className="card-body">
                             <h5 className="card-title">Info</h5>
                             <p className="card-text">Joined: {formattedDate}</p>
-                            <p className="card-text">Role: {otherUserInfo.role}</p>
+                            <p className="card-text">Role: {otherUserInfo?.role == 'admin'&&<i className="fa-sharp fa-solid fa-shield-halved"></i>} {otherUserInfo.role}</p>
                             {(user?.role === 'admin' || user?._id === otherUserInfo?._id) && (
                                 <>
                                     <button

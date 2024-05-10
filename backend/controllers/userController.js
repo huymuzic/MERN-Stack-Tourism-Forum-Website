@@ -295,29 +295,7 @@ export const uploadAvatar = async (req, res) => {
 //get Ava
 export const getAvatar = async (req, res) => {
   const { filename } = req.params;
-  /*try {
-   
-    console.log("test")
-    gfs.find({ filename: filename }).toArray((err, files) => {
-      if (err) {
-        console.error('Error querying GridFS:', err);
-        return res.status(500).json({ message: 'Server Error', error: err.message });
-      }
-
-      if (!files || files.length === 0) {
-        console.log(`No files found with filename: ${filename}`);
-        return res.status(404).json({ message: 'No files found' });
-      }
-      console.log(`Streaming file: ${filename}`); */
-       gfs.openDownloadStreamByName(filename).pipe(res) /*.on('error', (error) => {
-        console.error('Error streaming file:', error);
-        res.status(500).json({ message: 'Server Error', error: error.message });
-      });
-    });
-  } catch (error) {
-    console.error('Unexpected server error:', error);
-    res.status(500).json({ message: 'Server Error', error: error.message });
-  } */
+  gfs.openDownloadStreamByName(filename).pipe(res) 
 };
 // get List User
 export const getListUser = async (req, res) => {
