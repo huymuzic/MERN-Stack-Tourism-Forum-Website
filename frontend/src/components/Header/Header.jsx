@@ -43,6 +43,7 @@ function toggleDropdown() {
 const Header = () => {
 
     const {user, setUser } = useUser();
+    const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
     const navigate = useNavigate();
     const [successMsg, setSuccessMsg] = useState(false);
     const [errorMsg, setErrorMsg] = useState(false);

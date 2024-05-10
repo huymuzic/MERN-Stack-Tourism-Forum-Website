@@ -55,6 +55,9 @@ textarea {
     outline: none;
     border: 0;
 }
+.contact__input input {
+    height: 40px;
+}
 
 textarea {
     height: 100px;
