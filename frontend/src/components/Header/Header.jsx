@@ -141,7 +141,7 @@ const Header = () => {
                     <div className='nav__right d-flex align-items-center gap-4' >
                         <div className='nav__btns d-flex align-items-center gap-4' >
                             <Button className='secondary__btn' style={{backgroundColor: 'transparent !important'}}><Link to='/login'>Login</Link></Button>
-                            <Button className='primary__btn' style={{backgroundColor: 'var(--secondary-color) !important'}}><Link to='/register'>Register</Link></Button>    
+                            <Button className='primary__btn' style={{backgroundColor: 'var(--secondary-color) !important', padding: '0.4rem 1.5rem !important'}}><Link to='/register'>Register</Link></Button>    
                         </div>                     
                     </div>                     
                     )}    

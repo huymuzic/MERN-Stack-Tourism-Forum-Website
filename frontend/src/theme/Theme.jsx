@@ -6,53 +6,55 @@ import tinycolor from "tinycolor2";
 function createCustomTheme(color) {
   const theme = `
       .btn-primary {
-        background-color: ${color.primary} !important;
-        border: none !important;
-        color: ${color.white} !important;
+        background-color: ${color.primary};
+        border: none;
+        color: ${color.white};
       }
       .btn-primary:hover {
-        background-color: ${color.darkPrimary} !important;
+        background-color: ${color.darkPrimary};
       }
       .btn-secondary {
-        background-color: ${color.grey300} !important;
-        border: none !important;
-        color: ${color.textPrimary} !important;
+        background-color: ${color.grey300};
+        border: none ;
+        color: ${color.textPrimary};
       }
       .btn-secondary:hover {
-        background-color: ${color.grey400} !important;
+        background-color: ${color.grey400};
       }
       .btn-danger {
-        background-color: ${color.danger} !important;
-        border: none !important;
-        color: ${color.white} !important;
+        background-color: ${color.danger};
+        border: none ;
+        color: ${color.white};
       }
       .btn-danger:hover {
-        background-color: ${color.darkDanger} !important;
+        background-color: ${color.darkDanger} ;
       }
       .btn-outline-primary {
-        border-color: ${color.primary} !important;
-        color: ${color.primary} !important;
+        border-color: ${color.primary} ;
+        color: ${color.primary} ;
       }
       .btn-outline-primary:hover {
-        background-color: ${color.primary} !important;
-        color: ${color.white} !important
+        background-color: ${color.primary} ;
+        color: ${color.white} ;
+        border-color: ${color.primary} !important ;
       }
       .btn-outline-danger {
-        border-color: ${color.danger} !important;
-        color: ${color.danger} !important;
+        border-color: ${color.danger} ;
+        color: ${color.danger} ;
       }
       .btn-outline-danger:hover {
-        background-color: ${color.danger} !important;
-        color: ${color.white} !important
+        background-color: ${color.danger} ;
+        color: ${color.white} ;
+        border-color: ${color.danger} 
       }
       .form-control:focus {
-        border-color: ${color.primary} !important;
-        box-shadow: 0 0 0 0.25rem ${tinycolor(color.primary).lighten(30).toString()} !important;
+        border-color: ${color.primary} ;
+        box-shadow: 0 0 0 0.25rem ${tinycolor(color.primary).lighten(30).toString()} ;
       }
       
       .form-select:focus {
-        border-color: ${color.primary} !important;
-        box-shadow: 0 0 0 0.25rem ${tinycolor(color.primary).lighten(30).toString()} !important;
+        border-color: ${color.primary} ;
+        box-shadow: 0 0 0 0.25rem ${tinycolor(color.primary).lighten(30).toString()} ;
       }
       
       `;
