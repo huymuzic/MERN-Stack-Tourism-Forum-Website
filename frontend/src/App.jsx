@@ -3,10 +3,12 @@ import './App.css'
 import Layout from './components/Layout/Layout';
 import { useUser } from './utils/UserContext';
 import { pushSuccess } from './components/Toast';
+import { useTheme } from './theme/Theme';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function App() {
+  const { theme } = useTheme()
   const { user, setUser } = useUser();
   const [isFirstLogin, setIsFirstLogin] = useState(true);
 
@@ -49,8 +51,14 @@ function App() {
   }, [user, isFirstLogin]);
 
   return (
-    <Layout />
+    <>
+      <style>
+        {theme}
+      </style>
+      <Layout />
+    </>
   );
+
 }
 
 export default App;

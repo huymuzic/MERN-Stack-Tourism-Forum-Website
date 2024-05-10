@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import AutocompleteOption from './AutoCompleteOption';
 import PropTypes from 'prop-types';
 import debounce from '../../helper';
+import { FloatingLabel, Form } from 'react-bootstrap';
 
 const isEqual = (optionA, optionB) => {
     return optionA === optionB;
@@ -25,10 +26,6 @@ function CustomAutocomplete(props) {
         [props.handleChangeSearch],
     );
 
-    // const toggle = () => {
-    //     setOpen(!open);
-    // };
-
     const handleClose = () => {
         setOpen(false);
         handleChangeSearch('');
@@ -40,16 +37,9 @@ function CustomAutocomplete(props) {
 
     useEffect(() => {
         if (open) {
-            // if (searchValue) {
-            //     props.handleChangeSearch?.('');
-            //     setSearchValue('');
-            // }
+            setInputValue('');
         } else {
             setInputValue(props.value ? props.getOptionLabel(props.value) : '');
-            // if (searchValue) {
-            //     props.handleChangeSearch?.('');
-            //     setSearchValue('');
-            // }
         }
     }, [open]);
 
@@ -68,7 +58,6 @@ function CustomAutocomplete(props) {
     };
 
     const refZ = useRef(null);
-    const labelRef = useRef(null);
     const inputContainerRef = useRef(null);
 
     useEffect(() => {
@@ -85,45 +74,31 @@ function CustomAutocomplete(props) {
         };
     }, []);
 
-    useEffect(() => {
-        if (open) {
-            labelRef.current?.classList.add('focused');
-            inputContainerRef.current?.classList.add('focused');
-        } else {
-            labelRef.current?.classList.remove('focused');
-            inputContainerRef.current?.classList.remove('focused');
-        }
-    }, [open]);
-
     return (
         <div ref={refZ} style={{ width: props.wrapperWidth ?? 'auto' }}>
             <div className="position-relative">
-                <div className="position-relative">
-
-                    <label ref={labelRef} htmlFor="autocompleteInput">
-                        {props.label}
-                    </label>
-                    <div className="input-group">
-                        <input
-                            id="autocompleteInput"
-                            type="text"
-                            className="form-control"
-                            required={isRequired}
-                            value={inputValue}
-                            disabled={props.loading || props.disabled || props.readOnly}
-                            onFocus={(e) => {
-                                if (props.loading || props.disabled || props.readOnly) return;
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setOpen(true);
-                            }}
-                            autoComplete="off"
-                            onChange={handleChangeText}
-                            placeholder={props.placeholder || 'All options'}
-                            ref={inputContainerRef}
-                        />
-                    </div>
-                </div>
+                <FloatingLabel
+                    ref={inputContainerRef}
+                    controlId="autocompleteInput"
+                    label={props.label}
+                    className={open ? 'focused' : ''}
+                    required={isRequired}
+                >
+                    <Form.Control
+                        type="text"
+                        value={inputValue}
+                        onChange={handleChangeText}
+                        onFocus={(e) => {
+                            if (props.loading || props.disabled || props.readOnly) return;
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setOpen(true);
+                        }}
+                        autoComplete="off"
+                        placeholder={props.placeholder || 'All options'}
+                        disabled={props.loading || props.disabled || props.readOnly}
+                    />
+                </FloatingLabel>
 
                 {open && (
                     <div className="position-absolute top-100 start-0 w-100 mt-1" style={{ zIndex: 10 }}>
@@ -172,15 +147,6 @@ function CustomAutocomplete(props) {
                                         />
                                     ))}
 
-                                {/* <div
-                                    className="d-flex justify-content-center"
-                                    style={activeStyles(
-                                        { display: 'none' },
-                                        !searchLoading && !items.length,
-                                    )}
-                                >
-                                    <p color="grayText">No options</p>
-                                </div> */}
                             </div>
                         </div>
                     </div>

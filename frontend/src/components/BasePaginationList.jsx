@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
 import CustomPagination from './CustomPagination';
+import { useTheme } from '../theme/Theme';
+import CircularProgress from './CircularProgress';
 function BasePaginationList({ list = [], loading, renderItem, totalPages, page, onChangePage, titleTotal, totalItems, renderEmpty }) {
+    const { color } = useTheme()
     return (
         <div style={{ overflowY: "auto" }}>
             <div className="container">
                 {loading ? (
                     <div className="row justify-content-center">
                         <div className="col-auto">
-                            <div className="spinner-border  text-warning mt-3" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
+                            <CircularProgress/>
                         </div>
                     </div>
                 ) : !list.length ? (
@@ -24,7 +25,7 @@ function BasePaginationList({ list = [], loading, renderItem, totalPages, page, 
                             {titleTotal && (
                                 <div className="row mb-2">
                                     <div className="col text-end">
-                                        <span style={{ color: 'var(--primary-color)' }}>{titleTotal}: {totalItems || 0}</span>
+                                        <span style={{ color: color.primary }}>{titleTotal}: {totalItems || 0}</span>
                                     </div>
                                 </div>
                             )}
@@ -50,7 +51,7 @@ function BasePaginationList({ list = [], loading, renderItem, totalPages, page, 
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
 BasePaginationList.propTypes = {
