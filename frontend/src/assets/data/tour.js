@@ -36,8 +36,8 @@ const tours = [
     city: "Indonesia",
     distance: 400,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "4 days",
     reviews: [
       {
         name: "jhon doe",
@@ -54,8 +54,8 @@ const tours = [
     city: "Thailand",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "3 days",
     reviews: [
       {
         name: "jhon doe",
@@ -72,8 +72,8 @@ const tours = [
     city: "Thailand",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "4 days",
     reviews: [
       {
         name: "jhon doe",
@@ -90,8 +90,8 @@ const tours = [
     city: "Indonesia",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "6 days",
     reviews: [
       {
         name: "jhon doe",
@@ -108,8 +108,8 @@ const tours = [
     city: "Japan",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "3 days",
     reviews: [
       {
         name: "jhon doe",
@@ -126,8 +126,8 @@ const tours = [
     city: "France",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "4 days",
     reviews: [],
     avgRating: 4.5,
     photo: tourImg07,
@@ -139,8 +139,8 @@ const tours = [
     city: "Thailand",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "3 days",
     reviews: [],
     avgRating: 4.5,
     photo: tourImg,
