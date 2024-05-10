@@ -41,7 +41,7 @@ function Login() {
                 }   
             } else {
                 localStorage.setItem('accessToken', responseBody.token); 
-                fetchInfo(responseBody.data._id);
+                setUser(responseBody.data._id);
                 navigate('/');
                 window.location.reload();
                 if(!successMsg) {

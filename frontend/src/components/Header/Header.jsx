@@ -6,7 +6,7 @@ import './header.css'
 
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
-
+import { getAvatarUrl } from '../../utils/getAvar.js';
 import logo from '../../assets/images/logo.png' 
 import { pushError, pushSuccess } from '../Toast';
 
@@ -42,6 +42,8 @@ function toggleDropdown() {
 
 const Header = () => {
 
+    
+    //const { handleShowModal } = useContactModal();
     const {user, setUser } = useUser();
     const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
     const navigate = useNavigate();
@@ -111,9 +113,9 @@ const Header = () => {
                     {user !== null ? (
                         <li className="nav-item dropdown no-bullet mb-4 nm">
                           <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
-                                {user.avatar ? (
+                                {user?.avatar ? (
                                     <img
-                                        src={user.avatar}
+                                        src={avatarUrl}
                                         alt="User Avatar"
                                         className="rounded-circle"
                                         style={{ width: "50px", height: "50px", objectFit: "cover" }}

@@ -8,16 +8,12 @@ import 'remixicon/fonts/remixicon.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { UserProvider } from './utils/UserContext';
 import { BrowserRouter } from 'react-router-dom'
-import {UserInfoProvider } from './utils/UserInforContext'
-import {PostsProvider } from "./utils/PostsContext";
 //import { ToastConfig } from './components/Toast/ToastConfig.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <UserInfoProvider>
-          <PostsProvider>     
             <App />
             <ToastContainer
               autoClose={3000}
@@ -28,8 +24,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               pauseOnFocusLoss={false}
               style={{ fontFamily: 'inherit' }}
             />
-          </PostsProvider>
-        </UserInfoProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,

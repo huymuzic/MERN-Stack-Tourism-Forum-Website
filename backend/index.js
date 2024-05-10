@@ -18,18 +18,17 @@ const corsOptions = {
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
-
+const mongoURI = process.env.MONGO_URI 
 // database connection
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-
-    console.log("MongoDB is connected");
+    await mongoose.connect(mongoURI, {
+    });
+    console.log('MongoDB is connected');
   } catch (err) {
-    console.error("MongoDB database connection failed", err.message);
+    console.error('MongoDB connection error:', err.message);
   }
 };
-
 // middleware
 app.use(express.json());
 app.use(cors(corsOptions));

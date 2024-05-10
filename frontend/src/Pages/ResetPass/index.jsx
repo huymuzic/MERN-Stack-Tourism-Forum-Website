@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NotificationCard from './NotificationCard';
+import { getAvatarUrl } from '../../utils/getAvar.js';
 
 const ResetPassword = () => {
     const [email, setEmail] = useState('');
@@ -80,7 +81,7 @@ const ResetPassword = () => {
     const closeNotification = () => {
         setNotification({ show: false, message: '', type: '' });
     };
-
+    const avatarUrl = getAvatarUrl(userData?.avatar, baseURL);
     return (
         <div className="container mt-5">
             {message && <p>{message}</p>}
@@ -106,7 +107,7 @@ const ResetPassword = () => {
                     {userData && (
                         <div>
                             <p>This is your account:</p>
-                            <img src={userData.avatar} alt="Avatar" style={{ width: '50px', borderRadius: '50%' }} />
+                            <img src={avatarUrl} alt="Avatar" style={{ width: '50px', borderRadius: '50%' }} />
                             <p>Name: {userData.username}</p>
                         </div>
                     )}

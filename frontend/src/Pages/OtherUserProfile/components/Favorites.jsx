@@ -1,15 +1,15 @@
 // components/Favorites/Favorites.js
 import { useEffect, useState } from "react";
-import { useUser} from "../../../utils/UserContext";
+import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
+import { useUser } from '../../../utils/UserContext';
 
 function Favorites() {
 
-    const { user,setUser } = useUser();
     const [favoritePosts, setFavoritePosts] = useState([]);
-
+    const { user,setUser } = useUser();
+    const { id } = useParams();
     const baseURL = import.meta.env.VITE_BASE_URL
-
     const fetchFavoritePostsByUser = async (userId) => {
 
         const token = localStorage.getItem('accessToken');
@@ -49,7 +49,7 @@ function Favorites() {
             });
             const result = await response.json();
             if (response.ok) {
-                const { post, favoritePosts, favorPostIds } = result;
+                const { post, favoritePosts, userLikes } = result;
 
                 if (setUserPosts) {
                     setUserPosts((prev) =>
@@ -62,8 +62,9 @@ function Favorites() {
                 }
 
                 // Update logged-in user's likes
-                updateUserLikes(favorPostIds);
+                updateUserLikes(userLikes);
 
+                console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
             } else {
                 throw new Error(result.message || 'Failed to toggle like');
             }
@@ -78,40 +79,32 @@ function Favorites() {
             ...prev,
             likes,
         }));
-        console.log(user)
     };
 
-    const fetchData = async () => {
-        if (user && user._id) {
-            const posts = await fetchFavoritePostsByUser(user._id);
-            setFavoritePosts(posts);
-        }
+    const handleToggleLike = (postId) => {
+        toggleLike(postId, user._id , null, setFavoritePosts); // Update favorite posts after toggling like
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            const posts = await fetchFavoritePostsByUser(id); // Replace USER_ID with actual user ID
+            setFavoritePosts(posts);
+        };
         fetchData();
-    }, [user]);
-
-
-    const handleToggleLike = (postId) => {
-        toggleLike(postId, user._id, null, setFavoritePosts);
-    };
+    }, []);
 
     return (
-        <div style={{ marginLeft: '10px', marginTop: "-20px" }}>
+        <div>
             {favoritePosts.length ? (
                 favoritePosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
             ) : (
-                <p style={{ fontSize:"30px", justifyContent: "center" }}>No favorite posts available</p>
+                <p>No favorite posts available</p>
             )}
         </div>
     );
 }
 
 export default Favorites;
-
-
-
 
 
 

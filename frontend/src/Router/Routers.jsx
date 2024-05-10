@@ -23,7 +23,7 @@ import SearchResultList from "../Pages/SearchResultList/index";
 import ResetPassword from  "../Pages/ResetPass/index";
 import ForumPostsList from "../Pages/Admin/components/forum-posts/index";
 import UsersList from "../Pages/Admin/components/users/index";
-
+import OtherUserProfile from "../Pages/OtherUserProfile/index";
 const Routers = () => {
   return (
     <Routes>
@@ -45,8 +45,10 @@ const Routers = () => {
         <Route path="users" element={<UsersList />} />
       </Route>
       <Route path="/account" element={<UserAccount />} />
+      <Route path="/profile/:id" element={<OtherUserProfile />} />
+      <Route path="/admin/users/users/:id" element={<OtherUserProfile />} />
       <Route path="/account/profile" element={<Profile />} />
-      <Route path="/account/themes" element={<Themes />} />
+      <Route path="/account/themes" element={<Themes />} /> 
       <Route path="/account/posts" element={<Posts />} />
       <Route path="/account/favorites" element={<Favorites />} />
       <Route path="/history" element={<PurchaseHistory />} />

@@ -21,7 +21,7 @@ export const getPostsByUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         const postIds = user.posts;
-        const posts = await Post.find({ _id: { $in: postIds } , parentId: null }).populate("authorId", "username email").exec();
+        const posts = await Post.find({ authorId: userId  , _id: { $in: user.posts } }).populate("authorId", "username email").exec();
         res.json(posts);
     } catch (err) {
         console.error("Error fetching user posts:", err);
@@ -134,20 +134,85 @@ export const toggleLikePost = async (req, res) => {
         // Save both the updated post and user
         await post.save();
         await user.save();
-
+        console.log(user)
         // Fetch favorite posts by user
         const favorPostIds = user.likes;
         const favoritePosts = await Post.find({ _id: { $in: favorPostIds }, parentId: null })
             .populate("authorId", "username email")
             .exec();
 
-        res.json({ post, favoritePosts });
+        res.json({ post, favoritePosts, favorPostIds });
     } catch (err) {
         console.error("Error toggling like on post:", err);
         res.status(500).json({ message: err.message });
     }
 };
 
+
+// get List Posts
+export const getListPosts = async (req, res) => {
+    try {
+        let { page, limit, status, searchType, search } = req.query;
+
+        page = parseInt(page) || 1;
+        limit = parseInt(limit) || 10;
+
+        const filter = {};
+
+        if (status) {
+            filter.status = status;
+        }
+
+        if (search) {
+            if (searchType === "author") {
+                if (ObjectId.isValid(search)) {
+                    filter.authorId = search;
+                } else {
+                    const userFilter = {
+                        $or: [
+                            { username: { $regex: search, $options: "i" } },
+                            { email: { $regex: search, $options: "i" } }
+                        ]
+                    };
+                    const users = await User.find(userFilter);
+                    const userIds = users.map(user => user._id);
+                    filter.authorId = { $in: userIds };
+                }
+            } else if (searchType === "content") {
+                const regex = new RegExp(search, "i");
+                filter.$or = [
+                    { title: regex },
+                    { content: regex }
+                ];
+            } else {
+                const regex = new RegExp(search, "i");
+                filter.$or = [
+                    { title: regex },
+                    { content: regex }
+                ];
+            }
+        }
+        const totalCount = await Post.countDocuments();
+        const totalPages = await Post.countDocuments(filter) / limit
+        const posts = await Post.find(filter)
+            .limit(limit)
+            .skip((page - 1) * limit)
+            .sort({ createdAt: -1 })
+            .populate("authorId", "username email")
+            .exec();
+
+        res.status(200).json({
+            success: true,
+            totalPages: Math.ceil(totalPages),
+            totalCount: totalCount,
+            message: "Successfully fetched posts",
+            data: posts,
+        });
+    } catch (err) {
+        console.error("Error fetching list of posts:", err);
+        res.status(500).json({ message: "Server error while fetching list of posts", error: err.message });
+    }
+};
 
 
 

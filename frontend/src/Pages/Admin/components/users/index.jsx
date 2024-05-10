@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import BaseList from "../BaseList";
+import BasePaginationList from "../../../../components/BasePaginationList";
 import WrapperFilter from "../WrapperFilter";
 import UserItem, { userRoles, userStatuses } from "./UserItem";
 import debounce from "../../../../helper";
 import { pushError, pushSuccess } from "../../../../components/Toast";
 import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete/useCustomAutocomplete";
 import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
-
+import NoData from '../NoData'
+import { headers } from "../../helper";
 
 const userSearchTypes = [
   {
@@ -63,14 +64,13 @@ export default function UsersList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`);
       const response = await fetch(url, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers
       });
       if (response.ok) {
         pushSuccess('Lock user successfully');
         fetchUsers()
       } else {
+        pushError('Failed to lock user');
         throw new Error('Failed to lock user');
       }
     } catch (error) {
@@ -83,14 +83,13 @@ export default function UsersList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`);
       const response = await fetch(url, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers
       });
       if (response.ok) {
         pushSuccess('Unlock user successfully');
         fetchUsers()
       } else {
+        pushError('Failed to unlock user');
         throw new Error('Failed to unlock user');
       }
     } catch (error) {
@@ -111,15 +110,18 @@ export default function UsersList() {
     url.searchParams.append('search', filter.searchValue);
     url.searchParams.append('searchType', filter.searchType);
 
-    return fetch(url)
+    return fetch(url, { headers })
       .then((response) => {
+        if (!response.ok) {
+          pushError('Failed to get list user');
+        }
         return response.json();
       })
       .then((data) => {
         setPaging(data);
       })
       .catch((error) => {
-        console.error(error);
+        console.log("🚀 ~ fetchUsers ~ error:", error)
         setLoading(false);
       }).finally(() => setLoading(false))
   };
@@ -196,7 +198,7 @@ export default function UsersList() {
 
         </div>
       </WrapperFilter >
-      <BaseList
+      <BasePaginationList
         titleTotal="Total users"
         totalItems={paging.totalCount}
         list={paging.data}
@@ -205,8 +207,8 @@ export default function UsersList() {
         totalPages={paging.totalPages}
         page={filter.page}
         onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}
+        renderEmpty={() => <NoData>No Data</NoData>}
       />
-
     </div >
   );
 }
