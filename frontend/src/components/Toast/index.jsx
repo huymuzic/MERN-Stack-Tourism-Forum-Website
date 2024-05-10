@@ -3,6 +3,7 @@ import { SuccessIcon } from "./icons/SuccessIcon";
 import { ErrorIcon } from "./icons/ErrorIcon";
 import { WarningIcon } from "./icons/WarningIcon";
 import 'react-toastify/dist/ReactToastify.css';
+import color from "../../theme/Color";
 
 const baseStyle = {
     paddingLeft: `16px`,
@@ -18,9 +19,9 @@ const pushSuccess = (message) => {
         position: 'bottom-right',
         style: {
             ...baseStyle,
-            background: '#F0F6E1',
-            borderColor: '#009D4F',
-            color: '#009D4F',
+            background: color.successLight,
+            borderColor: color.success,
+            color: color.success,
         },
     });
 };
@@ -31,9 +32,9 @@ const pushError = (message) => {
         position: 'bottom-right',
         style: {
             ...baseStyle,
-            background: '#F7E4E1',
-            borderColor: "#E01B00",
-            color: "#E01B00",
+            background: color.lightDanger,
+            borderColor: color.danger,
+            color: color.danger,
         },
     });
 };
@@ -44,9 +45,9 @@ const pushWarning = (message) => {
         position: 'bottom-right',
         style: {
             ...baseStyle,
-            background: '#FFF1B8',
-            borderColor: '#FFB600',
-            color: '#FFB600',
+            background: color.warningLight,
+            borderColor: color.warning,
+            color: color.warning,
         },
     });
 };

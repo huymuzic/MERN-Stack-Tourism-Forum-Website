@@ -1,0 +1,8 @@
+#autocomplete-input>label {
+    transform: scale(.85) translateY(-0.5rem) translateX(0.15rem) !important
+}
+
+
+#test input::placeholder {
+    color: grey; 
+  }

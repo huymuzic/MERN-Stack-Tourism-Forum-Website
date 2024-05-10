@@ -9,6 +9,7 @@ import { useUser } from '../../utils/UserContext';
 import { getAvatarUrl } from '../../utils/getAvar.js';
 import logo from '../../assets/images/logo.png' 
 import { pushError, pushSuccess } from '../Toast';
+import color from '../../theme/Color.jsx';
 
 const nav__links = [
     {
@@ -41,9 +42,7 @@ function toggleDropdown() {
 
 
 const Header = () => {
-
-    
-    //const { handleShowModal } = useContactModal();
+    const baseURL = import.meta.env.VITE_BASE_URL;
     const {user, setUser } = useUser();
     const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
     const navigate = useNavigate();
@@ -141,8 +140,8 @@ const Header = () => {
                     ) : (
                     <div className='nav__right d-flex align-items-center gap-4' >
                         <div className='nav__btns d-flex align-items-center gap-4' >
-                            <Button className='btn secondary__btn'><Link to='/login'>Login</Link></Button>
-                            <Button className='btn primary__btn'><Link to='/register'>Register</Link></Button>    
+                            <Button className='secondary__btn' style={{backgroundColor: 'transparent !important'}}><Link to='/login'>Login</Link></Button>
+                            <Button className='primary__btn' style={{backgroundColor: 'var(--secondary-color) !important'}}><Link to='/register'>Register</Link></Button>    
                         </div>                     
                     </div>                     
                     )}    

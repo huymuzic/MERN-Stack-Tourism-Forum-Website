@@ -170,11 +170,11 @@ export default function UsersList() {
       }>
         <div className="d-flex flex-row justify-content-space-between pt-3 pb-3">
 
-          <div className="pe-4" style={{ width: "50%" }}>
+        <div className="pe-4" style={{ width: "50%" }}>
             <CustomAutocomplete
               {...statusAutocomplete}
               getOptionLabel={(o) => o.Name}
-              // label={"Statuses"}
+              label={"Statuses"}
               value={filter.status}
               placeholder={"All statuses"}
               onChange={(s) => {
@@ -186,7 +186,7 @@ export default function UsersList() {
             <CustomAutocomplete
               {...roleAutocomplete}
               getOptionLabel={(o) => o.Name}
-              // label={"Statuses"}
+              label={"Roles"}
               value={filter.role}
               placeholder={"All roles"}
               onChange={(r) => {
