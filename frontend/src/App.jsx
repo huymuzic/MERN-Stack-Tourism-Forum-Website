@@ -3,13 +3,12 @@ import './App.css'
 import Layout from './components/Layout/Layout';
 import { useUser } from './utils/UserContext';
 import { pushSuccess } from './components/Toast';
-import { set } from 'mongoose';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
+
 function App() {
 
   const { user,setUser } = useUser();
-  const [isUserSet, setIsUserSet] = useState(false);
 useEffect(() => {
   const checkLoginStatus = async () => {
     try {
@@ -24,10 +23,7 @@ useEffect(() => {
         },
       });
       const responseBody = await response.json();
-
       setUser(response.ok ? { ...responseBody.user } : null);   
-      fetchInfo(responseBody.user._id);
-
     } else {
       setUser(null);
     }

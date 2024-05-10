@@ -7,8 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './index.css'
 
-
-//context
 import { useUser } from '../../utils/UserContext';
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -17,11 +15,9 @@ function Login() {
     const { register, handleSubmit, formState: { errors, dirtyFields, isSubmitting }, setError } = useForm({ mode: 'onChange' });
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useUser();
-
     const [successMsg, setSuccessMsg] = useState(false);
     const [errorMsg, setErrorMsg] = useState(false);
     const [callAPI, setCallAPI] = useState(false);
-
     const togglePasswordVisibility = (e) => {
         setShowPassword(!showPassword);
     };

@@ -59,18 +59,23 @@ const destinationData2 = [
     },
 ]
 
+
 const DestinationList = () => {
     return <>
-        <Row>
-        {
-            destinationData1.map((item, index) => <Col key={index}><Destination item={item} /></Col>)
-        } 
-        </Row>  
-        <Row>
-        {
-            destinationData2.map((item, index) => <Col key={index}><Destination item={item} /></Col>)
-        } 
-        </Row>          
+            <Row className="destination-list-1">
+                {destinationData1.map((item, index) => (
+                    <Col key={index}>
+                        <Destination item={item} />
+                    </Col>
+                ))}
+            </Row>
+            <Row className="destination-list-2">
+                {destinationData2.map((item, index) => (
+                    <Col key={index}>
+                        <Destination item={item} />
+                    </Col>
+                ))}
+            </Row>         
     </>
 };
 

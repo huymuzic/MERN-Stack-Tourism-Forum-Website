@@ -25,6 +25,10 @@ const ContactModal = () => {
       const resBody = await res.json();
       if (res.ok) {
         pushSuccess('Form submitted successfully!');
+        setFullName('');
+        setEmail('');
+        setPhoneNumber('');
+        setMessage('');
       } else {
         pushError('Failed to submit form. Please try again later');
       }
@@ -41,16 +45,13 @@ const ContactModal = () => {
       <form className='contact__form' onSubmit={handleSubmit}>
         <h3>GET IN TOUCH</h3>
         <div className="input-group contact__input">
-          <input type="text" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-          <label htmlFor="">Full Name</label>
+          <input type="text" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder='Full Name' required />
         </div>
         <div className="input-group contact__input">
-          <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <label htmlFor="">Email</label>
+          <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' required />
         </div>
         <div className="input-group contact__input">
-          <input type="text" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
-          <label htmlFor="">Phone number</label>
+          <input type="text" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder='Phone Number' required />
         </div>
         <textarea name="message" rows='4' value={message} onChange={(e) => setMessage(e.target.value)} placeholder='How can we help you?' required></textarea>
         <button type='submit' disabled={loading}>{loading ? 'Sending...' : 'Send'}</button>

@@ -10,12 +10,12 @@ import tourImg07 from "../images/tour-img07.jpg";
 const tours = [
   {
     id: "01",
-    title: "Westminister Bridge",
-    city: "London",
+    title: "Westminister Bridge, London",
+    city: "London, England",
     distance: 300,
     price: 99,
-    maxGroupSize: 10,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "5 days",
     reviews: [
       {
         name: "jhon doe",
@@ -32,12 +32,12 @@ const tours = [
   },
   {
     id: "02",
-    title: "Bali, Indonesia",
+    title: "Bali Island, Indonesia",
     city: "Indonesia",
     distance: 400,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "4 days",
     reviews: [
       {
         name: "jhon doe",
@@ -54,8 +54,8 @@ const tours = [
     city: "Thailand",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "3 days",
     reviews: [
       {
         name: "jhon doe",
@@ -72,8 +72,8 @@ const tours = [
     city: "Thailand",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "4 days",
     reviews: [
       {
         name: "jhon doe",
@@ -90,8 +90,8 @@ const tours = [
     city: "Indonesia",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "6 days",
     reviews: [
       {
         name: "jhon doe",
@@ -108,8 +108,8 @@ const tours = [
     city: "Japan",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "3 days",
     reviews: [
       {
         name: "jhon doe",
@@ -122,12 +122,12 @@ const tours = [
   },
   {
     id: "07",
-    title: "Holmen Lofoten",
+    title: "Holmen Lofoten, France",
     city: "France",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "4 days",
     reviews: [],
     avgRating: 4.5,
     photo: tourImg07,
@@ -139,8 +139,8 @@ const tours = [
     city: "Thailand",
     distance: 500,
     price: 99,
-    maxGroupSize: 8,
-    desc: "this is the description",
+    ageRange: "19-99",
+    duration: "3 days",
     reviews: [],
     avgRating: 4.5,
     photo: tourImg,
