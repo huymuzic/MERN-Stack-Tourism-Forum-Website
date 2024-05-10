@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import tourData from '../../assets/data/tour';
 import calculateAvgRating from '../../utils/avgRating';
+import Booking from './components/Booking';
 import { pushSuccess } from '../../components/Toast';
 
 const TourDetails = () => {
@@ -41,7 +42,7 @@ const TourDetails = () => {
                         <div className='d-flex align-items-center gap-2'>
 
                         <span className='tour__rating d-flex align-items-center gap-1'>
-                            <i className="ri ri-star-s-fill"></i> {calculateAvgRating === 0 ? null : avgRating} 
+                            <i className="ri ri-star-s-fill"></i> {avgRating === 0 ? null : avgRating} 
                             {totalRating === 0 ? ('Not rated') : ( 
                             <span>({reviews?.length})</span>
                             )}
@@ -59,8 +60,8 @@ const TourDetails = () => {
                                 <span><i className='ri-money-dollar-circle-line '></i>from ${price} / adult</span>
                                 <hr className='col-12 mx-auto custom-hr'></hr>
                                 <span><i className='ri-group-line'></i>Age {ageRange}</span>
-                                <span><i class="ri-time-line"></i>Duration: {duration}</span>
-                                <span><i class="fa-light fa-bed-front"></i>Accommodation included</span>
+                                <span><i className="ri-time-line"></i>Duration: {duration}</span>
+                                <span><i className="fa-light fa-bed-front"></i>Accommodation included</span>
                                 <hr className='col-12 mx-auto custom-hr'></hr>
                                 <span>FAQ</span>
                                 <hr className='col-12 mx-auto custom-hr'></hr>
@@ -109,11 +110,14 @@ const TourDetails = () => {
                                     </div>
                                    )) 
                                 }
-
-
                             </ListGroup>
                         </div>
+                        {/* ============ tour reviews section ends ================= */}
                     </div>
+                </Col>
+
+                <Col lg='4'>
+                    <Booking tour={tour} avgRating={avgRating} />
                 </Col>
             </Row>
         </Container>

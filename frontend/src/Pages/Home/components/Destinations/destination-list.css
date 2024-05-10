@@ -57,11 +57,20 @@
     }
 }
 
-/* For screens with a maximum width of 992px */
-@media (max-width: 992px) {
+@media (max-width: 768px) {
 
     .destination-list-1 .col:nth-child(n + 4),
     .destination-list-2 .col:nth-child(n + 4) {
+        display: none;
+        /* Hide all but the first item */
+    }
+}
+
+/* For screens with a maximum width of 992px */
+@media (max-width: 992px) {
+
+    .destination-list-1 .col:nth-child(n + 5),
+    .destination-list-2 .col:nth-child(n + 5) {
         display: none;
         /* Hide all but the first three items */
     }

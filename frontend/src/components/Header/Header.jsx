@@ -75,7 +75,10 @@ const Header = () => {
         }
     };
 
-
+    const handleNavItemClick = () => {
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        navbarToggler.click();
+    };
     return (
     <nav className='header navbar navbar-expand-lg'>
         <Container className='header__container bd-gutter'>
@@ -99,7 +102,7 @@ const Header = () => {
                         <ul className='navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end text-center margin'>
                             {nav__links.map((item, index) => (
                                 <li className='nav__item' key={index}>                                 
-                                    <NavLink to={item.path} className={navClass => navClass.isActive ? "active__link" : ""} >{item.display}</NavLink>
+                                    <NavLink to={item.path} className={navClass => navClass.isActive ? "active__link" : ""} onClick={handleNavItemClick}>{item.display}</NavLink>
                                 </li>
                             ))}
                         </ul>
