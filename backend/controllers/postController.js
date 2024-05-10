@@ -134,14 +134,14 @@ export const toggleLikePost = async (req, res) => {
         // Save both the updated post and user
         await post.save();
         await user.save();
-
+        console.log(user)
         // Fetch favorite posts by user
         const favorPostIds = user.likes;
         const favoritePosts = await Post.find({ _id: { $in: favorPostIds }, parentId: null })
             .populate("authorId", "username email")
             .exec();
 
-        res.json({ post, favoritePosts });
+        res.json({ post, favoritePosts, favorPostIds });
     } catch (err) {
         console.error("Error toggling like on post:", err);
         res.status(500).json({ message: err.message });

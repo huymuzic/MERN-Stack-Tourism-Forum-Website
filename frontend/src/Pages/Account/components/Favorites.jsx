@@ -49,7 +49,7 @@ function Favorites() {
             });
             const result = await response.json();
             if (response.ok) {
-                const { post, favoritePosts, userLikes } = result;
+                const { post, favoritePosts, favorPostIds } = result;
 
                 if (setUserPosts) {
                     setUserPosts((prev) =>
@@ -62,9 +62,8 @@ function Favorites() {
                 }
 
                 // Update logged-in user's likes
-                updateUserLikes(userLikes);
+                updateUserLikes(favorPostIds);
 
-                console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
             } else {
                 throw new Error(result.message || 'Failed to toggle like');
             }
@@ -79,6 +78,7 @@ function Favorites() {
             ...prev,
             likes,
         }));
+        console.log(user)
     };
 
     const fetchData = async () => {

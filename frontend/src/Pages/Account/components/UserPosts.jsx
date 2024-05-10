@@ -49,7 +49,7 @@ function UserPosts() {
             });
             const result = await response.json();
             if (response.ok) {
-                const { post, favoritePosts, userLikes } = result;
+                const { post, favoritePosts, favorPostIds } = result;
 
                 if (setUserPosts) {
                     setUserPosts((prev) =>
@@ -62,7 +62,7 @@ function UserPosts() {
                 }
 
                 // Update logged-in user's likes
-                updateUserLikes(userLikes);
+                updateUserLikes(favorPostIds);
 
                 console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
             } else {
