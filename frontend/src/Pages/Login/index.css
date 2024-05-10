@@ -12,3 +12,19 @@
 .is-invalid {
     background-image: none !important;
 }
+
+.normal_pad {
+    padding: 0.375rem 0.75rem !important;
+}
+
+.login__form a {
+    color: var(--light-secondary-color);
+}
+
+.login__form a:hover {
+    color: var(--dark-primary-color);
+}
+
+.normal_pad:active {
+    background-color: var(--dark-primary-color) !important;
+}

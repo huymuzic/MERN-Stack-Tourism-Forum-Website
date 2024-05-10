@@ -61,9 +61,11 @@ const Home = () => {
                       of tours designed to immerse you in the beauty of each
                       destination
                     </p>
-                    <Button className="primary__btn"><Link to='/forum'>JOIN NOW</Link></Button>
+                    <Button className="primary__btn big__pad"><Link to='/forum'>JOIN NOW</Link></Button>
                   </div>
-                  <img src={image} alt="" />
+                  <div className='swiper__slide__image'>
+                    <img src={image} alt=""/>
+                  </div>
                 </Container>
               </SwiperSlide>
             ))}

@@ -10,6 +10,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
 function App() {
   const { theme } = useTheme()
   const { user, setUser } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
   const [isFirstLogin, setIsFirstLogin] = useState(true);
 
   useEffect(() => {
@@ -26,9 +27,11 @@ function App() {
             },
           });
           const responseBody = await response.json();
-          setUser(response.ok ? { ...responseBody.user } : null);   
+          setUser(response.ok ? { ...responseBody.user } : null);  
+          setIsLoading(false); 
         } else {
           setUser(null);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error checking login status:', error);
@@ -55,7 +58,7 @@ function App() {
       <style>
         {theme}
       </style>
-      <Layout />
+      <Layout isLoading={isLoading}/>
     </>
   );
 

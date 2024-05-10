@@ -5,6 +5,10 @@ import tinycolor from "tinycolor2";
 
 function createCustomTheme(color) {
   const theme = `
+      .btn {
+        padding: 8px 32px;
+        text-wrap: nowrap
+      }
       .btn-primary {
         background-color: ${color.primary};
         border: none;

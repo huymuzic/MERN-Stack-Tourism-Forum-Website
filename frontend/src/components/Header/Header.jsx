@@ -9,7 +9,7 @@ import { useUser } from '../../utils/UserContext';
 import { getAvatarUrl } from '../../utils/getAvar.js';
 import logo from '../../assets/images/logo.png' 
 import { pushError, pushSuccess } from '../Toast';
-import color from '../../theme/Color.jsx';
+import CircularProgress from '../CircularProgress.jsx';
 
 const nav__links = [
     {
@@ -41,7 +41,7 @@ function toggleDropdown() {
 }
 
 
-const Header = () => {
+const Header = ({ isLoading }) => {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const {user, setUser } = useUser();
     const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
@@ -78,9 +78,46 @@ const Header = () => {
     };
 
     const handleNavItemClick = () => {
-        const navbarToggler = document.querySelector('.navbar-toggler');
-        navbarToggler.click();
+        if (window.innerWidth < 992) {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            if (navbarCollapse.classList.contains('show')) {
+                navbarToggler.click();
+            }
+        }
     };
+
+    const removeMargin = () => {
+        if(window.innerWidth < 992) {
+            const navItems = document.getElementById('navItems');
+            if(navItems) {
+                navItems.classList.remove('margin');
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        removeMargin();
+    });
+    const centerLogo = () => {
+        const logo = document.querySelector('.navbar-brand');
+        if (window.innerWidth < 992 && user === null) {
+            if (logo) {
+                logo.style.marginLeft = '10.5rem';
+            }
+        } else {        
+            if (logo) {
+                logo.style.marginLeft = 'initial';
+            }
+        }      
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        centerLogo();   
+    });
+
+    window.addEventListener('resize', centerLogo);
+
+
     return (
     <nav className='header navbar navbar-expand-lg'>
         <Container className='header__container bd-gutter'>
@@ -101,7 +138,7 @@ const Header = () => {
                     </button>   
                 </div>
                     <div className='collapse navbar-collapse justify-content-end' id="navbarSupportedContent">
-                        <ul className='navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end text-center margin'>
+                        <ul className='navbar-nav mb-lg-0 gap-5 d-flex justify-content-end text-center margin' id="navItems">
                             {nav__links.map((item, index) => (
                                 <li className='nav__item' key={index}>                                 
                                     <NavLink to={item.path} className={navClass => navClass.isActive ? "active__link" : ""} onClick={handleNavItemClick}>{item.display}</NavLink>
@@ -109,7 +146,9 @@ const Header = () => {
                             ))}
                         </ul>
                     </div>
-                    {user !== null ? (
+                    {isLoading ? (
+                        <CircularProgress />
+                    ) : user !== null ? (
                         <li className="nav-item dropdown no-bullet mb-4 nm">
                           <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
                                 {user?.avatar ? (
@@ -140,8 +179,8 @@ const Header = () => {
                     ) : (
                     <div className='nav__right d-flex align-items-center gap-4' >
                         <div className='nav__btns d-flex align-items-center gap-4' >
-                            <Button className='secondary__btn' style={{backgroundColor: 'transparent !important'}}><Link to='/login'>Login</Link></Button>
-                            <Button className='primary__btn' style={{backgroundColor: 'var(--secondary-color) !important', padding: '0.4rem 1.5rem !important'}}><Link to='/register'>Register</Link></Button>    
+                            <Button className='secondary__btn normal__pad'><Link to='/login' onClick={handleNavItemClick}>Login</Link></Button>
+                            <Button className='primary__btn big__pad'><Link to='/register' onClick={handleNavItemClick}>Register</Link></Button>    
                         </div>                     
                     </div>                     
                     )}    
