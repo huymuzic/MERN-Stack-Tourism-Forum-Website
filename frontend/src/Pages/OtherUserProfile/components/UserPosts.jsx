@@ -54,7 +54,7 @@ function UserPosts() {
             });
             const result = await response.json();
             if (response.ok) {
-                const { post, favoritePosts, userLikes } = result;
+                const { post, favoritePosts, favorPostIds } = result;
 
                 if (setUserPosts) {
                     setUserPosts((prev) =>
@@ -67,7 +67,7 @@ function UserPosts() {
                 }
 
                 // Update logged-in user's likes
-                updateUserLikes(userLikes);
+                updateUserLikes(favorPostIds);
 
                 console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
             } else {
@@ -88,14 +88,13 @@ function UserPosts() {
     const handleToggleLike = (postId) => {
         toggleLike(postId, user._id, setUserPosts); // Update posts after toggling like
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const posts = await fetchPostsByUser(id); // Replace USER_ID with actual user ID
-            setUserPosts(posts);
-        };
+    const fetchData = async () => {
+        const posts = await fetchPostsByUser(id); // Replace USER_ID with actual user ID
+        setUserPosts(posts);
+    };
+    useEffect(() => {    
         fetchData();
-    }, []);
+    }, [user]);
 
     return (
         <div>

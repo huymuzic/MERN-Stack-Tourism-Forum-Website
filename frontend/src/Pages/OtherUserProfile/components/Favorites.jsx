@@ -37,7 +37,6 @@ function Favorites() {
         const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
 
         const token = localStorage.getItem('accessToken');
-
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
                 method: 'PUT',
@@ -49,7 +48,7 @@ function Favorites() {
             });
             const result = await response.json();
             if (response.ok) {
-                const { post, favoritePosts, userLikes } = result;
+                const { post, favoritePosts, favorPostIds } = result;
 
                 if (setUserPosts) {
                     setUserPosts((prev) =>
@@ -60,9 +59,8 @@ function Favorites() {
                 if (setFavoritePosts) {
                     setFavoritePosts(favoritePosts);
                 }
-
                 // Update logged-in user's likes
-                updateUserLikes(userLikes);
+                updateUserLikes(favorPostIds);
 
                 console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
             } else {
@@ -82,16 +80,16 @@ function Favorites() {
     };
 
     const handleToggleLike = (postId) => {
-        toggleLike(postId, user._id , null, setFavoritePosts); // Update favorite posts after toggling like
+        toggleLike(postId, user._id , null, null); // Update favorite posts after toggling like
     };
 
     useEffect(() => {
         const fetchData = async () => {
-            const posts = await fetchFavoritePostsByUser(id); // Replace USER_ID with actual user ID
+            const posts = await fetchFavoritePostsByUser(id); 
             setFavoritePosts(posts);
         };
         fetchData();
-    }, []);
+    }, [user,id]);
 
     return (
         <div>
