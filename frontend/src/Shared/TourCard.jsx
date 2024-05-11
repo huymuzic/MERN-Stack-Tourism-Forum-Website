@@ -33,7 +33,7 @@ const TourCard = ( {tour} ) => {
 
             <div className="card__bottom d-flex align-items-center justify-content-between mt-3">
                 <h5>
-                    ${price} <span> /per person</span>
+                    ${price} <span> /person</span>
                 </h5>
 
                 <button className='btn booking__btn'>

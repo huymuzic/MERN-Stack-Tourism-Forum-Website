@@ -6,7 +6,8 @@ import {
     updatePost,
     deletePost,
     toggleLikePost,
-    getFavoritePostsByUser
+    getFavoritePostsByUser,
+    getListPosts
 } from "../controllers/postController.js";
 import { verifyUser, verifyAdmin } from "../utils/verifyToken.js";
 
@@ -33,4 +34,6 @@ router.delete("/delete/:postId", verifyUser, deletePost);
 // Toggle like/favorite on a post
 router.put("/like/:postId", verifyUser, toggleLikePost);
 
+// get List Posts
+router.get("/list", verifyUser, getListPosts)
 export default router;

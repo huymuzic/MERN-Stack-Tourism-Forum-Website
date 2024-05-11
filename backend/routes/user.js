@@ -19,7 +19,7 @@ import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 import upload from '../utils/Avaupload .js';
 
 // get list users
-router.get("/list", getListUser);
+router.get("/list", verifyAdmin, getListUser);
 // update user
 router.put("/:id", verifyUser, updateUser);
 
@@ -49,8 +49,8 @@ router.put('/upload-avatar/:userId', verifyUser, upload.single('avatar'), upload
 // get ava
 router.get('/avatar/:filename', getAvatar);
 // Lock user
-router.put("/lock/:id", lockUser);
+router.put("/lock/:id", verifyAdmin, lockUser);
 // Unlock user
-router.put("/unlock/:id", unlockUser);
+router.put("/unlock/:id", verifyAdmin, unlockUser);
 
 export default router;

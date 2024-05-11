@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import CustomPagination from './CustomPagination';
-import NoData from './NoData'
-function BaseList({ list, loading, renderItem, totalPages, page, onChangePage, titleTotal, totalItems, renderEmpty }) {
+import { useTheme } from '../theme/Theme';
+import CircularProgress from './CircularProgress';
+function BasePaginationList({ list = [], loading, renderItem, totalPages, page, onChangePage, titleTotal, totalItems, renderEmpty }) {
+    const { color } = useTheme()
     return (
         <div style={{ overflowY: "auto" }}>
             <div className="container">
                 {loading ? (
                     <div className="row justify-content-center">
                         <div className="col-auto">
-                            <div className="spinner-border  text-warning mt-3" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
+                            <CircularProgress/>
                         </div>
                     </div>
                 ) : !list.length ? (
@@ -25,7 +25,7 @@ function BaseList({ list, loading, renderItem, totalPages, page, onChangePage, t
                             {titleTotal && (
                                 <div className="row mb-2">
                                     <div className="col text-end">
-                                        <span style={{ color: 'var(--primary-color)' }}>{titleTotal}: {totalItems || 0}</span>
+                                        <span style={{ color: color.primary }}>{titleTotal}: {totalItems || 0}</span>
                                     </div>
                                 </div>
                             )}
@@ -35,11 +35,6 @@ function BaseList({ list, loading, renderItem, totalPages, page, onChangePage, t
                                         {renderItem ? renderItem(item) : <></>}
                                     </div>
                                 ))}
-                                {
-                                    !list.length &&  <NoData>
-                                        No data
-                                    </NoData> 
-                                }
                             </div>
                             {totalPages && totalPages > 1 && (
                                 <div className="row mt-3">
@@ -56,10 +51,10 @@ function BaseList({ list, loading, renderItem, totalPages, page, onChangePage, t
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
-BaseList.propTypes = {
+BasePaginationList.propTypes = {
     list: PropTypes.array.isRequired,
     loading: PropTypes.bool,
     renderItem: PropTypes.func,
@@ -70,4 +65,4 @@ BaseList.propTypes = {
     totalItems: PropTypes.number,
     renderEmpty: PropTypes.func
 };
-export default BaseList;
+export default BasePaginationList;

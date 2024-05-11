@@ -8,6 +8,10 @@
     margin-left: 7rem;
 }
 
+.navbar-collapse {
+    transition: height 0.6s ease-in-out;
+}
+
 #navbarSupportedContent {
     margin-right: 0 !important;
 }

@@ -64,7 +64,6 @@ function Favorites() {
                 // Update logged-in user's likes
                 updateUserLikes(favorPostIds);
 
-                console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
             } else {
                 throw new Error(result.message || 'Failed to toggle like');
             }
@@ -79,6 +78,7 @@ function Favorites() {
             ...prev,
             likes,
         }));
+        console.log(user)
     };
 
     const fetchData = async () => {
