@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import { Container, Button} from 'react-bootstrap'
@@ -27,8 +27,7 @@ const nav__links = [
 ]
 
 function toggleDropdown() {
-    var dropdownMenus = document.getElementsByClassName('dropdown-menu');
-
+    var dropdownMenus = document.getElementsByClassName('user__icon__dropdown');
     for (var i = 0; i < dropdownMenus.length; i++) {
         var menu = dropdownMenus[i];
 
