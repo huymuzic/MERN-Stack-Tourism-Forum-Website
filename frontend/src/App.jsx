@@ -3,10 +3,12 @@ import './App.css'
 import Layout from './components/Layout/Layout';
 import { useUser } from './utils/UserContext';
 import { pushSuccess } from './components/Toast';
+import { useTheme } from './theme/Theme';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function App() {
+  const { theme } = useTheme()
   const { user, setUser } = useUser();
   const [isFirstLogin, setIsFirstLogin] = useState(true);
 
@@ -24,7 +26,7 @@ function App() {
             },
           });
           const responseBody = await response.json();
-          setUser(response.ok ? { ...responseBody.user } : null);
+          setUser(response.ok ? { ...responseBody.user } : null);   
         } else {
           setUser(null);
         }
@@ -41,7 +43,7 @@ function App() {
       if (user && isFirstLogin) {
         await new Promise(resolve => setTimeout(resolve, 0));
         pushSuccess(`Welcome back, ${user.name}!`);
-        setIsFirstLogin(false); // Set isFirstLogin to false after pushing the message
+        setIsFirstLogin(false); 
       }
     };
 
@@ -49,8 +51,14 @@ function App() {
   }, [user, isFirstLogin]);
 
   return (
-    <Layout />
+    <>
+      <style>
+        {theme}
+      </style>
+      <Layout />
+    </>
   );
+
 }
 
 export default App;

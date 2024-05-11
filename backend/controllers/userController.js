@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import { gfs } from '../utils/gridfsconfig.js';
 import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
+import { getStoredOTP, clearOTP } from '../utils/otpStorage.js'; 
 const saltRounds = 10;
 // create new user
 export const createUser = async (req, res) => {
@@ -227,21 +228,32 @@ export const checkPass = async (req, res) => {
   }
 };
 
-// Endpoint to verify OTP
 export const otpChecking = async (req, res) => {
-  const { email, otp } = req.body;
-  try {
-      const user = await User.findOne({ email });
-      console.log(user.otp)
-      if (!user || user.otp !== otp || new Date() > user.otpExpires) {
-          return res.status(401).json({ success: false, message: "Invalid or expired OTP" });
-      }
-      res.json({ success: true, message: "OTP verified successfully." });
-  } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ success: false, message: "Server error", error: error.message });
-  }
+    const { email, otp } = req.body;
+    try {
+        // Retrieve stored OTP and its expiration using the getStoredOTP function
+        const storedOTP = getStoredOTP(email);
+
+        // Check if the stored OTP and expiration exist
+        if (!storedOTP || !storedOTP.otp || !storedOTP.expires) {
+            return res.status(401).json({ success: false, message: "OTP not found" });
+        }
+
+        // Check if OTP matches and is not expired
+        if (storedOTP.otp !== otp || new Date() > new Date(storedOTP.expires)) {
+            return res.status(401).json({ success: false, message: "Invalid or expired OTP" });
+        }
+        clearOTP(email);
+        // If OTP is valid and not expired, send success response
+        res.json({ success: true, message: "OTP verified successfully." });
+    } catch (error) {
+        // Handle any errors
+        console.error('Error:', error);
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
 };
+
+
 
 // Endpoint to reset password
 export const resetpassword = async (req, res) => {

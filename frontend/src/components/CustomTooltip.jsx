@@ -28,7 +28,7 @@ const CustomTooltip = ({ text, children, position }) => {
     };
 
     return (
-        <div style={{ position: 'relative', display: 'inline-block' }}>
+        <div style={{ position: 'relative', display: 'inline-block', width:'fit-content' }}>
             <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 {children}
             </div>

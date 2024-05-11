@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
+import { useTheme } from "../theme/Theme";
 
 const CustomPagination = ({ totalPages, currentPage, onChange }) => {
+  const { color } = useTheme()
   const getPageNumbers = () => {
     const pageNumbers = [];
     const maxPagesToShow = 5;
@@ -45,7 +47,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           padding: "5px 10px",
           borderRadius: "5px",
           backgroundColor: "transparent",
-          color: "var(--primary-color)",
+          color: color.primary,
           cursor: currentPage === 1 ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}
@@ -60,7 +62,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           padding: "5px 10px",
           borderRadius: "5px",
           backgroundColor: "transparent",
-          color: "var(--primary-color)",
+          color: color.primary,
           cursor: currentPage === 1 ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}
@@ -77,8 +79,8 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
             margin: "0 5px",
             padding: "5px 10px",
             borderRadius: "5px",
-            backgroundColor: currentPage === page ? "var(--primary-color)" : "transparent",
-            color: currentPage === page ? "#fff" : "var(--primary-color)",
+            backgroundColor: currentPage === page ? color.primary : "transparent",
+            color: currentPage === page ? "#fff" : color.primary,
             cursor: page === "..." ? "default" : "pointer",
             border: "1px solid #ddd",
           }}
@@ -93,7 +95,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           padding: "5px 10px",
           borderRadius: "5px",
           backgroundColor: "transparent",
-          color: "var(--primary-color)",
+          color: color.primary,
           cursor: currentPage === totalPages ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}
@@ -108,7 +110,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           padding: "5px 10px",
           borderRadius: "5px",
           backgroundColor: "transparent",
-          color: "var(--primary-color)",
+          color: color.primary,
           cursor: currentPage === totalPages ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}

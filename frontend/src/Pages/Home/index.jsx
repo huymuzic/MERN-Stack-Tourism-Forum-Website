@@ -28,7 +28,7 @@ const Home = () => {
     return <>
     
     {/* Hero Section Starts */}
-        <Container className='hero-container'>
+        <Container className='hero__container'>
             <Swiper
                 spaceBetween={30}
                 effect={'fade'}
@@ -50,7 +50,7 @@ const Home = () => {
             {heroImages.map((image, index) => (
               <SwiperSlide key={index}>
                 <Container className="custom__container">
-                  <div className="hero__slide">
+                  <div className="hero__slide p-5">
                     <h1>Join the conversation with</h1>
                     <h1>
                       <span className="highlight">travelers</span> around the world

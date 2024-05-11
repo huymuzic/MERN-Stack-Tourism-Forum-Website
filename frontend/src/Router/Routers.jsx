@@ -25,10 +25,12 @@ import ResetPassword from  "../Pages/ResetPass/index";
 import ForumPostsList from "../Pages/Admin/components/forum-posts/index";
 import UsersList from "../Pages/Admin/components/users/index";
 import OtherUserProfile from "../Pages/OtherUserProfile/index";
+import ConfigPage from "../Pages/ConfigPage";
 const Routers = () => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="*" element={<Navigate to="/home" />} />
       <Route path="/home" element={<Home />} />
 
       <Route path="/tours" element={<Tours />} />
@@ -56,6 +58,8 @@ const Routers = () => {
       <Route path="/history" element={<PurchaseHistory />} />
       <Route path="/tours/search" element={<SearchResultList />} />
       <Route path="/resetPass" element={<ResetPassword />} />
+      <Route path="/config-page" element={<ConfigPage />} />
+
     </Routes>
   );
 };
