@@ -1,6 +1,7 @@
 import formatDate from '../components/DateFormat';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../../utils/UserContext';
+import { getAvatarUrl } from '../../../utils/getAvar.js';
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -17,11 +18,12 @@ function countChildren(post) {
 
 function Reply(props) {
     const { user } = useUser();
-    const { child, index, handleLike, setActivePost, post } = props;
+    const { child, index, handleLike, setActivePost, post, editorRef } = props;
 
-    return (<div key={index} className='col-7 d-flex border-2 border-bottom pt-3 pb-3 comment'>
+    return (<div key={index} className='col-8 d-flex border-2 border-bottom pt-3 pb-3 comment'>
         <a className='ps-3' href='#'>
-            <img height='45' width='45' className='rounded-5' alt='profile picture' src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'>
+            <img height='45' width='45' className='rounded-5' alt='profile picture' 
+                src={child.authorId ? getAvatarUrl(child.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
             </img>
         </a>
 
@@ -67,7 +69,10 @@ function Reply(props) {
                     data-bs-toggle="modal"
                     data-bs-target="#postModal"
                     className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                    onClick={() => setActivePost(child)}
+                    onClick={() => {
+                        editorRef.current.setContent('')
+                        setActivePost(post)
+                    }}
                 >
                     <i className="fa-solid fa-share"></i>
                     <span>Reply</span>

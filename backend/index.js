@@ -16,14 +16,13 @@ const app = express();
 const corsOptions = {
   origin: true,
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", 'skip'],
 };
 const mongoURI = process.env.MONGO_URI 
 // database connection
 const connect = async () => {
   try {
-    await mongoose.connect(mongoURI, {
-    });
+    mongoose.connect(mongoURI);
     console.log('MongoDB is connected');
   } catch (err) {
     console.error('MongoDB connection error:', err.message);

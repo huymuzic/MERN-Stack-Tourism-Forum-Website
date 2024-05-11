@@ -32,13 +32,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  pinned: {
-    type: Boolean,
-    default: false,
-  },
-  locked: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
+    enum: ["archived", "deleted", 'unarchived'],
+    default: 'unarchived',
   },
 }, { timestamps: true });
 
