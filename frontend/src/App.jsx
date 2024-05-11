@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css'
 import Layout from './components/Layout/Layout';
 import { useUser } from './utils/UserContext';
 import { pushSuccess } from './components/Toast';
-import { set } from 'mongoose';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
-function App() {
 
+function App() {
   const { user, setUser } = useUser();
-  const [isUserSet, setIsUserSet] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(true);
+
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -24,10 +24,7 @@ function App() {
             },
           });
           const responseBody = await response.json();
-
           setUser(response.ok ? { ...responseBody.user } : null);
-          fetchInfo(responseBody.user._id);
-
         } else {
           setUser(null);
         }
@@ -41,20 +38,19 @@ function App() {
 
   useEffect(() => {
     const handlePushSuccess = async () => {
-      if (user) {
+      if (user && isFirstLogin) {
         await new Promise(resolve => setTimeout(resolve, 0));
         pushSuccess(`Welcome back, ${user.name}!`);
+        setIsFirstLogin(false); // Set isFirstLogin to false after pushing the message
       }
     };
 
     handlePushSuccess();
-  }, [user]);
-
+  }, [user, isFirstLogin]);
 
   return (
     <Layout />
   );
-
 }
 
-export default App
+export default App;

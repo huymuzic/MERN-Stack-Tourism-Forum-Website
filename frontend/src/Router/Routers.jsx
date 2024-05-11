@@ -8,6 +8,7 @@ import Tours from "../Pages/Tours/index";
 import CommunityForum from "../Pages/CommunityForum/index";
 import ForumPosts from "../Pages/CommunityForum/ForumPosts";
 import CategoryList from "../Pages/CommunityForum/CategoryList";
+import ForumSearch from "../Pages/CommunityForum/ForumSearch";
 
 import TourDetails from "../Pages/TourDetails/index";
 import Login from "../Pages/Login/index";
@@ -35,6 +36,7 @@ const Routers = () => {
       <Route path="/forum" element={<CommunityForum />} />
       <Route path="/forum/p/:id" element={<ForumPosts />} />
       <Route path="/forum/c/:category" element={<CategoryList />} />
+      <Route path="/search" element={<ForumSearch />} />
 
       <Route path="/tours/:id" element={<TourDetails />} />
       <Route path="/login" element={<Login />} />

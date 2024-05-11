@@ -5,15 +5,17 @@ import Header from '../Header/Header';
 import Routers from '../../Router/Routers';
 import Footer from '../Footer/Footer';
 
+import ForumHeader from '../ForumHeader/ForumHeader';
+
 
 const Layout = () => {
     const location = useLocation();
 
-    if (location.pathname.startsWith('/forum')) {
+    if (location.pathname.startsWith('/forum') || location.pathname === '/search' || location.pathname.startsWith('/users')) {
         return (
-            <ContactModalProvider>
+            <ForumHeader>
                 <Routers />
-            </ContactModalProvider>
+            </ForumHeader>
         );
     }
 

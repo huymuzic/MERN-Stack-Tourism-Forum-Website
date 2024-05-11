@@ -3,7 +3,7 @@ import Post from "../../models/Post.js";
 export async function posts(req, res) {
     try {
         const posts = await Post.find({ parentId: null})
-            .populate(['authorId', 'childrenIds', 'parentId'])
+            .populate(['authorId', 'childrenIds'])
             .skip(Number(req.headers.skip) || 0)
             .limit(5);
         
