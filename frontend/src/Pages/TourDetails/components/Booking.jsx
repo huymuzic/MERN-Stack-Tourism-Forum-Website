@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './booking.css'
 
 import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
@@ -6,6 +6,19 @@ import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'react-bootstr
 const Booking = ({ tour, avgRating }) => {
     const [numPeople, setNumPeople] = useState(1);
     const { price, reviews } = tour;
+    const [peopleValue, setPeopleValue] = useState('01');
+
+    useEffect(() => {
+        setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
+    }, [numPeople]);
+    // const [credentials, setCredentials] = useState({
+    //     userId: '01',
+    //     userEmail: 'example@gmail.com',
+    //     fullName:'',
+    //     phone:'',
+    //     guestSize: `0${numPeople}`,
+    //     bookTime:'',
+    // });
 
     const incrementPeople = () => {
         setNumPeople(prevNumPeople => Math.min(prevNumPeople + 1, 10));
@@ -16,7 +29,7 @@ const Booking = ({ tour, avgRating }) => {
     };
 
     const handleBookFormChange = e => {
-
+        // setCredentials(prev => ({ ...prev, [e.target.id]:e.target.value}))
     }
 
     return (
@@ -38,7 +51,7 @@ const Booking = ({ tour, avgRating }) => {
                     <span><i className="fa-duotone fa-user-group"></i></span>
                     <span className='wrapper'>
                         <span className='minus' onClick={decrementPeople}>-</span>
-                        <span className='num'>{numPeople < 10 ? `0${numPeople}` : numPeople}</span>
+                        <span className='num'>{peopleValue}</span>
                         <span className='plus' onClick={incrementPeople}>+</span>
                     </span> 
                     </div>
@@ -50,7 +63,7 @@ const Booking = ({ tour, avgRating }) => {
             {/* ==================== Booking form ends ================== */}
 
             {/* ==================== Booking bottom ================== */}
-            <div className='booking__bottom"'>
+            <div className='booking__bottom'>
                 <ListGroup>
                     <ListGroupItem className='border-0 px-0 book_form_row'>
                         <h5 className='d-flex align-items-center gap-1'>${price} <i className='ri-close-line'></i> 1 person</h5>

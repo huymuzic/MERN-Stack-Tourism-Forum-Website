@@ -27,11 +27,10 @@ function App() {
             },
           });
           const responseBody = await response.json();
+          console.log(responseBody);
           setUser(response.ok ? { ...responseBody.user } : null);  
         }
         setIsLoading(false);
-        console.log('User:', user);
-        console.log(isLoading);
       } catch (error) {
         console.error('Error checking login status:', error);
       }

@@ -148,7 +148,6 @@ const Header = ({ isLoading }) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : user !== null ? (
-                    // {user !== null ? (
                         <li className="nav-item dropdown no-bullet mb-4 nm">
                           <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
                                 {user?.avatar ? (

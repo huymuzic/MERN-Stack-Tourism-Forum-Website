@@ -114,52 +114,125 @@
 }
 
 @media screen and (max-width: 1200px) {
+
+    .hero__slide {
+        top: -5%;
+    }
+
     .hero__slide h1 {
         width: 80% !important;
-        font-size: 2.3rem !important;
+        font-size: 2.6rem !important;
     }
     .hero__slide p {
         width: 50% !important;
-        font-size: 1.4rem !important;
+        font-size: 1.5rem !important;
     }
 }
 
 @media screen and (max-width: 992px) {
+    
+    .hero__slide {
+        top: -4%;
+    }
+
+
     .hero__slide h1 {
-            width: 80% !important;
-            font-size:2.1rem !important;
-        }
+        width: 80% !important;
+        font-size: 2.3rem !important;
+    }
     
     .hero__slide p {
         width: 60% !important;
-        font-size: 1.2rem !important;
+        font-size: 1.3rem !important;
     }
     .custom__container {
-        height: 500px;
+        height: 100%;
     }
 }
 
 @media screen and (max-width: 768px) {
+    .hero__slide {
+        top: -5%;
+    }
+
     .hero__slide h1 {
         width: 100% !important;
-        font-size: 2rem !important;
+        font-size: 1.7rem !important;
     }
     
     .hero__slide p {
         width: 70% !important;
-        font-size: 1.2rem !important;
+        font-size: 1rem !important;
+    }
+
+    .custom__container {
+        height: 100%;
     }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 670px) {
+    .hero__slide {
+        top: -8%;
+    }
+
     .hero__slide h1 {
         width: 100% !important;
-        font-size: 1.9rem !important;
+        font-size: 1.7rem !important;
     }
 
     .hero__slide p {
-        width: 80% !important;
-        font-size: 1.1rem !important;
+        width: 70% !important;
+        font-size: 1rem !important;
+    }
+
+    .custom__container {
+        height: 100%;
+    }
+
+    .primary__btn {
+        width: 20% !important;
+        height: 8% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .primary__btn a {
+        font-size: .8rem !important;
+    }
+}
+
+
+
+@media screen and (max-width: 576px) {
+    .hero__slide {
+        top: -15%;
+    }
+    
+    .hero__slide h1 {
+        width: 100% !important;
+        font-size: 1.5rem !important;
+    }
+
+    .hero__slide p {
+        width: 60% !important;
+        font-size: .75rem !important;
+    }
+
+    .custom__container {
+        height: 100%;
+    }
+
+    .primary__btn {
+        width: 18% !important;
+        height: 7% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .primary__btn a {
+        font-size: .7rem !important;
     }
 }
 
