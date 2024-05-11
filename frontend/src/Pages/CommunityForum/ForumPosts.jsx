@@ -4,6 +4,8 @@ import formatDate from './components/DateFormat';
 import { useUser } from '../../utils/UserContext';
 import Editor from "./components/Editor";
 import Reply from "./components/Reply";
+import { Link } from 'react-router-dom';
+import { getAvatarUrl } from '../../utils/getAvar.js';
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -42,12 +44,12 @@ function Post() {
         }
     }
 
-    async function replyTopic(postId) {
+    async function replyTopic() {
         const content = editorRef.current.getContent();
         const token = localStorage.getItem('accessToken');
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/reply`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}/reply`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +68,7 @@ function Post() {
             const responseBody = await response.json();
             setPost(responseBody.post);
             setUser(responseBody.user);
-
+            nav(`/forum/p/${id}`)
             document.getElementById("modalClose").click();
         } catch (error) {
             console.error(error);
@@ -102,6 +104,7 @@ function Post() {
             return <>
                 {post.childrenIds.map(child => (
                     <Reply
+                        editorRef={editorRef}
                         child={child}
                         index={child._id}
                         handleLike={handleLike}
@@ -115,6 +118,7 @@ function Post() {
                 {path.length > 0 && path.map(child => (
                     <>
                         <Reply
+                            editorRef={editorRef}
                             child={child}
                             index={child._id}
                             handleLike={handleLike}
@@ -123,6 +127,7 @@ function Post() {
                         />
                         {target.childrenIds.map(child => (
                             <Reply
+                                editorRef={editorRef}
                                 child={child}
                                 index={child._id}
                                 handleLike={handleLike}
@@ -154,44 +159,45 @@ function Post() {
         fetchData();
     }, [id]);
     return (
-        <article className='offset-2 pt-5 col-10'>
+        <article className='d-flex align-items-center flex-column'>
+            <div className='col-8 d-flex align-items-center'>
+                <Link to={target.parentId == null ? '/forum' : `/forum/p/${target.parentId._id}`} type="button" className="border-0 rounded-5 text-reset align-self-start">
+                    <i className="m-3 fa-solid fa-arrow-left"></i>
+                </Link>
+                <h5>Post details</h5>
+            </div>
+
             {post ? (
                 <>
-                    <h3 className='pt-3 d-flex justify-content-start border-2 border-bottom mb-3 col-7'>
-                        <div className="mb-2 text-align-start">
-                            <i title='This topic is closed, it no longer accepts new replies' className={`${post.locked ? "d-inline-block" : "d-none"} pe-2 fa-solid fa-lock`}></i>
-                            <i title='This topic is pinned for you, it will display at the top of this category' className={`${post.pinned ? "d-inline-block" : "d-none"} pe-2 fa-solid fa-thumbtack`}></i>
-                            {post.title}
-                        </div>
-                    </h3>
+                    <div className='col-8 d-flex border-2 border-bottom pb-3'>
+                        <div name='content-area' className='container-xxl d-inline-block'>
+                            <div className="d-flex">
+                                <a href='#'>
+                                    <img height='45' width='45' 
+                                        className='rounded-5' 
+                                        alt='profile picture' 
+                                        src={post.authorId ? getAvatarUrl(post.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                                    </img>
+                                </a>
 
-                    <div className='col-7 d-flex border-2 border-bottom pb-3'>
-                        <a className='ps-3' href={`/profile/${post?.authorId?._id}`}>
-                            <img height='45' width='45' className='rounded-5' alt='profile picture' src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'>
-                            </img>
-                        </a>
-
-                        <div name='content-area' className='container-xxl'>
-                            <div className='d-flex align-items-center' name='heading'>
-                                <div>
-                                    {post.authorId ? (
-                                        <>
-                                            <strong className='ms-2'>{post.authorId.username}</strong>
-                                            <span className={`${post.authorId.role === 'admin' ? 'd-inline-block' : 'd-none'} ps-1`}>
-                                                <i className="fa-sharp fa-solid fa-shield-halved"></i>
-                                            </span>
-                                            <strong className='ps-1 d-inline-block text-primary'>
-                                                OP
-                                            </strong>
-                                            <p className='ms-2'>@{post.authorId.username}</p>
-                                        </>
-                                    ) : (<></>)}
+                                <div className='d-flex' name='heading'>
+                                    <div>
+                                        {post.authorId ? (
+                                            <>
+                                                <strong className='ms-2'>{post.authorId.username}</strong>
+                                                <span className={`${post.authorId.role === 'admin' ? 'd-inline-block' : 'd-none'} ps-1`}>
+                                                    <i className="fa-sharp fa-solid fa-shield-halved"></i>
+                                                </span>
+                                                <p className='ms-2'>@{post.authorId.username}</p>
+                                            </>
+                                        ) : (<></>)}
+                                    </div>
+                                    <strong className="ps-2 mb-auto">·</strong>
+                                    <p className='ps-2 mb-auto'>{formatDate(new Date(post.createdAt))}</p>
                                 </div>
-
-                                <p className='ms-auto mb-auto'>{formatDate(new Date(post.createdAt))}</p>
                             </div>
 
-                            <div name='content' className='ms-2'
+                            <div name='content'
                                 dangerouslySetInnerHTML={{ __html: post.content }}>
                             </div>
 
@@ -213,7 +219,10 @@ function Post() {
                                     data-bs-toggle="modal"
                                     data-bs-target="#postModal"
                                     className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                                    onClick={() => setActivePost(post)}
+                                    onClick={() => {
+                                        editorRef.current.setContent('')
+                                        setActivePost(post)
+                                    }}
                                 >
                                     <i className="fa-solid fa-share"></i>
                                     <span>Reply</span>

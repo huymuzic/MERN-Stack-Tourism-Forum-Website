@@ -50,7 +50,6 @@ ul {
 .primary__btn {
   background: var(--secondary-color) !important;
   border: none !important;
-  border-radius: 50px !important;
   cursor: pointer;
 }
 
@@ -112,16 +111,20 @@ ul {
   color: var(--heading-color) !important;
 }
 
+.nav a.active { 
+  color: var(--primary-color) !important;
+}
+
 .category {
   border-top: 2px solid gray;
 }
 
 .bd-announce {
-  border-left: 10px solid #E2231A;
+  background-color: #E2231A;
 }
 
 .bd-discuss {
-  border-left: 10px solid #CEE741;
+  background-color: #CEE741;
 }
 
 tr th {
@@ -174,7 +177,6 @@ tr th {
 .comment:hover {
   background-color: #e8e8e8;
   transition: background-color 0.1s ease;
-  cursor: pointer;
 }
 
 
@@ -182,6 +184,23 @@ tr th {
   padding-top: 100px;
 }
 
+.bg-gray {
+  background-color: #efefef;
+}
+
+.sel-bd {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(255, 126, 1, 0.25) !important;
+}
+
+.ctm-ipn {
+  outline: none;
+}
+
+.square {
+  width: 10px;
+  height: 12px;
+}
 
 
 

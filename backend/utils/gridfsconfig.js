@@ -4,6 +4,9 @@ import mongoose from 'mongoose';
 import {GridFsStorage} from 'multer-gridfs-storage'
 import crypto from 'crypto';
 import path from 'path';
+import { config } from 'dotenv';
+
+config();
 
 // MongoDB URI
 const mongoURI = process.env.MONGO_URI;
