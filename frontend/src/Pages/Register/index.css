@@ -12,3 +12,15 @@
 .is-invalid {
     background-image: none !important;
 }
+
+.normal_pad {
+    padding: 0.375rem 0.75rem !important;
+}
+
+.register__form a {
+    color: var(--dark-primary-color);
+}
+
+.register__form a:hover {
+    color: var(--secondary-color);
+}

@@ -7,8 +7,7 @@ import Footer from '../Footer/Footer';
 
 import ForumHeader from '../ForumHeader/ForumHeader';
 
-
-const Layout = () => {
+const Layout = ({isLoading}) => {
     const location = useLocation();
 
     if (location.pathname.startsWith('/forum') || location.pathname === '/search' || location.pathname.startsWith('/users')) {
@@ -18,10 +17,10 @@ const Layout = () => {
             </ForumHeader>
         );
     }
-
+  
     return (
     <>
-        <Header />
+        <Header isLoading={isLoading}/>
         <Routers />
         <Footer />
     </>

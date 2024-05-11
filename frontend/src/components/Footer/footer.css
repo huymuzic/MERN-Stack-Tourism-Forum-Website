@@ -1,3 +1,11 @@
+h5 {
+    font-size: 1.25rem !important;
+}
+
+h6 {
+    font-size: 1rem !important;
+}
+
 .icon {
     width: 50px;
     height: 50px;
@@ -5,8 +13,8 @@
 }
 
 .footer {
-    padding-top: 70px;
-    padding-bottom: 30px;
+    padding-top: 70px !important;
+    padding-bottom: 30px !important;
 }
 
 .logo {
@@ -17,29 +25,29 @@
 }
 
 img[alt=footer-logo] {
-    width: 150px;
+    width: 150px !important;
 }
 
 .social__links span a {
     text-decoration: none;
     color: var(--heading-color);
-    font-size: 1.2rem;
+    font-size: 1.2rem !important;
     justify-content: center;
 }
 
 .footer__link-title {
     color: var(--heading-color) !important;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem !important;
 }
 
 .footer__quick-links div {
-    padding-top: 12px;
+    padding-top: 12px !important;
 }
 
 .footer__quick-links li a {
     text-decoration: none;
     color: var(--text-color);
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;
 }
 
 .list-group-item a {

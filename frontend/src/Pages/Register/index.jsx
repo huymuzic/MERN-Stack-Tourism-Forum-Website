@@ -94,7 +94,7 @@ function Register() {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className='col-sm-6 col-lg-4 col-xl-3 mx-auto my-5 d-flex align-items-center flex-column rounded-4 shadow needs-validation' noValidate>
+            <form onSubmit={handleSubmit(onSubmit)} className='col-sm-6 col-lg-4 col-xl-3 mx-auto my-5 d-flex align-items-center flex-column rounded-4 shadow needs-validation register__form' noValidate>
                 <strong className='mt-4 mb-4'><h3>Register your account</h3></strong>
 
                 <div className="mb-3 col-8">
@@ -198,7 +198,7 @@ function Register() {
 
                 <p>Already have an account? <Link to='/login'>Login</Link></p>
 
-                <button type="submit" disabled={isSubmitting} className="mb-5 btn btn-primary col-8">Submit</button>
+                <button type="submit" disabled={isSubmitting} className="mb-5 btn btn-primary col-8 normal__pad">Submit</button>
 
             </form>
         </>
