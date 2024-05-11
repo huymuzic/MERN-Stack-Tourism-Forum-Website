@@ -1,5 +1,4 @@
 import Post from "../../models/Post.js"
-import { verifyToken } from "../../utils/verifyToken.js";
 
 const categories = ['announce', 'discuss'];
 

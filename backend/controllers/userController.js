@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import { gfs } from '../utils/gridfsconfig.js';
 import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
-import { gfs } from '../utils/gridfsconfig.js'
 import { getStoredOTP, clearOTP } from '../utils/otpStorage.js'; 
 const saltRounds = 10;
 // create new user

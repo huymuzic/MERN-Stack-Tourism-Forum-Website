@@ -1,150 +1,77 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Editor from "./components/Editor";
-import formatDate from './components/DateFormat';
 import { useUser } from "../../utils/UserContext";
+import InfiniteScroll from 'react-infinite-scroll-component';
+import ClipLoader from "react-spinners/ClipLoader";
+import { getAvatarUrl } from '../../utils/getAvar.js';
+import Post from './components/Post';
 
-const categories = [
-    {
-        name: 'Announcement',
-        description: 'This category is for site administrator to post updates to tour packages or the forum',
-        bg: 'announce',
-    },
-    {
-        name: 'Destination discussion',
-        description: 'This category is for users to discuss or share opinions about destinations',
-        bg: 'discuss',
-    },
-]
+const primaryColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--primary-color').trim();
 
 function CommunityForum() {
-    const editorRef = useRef(null);
     const { user } = useUser();
-    const nav = useNavigate();
 
-    const [title, setTitle] = useState("");
-    const [category, setCategory] = useState("");
+    const [posts, setPosts] = useState([]);
+    const [length, setLength] = useState(0);
+    const [skip, setSkip] = useState(0);
+    const userPfp = getAvatarUrl(user?.avatar, import.meta.env.VITE_BASE_URL)
 
-    const handleChildChange = (title, category) => {
-        setTitle(title);
-        setCategory(category);
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`, {
+                headers: {
+                    'skip': skip,
+                },
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data: ${response.statusText}`);
+            }
+            const data = await response.json();
+
+            setPosts([...posts, ...data.posts]);
+            setSkip(skip + data.posts.length);
+            setLength(data.length);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     };
 
-    const emptyArray = categories.reduce((acc, category) => {
-        acc[category.bg] = [];
-        return acc;
-    }, {});
-
-    const [posts, setPosts] = useState(emptyArray);
-
-    async function createTopic() {
-        if (editorRef.current) {
-            const content = editorRef.current.getContent();
-            const token = localStorage.getItem('accessToken');
-
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        title: title,
-                        category: category,
-                        content: content,
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                nav(`/forum/p/${data.postId}`) // navigate to post
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    }
-
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`);
-                const data = await response.json();
-                setPosts(data);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        };
-
         fetchData();
     }, []);
 
     return <>
-        {user ? (
-            <div className='col-10 pt-5 d-flex justify-content-end'>
-                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal">
-                    <i className="fa-regular fa-plus pe-1"></i>
-                    <span>Create Topic</span>
-                </button>
-            </div>
-        ) : <></>}
+        <InfiniteScroll
+            className='container-xl d-flex flex-column align-items-center overflow-hidden gap-3 pt-2'
+            dataLength={posts.length}
+            next={fetchData}
+            hasMore={posts.length < length}
+            loader=
+            {<ClipLoader
+                color={primaryColor}
+                loading={true}
+                size={45}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+            />}
+        >
+            {user ? (
+                <div className="rounded-2 col-md-10 col-lg-6 bg-gray shadow-sm" >
+                    <div className="d-flex p-3 gap-2">
+                        <img src={user ? userPfp : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}
+                            alt="user profile picture" width="45" height="45" className="rounded-circle ms-3" />
+                        <button type="button" onClick={() => document.getElementById('createPost').click()} className='ps-3 flex-grow-1 col-9 comment border-0 rounded-5 text-start bg-body-tertiary' data-bs-toggle="modal" data-bs-target="#postModal">
+                            What are you thinking about?
+                        </button>
+                    </div>
+                </div>
+            ) : <></>}
 
-        <Editor
-            create={true}
-            onValueChange={handleChildChange}
-            func={createTopic}
-            ref={editorRef}
-        />
-
-        <div className='container-lg pt-5 d-flex justify-content-center'>
-            <table className='col-10'>
-                <thead>
-                    <tr>
-                        <th className='ps-2'>Category</th>
-                        <th className='ps-5'>Latest</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {categories.map((category, index) => (
-                        <tr key={index} className='category'>
-                            <td className={`bd-${category.bg} col-5 align-top pt-3`}>
-                                <div>
-                                    <h5 className='ms-3'>
-                                        <Link to={`/forum/c/${category.bg}`} className="text-reset">
-                                            {category.name}
-                                        </Link>
-                                    </h5>
-                                    <p className='ms-3'>
-                                        {category.description}
-                                    </p>
-                                </div>
-                            </td>
-                            <td className='d-inline-block'>
-                                {posts[category.bg].map((post, catIndex) => (
-                                    <div key={catIndex} className={`mt-1 ps-5 pt-1 align-top${catIndex === (posts[category.bg].length - 1) ? ' pb-2' : ''}`}>
-                                        <div className="d-inline-block pe-1">
-                                            <i title='This topic is closed, it no longer accepts new replies' className={`${post.locked ? "d-inline-block" : "d-none"} pe-1 fa-solid fa-lock`}></i>
-                                            <i title='This topic is pinned for you, it will display at the top of this category' className={`${post.pinned ? "d-inline-block" : "d-none"} fa-solid fa-thumbtack`}></i>
-                                        </div>
-                                        <Link to={`/forum/p/${post._id}`} className="category-links text-truncate pe-1">
-                                            {post.title}
-                                        </Link>
-                                        <span className="category-date">
-                                            {formatDate(new Date(post.createdAt))}
-                                        </span>
-                                    </div>
-                                ))}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    </>;
+            {posts.map(post => {
+                return <Post key={post._id} post={post} />
+            })}
+        </InfiniteScroll>
+    </>
 };
 
 export default CommunityForum;
