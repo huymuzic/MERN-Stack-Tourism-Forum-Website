@@ -5,6 +5,7 @@ import { FaLock, FaUnlock } from "react-icons/fa";
 import CustomToolTip from "../../../../components/CustomTooltip";
 import { usePopUp } from "../../../../components/pop-up/usePopup";
 import PopUpBase from "../../../../components/pop-up/PopUpBase";
+
 export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm }) {
     const popUpLock = usePopUp();
     const popUpUnLock = usePopUp();
@@ -24,7 +25,6 @@ export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm 
 
     const onUnLockConfirm = async () => {
         popUpUnLock.onClose()
-
         handleUnLockConfirm(user._id)
     };
     return (
@@ -113,7 +113,7 @@ export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm 
 
 UserItem.propTypes = {
     user: PropTypes.shape({
-        _id: PropTypes.number.isRequired,
+        _id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
         role: PropTypes.string.isRequired,

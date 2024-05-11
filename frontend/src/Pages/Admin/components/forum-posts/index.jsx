@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import BasePaginationList from "../../../../components/BasePaginationList";
 import WrapperFilter from "../WrapperFilter";
-import { pushError } from "../../../../components/Toast";
+import { pushError, pushSuccess } from "../../../../components/Toast";
 import { headers } from "../../helper";
-import ForumItem from "./ForumItem";
+import ForumItem, {postStatuses } from "./ForumItem";
 import NoData from "../NoData";
 import debounce from "../../../../helper";
-
+import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete/useCustomAutocomplete";
+import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
 
 const forumPostSearchType = [
   {
@@ -41,13 +42,19 @@ export default function ForumPostsList() {
       searchRef.current.value = '';
     }
   }
-
+  const statusAutocomplete = useCustomAutocomplete({
+    list: {
+      options: postStatuses,
+      searchFields: ['Name'],
+    },
+  });
   const handleOnChangeSearch = useCallback(
     debounce((value) => {
       setFilter((prev) => ({ ...prev, searchValue: value, page: 1 }));
     }, 300),
     []
   );
+
   const fetchForumPosts = async () => {
 
     setLoading(true)
@@ -75,8 +82,49 @@ export default function ForumPostsList() {
         console.log("🚀 ~ fetchUsers ~ error:", error)
         setLoading(false);
       }).finally(() => setLoading(false))
+  }; 
+  const handleLockConfirm = async (id) => {
+
+    try {
+      const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/posts/hide/${id}`);
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: headers
+      });
+      if (response.ok) {
+        pushSuccess('Hide post successfully');
+        fetchForumPosts()
+      } else {
+        pushError('Failed to hide post');
+        throw new Error('Failed to hide post');
+      }
+    } catch (error) {
+      pushError('Failed to hide post');
+    }
   };
 
+  const handleOnChangeStatus = (c) => {
+    setFilter((prev) => ({ ...prev, status: c, page: 1 }));
+  }
+
+ const handleUnLockConfirm = async (id) => {
+    try {
+      const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/posts/unhide/${id}`);
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: headers
+      });
+      if (response.ok) {
+        pushSuccess('Unhide post successfully');
+        fetchForumPosts()
+      } else {
+        pushError('Failed to unhide post');
+        throw new Error('Failed to unhide post');
+      }
+    } catch (error) {
+      pushError('Failed to unhide post');
+    }
+  };
   useEffect(() => {
     fetchForumPosts();
   }, [filter.page, filter.searchValue, filter.status]);
@@ -104,8 +152,21 @@ export default function ForumPostsList() {
             }}
           />
         </div>
-      }>
-
+        }>
+        <div className="d-flex flex-row justify-content-space-between pt-3 pb-3">
+          <div className="pe-4" style={{ width: "50%" }}>
+              <CustomAutocomplete
+                {...statusAutocomplete}
+                getOptionLabel={(o) => o.Name}
+                label={"Statuses"}
+                value={filter.status}
+                placeholder={"All statuses"}
+                onChange={(s) => {
+                  handleOnChangeStatus(s);
+                }}
+              />
+            </div>
+          </div>
       </WrapperFilter>
 
 
@@ -114,7 +175,7 @@ export default function ForumPostsList() {
         totalItems={paging.totalCount}
         list={paging.data}
         loading={loading}
-        renderItem={(post) => <ForumItem key={post._id} post={post} />}
+        renderItem={(post) => <ForumItem key={post._id} post={post} handleLockConfirm={(id) => handleLockConfirm(id)} handleUnLockConfirm={(id) => handleUnLockConfirm(id)} />}
         totalPages={paging.totalPages}
         page={filter.page}
         onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}

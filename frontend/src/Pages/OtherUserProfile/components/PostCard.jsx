@@ -60,7 +60,7 @@ function PostCard({ post, onToggleLike }) {
         return () => document.removeEventListener("mousedown", handleMouseDown);
     }, []);
     return (
-        <div className="card post-card">
+        <div className="card post-card align-items-center">
             <div className="card-body">
                 <h5 className="card-title"><b>{post.title}</b></h5>
                 <p className="card-text">@{post.authorId.username}</p>

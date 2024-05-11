@@ -99,7 +99,7 @@ const OtherUserProfile = () => {
           } catch {}
           popUpDeactivate.onClose();
     };
-
+    const handleDeleteUser =  async () => {}
     return (
         <Container className="mt-4">
             <Row className="justify-content-center mb-3">
@@ -159,11 +159,11 @@ const OtherUserProfile = () => {
                 </Col>
             </Row>
             <Row>
-                <Col md={12}>
+                <Col md={10} className="align-items-center">
                     {otherUserInfo.status === 'active' ? (
-                        <ActiveComponent />
+                        <ActiveComponent className="text-center align-items-center"/>
                     ) : (
-                        <Card className="text-center">
+                        <Card className="text-center align-items-center">
                             <Card.Body>
                                 <Card.Title>Account Inactive</Card.Title>
                                 <p>Your Account is inactive right now! Please reactivate it to perform any actions.</p>
