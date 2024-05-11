@@ -28,11 +28,10 @@ function App() {
           });
           const responseBody = await response.json();
           setUser(response.ok ? { ...responseBody.user } : null);  
-          setIsLoading(false); 
-        } else {
-          setUser(null);
-          setIsLoading(false);
         }
+        setIsLoading(false);
+        console.log('User:', user);
+        console.log(isLoading);
       } catch (error) {
         console.error('Error checking login status:', error);
       }
@@ -58,7 +57,7 @@ function App() {
       <style>
         {theme}
       </style>
-      <Layout isLoading={isLoading}/>
+      <Layout isLoading={isLoading} />
     </>
   );
 

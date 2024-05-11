@@ -5,11 +5,11 @@ import Routers from '../../Router/Routers';
 import Footer from '../Footer/Footer';
 
 
-const Layout = () => {
+const Layout = ({isLoading}) => {
     
     return (
     <>
-        <Header />
+        <Header isLoading={isLoading}/>
         <Routers />
         <Footer />
     </>

@@ -20,8 +20,6 @@ export const verifyToken = async (req, res, next) => {
           reject(err);
         } else {
           resolve(decodedToken);
-          console.log("Token is valid");
-          console.log("User logged in successfully");
         }
       });
     });
