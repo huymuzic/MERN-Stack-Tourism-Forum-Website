@@ -62,7 +62,7 @@ function Login() {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className='col-sm-6 col-lg-4 col-xl-3 mx-auto mt-5 mb-5 d-flex align-items-center flex-column rounded-4 shadow'>
+            <form onSubmit={handleSubmit(onSubmit)} className='col-sm-6 col-lg-4 col-xl-3 mx-auto mt-5 mb-5 d-flex align-items-center flex-column rounded-4 shadow login__form'>
                 <strong className='mt-4 mb-4'><h3>Welcome back!</h3></strong>
 
                 <div className="mb-3 col-8">
@@ -117,7 +117,7 @@ function Login() {
 
                 <p>Don't have an account? <Link to='/register'>Register</Link></p>
 
-                <button type="submit" disabled={isSubmitting} className="mb-5 btn btn-primary col-8">Submit</button>
+                <button type="submit" disabled={isSubmitting} className="mb-5 btn btn-primary col-8 normal_pad">Submit</button>
             </form>
         </>
 
