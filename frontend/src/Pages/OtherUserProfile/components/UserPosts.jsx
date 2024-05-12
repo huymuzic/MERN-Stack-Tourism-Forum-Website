@@ -3,14 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 import { useUser } from '../../../utils/UserContext';
+import { pushError, pushSuccess } from "../../../components/Toast";
 
 function UserPosts() {
 
     const [userPosts, setUserPosts] = useState([]);
-    const { user,setUser } = useUser();
+    const { user,setUser } = useUser(); 
     const { id } = useParams();
 
-    
+    const token = localStorage.getItem('accessToken');
     const baseURL = import.meta.env.VITE_BASE_URL
 
     const fetchPostsByUser = async (userId) => {
@@ -27,7 +28,6 @@ function UserPosts() {
             });
             const result = await response.json();
             if (response.ok) {
-                console.log('User posts fetched:', result);
                 const filteredPosts = result.filter((post) => post.parentId === null);
                 return filteredPosts;
             } else {
@@ -68,8 +68,6 @@ function UserPosts() {
 
                 // Update logged-in user's likes
                 updateUserLikes(favorPostIds);
-
-                console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
             } else {
                 throw new Error(result.message || 'Failed to toggle like');
             }
@@ -88,6 +86,48 @@ function UserPosts() {
     const handleToggleLike = (postId) => {
         toggleLike(postId, user._id, setUserPosts); // Update posts after toggling like
     };
+    const handleLockConfirm = async (userId) => {
+        try {
+          const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
+          const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+          });
+          if (response.ok) {
+            pushSuccess('Hide post successfully');
+            fetchData()
+          } else {
+            pushError('Failed to hide post');
+            throw new Error('Failed to lock user');
+          }
+        } catch (error) {
+        }
+      };
+    
+      const handleUnLockConfirm = async (userId) => {
+        try {
+            console.log('work nì')
+          const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
+          const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+          });
+          if (response.ok) {
+            pushSuccess('Unhide post successfully');
+            fetchData()
+          } else {
+            pushError('Failed to unhide post');
+            throw new Error('Failed to unlock user');
+          }
+        } catch (error) {
+        }
+      };
     const fetchData = async () => {
         const posts = await fetchPostsByUser(id); // Replace USER_ID with actual user ID
         setUserPosts(posts);
@@ -99,7 +139,7 @@ function UserPosts() {
     return (
         <div>
             {userPosts.length ? (
-                userPosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
+                userPosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike}  handleLockConfirm={(id) => handleLockConfirm(id)} handleUnLockConfirm={(id) => handleUnLockConfirm(id)} />)
             ) : (
                 <p>No posts available</p>
             )}

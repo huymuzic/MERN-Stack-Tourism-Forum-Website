@@ -8,6 +8,8 @@ import { Button, Card, Container, Dropdown, Row, Col, Nav } from 'react-bootstra
 import { pushSuccess, pushError } from '../../components/Toast';
 import PopUpBase from '../../components/pop-up/PopUpBase';
 import { usePopUp } from '../../components/pop-up/usePopup';
+import './Postuser.css'
+
 const OtherUserProfile = () => {
     const { user, setUser } = useUser();
     const { id } = useParams();
@@ -26,8 +28,9 @@ const OtherUserProfile = () => {
     const popUpActivate = usePopUp();
     const popUpDeactivate = usePopUp();
     useEffect(() => {
-        fetchOtherUserInfo();
-    }, [id, baseURL, user, otherUserInfo]);  // Note: Be cautious with including state that changes often as dependencies
+        
+        fetchOtherUserInfo(); 
+    }, [id, user]);  // Note: Be cautious with including state that changes often as dependencies
 
     const fetchOtherUserInfo = async () => {
         try {
@@ -103,62 +106,49 @@ const OtherUserProfile = () => {
     return (
         <Container className="mt-4">
             <Row className="justify-content-center mb-3">
-                <Col md={10}>
-                    <Card>
-                        <Card.Body>
-                            <Row className="align-items-center">
-                                <Col xs="auto">
-                                    <img src={getAvatarUrl(otherUserInfo.avatar, baseURL)} alt="User Avatar" className="rounded-circle" style={{ width: '150px', height: '150px' }} />
-                                </Col>
-                                <Col>
-                                    <h2>{otherUserInfo.name} {otherUserInfo.role === 'admin' && <i className="fa-sharp fa-solid fa-shield-halved"></i>}</h2>
-                                    <p>@{otherUserInfo.username}</p>
-                                    <p>Joined: {new Date(otherUserInfo?.createdAt).toLocaleDateString()}</p>
-                                    <div className="mb-3 d-flex">
-                                    <span
-                                        className="badge bg-primary me-2"
-                                        style={{ fontSize: '1.25rem', padding: '10px' }}
-                                    >
-                                        Posts: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}
-                                    </span>
-                                    <span
-                                        className="badge bg-success"
-                                        style={{ fontSize: '1.25rem', padding: '10px' }}
-                                    >
-                                        Favorites: {otherUserInfo.likes ? otherUserInfo.likes.length : 0}
-                                    </span>
-                                    </div>
-                                </Col>
-                                <Col>
-                                {(user?.role === 'admin' || user?._id == otherUserInfo._id) && (
-                                        <Dropdown>
-                                            <Dropdown.Toggle variant="secondary">Actions</Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                                <Dropdown.Item onClick={handleToggleStatus}>
-                                                    {otherUserInfo.status === 'active' ? 'Inactivate' : 'Activate'} Account
-                                                </Dropdown.Item>
-                                                <Dropdown.Item onClick={() => navigate('/account')}>Edit Profile</Dropdown.Item>
-                                                {user?.role === 'admin' && (
-                                                    <Dropdown.Item onClick={handleDeleteUser} className="text-danger">Delete Account</Dropdown.Item>
-                                                )}
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    )}
-                                </Col>
-                            </Row>
-                            <Nav variant="tabs" activeKey={activeNav} onSelect={(selectedKey) => setActiveNav(selectedKey)}>
-                                <Nav.Item>
-                                    <Nav.Link eventKey="Posts">Posts</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item>
-                                    <Nav.Link eventKey="Favorites">Favorites</Nav.Link>
-                                </Nav.Item>
-                            </Nav>
-                        </Card.Body>
+            <Col md={10}>
+            <Card className="p-3 user-profile-card">
+                <Row className="align-items-start">
+                    <Col xs={12} md={8} className="d-flex align-items-center">
+                        <img src={getAvatarUrl(otherUserInfo.avatar, baseURL)} alt="User Avatar" className="rounded-circle me-3" />
+                        <div className="user-info">
+                            <h2>{otherUserInfo.name} {otherUserInfo.role === 'admin' && <i className="fa fa-shield-alt"></i>}</h2>
+                            <p>@{otherUserInfo.username}</p>
+                            <p>Joined: {new Date(otherUserInfo?.createdAt).toLocaleDateString()}</p>
+                            <div className="stats">
+                                <Button variant="outline-primary" size="sm" className="me-2">Posts: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</Button>
+                                <Button variant="outline-success" size="sm">Favorites: {otherUserInfo.likes ? otherUserInfo.likes.length : 0}</Button>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col xs={12} md={4} className="d-flex justify-content-end">
+                        {(user?.role === 'admin' || user?._id === otherUserInfo._id) && (
+                              <Dropdown className="ellipsis-dropdown">
+                                <Dropdown.Toggle variant="light" id="dropdown-basic">
+                                    <span>. . .</span> {/* Using ellipsis as the dropdown text */}
+                                </Dropdown.Toggle>
+                    
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={handleToggleStatus}>Toggle Status</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => navigate('/account')}>Edit Profile</Dropdown.Item>
+                                    <Dropdown.Item onClick={handleDeleteUser} className="text-danger">Delete Account</Dropdown.Item>
+                                </Dropdown.Menu>
+                          </Dropdown>
+                        )}
+                    </Col>
+                        </Row>
+                        <Nav variant="tabs" activeKey={activeNav} onSelect={(selectedKey) => setActiveNav(selectedKey)} className="mt-3">
+                            <Nav.Item>
+                                <Nav.Link eventKey="Posts">Posts</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="Favorites">Favorites</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
                     </Card>
                 </Col>
             </Row>
-            <Row>
+            <Row className="justify-content-center mb-3">
                 <Col md={10} className="align-items-center">
                     {otherUserInfo.status === 'active' ? (
                         <ActiveComponent className="text-center align-items-center"/>

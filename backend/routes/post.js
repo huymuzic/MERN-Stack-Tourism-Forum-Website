@@ -42,5 +42,8 @@ router.get("/list", verifyUser, getListPosts)
 router.put("/hide/:id", verifyAdmin, hidePost);
 // Unhide post
 router.put("/unhide/:id", verifyAdmin, unhidePost);
-
+// Hide Post
+router.put("/userhide/:id", verifyUser, hidePost);
+// Unhide post
+router.put("/userunhide/:id", verifyUser, unhidePost);
 export default router;

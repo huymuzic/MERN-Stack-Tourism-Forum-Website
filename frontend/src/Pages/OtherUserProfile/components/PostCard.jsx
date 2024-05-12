@@ -5,7 +5,8 @@ import { FaHeart, FaRegHeart, FaComment } from "react-icons/fa";
 import { useUser } from "../../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
 
-function PostCard({ post, onToggleLike }) {
+
+function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }) {
     const [editMode, setEditMode] = useState(false);
     const [editableContent, setEditableContent] = useState(post.content);
     const [editableImage, setEditableImage] = useState(post.image);
@@ -13,6 +14,8 @@ function PostCard({ post, onToggleLike }) {
     const [isLiked, setIsLiked] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const optionsRef = useRef(null);
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const token = localStorage.getItem('accessToken');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,8 +29,7 @@ function PostCard({ post, onToggleLike }) {
     };
 
     const handleEdit = () => {
-        setEditMode(true);
-        setShowOptions(false);
+        navigate(`/forum/p/${post._id}`);
     };
 
     const handleLike = () => {
@@ -35,9 +37,15 @@ function PostCard({ post, onToggleLike }) {
         setIsLiked(!isLiked);
     };
 
-    const handleDelete = () => {
-        // Provide your own `deletePost` logic if needed
+    const handleButtonClick = () => {
+        if (post.status === "archived") {
+            handleUnLockConfirm(post._id)
+        } 
+        if  (post.status === "unarchived") {
+            handleLockConfirm(post._id)
+        }
     };
+
 
     const toggleOptions = (event) => {
         event.stopPropagation();
@@ -60,7 +68,7 @@ function PostCard({ post, onToggleLike }) {
         return () => document.removeEventListener("mousedown", handleMouseDown);
     }, []);
     return (
-        <div className="card post-card align-items-center">
+        <div className="card post-card justify-content-center align-items-center">
             <div className="card-body">
                 <h5 className="card-title"><b>{post.title}</b></h5>
                 <p className="card-text">@{post.authorId.username}</p>
@@ -72,8 +80,8 @@ function PostCard({ post, onToggleLike }) {
                 )}
                 {showOptions && (
                     <div ref={optionsRef} className="options-bar">
-                        {!editMode && <button className="btn btn-secondary" onClick={handleEdit}>Edit Post</button>}
-                        <button className="btn btn-danger" onClick={handleDelete}>Delete Post</button>
+                        {!editMode && <button className="btn btn-outline-primary" onClick={handleEdit}>Edit Post</button>}
+                        <button className="btn btn-outline-danger" onClick={handleButtonClick}>{post.status == "unarchived"?"Hide Post":"Unhide Post"}</button>
                     </div>
                 )}
                 {editMode ? (
