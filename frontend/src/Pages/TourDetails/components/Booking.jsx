@@ -1,16 +1,20 @@
 import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import './booking.css'
 
 import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 
 const Booking = ({ tour, avgRating }) => {
+    const navigate = useNavigate();
     const [numPeople, setNumPeople] = useState(1);
     const { price, reviews } = tour;
     const [peopleValue, setPeopleValue] = useState('01');
+    const [totalPrice, setTotalPrice] = useState(price);
 
     useEffect(() => {
         setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
-    }, [numPeople]);
+        setTotalPrice(price * numPeople);
+    }, [numPeople, price]);
     // const [credentials, setCredentials] = useState({
     //     userId: '01',
     //     userEmail: 'example@gmail.com',
@@ -29,8 +33,12 @@ const Booking = ({ tour, avgRating }) => {
     };
 
     const handleBookFormChange = e => {
-        // setCredentials(prev => ({ ...prev, [e.target.id]:e.target.value}))
     }
+
+    const handleBookFormSubmit = e => {
+        e.preventDefault();
+        navigate('/thank-you');
+    };
 
     return (
         <div className='booking'>
@@ -66,20 +74,20 @@ const Booking = ({ tour, avgRating }) => {
             <div className='booking__bottom'>
                 <ListGroup>
                     <ListGroupItem className='border-0 px-0 book_form_row'>
-                        <h5 className='d-flex align-items-center gap-1'>${price} <i className='ri-close-line'></i> 1 person</h5>
-                        <span> ${price}</span>
+                        <h5 className='d-flex align-items-center gap-1'>${price} <i className='ri-close-line'></i> {numPeople} person(s)</h5>
+                        <span> ${price * numPeople}</span>
                     </ListGroupItem>
                     <ListGroupItem className='border-0 px-0 book_form_row'>
                         <h5>Service charge</h5>
-                        <span> $10</span>
+                        <span> ${10 * numPeople}</span>
                     </ListGroupItem>
                     <ListGroupItem className='border-0 px-0 total book_form_row'>
                         <h5>Total</h5>
-                        <span> $109</span>
+                        <span> ${price * numPeople + 10 * numPeople}</span>
                     </ListGroupItem>
                 </ListGroup>
 
-                <Button className='btn primary__btn w-100 mt-4 book__btn normal__pad'>Book Now</Button>
+                <Button className='btn primary__btn w-100 mt-4 book__btn normal__pad' onClick={handleBookFormSubmit}>Book Now</Button>
             </div>
         </div>
     );

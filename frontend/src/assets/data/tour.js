@@ -12,10 +12,9 @@ const tours = [
     id: "01",
     title: "Westminister Bridge, London",
     city: "London, England",
-    distance: 300,
     price: 99,
     ageRange: "19-99",
-    duration: "5 days",
+    duration: 5,
     reviews: [
       {
         name: "jhon doe",
@@ -136,11 +135,11 @@ const tours = [
   {
     id: "08",
     title: "Snowy Mountains, Thailand",
-    city: "Thailand",
-    distance: 500,
+    city: "Bangkok",
+    country: "Thailand",
     price: 99,
     ageRange: "19-99",
-    duration: "3 days",
+    duration: 3,
     reviews: [],
     avgRating: 4.5,
     photo: tourImg,

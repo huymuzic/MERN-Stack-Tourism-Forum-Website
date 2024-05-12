@@ -16,7 +16,6 @@ const TourDetails = () => {
     const { id } = useParams();
     const reviewMsgRef = useRef('');
     const [tourRating, setTourRating] = useState(null);
-    const [hoveredStar, setHoveredStar] = useState(null);
 
     const tour = tourData.find(tour => tour.id === id)
 
@@ -36,7 +35,7 @@ const TourDetails = () => {
 
     return <>
     
-    <section>
+        <section>
         <Container>
             <Row>
                 <Col lg='8'>
@@ -64,7 +63,7 @@ const TourDetails = () => {
                                 <span><i className='ri-money-dollar-circle-line '></i>from ${price} / adult</span>
                                 <hr className='col-12 mx-auto custom-hr'></hr>
                                 <span><i className='ri-group-line'></i>Age {ageRange}</span>
-                                <span><i className="ri-time-line"></i>Duration: {duration}</span>
+                                <span><i className="ri-time-line"></i>Duration: {duration} days</span>
                                 <span><i className="fa-light fa-bed-front"></i>Accommodation included</span>
                                 <hr className='col-12 mx-auto custom-hr'></hr>
                                 <span>FAQ</span>

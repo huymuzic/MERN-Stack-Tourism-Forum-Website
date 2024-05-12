@@ -27,7 +27,6 @@ function App() {
             },
           });
           const responseBody = await response.json();
-          console.log(responseBody);
           setUser(response.ok ? { ...responseBody.user } : null);  
         }
         setIsLoading(false);
