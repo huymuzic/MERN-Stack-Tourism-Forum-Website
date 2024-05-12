@@ -32,7 +32,7 @@ export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm 
             <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex flex-row align-items-center">
-                        <Link to={`users/${user._id}`} style={{ textDecoration: "none", display: "flex", alignItems: "flex-end" }}>
+                        <Link to={`/profile/${user._id}`} style={{ textDecoration: "none", display: "flex", alignItems: "flex-end" }}>
                             <h5 className="card-title" style={{ cursor: "pointer", margin: 0 }}>
                                 {user.username}
                             </h5>

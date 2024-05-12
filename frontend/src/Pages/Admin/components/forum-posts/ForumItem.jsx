@@ -35,7 +35,7 @@ const ForumItem = ({ post,handleLockConfirm, handleUnLockConfirm }) => {
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-center">
           <div>
-            <Link to={`/post/${post._id}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/forum/p/${post._id}`} style={{ textDecoration: 'none' }}>
               <h5 className="card-title">{post.title || "No title"}</h5>
             </Link>
             <div className="d-flex flex-row">
