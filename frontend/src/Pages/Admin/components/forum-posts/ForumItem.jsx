@@ -33,26 +33,28 @@ const ForumItem = ({ post,handleLockConfirm, handleUnLockConfirm }) => {
   return (
     <div className="card mb-3">
       <div className="card-body">
-        <div className="d-flex justify-content-between align-items-center">
-          <div>
-            <Link to={`/forum/p/${post._id}`} style={{ textDecoration: 'none' }}>
-              <h5 className="card-title">{post.title || "No title"}</h5>
-            </Link>
-            <div className="d-flex flex-row">
-              <p className="card-text me-3 mb-0">
-                <strong className="text-muted">Author: {post.authorId?.username || "User"} </strong>
-              </p>
-              <p className="card-text mb-0">
-                <small className="text-muted">Posted: {moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss')}</small>
-              </p>
-              <p className="card-text mb-0">
-                <small className="text-muted">Deleted: {moment(post.deletedAt).format('YYYY-MM-DD HH:mm:ss')}</small>
-              </p>
+      <div className="d-flex justify-content-between align-items-start">
+    <div>
+        <Link to={`/forum/p/${post._id}`} style={{ textDecoration: 'none' }}>
+            <h5 className="card-title">{post.title || "No title"}</h5>
+        </Link>
+        <div className="d-flex flex-row align-items-center">
+            <div>
+                <p className="card-text me-3 mb-0">
+                    <strong className="text-muted">Author: {post.authorId?.username || "User"} </strong>
+                </p>
+                <p className="card-text mb-0">
+                    <small className="text-muted">Posted: {moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss')}</small>
+                </p>
+                <p className="card-text mb-0">
+                    <small className="text-muted">Deleted: {moment(post.deletedAt).format('YYYY-MM-DD HH:mm:ss')}</small>
+                </p>
             </div>
-          </div>
-          <div className="ms-3">
-              <PostStatusBox status={post.status} />
-          </div>
+            <div className="ms-3">
+                <PostStatusBox status={post.status} />
+            </div>
+        </div>
+    </div>
           {
               <div>
                   {post.status === "unarchived" ? (

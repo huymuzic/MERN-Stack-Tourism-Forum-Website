@@ -85,7 +85,7 @@ function Favorites() {
             },
           });
           if (response.ok) {
-            pushSuccess('Hide post successfully');
+            pushError('Hide post successfully');
             fetchData()
           } else {
             pushError('Failed to hide post');

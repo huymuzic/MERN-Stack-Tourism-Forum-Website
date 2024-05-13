@@ -68,6 +68,15 @@ function UserPosts() {
 
                 // Update logged-in user's likes
                 updateUserLikes(favorPostIds);
+                console.log(favorPostIds)
+                console.log(postId)
+                if (favorPostIds.indexOf(postId) != -1) {
+                    pushSuccess('You successfully like this post!')
+                }
+                else {
+                    pushError('You successfully unlike this post!')
+                }
+
             } else {
                 throw new Error(result.message || 'Failed to toggle like');
             }
@@ -97,7 +106,7 @@ function UserPosts() {
             },
           });
           if (response.ok) {
-            pushSuccess('Hide post successfully');
+            pushError('Hide post successfully');
             fetchData()
           } else {
             pushError('Failed to hide post');
