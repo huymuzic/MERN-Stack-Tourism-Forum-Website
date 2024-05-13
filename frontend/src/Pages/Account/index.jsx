@@ -40,15 +40,12 @@ function UserAccount() {
   };
 
   const updateInfo = async (userId, updates) => {
-    const token = localStorage.getItem('accessToken');  // Ensure token is refreshed from storage
-
     try {
         const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
+                'Content-Type': 'application/json',},
             body: JSON.stringify(updates)
         });
         const updatedInfo = await response.json();
@@ -66,10 +63,9 @@ function UserAccount() {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/verify-password`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+            'Content-Type': 'application/json',},
         body: JSON.stringify({ password: inputPassword })
       });
       const data = await response.json();
@@ -97,9 +93,9 @@ function UserAccount() {
       try {
         const response = await fetch(`${baseURL}/api/v1/users/${user._id}`, {
           method: 'DELETE',
+          credentials: 'include',
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          }
+              'Content-Type': 'application/json',},
         });
         const data = await response.json();
         if (response.ok) {

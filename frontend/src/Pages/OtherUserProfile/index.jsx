@@ -33,12 +33,14 @@ const OtherUserProfile = () => {
     }, [id, user]);  // Note: Be cautious with including state that changes often as dependencies
 
     const fetchOtherUserInfo = async () => {
+        const baseURL = import.meta.env.VITE_BASE_URL;
+        const token = localStorage.getItem('accessToken');
         try {
             const response = await fetch(`${baseURL}/api/v1/users/${id}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                }
+                    'Content-Type': 'application/json',},
             });
             const data = await response.json();
             if (response.ok) {
@@ -65,10 +67,9 @@ const OtherUserProfile = () => {
             const url = new URL(`${baseURL}/api/v1/users/unlock/${id}`);
             const response = await fetch(url, {
               method: 'PUT',
+              credentials: 'include',
               headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+                'Content-Type': 'application/json',        },
             });
             if (response.ok) {
               pushSuccess('Active account successfully');
@@ -87,11 +88,10 @@ const OtherUserProfile = () => {
             const url = new URL(`${baseURL}/api/v1/users/lock/${id}`);
             const response = await fetch(url, {
               method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            });
+               credentials: 'include',
+               headers: {
+                'Content-Type': 'application/json',        },
+            },);
             if (response.ok) {
               pushSuccess('Inactive account successfully');
               fetchOtherUserInfo()

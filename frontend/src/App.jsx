@@ -12,6 +12,16 @@ function App() {
   const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(true);
 
+  const getTokenFromCookie = () => {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith('accessToken=')) {
+        return cookie.substring('accessToken='.length, cookie.length);
+      }
+    }
+    return null;
+  };
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -47,16 +57,7 @@ useEffect(() => {
 }, [user]);
 
 
-const getTokenFromCookie = () => {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith('accessToken=')) {
-      return cookie.substring('accessToken='.length, cookie.length);
-    }
-  }
-  return null;
-};
+
 
 
   return (

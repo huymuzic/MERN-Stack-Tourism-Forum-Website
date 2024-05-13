@@ -64,10 +64,9 @@ export default function UsersList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`);
       const response = await fetch(url, {
         method: 'PUT',
+        credentials: 'include',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
+            'Content-Type': 'application/json',},
       });
       if (response.ok) {
         pushSuccess('Lock user successfully');
@@ -86,10 +85,9 @@ export default function UsersList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`);
       const response = await fetch(url, {
         method: 'PUT',
+        credentials: 'include',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
+            'Content-Type': 'application/json',},
       });
       if (response.ok) {
         pushSuccess('Unlock user successfully');

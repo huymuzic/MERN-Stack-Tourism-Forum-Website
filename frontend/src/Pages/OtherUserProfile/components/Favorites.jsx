@@ -9,16 +9,14 @@ function Favorites() {
     const [favoritePosts, setFavoritePosts] = useState([]);
     const { user,setUser } = useUser();
     const { id } = useParams();
-    const token = localStorage.getItem('accessToken');
     const baseURL = import.meta.env.VITE_BASE_URL
     const fetchFavoritePostsByUser = async (userId) => {
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/favorites/${userId}`, {
                 method: "GET",
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Content-Type': 'application/json',},
             });
             const result = await response.json();
             if (response.ok) {
@@ -40,15 +38,12 @@ function Favorites() {
     };
 
         const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
-
-        const token = localStorage.getItem('accessToken');
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
                 method: 'PUT',
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                    'Content-Type': 'application/json',},
                 body: JSON.stringify({ userId })
             });
             const result = await response.json();
@@ -85,10 +80,9 @@ function Favorites() {
           const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
           const response = await fetch(url, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+                'Content-Type': 'application/json',},
           });
           if (response.ok) {
             pushError('Hide post successfully');
@@ -107,10 +101,9 @@ function Favorites() {
           const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
           const response = await fetch(url, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+                'Content-Type': 'application/json',},
           });
           if (response.ok) {
             pushSuccess('Unhide post successfully');

@@ -12,15 +12,14 @@ function Favorites() {
 
     const fetchFavoritePostsByUser = async (userId) => {
 
-        const token = localStorage.getItem('accessToken');
+
 
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/favorites/${userId}`, {
                 method: "GET",
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Content-Type': 'application/json',},
             });
             const result = await response.json();
             if (response.ok) {
@@ -36,15 +35,13 @@ function Favorites() {
 
         const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
 
-        const token = localStorage.getItem('accessToken');
 
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
                 method: 'PUT',
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                    'Content-Type': 'application/json',},
                 body: JSON.stringify({ userId })
             });
             const result = await response.json();

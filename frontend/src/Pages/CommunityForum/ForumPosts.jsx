@@ -46,15 +46,12 @@ function Post() {
 
     async function replyTopic() {
         const content = editorRef.current.getContent();
-        const token = localStorage.getItem('accessToken');
 
         try {
             const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}/reply`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
+                    'Content-Type': 'application/json', },
                 credentials: 'include',
                 body: JSON.stringify({
                     content: content,
@@ -76,15 +73,13 @@ function Post() {
     }
 
     async function handleLike(postId) {
-        const token = localStorage.getItem('accessToken');
 
         try {
             const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/like`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
+                    'Content-Type': 'application/json',},
             });
 
             if (!response.ok) {
