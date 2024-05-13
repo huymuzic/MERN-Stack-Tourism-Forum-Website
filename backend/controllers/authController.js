@@ -76,7 +76,7 @@ export const login = async (req, res) => {
 
     // if user is found, check password and compare with hashed password
 
-    const checkCorrectPassword = bcrypt.compare(pwd, user.password);
+    const checkCorrectPassword = await bcrypt.compare(pwd, user.password);
 
     // if password is incorrect
     if (!checkCorrectPassword) {
@@ -133,10 +133,7 @@ export const login = async (req, res) => {
 // user logout
 export const logout = async (req, res) => {
   try {
-    console.log("Logout request received");
-
     res.clearCookie("accessToken", { httpOnly: true });
-    console.log("Cleared token and cookie");
 
     res.status(200).json({
       success: true,

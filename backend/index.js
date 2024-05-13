@@ -17,6 +17,7 @@ const app = express();
 const corsOptions = {
   origin: true,
   credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization", "skip"],
 };
 const mongoURI = process.env.MONGO_URI;
 // database connection

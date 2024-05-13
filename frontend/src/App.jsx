@@ -11,7 +11,6 @@ function App() {
   const { theme } = useTheme()
   const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(true);
-  const [isFirstLogin, setIsFirstLogin] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -34,17 +33,19 @@ function App() {
     checkLoginStatus();
   }, [setUser]);
 
-  useEffect(() => {
+useEffect(() => {
     const handlePushSuccess = async () => {
-      if (user && isFirstLogin) {
-        await new Promise(resolve => setTimeout(resolve, 0));
-        pushSuccess(`Welcome back, ${user.name}!`);
-        setIsFirstLogin(false); 
+      if (user && !localStorage.getItem('loggedInBefore')) {
+        setTimeout(() => {
+          pushSuccess(`Welcome back, ${user.name}!`);
+          localStorage.setItem('loggedInBefore', 'true');
+        }, 500); 
       }
     };
 
     handlePushSuccess();
-  }, [user, isFirstLogin]);
+}, [user]);
+
 
 const getTokenFromCookie = () => {
   const cookies = document.cookie.split(';');
