@@ -11,20 +11,15 @@ function App() {
   const { theme } = useTheme()
   const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(true);
-  const [isFirstLogin, setIsFirstLogin] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = getTokenFromCookie();
         if (token) {
           const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
             method: 'GET',
             credentials: 'include',
-            headers: {
-              // Include the token in the request headers
-              Authorization: `Bearer ${token}`,
-            },
           });
           const responseBody = await response.json();
           setUser(response.ok ? { ...responseBody.user } : null);  
@@ -38,17 +33,31 @@ function App() {
     checkLoginStatus();
   }, [setUser]);
 
-  useEffect(() => {
+useEffect(() => {
     const handlePushSuccess = async () => {
-      if (user && isFirstLogin) {
-        await new Promise(resolve => setTimeout(resolve, 0));
-        pushSuccess(`Welcome back, ${user.name}!`);
-        setIsFirstLogin(false); 
+      if (user && !localStorage.getItem('loggedInBefore')) {
+        setTimeout(() => {
+          pushSuccess(`Welcome back, ${user.name}!`);
+          localStorage.setItem('loggedInBefore', 'true');
+        }, 500); 
       }
     };
 
     handlePushSuccess();
-  }, [user, isFirstLogin]);
+}, [user]);
+
+
+const getTokenFromCookie = () => {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith('accessToken=')) {
+      return cookie.substring('accessToken='.length, cookie.length);
+    }
+  }
+  return null;
+};
+
 
   return (
     <>

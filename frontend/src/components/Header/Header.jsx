@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import { Container, Button} from 'react-bootstrap'
@@ -45,31 +45,22 @@ const Header = ({ isLoading }) => {
     const {user, setUser } = useUser();
     const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
     const navigate = useNavigate();
-    const [successMsg, setSuccessMsg] = useState(false);
-    const [errorMsg, setErrorMsg] = useState(false);
 
     const handleLogout = async () => {
         try {
             const response = await fetch(import.meta.env.VITE_BASE_URL + '/api/v1/auth/logout', {
                 method: 'GET',
                 credentials: 'include', // Send cookies with the request
-            });
-
-            console.log('Logout response:', response); // Log the response
+            }); 
             
             if (response.ok) {
+                localStorage.removeItem('loggedInBefore');
                 pushSuccess('Logged out successfully');
-                setSuccessMsg(true);
-                 // Clear token in local storage on the browser
-                localStorage.removeItem('accessToken');
                 setUser(null);
                 navigate('/');
             } else {
                 // Handle unsuccessful logout
                 pushError('Failed to log out');
-                setErrorMsg(true);
-                const responseBody = await response.json();
-                console.error('Failed to log out', responseBody.message);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -78,25 +69,27 @@ const Header = ({ isLoading }) => {
 
     const handleNavItemClick = () => {
         if (window.innerWidth < 992) {
-            const navbarToggler = document.querySelector('.navbar-toggler');
             const navbarCollapse = document.querySelector('.navbar-collapse');
             if (navbarCollapse.classList.contains('show')) {
-                navbarToggler.click();
+                navbarCollapse.classList.remove('show');
             }
         }
     };
 
     const removeMargin = () => {
-        if(window.innerWidth < 992) {
+        if(window.innerWidth >= 992) {
+            const navItems = document.getElementById('navItems');
+            if(navItems) {
+                navItems.classList.add('margin');
+            }
+        }
+        else {
             const navItems = document.getElementById('navItems');
             if(navItems) {
                 navItems.classList.remove('margin');
             }
         }
     }
-    document.addEventListener('DOMContentLoaded', () => {
-        removeMargin();
-    });
     const centerLogo = () => {
         const logo = document.querySelector('.navbar-brand');
         if (window.innerWidth < 992 && user === null) {
@@ -110,12 +103,11 @@ const Header = ({ isLoading }) => {
         }      
     };
 
+    removeMargin();
+
     document.addEventListener('DOMContentLoaded', () => {
-        centerLogo();   
+        window.addEventListener('resize', centerLogo);
     });
-
-    window.addEventListener('resize', centerLogo);
-
 
     return (
     <nav className='header navbar navbar-expand-lg'>
@@ -130,14 +122,14 @@ const Header = ({ isLoading }) => {
 
                     { /* NAVIGATION SECTION STARTS */ }
                 <div className="d-lg-none hbg">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>   
                 </div>
-                    <div className='collapse navbar-collapse justify-content-end' id="navbarSupportedContent">
-                        <ul className='navbar-nav mb-lg-0 gap-5 d-flex justify-content-end text-center margin' id="navItems">
+                    <div className='navbar-collapse collapse justify-content-end' id="navbarSupportedContent">
+                        <ul className='navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end text-center margin' id="navItems">
                             {nav__links.map((item, index) => (
                                 <li className='nav__item' key={index}>                                 
                                     <NavLink to={item.path} className={navClass => navClass.isActive ? "active__link" : ""} onClick={handleNavItemClick}>{item.display}</NavLink>

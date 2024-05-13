@@ -73,8 +73,9 @@ export const login = async (req, res) => {
     }
 
     // if user is found, check password and compare with hashed password
-   
+
     const checkCorrectPassword = await bcrypt.compare(pwd, user.password);
+
     // if password is incorrect
     if (!checkCorrectPassword) {
       return res
@@ -89,16 +90,15 @@ export const login = async (req, res) => {
       const token = jwt.sign(
         { signInTime: Date.now(), id: user._id, role: user.role },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: '365d' }
+        { expiresIn: "365d" }
       );
       res
         .cookie("accessToken", token, {
-          httpOnly: true,
           expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
         })
         .status(200)
         .json({
-          token,  
+          token,
           data: { ...rest },
           role,
           message: "User logged in successfully",
@@ -110,9 +110,7 @@ export const login = async (req, res) => {
         process.env.JWT_SECRET_KEY
       );
       res
-        .cookie("accessToken", token, {
-          httpOnly: true,
-        })
+        .cookie("accessToken", token, {})
         .status(200)
         .json({
           token,
@@ -133,10 +131,7 @@ export const login = async (req, res) => {
 // user logout
 export const logout = async (req, res) => {
   try {
-    console.log("Logout request received");
-
     res.clearCookie("accessToken", { httpOnly: true });
-    console.log("Cleared token and cookie");
 
     res.status(200).json({
       success: true,

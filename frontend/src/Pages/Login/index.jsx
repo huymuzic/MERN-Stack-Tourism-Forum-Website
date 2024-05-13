@@ -30,6 +30,7 @@ function Login() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
+                credentials: 'include',
             });
 
             const responseBody = await response.json();
@@ -40,7 +41,6 @@ function Login() {
                     setCallAPI(true); 
                 }   
             } else {
-                localStorage.setItem('accessToken', responseBody.token); 
                 setUser(responseBody.data._id);
                 navigate('/');
                 window.location.reload();
@@ -105,8 +105,7 @@ function Login() {
                 <a className="mb-3 text-end col-8" href='/resetPass'>Forgot password?</a>
 
                 <div className="mb-3 form-check col-8">
-                    <input type="checkbox" className="form-check-input" id="remember"
-                     {...register("rem")} 
+                    <input type="checkbox" className="form-check-input" id="remember" {...register("rem")} 
                     defaultChecked={false}></input>
                     <label
                         className="form-check-label"
