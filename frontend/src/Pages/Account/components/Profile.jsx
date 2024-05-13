@@ -30,12 +30,14 @@ const Profile = () => {
 
   
   const fetchInfo = async (userId) => {
+    const token = localStorage.getItem('accessToken');  // Retrieve token inside function
     try {
         const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
             method: 'GET',
-            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',},
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
         });
         const jsonResponse = await response.json();
         if (response.ok) {
@@ -84,9 +86,10 @@ useEffect(() => {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/verify-password`, {
         method: 'POST',
-        credentials: 'include',
         headers: {
-            'Content-Type': 'application/json',},
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
         body: JSON.stringify({ password: inputPassword }),
       });
       const data = await response.json();
@@ -114,9 +117,10 @@ useEffect(() => {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/${user._id}`, {
         method: 'PUT',
-        credentials: 'include',
         headers: {
-            'Content-Type': 'application/json',},
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
         body: JSON.stringify({ userId: user._id, name: newName, email: newEmail, password: newPassword }),
       });
       const data = await response.json();
@@ -149,9 +153,9 @@ useEffect(() => {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/upload-avatar/${user._id}`, {
         method: 'PUT',
-        credentials: 'include',
         headers: {
-            'Content-Type': 'application/json',},
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
         body: formData,
       });
       const data = await response.json();

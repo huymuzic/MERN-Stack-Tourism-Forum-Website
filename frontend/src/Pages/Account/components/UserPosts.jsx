@@ -11,12 +11,15 @@ function UserPosts() {
 
     const fetchPostsByUser = async (userId) => {
 
+        const token = localStorage.getItem('accessToken');
+
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/user/${userId}`, {
                 method: "GET",
-                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',},
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
             });
             const result = await response.json();
             if (response.ok) {
@@ -33,12 +36,15 @@ function UserPosts() {
 
     const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
 
+        const token = localStorage.getItem('accessToken');
+
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
                 method: 'PUT',
-                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',},
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ userId })
             });
             const result = await response.json();

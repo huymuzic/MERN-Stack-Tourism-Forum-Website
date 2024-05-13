@@ -36,6 +36,7 @@ export default function ForumPostsList() {
   const [loading, setLoading] = useState(false);
   const searchRef = useRef(null);
   const searchTypeRef = useRef(null);
+  const token = localStorage.getItem('accessToken');
   const handleResetFilter = () => {
     setFilter({ searchValue: '', searchType: forumPostSearchType[0], page: 1 });
     if (searchRef.current) {
@@ -89,9 +90,10 @@ export default function ForumPostsList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/posts/hide/${id}`);
       const response = await fetch(url, {
         method: 'PUT',
-        credentials: 'include',
         headers: {
-            'Content-Type': 'application/json',},
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
       });
       if (response.ok) {
         pushSuccess('Hide post successfully');
@@ -114,9 +116,10 @@ export default function ForumPostsList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/posts/unhide/${id}`);
       const response = await fetch(url, {
         method: 'PUT',
-        credentials: 'include',
         headers: {
-            'Content-Type': 'application/json',},
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
       });
       if (response.ok) {
         pushSuccess('Unhide post successfully');

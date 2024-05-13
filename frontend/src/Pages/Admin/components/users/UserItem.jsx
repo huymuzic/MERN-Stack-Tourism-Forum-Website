@@ -9,6 +9,7 @@ import PopUpBase from "../../../../components/pop-up/PopUpBase";
 export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm }) {
     const popUpLock = usePopUp();
     const popUpUnLock = usePopUp();
+    const token = localStorage.getItem('accessToken');
     const handleButtonClick = () => {
         if (user.status === "inactive") {
             popUpUnLock.setTrue();

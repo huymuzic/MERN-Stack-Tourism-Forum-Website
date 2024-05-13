@@ -11,15 +11,20 @@ function UserPosts() {
     const { user,setUser } = useUser(); 
     const { id } = useParams();
 
+    const token = localStorage.getItem('accessToken');
     const baseURL = import.meta.env.VITE_BASE_URL
 
     const fetchPostsByUser = async (userId) => {
+
+        const token = localStorage.getItem('accessToken');
+
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/user/${userId}`, {
                 method: "GET",
-                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',},
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
             });
             const result = await response.json();
             if (response.ok) {
@@ -36,12 +41,15 @@ function UserPosts() {
 
     const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
 
+        const token = localStorage.getItem('accessToken');
+
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
                 method: 'PUT',
-                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',},
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ userId })
             });
             const result = await response.json();
@@ -92,9 +100,10 @@ function UserPosts() {
           const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
           const response = await fetch(url, {
             method: 'PUT',
-            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',},
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
           });
           if (response.ok) {
             pushError('Hide post successfully');
@@ -113,9 +122,10 @@ function UserPosts() {
           const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
           const response = await fetch(url, {
             method: 'PUT',
-            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',},
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
           });
           if (response.ok) {
             pushSuccess('Unhide post successfully');
