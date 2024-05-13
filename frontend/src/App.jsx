@@ -30,8 +30,6 @@ function App() {
           setUser(response.ok ? { ...responseBody.user } : null);  
         }
         setIsLoading(false);
-        console.log('User:', user);
-        console.log(isLoading);
       } catch (error) {
         console.error('Error checking login status:', error);
       }

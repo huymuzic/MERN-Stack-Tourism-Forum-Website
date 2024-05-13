@@ -50,8 +50,6 @@ ul {
 .primary__btn {
   background: var(--secondary-color) !important;
   border: none !important;
-  /* border-radius: 50px !important; */
-  /* padding: 0.4rem 1.5rem !important; */
   cursor: pointer;
 }
 

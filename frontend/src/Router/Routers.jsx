@@ -26,6 +26,7 @@ import ForumPostsList from "../Pages/Admin/components/forum-posts/index";
 import UsersList from "../Pages/Admin/components/users/index";
 import OtherUserProfile from "../Pages/OtherUserProfile/index";
 import ConfigPage from "../Pages/ConfigPage";
+import ThankYou from "../Pages/ThankYou";
 const Routers = () => {
   return (
     <Routes>
@@ -59,7 +60,7 @@ const Routers = () => {
       <Route path="/tours/search" element={<SearchResultList />} />
       <Route path="/resetPass" element={<ResetPassword />} />
       <Route path="/config-page" element={<ConfigPage />} />
-
+      <Route path="/thank-you" element={<ThankYou />} />
     </Routes>
   );
 };

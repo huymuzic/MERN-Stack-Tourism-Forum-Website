@@ -61,18 +61,6 @@ const destinationData2 = [
 
 
 const DestinationList = () => {
-    // let displayedData1;
-    // let displayedData2;
-    // if (window.innerWidth <= 576) {
-    //     displayedData1 = destinationData1.slice(0, 1);
-    //     displayedData2 = destinationData2.slice(0, 1);
-    // } else if (window.innerWidth <= 992) {
-    //     displayedData1 = destinationData1.slice(0, 3)
-    //     displayedData2 = destinationData2.slice(0, 3) 
-    // } else if (window.innerWidth <= 1200) {
-    //     displayedData1 = destinationData1; 
-    //     displayedData2 = destinationData2;
-    // }
     return <>
             <Row className="destination-list-1">
                 {destinationData1.map((item, index) => (

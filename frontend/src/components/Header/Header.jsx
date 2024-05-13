@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import { Container, Button} from 'react-bootstrap'
@@ -27,8 +27,7 @@ const nav__links = [
 ]
 
 function toggleDropdown() {
-    var dropdownMenus = document.getElementsByClassName('dropdown-menu');
-
+    var dropdownMenus = document.getElementsByClassName('user__icon__dropdown');
     for (var i = 0; i < dropdownMenus.length; i++) {
         var menu = dropdownMenus[i];
 
@@ -149,10 +148,9 @@ const Header = ({ isLoading }) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : user !== null ? (
-                    // {user !== null ? (
                         <li className="nav-item dropdown no-bullet mb-4 nm">
                           <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
-                                {user?.avatar ? (
+                                {user ? (
                                     <img
                                         src={avatarUrl}
                                         alt="User Avatar"
