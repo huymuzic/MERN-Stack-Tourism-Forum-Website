@@ -284,15 +284,6 @@ function UserAccount() {
           <div className="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Please Provide Your Password</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={handleCancel}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div class="modal-body">
               <input

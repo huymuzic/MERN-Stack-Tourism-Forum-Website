@@ -54,10 +54,10 @@ function Post(props) {
             console.error(error);
         }
     };
-
+    
     return <div className='col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
         <div className="d-flex mt-3 ms-2">
-            <a className='ps-3 d-block' href='#'>
+            <a className='ps-3 d-block'  href={`/profile/${post.authorId?._id}`}>
                 <img height='45' width='45'
                     className='rounded-5'
                     alt='profile picture'
