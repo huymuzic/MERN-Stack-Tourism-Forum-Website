@@ -53,15 +53,11 @@ const Header = ({ isLoading }) => {
             const response = await fetch(import.meta.env.VITE_BASE_URL + '/api/v1/auth/logout', {
                 method: 'GET',
                 credentials: 'include', // Send cookies with the request
-            });
-
-            console.log('Logout response:', response); // Log the response
+            }); 
             
             if (response.ok) {
                 pushSuccess('Logged out successfully');
                 setSuccessMsg(true);
-                 // Clear token in local storage on the browser
-                localStorage.removeItem('accessToken');
                 setUser(null);
                 navigate('/');
             } else {

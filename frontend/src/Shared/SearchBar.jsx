@@ -6,20 +6,20 @@ const SearchBar = () => {
 
     // Form validation
     const locationRef = useRef('');
-    const distanceRef = useRef(0);
+    const priceRef = useRef(0);
     const tourPeriodRef = useRef(0);
 
     const [errors, setErrors] = useState({}); // State for validation errors
 
 
     let locationPattern = /^[a-zA-Z\s\-]+$/;
-    let distancePattern = /^\d{1,8}$/;
+    let pricePattern = /^\d{1,4}$/;
     let tourPeriodPattern = /^\d{1,2}$/;
 
     const searchHandler = () => {
 
         const location = locationRef.current.value
-        const distance = distanceRef.current.value
+        const price = priceRef.current.value
         const tourPeriod = tourPeriodRef.current.value
 
         const newErrors = {}; // Object to store validation errors
@@ -30,10 +30,10 @@ const SearchBar = () => {
       newErrors.location = 'Please enter a valid location (only characters allowed)';
     }
 
-    if (!distance) {
-      newErrors.distance = 'Distance is required.';
-    } else if (!distancePattern.test(distance)) {
-      newErrors.distance = 'Please enter a valid distance (max 8 numbers)';
+    if (!price) {
+      newErrors.price = 'Price is required.';
+    } else if (!pricePattern.test(price)) {
+      newErrors.price = 'Please enter a valid price (max 4 numbers)';
     }
 
     if (!tourPeriod) {
@@ -73,10 +73,10 @@ const SearchBar = () => {
                         <i className="ri ri-map-pin-time-line"></i>
                     </span>
                     <div>
-                        <h6>Distance</h6>
-                        <input id = "distance" type="number" placeholder="Distance k/m" ref={distanceRef} aria-describedby="distance-error" />
-                        <div id="distance-error" className="error-message">
-                            {errors.distance}
+                        <h6>Price</h6>
+                        <input id = "price" type="number" placeholder="Enter a number" ref={priceRef} aria-describedby="price-error" />
+                        <div id="price-error" className="error-message">
+                            {errors.price}
                         </div>                              
                     </div>
                 </FormGroup>
@@ -86,7 +86,7 @@ const SearchBar = () => {
                     </span>
                     <div>
                         <h6>Tour Period</h6>
-                        <input id = "tourPeriod" type="number" placeholder="0" ref={tourPeriodRef} aria-describedby="distance-error" />
+                        <input id = "tourPeriod" type="number" placeholder="0" ref={tourPeriodRef} aria-describedby="tourPeriod-error" />
                         <div id="tourPeriod-error" className="error-message">
                             {errors.tourPeriod}
                         </div>      

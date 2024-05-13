@@ -16,15 +16,11 @@ function App() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = getTokenFromCookie();
         if (token) {
           const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
             method: 'GET',
             credentials: 'include',
-            headers: {
-              // Include the token in the request headers
-              Authorization: `Bearer ${token}`,
-            },
           });
           const responseBody = await response.json();
           setUser(response.ok ? { ...responseBody.user } : null);  
@@ -49,6 +45,18 @@ function App() {
 
     handlePushSuccess();
   }, [user, isFirstLogin]);
+
+const getTokenFromCookie = () => {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith('accessToken=')) {
+      return cookie.substring('accessToken='.length, cookie.length);
+    }
+  }
+  return null;
+};
+
 
   return (
     <>
