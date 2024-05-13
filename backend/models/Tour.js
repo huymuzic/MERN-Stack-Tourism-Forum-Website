@@ -11,19 +11,11 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    address: {
+    country: {
       type: String,
-      required: true,
-    },
-    distance: {
-      type: Number,
       required: true,
     },
     photo: {
-      type: String,
-      required: true,
-    },
-    desc: {
       type: String,
       required: true,
     },
@@ -31,11 +23,14 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    maxGroupSize: {
+    ageRange: {
+      type: String,
+      required: true,
+    },
+    duration: {
       type: Number,
       required: true,
     },
-
     reviews: [
       {
         type: mongoose.Types.ObjectId,

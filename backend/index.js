@@ -9,6 +9,7 @@ import authRoute from "./routes/auth.js";
 import forumRoute from "./routes/forum.js";
 import postRoute from "./routes/post.js";
 import formRoute from "./routes/form.js";
+import tourRoute from "./routes/tour.js";
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -16,16 +17,16 @@ const app = express();
 const corsOptions = {
   origin: true,
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization", 'skip'],
+  allowedHeaders: ["Content-Type", "Authorization", "skip"],
 };
-const mongoURI = process.env.MONGO_URI 
+const mongoURI = process.env.MONGO_URI;
 // database connection
 const connect = async () => {
   try {
     mongoose.connect(mongoURI);
-    console.log('MongoDB is connected');
+    console.log("MongoDB is connected");
   } catch (err) {
-    console.error('MongoDB connection error:', err.message);
+    console.error("MongoDB connection error:", err.message);
   }
 };
 // middleware
@@ -38,6 +39,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/forum", forumRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/form", formRoute);
+app.use("/api/v1/tours", tourRoute);
 
 // testing
 app.get("/", (req, res) => {
