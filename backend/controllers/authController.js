@@ -63,10 +63,8 @@ export const register = async (req, res) => {
 // user login
 export const login = async (req, res) => {
   const { email, pwd, rem } = req.body;
-
   try {
     const user = await User.findOne({ email: email });
-
     // if no user is found
     if (!user) {
       return res
@@ -75,9 +73,8 @@ export const login = async (req, res) => {
     }
 
     // if user is found, check password and compare with hashed password
-    
-    const checkCorrectPassword = bcrypt.compare(pwd, user.password);
- 
+   
+    const checkCorrectPassword = await bcrypt.compare(pwd, user.password);
     // if password is incorrect
     if (!checkCorrectPassword) {
       return res

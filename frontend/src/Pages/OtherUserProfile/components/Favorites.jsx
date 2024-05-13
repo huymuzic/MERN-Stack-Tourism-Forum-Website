@@ -66,6 +66,12 @@ function Favorites() {
                 }
                 // Update logged-in user's likes
                 updateUserLikes(favorPostIds);
+                if (favorPostIds.indexOf(postId) != -1) {
+                    pushSuccess('You successfully like this post!')
+                }
+                else {
+                    pushError('You successfully unlike this post!')
+                }
             } else {
                 throw new Error(result.message || 'Failed to toggle like');
             }

@@ -8,7 +8,7 @@ import { Button, Card, Container, Dropdown, Row, Col, Nav } from 'react-bootstra
 import { pushSuccess, pushError } from '../../components/Toast';
 import PopUpBase from '../../components/pop-up/PopUpBase';
 import { usePopUp } from '../../components/pop-up/usePopup';
-import './Postuser.css'
+
 
 const OtherUserProfile = () => {
     const { user, setUser } = useUser();
@@ -121,22 +121,21 @@ const OtherUserProfile = () => {
                             </div>
                         </div>
                     </Col>
-                    <Col xs={12} md={4} className="d-flex justify-content-end">
-                        {(user?.role === 'admin' || user?._id === otherUserInfo._id) && (
-                              <Dropdown className="ellipsis-dropdown">
+                    {(user?.role === 'admin' || user?._id === otherUserInfo._id) && (
+                        <Col xs="auto" className="align-items-end "> 
+                            <Dropdown className="ellipsis-dropdown">
                                 <Dropdown.Toggle variant="light" id="dropdown-basic">
-                                    <span>. . .</span> {/* Using ellipsis as the dropdown text */}
+                                    <span>. . .</span> 
                                 </Dropdown.Toggle>
-                    
                                 <Dropdown.Menu>
                                     <Dropdown.Item onClick={handleToggleStatus}>Toggle Status</Dropdown.Item>
                                     <Dropdown.Item onClick={() => navigate('/account')}>Edit Profile</Dropdown.Item>
                                     <Dropdown.Item onClick={handleDeleteUser} className="text-danger">Delete Account</Dropdown.Item>
                                 </Dropdown.Menu>
-                          </Dropdown>
-                        )}
-                    </Col>
-                        </Row>
+                            </Dropdown>
+                        </Col>
+                            )}
+                    </Row>
                         <Nav variant="tabs" activeKey={activeNav} onSelect={(selectedKey) => setActiveNav(selectedKey)} className="mt-3">
                             <Nav.Item>
                                 <Nav.Link eventKey="Posts">Posts</Nav.Link>
@@ -146,7 +145,7 @@ const OtherUserProfile = () => {
                             </Nav.Item>
                         </Nav>
                     </Card>
-                </Col>
+            </Col>
             </Row>
             <Row className="justify-content-center mb-3">
                 <Col md={10} className="align-items-center">

@@ -57,29 +57,7 @@
 }
 
 /* Responsive adjustments for mobile devices */
-@media (max-width: 768px) {
-    .user-profile-card {
-        padding: 0.75rem;
-    }
 
-    .user-profile-card .user-info h2 {
-        font-size: 1rem; /* Smaller for mobile */
-    }
-
-    .user-profile-card .user-info p,
-    .user-profile-card .dropdown-toggle {
-        font-size: 0.875rem; /* Smaller text for mobile readability */
-    }
-
-    .user-profile-card .stats button {
-        font-size: 0.875rem; /* Smaller button text on mobile */
-        padding: 0.375rem 0.75rem; /* Smaller padding for compact appearance */
-    }
-
-    .user-profile-card .nav-link {
-        padding: 0.375rem 0.75rem; /* Smaller padding for tabs on mobile */
-    }
-}
 
 /* Dropdown positioning across devices */
 .ellipsis-dropdown {

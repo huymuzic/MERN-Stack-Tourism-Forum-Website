@@ -99,13 +99,3 @@
     background-color: white;
 }
 
-.card.post-cardcard.justify-content-center.align-items-center {
-    width: 120rem;
-    justify-content: center;
-  }
-  /* Media query for mobile devices */
-  @media (max-width: 768px) {
-    .card.post-card {
-      width: 29rem;
-    }
-  }

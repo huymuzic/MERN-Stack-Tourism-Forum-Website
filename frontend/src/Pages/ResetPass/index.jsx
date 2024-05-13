@@ -91,7 +91,7 @@ const ResetPassword = () => {
             {currentStep === 1 && (
                 <div>
                     <h2>Reset Password</h2>
-                    <input
+                    <input 
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
