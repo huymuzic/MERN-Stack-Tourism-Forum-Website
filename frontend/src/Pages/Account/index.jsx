@@ -29,13 +29,7 @@ function UserAccount() {
 
  useEffect(() => {
     if (!user) {
-      // Simulate fetching user data
       setLoading(true);
-      // Assume fetchUser() is a function that fetches user data
-      // fetchUser().then(userData => {
-      //   setUser(userData);
-      //   setLoading(false);
-      // });
     } else {
       setLoading(false);
     }

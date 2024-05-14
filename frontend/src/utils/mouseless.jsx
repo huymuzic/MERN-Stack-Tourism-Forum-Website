@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { Container } from 'react-bootstrap';
 
 const FocusManager = ({ children }) => {
     const containerRef = useRef(null);
@@ -7,57 +6,52 @@ const FocusManager = ({ children }) => {
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-                event.preventDefault();
-                moveFocus(event.key);
-            }
-        };
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
+                const current = document.activeElement;
+                const suitableElement = findSuitableFocusTarget(current, event.key);
 
-        const moveFocus = (direction) => {
-            // First focus within the current container
-            const current = document.activeElement;
-            const isInsideContainer = containerRef.current.contains(current);
-            if (!isInsideContainer) return; // Focus is not within the container, do nothing
-
-            const focusable = Array.from(containerRef.current.querySelectorAll(
-                'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
-            ));
-
-            const targetElement = findClosestFocusable(focusable, current, direction);
-            if (targetElement) {
-                targetElement.focus();
-            } else {
-                // If no element was found, allow focus to potentially move out of the container
-                // This could be enhanced to direct focus specifically to headers, footers, or other navigational components
-                let allFocusable = Array.from(document.querySelectorAll(
-                    'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
-                ));
-                allFocusable = allFocusable.filter(el => containerRef.current !== el && !containerRef.current.contains(el));
-                const externalTarget = findClosestFocusable(allFocusable, current, direction);
-                externalTarget?.focus();
-            }
-        };
-
-        const findClosestFocusable = (elements, current, direction) => {
-            const currentRect = current.getBoundingClientRect();
-            let bestElement = null;
-            let minDistance = Infinity;
-
-            for (const element of elements) {
-                if (element === current) continue;
-                const rect = element.getBoundingClientRect();
-                if (isValidTarget(currentRect, rect, direction)) {
-                    const distance = calculateDistance(currentRect, rect);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        bestElement = element;
-                    }
+                if (suitableElement) {
+                    suitableElement.focus();
                 }
             }
-            console.log(bestElement)
-            return bestElement;
+        };
+        const findSuitableFocusTarget = (element, direction) => {
+            let currentElement = element;
+            while (currentElement && currentElement !== document.body) {
+                const focusableElements = findFocusableElements(currentElement, direction);
+                console.log("🚀 ~ findSuitableFocusTarget ~ focusableElements:", focusableElements)
+                // Nếu tìm thấy các phần tử tiềm năng trong container hiện tại, kiểm tra từng cái một
+                if (focusableElements.length > 0) {
+                    // Sử dụng phương thức reduce để tìm ra phần tử thích hợp nhất
+                    const bestFitElement = focusableElements.reduce((best, current) => {
+                        return (calculateDistance(document.activeElement.getBoundingClientRect(), current.getBoundingClientRect()) <
+                                calculateDistance(document.activeElement.getBoundingClientRect(), best.getBoundingClientRect())) ? current : best;
+                    });
+                    console.log("🚀 ~ bestFitElement ~ bestFitElement:", bestFitElement.getBoundingClientRect())
+        
+                    // Kiểm tra xem phần tử tốt nhất có thực sự thỏa mãn yêu cầu không
+                    if (isValidTarget(document.activeElement.getBoundingClientRect(), bestFitElement.getBoundingClientRect(), direction)) {
+                        return bestFitElement; // Trả về phần tử thích hợp nếu thỏa mãn
+                    }
+                }
+                // Tiếp tục tìm kiếm trong container cha nếu không tìm thấy phần tử thỏa mãn
+                currentElement = currentElement.parentElement;
+            }
+            return null; // Trả về null nếu không tìm thấy phần tử thỏa mãn trong bất kỳ container nào
+        };
+        
+        const findFocusableElements = (container, direction) => {
+            const focusable = Array.from(container.querySelectorAll(
+                'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+            ));
+            return focusable.filter(el => isValidTarget(document.activeElement.getBoundingClientRect(), el.getBoundingClientRect(), direction))
+                            .sort((a, b) => compareDistance(document.activeElement, a, b, direction));
         };
 
         const isValidTarget = (currentRect, targetRect, direction) => {
+            if (targetRect.width === 0 && targetRect.height === 0) {
+                return false; // Skip this element if it has zero width and height
+            }        
             switch (direction) {
                 case 'ArrowUp':
                     return targetRect.bottom <= currentRect.top;
@@ -72,14 +66,19 @@ const FocusManager = ({ children }) => {
             }
         };
 
+        const compareDistance = (current, a, b, direction) => {
+            const rectA = a.getBoundingClientRect();
+            const rectB = b.getBoundingClientRect();
+            return calculateDistance(current.getBoundingClientRect(), rectA) - calculateDistance(current.getBoundingClientRect(), rectB);
+        };
+
         const calculateDistance = (fromRect, toRect) => {
-            const dx = toRect.left - fromRect.left;
-            const dy = toRect.top - fromRect.top;
-            return Math.sqrt(dx * dx + dy * dy);  // Euclidean distance
+            const dx = (toRect.left + toRect.right) / 2 - (fromRect.left + fromRect.right) / 2;
+            const dy = (toRect.top + toRect.bottom) / 2 - (fromRect.top + fromRect.bottom) / 2;
+            return Math.sqrt(dx * dx + dy * dy); // Khoảng cách Euclidean
         };
 
         document.addEventListener('keydown', handleKeyDown);
-
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
@@ -93,4 +92,3 @@ const FocusManager = ({ children }) => {
 };
 
 export default FocusManager;
-
