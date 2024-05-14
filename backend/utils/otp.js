@@ -45,8 +45,8 @@ export async function sendOTPEmail(to, otp) {
     const mailOptions = {
         from: { name: "Cosmic Travel", address: process.env.EMAIL_USERNAME },
         to: to,
-        subject: "OTP for resetting password",
-        html: `<p>Your OTP code is <b>${otp}</b>, please use it to continue.</p>`
+        subject: "Reset code for resetting password",
+        html: `<p>Your reset code code is <b>${otp}</b>, please use it to continue.</p>`
     };
 
     try {

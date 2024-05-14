@@ -13,7 +13,7 @@ function UserPosts() {
 
     const token = localStorage.getItem('accessToken');
     const baseURL = import.meta.env.VITE_BASE_URL
-
+    
     const fetchPostsByUser = async (userId) => {
 
         const token = localStorage.getItem('accessToken');

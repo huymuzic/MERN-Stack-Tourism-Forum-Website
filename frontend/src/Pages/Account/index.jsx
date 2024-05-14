@@ -14,6 +14,7 @@ function UserAccount() {
   const [activeNav, setActiveNav] = useState('Profile');
   const [confirmActive, setConfirmActive] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
+  const [loading, setLoading] = useState(true); 
   const [announceConfirm, setAnnounceConfirm] = useState(false);
   const baseURL = import.meta.env.VITE_BASE_URL;
   const NAV_ITEMS = {
@@ -25,9 +26,20 @@ function UserAccount() {
   const [showActions, setShowActions] = useState(false);
 
   const toggleActions = () => setShowActions(!showActions); 
-  useEffect(() => {
-  }, [user]);
 
+ useEffect(() => {
+    if (!user) {
+      // Simulate fetching user data
+      setLoading(true);
+      // Assume fetchUser() is a function that fetches user data
+      // fetchUser().then(userData => {
+      //   setUser(userData);
+      //   setLoading(false);
+      // });
+    } else {
+      setLoading(false);
+    }
+  }, [user, setUser]);
   useEffect(() => {
     setInputPassword('');
     setAnnounceConfirm(false);
@@ -118,6 +130,9 @@ function UserAccount() {
   const date = new Date(user?.createdAt);
   const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
+  if (loading) {
+    return <div>Loading...</div>;  // Display a loading message or spinner
+  }
   return (
 <>
   <div className="container mt-4" style={{ maxWidth: '1200px' }}>
@@ -149,23 +164,23 @@ function UserAccount() {
           </div>
           <div className="col">
             <h2 style={{ fontWeight: 'bold', fontSize: '2rem' }}>
-              {user.name} {user?.role === 'admin' && (
+              {user?.name} {user?.role === 'admin' && (
                 <i className="fa-sharp fa-solid fa-shield-halved"></i>
               )}
             </h2>
-            <p style={{ fontSize: '1.25rem' }}>@{user.username}</p>
+            <p style={{ fontSize: '1.25rem' }}>@{user?.username}</p>
             <div className="mb-3 d-flex">
               <span
                 className="badge bg-primary me-2"
                 style={{ fontSize: '1.25rem', padding: '10px' }}
               >
-                Posts: {user.posts ? user.posts.length : 0}
+                Posts: {user?.posts ? user.posts.length : 0}
               </span>
               <span
                 className="badge bg-success"
                 style={{ fontSize: '1.25rem', padding: '10px' }}
               >
-                Favorites: {user.likes ? user.likes.length : 0}
+                Favorites: {user?.likes ? user.likes.length : 0}
               </span>
             </div>
           </div>

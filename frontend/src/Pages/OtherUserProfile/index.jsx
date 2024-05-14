@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
 import UserPosts from './components/UserPosts';
@@ -31,6 +31,7 @@ const OtherUserProfile = () => {
         
         fetchOtherUserInfo(); 
     }, [id, user]);  // Note: Be cautious with including state that changes often as dependencies
+    const elementsRef = useRef([]);
 
     const fetchOtherUserInfo = async () => {
         try {
@@ -104,76 +105,77 @@ const OtherUserProfile = () => {
     };
     const handleDeleteUser =  async () => {}
     return (
-        <Container className="mt-4">
-            <Row className="justify-content-center mb-3">
-            <Col md={10}>
-            <Card className="p-3 user-profile-card">
-                <Row className="align-items-start">
-                    <Col xs={12} md={8} className="d-flex align-items-center">
-                        <img src={getAvatarUrl(otherUserInfo.avatar, baseURL)} alt="User Avatar" className="rounded-circle me-3" />
-                        <div className="user-info">
-                            <h2>{otherUserInfo.name} {otherUserInfo.role === 'admin' && <i className="fa fa-shield-alt"></i>}</h2>
-                            <p>@{otherUserInfo.username}</p>
-                            <p>Joined: {new Date(otherUserInfo?.createdAt).toLocaleDateString()}</p>
-                            <div className="stats">
-                                <Button variant="outline-primary" size="sm" className="me-2">Posts: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</Button>
-                                <Button variant="outline-success" size="sm">Favorites: {otherUserInfo.likes ? otherUserInfo.likes.length : 0}</Button>
+            <Container className="mt-4">
+                <Row className="justify-content-center mb-3">
+                <Col md={12}>
+                <Card className="p-3 user-profile-card">
+                    <Row className="align-items-start">
+                        <Col xs={12} md={9} className="d-flex align-items-center">
+                            <img src={getAvatarUrl(otherUserInfo.avatar, baseURL)} alt="User Avatar" className="rounded-circle me-3" />
+                            <div className="user-info">
+                                <h2>{otherUserInfo.name} {otherUserInfo.role === 'admin' && <i className="fa fa-shield-alt"></i>}</h2>
+                                <p>@{otherUserInfo.username}</p>
+                                <p>Joined: {new Date(otherUserInfo?.createdAt).toLocaleDateString()}</p>
+                                <div className="stats">
+                                    <Button variant="outline-primary" size="sm" className="me-2">Posts: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</Button>
+                                    <Button variant="outline-success" size="sm">Favorites: {otherUserInfo.likes ? otherUserInfo.likes.length : 0}</Button>
+                                </div>
                             </div>
-                        </div>
-                    </Col>
-                    {(user?.role === 'admin' || user?._id === otherUserInfo._id) && (
-                        <Col xs="auto" className="align-items-end "> 
-                            <Dropdown className="ellipsis-dropdown">
-                                <Dropdown.Toggle variant="light" id="dropdown-basic">
-                                    <span>. . .</span> 
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item onClick={handleToggleStatus}>Toggle Status</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => navigate('/account')}>Edit Profile</Dropdown.Item>
-                                    <Dropdown.Item onClick={handleDeleteUser} className="text-danger">Delete Account</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
                         </Col>
-                            )}
-                    </Row>
-                        <Nav variant="tabs" activeKey={activeNav} onSelect={(selectedKey) => setActiveNav(selectedKey)} className="mt-3">
-                            <Nav.Item>
-                                <Nav.Link eventKey="Posts">Posts</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="Favorites">Favorites</Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </Card>
-            </Col>
-            </Row>
-            <Row className="justify-content-center mb-3">
-                <Col md={10} className="align-items-center">
-                    {otherUserInfo.status === 'active' ? (
-                        <ActiveComponent className="text-center align-items-center"/>
-                    ) : (
-                        <Card className="text-center align-items-center">
-                            <Card.Body>
-                                <Card.Title>Account Inactive</Card.Title>
-                                <p>Your Account is inactive right now! Please reactivate it to perform any actions.</p>
-                            </Card.Body>
+                        {(user?.role === 'admin' || user?._id === otherUserInfo._id) && (
+                            <Col xs="auto" className="align-items-start "> 
+                                <Dropdown className="ellipsis-dropdown">
+                                    <Dropdown.Toggle variant="light" id="dropdown-basic">
+                                        <span>. . .</span> 
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item onClick={handleToggleStatus}>Toggle Status</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => navigate('/account')}>Edit Profile</Dropdown.Item>
+                                        <Dropdown.Item onClick={handleDeleteUser} className="text-danger">Delete Account</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Col>
+                                )}
+                        </Row>
+                            <Nav variant="tabs" activeKey={activeNav} onSelect={(selectedKey) => setActiveNav(selectedKey)} className="mt-3">
+                                <Nav.Item>
+                                    <Nav.Link eventKey="Posts">Posts</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="Favorites">Favorites</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
                         </Card>
-                    )}
                 </Col>
-            </Row>
-            <PopUpBase
-                {...popUpActivate}
-                onConfirm={onActivateConfirm}
-                title="Activate Account"
-                desc="Are you sure you want to activate this account?"
-            />
-            <PopUpBase
-                {...popUpDeactivate}
-                onConfirm={onDeactivateConfirm}
-                title="Deactivate Account"
-                desc="Are you sure you want to deactivate this account?"
-            />
-        </Container>
+             </Row>
+                <Row className="justify-content-center mb-3">
+                    <Col md={10} className="align-items-center">
+                        {otherUserInfo.status === 'active' ? (
+                            <ActiveComponent className="text-center align-items-center"/>
+                        ) : (
+                            <Card className="text-center align-items-center">
+                                <Card.Body>
+                                    <Card.Title>Account Inactive</Card.Title>
+                                    <p>Your Account is inactive right now! Please reactivate it to perform any actions.</p>
+                                </Card.Body>
+                            </Card>
+                        )}
+                    </Col>
+                </Row>
+                <PopUpBase
+                    {...popUpActivate}
+                    onConfirm={onActivateConfirm}
+                    title="Activate Account"
+                    desc="Are you sure you want to activate this account?"
+                />
+                <PopUpBase
+                    {...popUpDeactivate}
+                    onConfirm={onDeactivateConfirm}
+                    title="Deactivate Account"
+                    desc="Are you sure you want to deactivate this account?"
+                />
+            </Container>
+
     );
 };
 

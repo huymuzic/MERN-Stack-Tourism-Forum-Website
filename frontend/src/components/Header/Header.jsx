@@ -158,7 +158,7 @@ const Header = ({ isLoading }) => {
                             {user !== null && user.role === 'admin' ? (
                             <li><Link className="dropdown-item" to="/admin">Admin Portal</Link></li>
                             ) : null}                   
-                                <li><Link className="dropdown-item" to="/account">Dashboard</Link></li>
+                                <li><Link className="dropdown-item" to="/my-account">Dashboard</Link></li>
                                 <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                                 <li>
                                     <hr className="dropdown-divider"></hr>
