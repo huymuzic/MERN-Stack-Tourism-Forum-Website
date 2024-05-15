@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  createDestination,
   createTour,
   updateTour,
   deleteTour,
@@ -8,6 +9,7 @@ import {
   getTourBySearch,
   getFeaturedTour,
   getTourCount,
+  getTopDestinations,
 } from "../controllers/tourController.js";
 
 const router = express.Router();
@@ -25,5 +27,7 @@ router.get("/", getAllTour);
 router.get("/search/getTourBySearch", getTourBySearch);
 router.get("/search/getFeaturedTours", getFeaturedTour);
 router.get("/search/getTourCount", getTourCount);
+router.get("/search/getTopDestinations", getTopDestinations);
+router.post("/destination", createDestination);
 
 export default router;

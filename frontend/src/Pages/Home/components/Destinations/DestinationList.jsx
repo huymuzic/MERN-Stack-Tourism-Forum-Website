@@ -2,6 +2,8 @@ import React from 'react'
 import Destination from './Destination'
 import { Col, Row } from 'react-bootstrap';
 
+import useFetch from '../../../../hooks/useFetch'
+
 import lasVegasImg from '../../../../assets/images/las-vegas.jpg';
 import romeImg from '../../../../assets/images/rome.jpg';
 import parisImg from '../../../../assets/images/paris.jpg';
@@ -58,19 +60,37 @@ const destinationData2 = [
         title: 'Oahu'
     },
 ]
+    const baseURL = 'http://localhost:4000/api/v1';
 
 
 const DestinationList = () => {
+
+    const {data: topDestinations} = useFetch(`${baseURL}/tours/search/getTopDestinations`);
+
+    console.log(topDestinations);
+    
+    const firstHalf = [];
+    const secondHalf = [];
+
+    for (let i = 0; i < topDestinations.length; i++) {
+    if (i < 5) {
+        firstHalf.push(topDestinations[i]);
+    } else {
+        secondHalf.push(topDestinations[i]);
+    }
+    }  
+
+
     return <>
             <Row className="destination-list-1">
-                {destinationData1.map((item, index) => (
+                {firstHalf.map((item, index) => (
                     <Col key={index}>
                         <Destination item={item} />
                     </Col>
                 ))}
             </Row>
             <Row className="destination-list-2">
-                {destinationData2.map((item, index) => (
+                {secondHalf.map((item, index) => (
                     <Col key={index}>
                         <Destination item={item} />
                     </Col>

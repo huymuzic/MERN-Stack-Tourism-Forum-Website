@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { pushError } from '../../../components/Toast';
 import './booking.css'
 
 import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
@@ -37,6 +38,12 @@ const Booking = ({ tour, avgRating }) => {
 
     const handleBookFormSubmit = e => {
         e.preventDefault();
+        const bookTime = document.getElementById('bookTime').value;
+
+        if (bookTime.trim() === '') {
+            pushError('Date input is empty');
+        return;
+    }
         navigate('/thank-you');
     };
 

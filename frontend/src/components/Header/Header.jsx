@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import { Container, Button} from 'react-bootstrap'
@@ -110,7 +110,7 @@ const Header = ({ isLoading }) => {
     });
 
     return (
-    <nav className='header navbar navbar-expand-lg'>
+    <nav className='header custom__navbar navbar navbar-expand-lg'>
         <Container className='header__container bd-gutter'>
                 { /* NAVIGATION SECTION STARTS */}        
                     { /* LOGO SECTION STARTS */ }
@@ -141,7 +141,7 @@ const Header = ({ isLoading }) => {
                         <CircularProgress />
                     ) : user !== null ? (
                         <li className="nav-item dropdown no-bullet mb-4 nm">
-                          <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
+                          <button className="btn" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
                                 {user ? (
                                     <img
                                         src={avatarUrl}
@@ -158,7 +158,7 @@ const Header = ({ isLoading }) => {
                             {user !== null && user.role === 'admin' ? (
                             <li><Link className="dropdown-item" to="/admin">Admin Portal</Link></li>
                             ) : null}                   
-                                <li><Link className="dropdown-item" to="/account">Dashboard</Link></li>
+                                <li><Link className="dropdown-item" to="/my-account">Dashboard</Link></li>
                                 <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                                 <li>
                                     <hr className="dropdown-divider"></hr>

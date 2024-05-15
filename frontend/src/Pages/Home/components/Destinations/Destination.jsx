@@ -15,7 +15,7 @@ const Destination = ( {item} ) => {
     };
 
 
-    const {imgUrl, title} = item;
+    const {photo, title} = item;
     return <>
           <div>
             <a href="#">
@@ -25,7 +25,7 @@ const Destination = ( {item} ) => {
               >
                 <img
                   className="images"
-                  src={imgUrl}
+                  src={photo}
                   alt=""
                   style={{ filter: `brightness(${imageBrightness})` }}
                 />

@@ -86,9 +86,9 @@ useEffect(() => {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/verify-password`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
         body: JSON.stringify({ password: inputPassword }),
       });
