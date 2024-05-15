@@ -153,9 +153,7 @@ useEffect(() => {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/upload-avatar/${user._id}`, {
         method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+        credentials: 'include',
         body: formData,
       });
       const data = await response.json();

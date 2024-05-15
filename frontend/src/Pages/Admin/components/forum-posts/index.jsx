@@ -115,11 +115,11 @@ export default function ForumPostsList() {
     try {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/posts/unhide/${id}`);
       const response = await fetch(url, {
-        method: 'PUT',
+        method: "PUT",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
         pushSuccess('Unhide post successfully');

@@ -103,7 +103,6 @@ function Favorites() {
     
       const handleUnLockConfirm = async (userId) => {
         try {
-         console.log('work nì')
           const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
           const response = await fetch(url, {
             method: 'PUT',

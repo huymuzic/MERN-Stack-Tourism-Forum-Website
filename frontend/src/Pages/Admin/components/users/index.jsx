@@ -59,6 +59,53 @@ export default function UsersList() {
     setFilter((prev) => ({ ...prev, role: r, page: 1 }));
   }
 
+  const handleInactiveCofirm = async (userId) => {
+    try {
+      const url = new URL(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/users/inactive/${userId}`
+      );
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushSuccess("Inactive user successfully");
+        fetchUsers();
+      } else {
+        pushError("Failed to inactive user");
+        throw new Error("Failed to inactive user");
+      }
+    } catch (error) {
+      pushError("Failed to inactive user");
+    }
+  };
+
+  const handleActiveConfirm = async (userId) => {
+    try {
+      const url = new URL(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/users/active/${userId}`
+      );
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushSuccess("Active user successfully");
+        fetchUsers();
+      } else {
+        pushError("Failed to active user");
+        throw new Error("Failed to active user");
+      }
+    } catch (error) {
+      pushError("Failed to active user");
+    }
+  };  
   const handleLockConfirm = async (userId) => {
     try {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`);
@@ -80,7 +127,6 @@ export default function UsersList() {
       pushError('Failed to lock user');
     }
   };
-
   const handleUnLockConfirm = async (userId) => {
     try {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`);
@@ -209,7 +255,16 @@ export default function UsersList() {
         totalItems={paging.totalCount}
         list={paging.data}
         loading={loading}
-        renderItem={(user) => <UserItem key={user.id} user={user} handleLockConfirm={(userId) => handleLockConfirm(userId)} handleUnLockConfirm={(userId) => handleUnLockConfirm(userId)} />}
+        renderItem={(user) => (
+          <UserItem
+            key={user.id}
+            user={user}
+            handleLockConfirm={(userId) => handleLockConfirm(userId)}
+            handleActiveConfirm={(userId) => handleActiveConfirm(userId)}
+            handleInactiveCofirm = {(userId) => handleInactiveCofirm(userId)}
+            handleUnLockConfirm = {(userId) => handleUnLockConfirm(userId)}
+          />
+        )}
         totalPages={paging.totalPages}
         page={filter.page}
         onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}
