@@ -1,34 +1,41 @@
-// OtherUserProfile.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
-import { useParams } from 'react-router-dom';
-import Profile from './components/Profile';
 import UserPosts from './components/UserPosts';
 import Favorites from './components/Favorites';
 import { getAvatarUrl } from '../../utils/getAvar.js';
+import { Button, Card, Container, Dropdown, Row, Col, Nav } from 'react-bootstrap';
+import { pushSuccess, pushError } from '../../components/Toast';
+import PopUpBase from '../../components/pop-up/PopUpBase';
+import { usePopUp } from '../../components/pop-up/usePopup';
+
 
 const OtherUserProfile = () => {
-    const { user} = useUser();
+    const { user, setUser } = useUser();
     const { id } = useParams();
     const [otherUserInfo, setOtherUserInfo] = useState({});
-    const [activeNav, setActiveNav] = useState('Profile');
-    const [confirmActive, setConfirmActive] = useState(false);
-    const [announceConfirm, setAnnounceConfirm] = useState(false);
-    const baseURL = import.meta.env.VITE_BASE_URL 
+    const [activeNav, setActiveNav] = useState('Posts');
+    const navigate = useNavigate();
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const token = localStorage.getItem('accessToken');
+   
     const NAV_ITEMS = {
-        Profile: Profile,
         Posts: UserPosts,
         Favorites: Favorites,
     };
+    const ActiveComponent = NAV_ITEMS[activeNav];
 
-    const handleNavClick = (e, item) => {
-        e.preventDefault();
-        setActiveNav(item);
-    };
+    const popUpActivate = usePopUp();
+    const popUpDeactivate = usePopUp();
+    useEffect(() => {
+        
+        fetchOtherUserInfo(); 
+    }, [id, user]);  // Note: Be cautious with including state that changes often as dependencies
+    const elementsRef = useRef([]);
 
-    const fetchOtherUserInfo = async (userId) => {
+    const fetchOtherUserInfo = async () => {
         try {
-            const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
+            const response = await fetch(`${baseURL}/api/v1/users/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,165 +43,143 @@ const OtherUserProfile = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                setOtherUserInfo(data.data); // Adjust this according to your response structure
-                console.log(data.data)
+                setOtherUserInfo(data.data);
             } else {
-                throw new Error(data.message || 'Failed to fetch user info');
+                pushError(data.message || 'Failed to fetch user info');
             }
         } catch (error) {
-            console.error('Fetch user info error:', error);
-            alert(error.message);
+            pushError('Network error');
         }
     };
 
-    useEffect(() => {
-        fetchOtherUserInfo(id); 
-    }, [id]);
+    const handleToggleStatus = () => {
+        if (otherUserInfo.status === 'active') {
+            popUpDeactivate.setTrue();
+        } else {
+            popUpActivate.setTrue();
+        }
+    };
 
-    const handleToggleStatus = async () => {
-        const newStatus = otherUserInfo.status === 'active' ? 'inactive' : 'active';
+    const onActivateConfirm = async () => {
+       
         try {
-            const response = await fetch(`${baseURL}/api/v1/users/${otherUserInfo._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                },
-                body: JSON.stringify({ status: newStatus })
+            const url = new URL(`${baseURL}/api/v1/users/unlock/${id}`);
+            const response = await fetch(url, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
             });
-            const data = await response.json();
             if (response.ok) {
-                setOtherUserInfo({ ...otherUserInfo, status: newStatus });
-                setAnnounceConfirm(true);
+              pushSuccess('Active account successfully');
+              fetchOtherUserInfo()
             } else {
-                throw new Error(data.message || 'Failed to update user status');
+              pushError('Failed to active account');
+              throw new Error('Failed to active account');
             }
-        } catch (error) {
-            console.error('Update status error:', error);
-            alert(error.message);
-        } finally {
-            setConfirmActive(false);
-        }
+          } catch {}
+          popUpActivate.onClose();
     };
 
-    const handleDeleteInfo = async () => {
-        if (window.confirm("Are you sure you want to delete this account? This action cannot be undone.")) {
-            try {
-                const response = await fetch(`${baseURL}/api/v1/users/${otherUserInfo._id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                    }
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Account successfully deleted.');
-                    // Implement any additional cleanup or redirection logic here
-                } else {
-                    throw new Error(data.message || 'Failed to delete account.');
-                }
-            } catch (error) {
-                console.error('Delete user info error:', error);
-                alert(error.message);
+    const onDeactivateConfirm = async () => {
+        
+        try {
+            const url = new URL(`${baseURL}/api/v1/users/lock/${id}`);
+            const response = await fetch(url, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            });
+            if (response.ok) {
+              pushSuccess('Inactive account successfully');
+              fetchOtherUserInfo()
+            } else {
+              pushError('Failed to inactive account');
+              throw new Error('Failed to inactive account');
             }
-        }
+          } catch {}
+          popUpDeactivate.onClose();
     };
-
-    const ActiveComponent = NAV_ITEMS[activeNav];
-    const date = new Date(otherUserInfo.createdAt);
-    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    const avatarUrl = getAvatarUrl(otherUserInfo.avatar, baseURL);
+    const handleDeleteUser =  async () => {}
     return (
-        <div className="container mt-5">
-            <div className="row">
-                <div className="col-md-4 text-center">
-                    <img src={avatarUrl} alt="User Avatar" className="img-thumbnail rounded-circle mb-3" />
-                </div>
-                <div className="col-md-8">
-                    <h1>{otherUserInfo.name}</h1>
-                    <p>@{otherUserInfo.username}</p>
-                    <div className="mb-3">
-                        <span className="badge bg-primary">Posts&Comments: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</span>
-                        <span className="badge bg-success ms-2">Favorites: {otherUserInfo.likes ? otherUserInfo.likes.length : 0}</span>
-                    </div>
-                    <div className="nav nav-tabs">
-                        {Object.keys(NAV_ITEMS).map(item => (
-                            <a
-                                key={item}
-                                className={`nav-item nav-link ${activeNav === item ? 'active' : ''}`}
-                                href="#"
-                                onClick={(e) => handleNavClick(e, item)}
-                            >
-                                {item}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            <div className="row mt-3 align-items-start">
-                <div className="col-md-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Info</h5>
-                            <p className="card-text">Joined: {formattedDate}</p>
-                            <p className="card-text">Role: {otherUserInfo.role}</p>
-                            {(user?.role === 'admin' || user?._id === otherUserInfo?._id) && (
-                                <>
-                                    <button
-                                        className={`btn ${otherUserInfo.status === 'active' ? 'btn-danger' : 'btn-success'}`}
-                                        onClick={() => setConfirmActive(true)}
-                                    >
-                                        {otherUserInfo.status === 'active' ? 'Inactivate Account' : 'Activate Account'}
-                                    </button>
-
-                                    {otherUserInfo.status === 'active' && (
-                                        <button className="btn btn-danger ms-2" onClick={handleDeleteInfo}>Delete Account</button>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="col-md-12 mt-3">
-                    {otherUserInfo.status === 'active' ?
-                        <ActiveComponent /> :
-                        <p>The account is inactive right now! Please reactivate it to perform any action.</p>
-                    }
-                </div>
-            </div>
-
-            {confirmActive && (
-                <div className="modal show" tabIndex="-1" style={{ display: 'block', background: 'rgba(0, 0, 0, 0.5)' }}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Confirm Status Change</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setConfirmActive(false)}>
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+            <Container className="mt-4">
+                <Row className="justify-content-center mb-3">
+                <Col md={12}>
+                <Card className="p-3 user-profile-card">
+                    <Row className="align-items-start">
+                        <Col xs={12} md={9} className="d-flex align-items-center">
+                            <img src={getAvatarUrl(otherUserInfo.avatar, baseURL)} alt="User Avatar" className="rounded-circle me-3" />
+                            <div className="user-info">
+                                <h2>{otherUserInfo.name} {otherUserInfo.role === 'admin' && <i className="fa fa-shield-alt"></i>}</h2>
+                                <p>@{otherUserInfo.username}</p>
+                                <p>Joined: {new Date(otherUserInfo?.createdAt).toLocaleDateString()}</p>
+                                <div className="stats">
+                                    <Button variant="outline-primary" size="sm" className="me-2">Posts: {otherUserInfo.posts ? otherUserInfo.posts.length : 0}</Button>
+                                    <Button variant="outline-success" size="sm">Favorites: {otherUserInfo.likes ? otherUserInfo.likes.length : 0}</Button>
+                                </div>
                             </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={handleToggleStatus}>Confirm</button>
-                                <button type="button" className="btn btn-secondary" onClick={() => setConfirmActive(false)}>Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+                        </Col>
+                        {(user?.role === 'admin' || user?._id === otherUserInfo._id) && (
+                            <Col xs="auto" className="align-items-start "> 
+                                <Dropdown className="ellipsis-dropdown">
+                                    <Dropdown.Toggle variant="light" id="dropdown-basic">
+                                        <span>. . .</span> 
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item onClick={handleToggleStatus}>Toggle Status</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => navigate('/account')}>Edit Profile</Dropdown.Item>
+                                        <Dropdown.Item onClick={handleDeleteUser} className="text-danger">Delete Account</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Col>
+                                )}
+                        </Row>
+                            <Nav variant="tabs" activeKey={activeNav} onSelect={(selectedKey) => setActiveNav(selectedKey)} className="mt-3">
+                                <Nav.Item>
+                                    <Nav.Link eventKey="Posts">Posts</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="Favorites">Favorites</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                        </Card>
+                </Col>
+             </Row>
+                <Row className="justify-content-center mb-3">
+                    <Col md={10} className="align-items-center">
+                        {otherUserInfo.status === 'active' ? (
+                            <ActiveComponent className="text-center align-items-center"/>
+                        ) : (
+                            <Card className="text-center align-items-center">
+                                <Card.Body>
+                                    <Card.Title>Account Inactive</Card.Title>
+                                    <p>Your Account is inactive right now! Please reactivate it to perform any actions.</p>
+                                </Card.Body>
+                            </Card>
+                        )}
+                    </Col>
+                </Row>
+                <PopUpBase
+                    {...popUpActivate}
+                    onConfirm={onActivateConfirm}
+                    title="Activate Account"
+                    desc="Are you sure you want to activate this account?"
+                />
+                <PopUpBase
+                    {...popUpDeactivate}
+                    onConfirm={onDeactivateConfirm}
+                    title="Deactivate Account"
+                    desc="Are you sure you want to deactivate this account?"
+                />
+            </Container>
 
-            {announceConfirm && (
-                <div className="notification-card">
-                    <div className="checkmark-container">
-                        <i className="fas fa-check"></i>
-                    </div>
-                    <h3>The account is now {otherUserInfo.status === 'active' ? 'active' : 'inactive'}!</h3>
-                    <button onClick={() => setAnnounceConfirm(false)} className="btn btn-success">Confirm</button>
-                </div>
-            )}
-        </div>
     );
 };
 
 export default OtherUserProfile;
+
+
+

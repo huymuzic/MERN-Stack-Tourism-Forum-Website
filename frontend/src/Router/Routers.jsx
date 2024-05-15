@@ -55,10 +55,10 @@ const Routers = () => {
       <Route path="/my-account" element={<UserAccount />} />
       <Route path="/profile/:id" element={<OtherUserProfile />} />
       <Route path="/admin/users/users/:id" element={<OtherUserProfile />} />
-      <Route path="/account/profile" element={<Profile />} />
-      <Route path="/account/themes" element={<Themes />} /> 
-      <Route path="/account/posts" element={<Posts />} />
-      <Route path="/account/favorites" element={<Favorites />} />
+      <Route path="/my-account/profile" element={<Profile />} />
+      <Route path="/my-account/themes" element={<Themes />} /> 
+      <Route path="/my-account/posts" element={<Posts />} />
+      <Route path="/my-account/favorites" element={<Favorites />} />
       <Route path="/history" element={<PurchaseHistory />} />
       <Route path="/tours/search" element={<SearchResultList />} />
       <Route path="/resetPass" element={<ResetPassword />} />

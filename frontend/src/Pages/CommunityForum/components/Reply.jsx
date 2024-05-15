@@ -21,7 +21,7 @@ function Reply(props) {
     const { child, index, handleLike, setActivePost, post, editorRef } = props;
 
     return (<div key={index} className='col-8 d-flex border-2 border-bottom pt-3 pb-3 comment'>
-        <a className='ps-3' href='#'>
+        <a className='ps-3' href={`/profile/${post.authorId?._id}`}>
             <img height='45' width='45' className='rounded-5' alt='profile picture' 
                 src={child.authorId ? getAvatarUrl(child.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
             </img>

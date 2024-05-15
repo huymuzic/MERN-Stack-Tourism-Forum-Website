@@ -5,13 +5,15 @@ import { FaLock, FaUnlock } from "react-icons/fa";
 import CustomToolTip from "../../../../components/CustomTooltip";
 import { usePopUp } from "../../../../components/pop-up/usePopup";
 import PopUpBase from "../../../../components/pop-up/PopUpBase";
+
 export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm }) {
     const popUpLock = usePopUp();
     const popUpUnLock = usePopUp();
-
+    const token = localStorage.getItem('accessToken');
     const handleButtonClick = () => {
         if (user.status === "inactive") {
             popUpUnLock.setTrue();
+
         } else {
             popUpLock.setTrue();
         }
@@ -24,7 +26,6 @@ export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm 
 
     const onUnLockConfirm = async () => {
         popUpUnLock.onClose()
-
         handleUnLockConfirm(user._id)
     };
     return (
@@ -32,7 +33,7 @@ export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm 
             <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex flex-row align-items-center">
-                        <Link to={`users/${user._id}`} style={{ textDecoration: "none", display: "flex", alignItems: "flex-end" }}>
+                        <Link to={`/profile/${user._id}`} style={{ textDecoration: "none", display: "flex", alignItems: "flex-end" }}>
                             <h5 className="card-title" style={{ cursor: "pointer", margin: 0 }}>
                                 {user.username}
                             </h5>
@@ -113,7 +114,7 @@ export default function UserItem({ user, handleLockConfirm, handleUnLockConfirm 
 
 UserItem.propTypes = {
     user: PropTypes.shape({
-        _id: PropTypes.number.isRequired,
+        _id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
         role: PropTypes.string.isRequired,

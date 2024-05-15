@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 
 function postDetail() {
+    console.log(post.authorId)
     return (
         <article className='container-xxl d-flex align-items-center flex-column'>
             <div className='col-7 d-flex align-items-center'>
-                <Link to={post.parentId == null ? '/forum' : `/forum/p/${post.parentId._id}`} type="button" className="border-0 rounded-5 text-reset align-self-start">
+                <Link to={post.parentId == null ? '/forum' : `/forum/p/${post.parentId?._id}`} type="button" className="border-0 rounded-5 text-reset align-self-start">
                     <i className="m-3 fa-solid fa-arrow-left"></i>
                 </Link>
                 <h5>Post details</h5>
@@ -15,7 +16,7 @@ function postDetail() {
                     <div className='col-7 d-flex border-2 border-bottom pb-3'>
                         <div name='content-area' className='container-xxl d-inline-block'>
                             <div className="d-flex">
-                                <a href='#'>
+                                <a href={`/profile/${post.authorId._id}`}>
                                     <img height='45' width='45' className='rounded-5' alt='profile picture' src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'>
                                     </img>
                                 </a>

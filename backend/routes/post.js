@@ -7,7 +7,9 @@ import {
     deletePost,
     toggleLikePost,
     getFavoritePostsByUser,
-    getListPosts
+    getListPosts,
+    hidePost,
+    unhidePost
 } from "../controllers/postController.js";
 import { verifyUser, verifyAdmin } from "../utils/verifyToken.js";
 
@@ -36,4 +38,12 @@ router.put("/like/:postId", verifyUser, toggleLikePost);
 
 // get List Posts
 router.get("/list", verifyUser, getListPosts)
+// Hide Post
+router.put("/hide/:id", verifyAdmin, hidePost);
+// Unhide post
+router.put("/unhide/:id", verifyAdmin, unhidePost);
+// Hide Post
+router.put("/userhide/:id", verifyUser, hidePost);
+// Unhide post
+router.put("/userunhide/:id", verifyUser, unhidePost);
 export default router;

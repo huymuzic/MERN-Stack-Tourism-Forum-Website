@@ -165,19 +165,15 @@ export const getListPosts = async (req, res) => {
 
         if (search) {
             if (searchType === "author") {
-                if (ObjectId.isValid(search)) {
-                    filter.authorId = search;
-                } else {
-                    const userFilter = {
-                        $or: [
-                            { username: { $regex: search, $options: "i" } },
-                            { email: { $regex: search, $options: "i" } }
-                        ]
-                    };
+                const userFilter = {
+                    $or: [
+                        { username: { $regex: search, $options: "i" } },
+                        { email: { $regex: search, $options: "i" } }
+                    ]
+                };
                     const users = await User.find(userFilter);
                     const userIds = users.map(user => user._id);
                     filter.authorId = { $in: userIds };
-                }
             } else if (searchType === "content") {
                 const regex = new RegExp(search, "i");
                 filter.$or = [
@@ -215,4 +211,53 @@ export const getListPosts = async (req, res) => {
 };
 
 
-
+// Lock post
+export const hidePost = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const updatedUser = await Post.findByIdAndUpdate(
+        id,
+        {
+          $set: { status: "archived" },
+        },
+        { new: true }
+      );
+  
+      res.status(200).json({
+        success: true,
+        message: "Successfully hide post",
+        data: updatedUser,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to hide post. Try again",
+      });
+    }
+  };
+  
+  // Unlock user
+  export const unhidePost = async (req, res) => {
+    const id = req.params.id;
+  
+    try {
+      const updatedUser = await Post.findByIdAndUpdate(
+        id,
+        {
+          $set: { status: "unarchived" },
+        },
+        { new: true }
+      );
+  
+      res.status(200).json({
+        success: true,
+        message: "Successfully unhide post",
+        data: updatedUser,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to unhide post. Try again",
+      });
+    }
+  };

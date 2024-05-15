@@ -10,7 +10,7 @@ import ForumHeader from '../ForumHeader/ForumHeader';
 const Layout = ({isLoading}) => {
     const location = useLocation();
 
-    if (location.pathname.startsWith('/forum') || location.pathname === '/search' || location.pathname.startsWith('/users')) {
+    if (location.pathname.startsWith('/forum') || location.pathname === '/search' || location.pathname.startsWith('/profile')) {
         return (
             <ForumHeader>
                 <Routers />
