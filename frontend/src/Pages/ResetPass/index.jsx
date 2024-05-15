@@ -1,6 +1,7 @@
 import React, { useState, useRef  } from 'react';
 import NotificationCard from './NotificationCard';
 import { getAvatarUrl } from '../../utils/getAvar.js';
+import CircularProgress from '../../components/CircularProgress'; 
 import { Container, Button, Form, Image, Alert, Card } from 'react-bootstrap';
 import { pushSuccess, pushError } from '../../components/Toast';
 const ResetPassword = () => {
@@ -12,16 +13,19 @@ const ResetPassword = () => {
     const [message, setMessage] = useState('');
     const [notification, setNotification] = useState({ show: false, message: '', type: '' });
     const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(false); 
     const baseURL = import.meta.env.VITE_BASE_URL;
 
     const handleEmailSubmit = async () => {
         // API call to backend to send OTP
+        setLoading(true);
         const response = await fetch(`${baseURL}/api/v1/users/check`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ identifier: email })
         });
         const check = await response.json();
+        setLoading(false); 
         const data = check.data;
         if (check.success) {
             setUserData(data); 
@@ -79,8 +83,19 @@ const ResetPassword = () => {
     };
     const avatarUrl = getAvatarUrl(userData?.avatar, baseURL);
     return (
+        
         <div aria-live="polite" style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-        <Container className="d-flex flex-column align-items-center justify-content-center min-vh-100">
+         <Container className="d-flex flex-column align-items-center justify-content-center min-vh-100">
+            <div style={{ maxWidth: '400px', width: '100%' }}>
+                        {loading && (
+                            <div className="text-center">
+                                <CircularProgress />
+                                <p>Waiting for checking and providing reset code...</p>
+                            </div>
+                        )}
+
+                        {!loading && (
+                            <>           
             <div style={{ maxWidth: '400px', width: '100%' }}>
                 {message && <Alert variant="info" role="alert" style={{ fontSize: '18px', marginBottom: '10px' }}>{message}</Alert>}
 
@@ -107,7 +122,7 @@ const ResetPassword = () => {
 
                 {currentStep === 2 && (
                     <Card className="p-4 mb-3">
-                        <h2 style={{ fontSize: '24px', marginBottom: '10px' }}>Confirm Account</h2>
+                        <p style={{ fontSize: '24px', marginBottom: '10px' }}>Your code has sent to default email of this account</p>
                         {userData && (
                             <div className="text-center mb-3">
                                 <Image src={avatarUrl} alt="User's Avatar" roundedCircle style={{ width: '80px', margin: '10px 0' }} />
@@ -174,6 +189,9 @@ const ResetPassword = () => {
                     </Card>
                 )}
             </div>
+            </>
+     )}
+            </div>   
         </Container>
     </div>
     );

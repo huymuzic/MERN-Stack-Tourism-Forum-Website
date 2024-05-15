@@ -83,8 +83,8 @@ function Post(props) {
         </div>
 
         <div className="ms-4 d-flex align-items-center gap-2 mb-2">
-            <div className={`${categoryColors[post.category].color} square`} />
-            <span>{categoryColors[post.category].name}</span>
+            <div className={`${categoryColors[post.category]?.color} square`} />
+            <span>{categoryColors[post.category]?.name}</span>
         </div>
 
         <Link to={`/forum/p/${post._id}`} name='content-area' className='text-reset'>

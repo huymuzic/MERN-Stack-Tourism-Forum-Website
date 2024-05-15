@@ -52,7 +52,6 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           border: "1px solid #ddd",
         }}
         onClick={() => handlePageChange(1)}
-        disabled={currentPage === 1}
       >
         {"<<"}
       </button>
@@ -67,7 +66,6 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           border: "1px solid #ddd",
         }}
         onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
       >
         {"<"}
       </button>

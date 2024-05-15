@@ -6,9 +6,10 @@ const FocusManager = ({ children }) => {
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-                event.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
+                event.preventDefault(); 
                 const current = document.activeElement;
                 const suitableElement = findSuitableFocusTarget(current, event.key);
+                console.log("🚀 ~ handleKeyDown ~ suitableElement:", suitableElement)
 
                 if (suitableElement) {
                     suitableElement.focus();
@@ -20,26 +21,22 @@ const FocusManager = ({ children }) => {
             while (currentElement && currentElement !== document.body) {
                 const focusableElements = findFocusableElements(currentElement, direction);
                 console.log("🚀 ~ findSuitableFocusTarget ~ focusableElements:", focusableElements)
-                // Nếu tìm thấy các phần tử tiềm năng trong container hiện tại, kiểm tra từng cái một
                 if (focusableElements.length > 0) {
-                    // Sử dụng phương thức reduce để tìm ra phần tử thích hợp nhất
                     const bestFitElement = focusableElements.reduce((best, current) => {
                         return (calculateDistance(document.activeElement.getBoundingClientRect(), current.getBoundingClientRect()) <
                                 calculateDistance(document.activeElement.getBoundingClientRect(), best.getBoundingClientRect())) ? current : best;
                     });
                     console.log("🚀 ~ bestFitElement ~ bestFitElement:", bestFitElement.getBoundingClientRect())
-        
-                    // Kiểm tra xem phần tử tốt nhất có thực sự thỏa mãn yêu cầu không
                     if (isValidTarget(document.activeElement.getBoundingClientRect(), bestFitElement.getBoundingClientRect(), direction)) {
-                        return bestFitElement; // Trả về phần tử thích hợp nếu thỏa mãn
+                        return bestFitElement;
                     }
                 }
-                // Tiếp tục tìm kiếm trong container cha nếu không tìm thấy phần tử thỏa mãn
+    
                 currentElement = currentElement.parentElement;
             }
-            return null; // Trả về null nếu không tìm thấy phần tử thỏa mãn trong bất kỳ container nào
+            return null; 
         };
-        
+
         const findFocusableElements = (container, direction) => {
             const focusable = Array.from(container.querySelectorAll(
                 'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
@@ -50,7 +47,7 @@ const FocusManager = ({ children }) => {
 
         const isValidTarget = (currentRect, targetRect, direction) => {
             if (targetRect.width === 0 && targetRect.height === 0) {
-                return false; // Skip this element if it has zero width and height
+                return false; 
             }        
             switch (direction) {
                 case 'ArrowUp':
@@ -75,7 +72,7 @@ const FocusManager = ({ children }) => {
         const calculateDistance = (fromRect, toRect) => {
             const dx = (toRect.left + toRect.right) / 2 - (fromRect.left + fromRect.right) / 2;
             const dy = (toRect.top + toRect.bottom) / 2 - (fromRect.top + fromRect.bottom) / 2;
-            return Math.sqrt(dx * dx + dy * dy); // Khoảng cách Euclidean
+            return Math.sqrt(dx * dx + dy * dy); 
         };
 
         document.addEventListener('keydown', handleKeyDown);
