@@ -11,21 +11,22 @@ function App() {
   const { theme } = useTheme()
   const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const token = getTokenFromCookie();
-        if (token) {
           const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
             method: 'GET',
             credentials: 'include',
           });
-          const responseBody = await response.json();
-          setUser(response.ok ? { ...responseBody.user } : null);  
-        }
-        setIsLoading(false);
-      } catch (error) {
+          const resBody = await response.json();
+          if(!resBody.rem && localStorage.getItem('loggedInBefore') === true) {
+            localStorage.removeItem('loggedInBefore');
+          }
+          setUser(response.ok ? { ...resBody.user } : null);  
+          setIsLoading(false);
+      }
+      catch (error) {
         console.error('Error checking login status:', error);
       }
     };
@@ -45,19 +46,6 @@ useEffect(() => {
 
     handlePushSuccess();
 }, [user]);
-
-
-const getTokenFromCookie = () => {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith('accessToken=')) {
-      return cookie.substring('accessToken='.length, cookie.length);
-    }
-  }
-  return null;
-};
-
 
   return (
     <>

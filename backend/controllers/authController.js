@@ -95,6 +95,7 @@ export const login = async (req, res) => {
       res
         .cookie("accessToken", token, {
           expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
         })
         .status(200)
         .json({
@@ -110,7 +111,10 @@ export const login = async (req, res) => {
         process.env.JWT_SECRET_KEY
       );
       res
-        .cookie("accessToken", token, {})
+        .cookie("accessToken", token, {
+          httpOnly: true,
+          expires: 0,
+        })
         .status(200)
         .json({
           token,

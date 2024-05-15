@@ -9,7 +9,6 @@ import tourImg07 from "../images/tour-img07.jpg";
 import tourImg08 from "../images/tour-img09.jpeg";
 import a from "../images/a.jpeg";
 import b from "../images/b.jpeg";
-import c from "../images/c.jpg";
 const tours = [
   {
     id: "01",
@@ -145,7 +144,7 @@ const tours = [
     duration: 3,
     reviews: [],
     avgRating: 4.5,
-    photo: c,
+    photo: tourImg08,
     featured: false,
   },
 ];

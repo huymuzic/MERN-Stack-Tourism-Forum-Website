@@ -4,6 +4,10 @@
     max-width: none !important;
 }
 
+.custom__navbar {
+    padding: 0 !important;
+}
+
 .navigation {
     margin-left: 7rem;
 }

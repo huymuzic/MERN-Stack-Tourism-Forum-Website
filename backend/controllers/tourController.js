@@ -1,4 +1,23 @@
 import Tour from "../models/Tour.js";
+import Destination from "../models/destination.js";
+
+export const createDestination = async (req, res) => {
+  const newDestination = new Destination(req.body);
+
+  try {
+    const savedDestination = await newDestination.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully upload image url",
+      data: savedDestination,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to create. Try again" });
+  }
+};
 
 export const createTour = async (req, res) => {
   const newTour = new Tour(req.body);
@@ -85,6 +104,7 @@ export const getAllTour = async (req, res) => {
 
   try {
     const tours = await Tour.find({})
+      .populate("reviews")
       .skip(page * 8)
       .limit(8);
 
@@ -113,7 +133,7 @@ export const getTourBySearch = async (req, res) => {
       country,
       duration: { $gte: duration },
       price: { $lte: price },
-    });
+    }).populate("reviews");
 
     res.status(200).json({
       success: true,
@@ -130,7 +150,9 @@ export const getTourBySearch = async (req, res) => {
 
 export const getFeaturedTour = async (req, res) => {
   try {
-    const tours = await Tour.find({ featured: true }).limit(8);
+    const tours = await Tour.find({ featured: true })
+      .populate("reviews")
+      .limit(8);
 
     res.status(200).json({
       success: true,
@@ -152,5 +174,22 @@ export const getTourCount = async (req, res) => {
     res.status(200).json({ success: true, data: tourCount });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const getTopDestinations = async (req, res) => {
+  try {
+    const destinations = await Destination.find({});
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched top destinations",
+      data: destinations,
+    });
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: err.message,
+    });
   }
 };

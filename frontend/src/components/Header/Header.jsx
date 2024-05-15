@@ -110,7 +110,7 @@ const Header = ({ isLoading }) => {
     });
 
     return (
-    <nav className='header navbar navbar-expand-lg'>
+    <nav className='header custom__navbar navbar navbar-expand-lg'>
         <Container className='header__container bd-gutter'>
                 { /* NAVIGATION SECTION STARTS */}        
                     { /* LOGO SECTION STARTS */ }
@@ -141,7 +141,7 @@ const Header = ({ isLoading }) => {
                         <CircularProgress />
                     ) : user !== null ? (
                         <li className="nav-item dropdown no-bullet mb-4 nm">
-                          <button className="btn dropdown-toggle" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
+                          <button className="btn" type="button" onClick={toggleDropdown} id="user" data-bs-toggle="dropdown" aria-expanded="false">
                                 {user ? (
                                     <img
                                         src={avatarUrl}
