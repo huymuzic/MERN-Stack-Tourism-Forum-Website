@@ -111,10 +111,10 @@ export default function UsersList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`);
       const response = await fetch(url, {
         method: 'PUT',
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
         pushSuccess('Lock user successfully');
@@ -132,10 +132,10 @@ export default function UsersList() {
       const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`);
       const response = await fetch(url, {
         method: 'PUT',
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
         pushSuccess('Unlock user successfully');
@@ -162,7 +162,10 @@ export default function UsersList() {
     url.searchParams.append('search', filter.searchValue);
     url.searchParams.append('searchType', filter.searchType);
 
-    return fetch(url, { headers })
+    return fetch(url, { credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    }, })
       .then((response) => {
         if (!response.ok) {
           pushError('Failed to get list user');
