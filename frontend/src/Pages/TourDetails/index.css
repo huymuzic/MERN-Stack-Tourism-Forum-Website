@@ -54,6 +54,7 @@
 }
 
 .rating__group span {
+    position: relative;
     font-size: 1.1rem;
     display: flex;
     align-items: center;
@@ -129,4 +130,17 @@
 
 .custom-hr {
     border-top: 3px solid !important;
+}
+
+.star__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    transition: width 0.3s ease;
+    display: inline-block;
+    vertical-align: bottom;
+    color: gold !important;
 }

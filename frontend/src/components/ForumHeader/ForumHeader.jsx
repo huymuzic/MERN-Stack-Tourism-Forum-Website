@@ -35,7 +35,6 @@ const ForumHeader = ({ children }) => {
     const editorRef = useRef(null);
     const { setUser, user } = useUser();
     const navigate = useNavigate();
-
     const userPfp = getAvatarUrl(user?.avatar, import.meta.env.VITE_BASE_URL)
     const [isFocused, setIsFocused] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);

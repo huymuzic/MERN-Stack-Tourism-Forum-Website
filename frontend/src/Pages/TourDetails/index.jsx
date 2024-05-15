@@ -6,9 +6,13 @@ import tourData from '../../assets/data/tour';
 import calculateAvgRating from '../../utils/avgRating';
 import Booking from './components/Booking';
 import { pushSuccess } from '../../components/Toast';
+import { useUser } from '../../utils/UserContext';
+import { getAvatarUrl } from '../../utils/getAvar.js';
 
 const TourDetails = () => {
-
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const {user, setUser } = useUser();
+    const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
     const { id } = useParams();
     const reviewMsgRef = useRef('');
     const [tourRating, setTourRating] = useState(null);
@@ -26,13 +30,12 @@ const TourDetails = () => {
     const submitHandler = e => {
         e.preventDefault()
         const reviewText = reviewMsgRef.current.value
-
         pushSuccess(`${reviewText}, ${tourRating}`);
     }
 
     return <>
     
-    <section>
+        <section>
         <Container>
             <Row>
                 <Col lg='8'>
@@ -60,7 +63,7 @@ const TourDetails = () => {
                                 <span><i className='ri-money-dollar-circle-line '></i>from ${price} / adult</span>
                                 <hr className='col-12 mx-auto custom-hr'></hr>
                                 <span><i className='ri-group-line'></i>Age {ageRange}</span>
-                                <span><i className="ri-time-line"></i>Duration: {duration}</span>
+                                <span><i className="ri-time-line"></i>Duration: {duration} days</span>
                                 <span><i className="fa-light fa-bed-front"></i>Accommodation included</span>
                                 <hr className='col-12 mx-auto custom-hr'></hr>
                                 <span>FAQ</span>
@@ -74,11 +77,13 @@ const TourDetails = () => {
 
                             <Form onSubmit={submitHandler}>
                                 <div className='d-flex align-items-center justify-content-end gap-3 mb-4 rating__group'>
-                                    <span onClick={() => setTourRating(1)}><i className='ri ri-star-line'></i></span>
-                                    <span onClick={() => setTourRating(2)}><i className='ri ri-star-line'></i></span>
-                                    <span onClick={() => setTourRating(3)}><i className='ri ri-star-line'></i></span>
-                                    <span onClick={() => setTourRating(4)}><i className='ri ri-star-line'></i></span>
-                                    <span onClick={() => setTourRating(5)}><i className='ri ri-star-line'></i></span>
+                                    {Array.from({ length: 5 }, (_, i) => (
+                                        <span key={i} onClick={() => setTourRating(i + 1)}>
+                                            <i className={`
+                                                ri ${i < tourRating ? 'ri-star-s-fill' : 'ri-star-line'}
+                                            `}></i>
+                                        </span>
+                                    ))}
                                 </div>
 
                                 <div className="review__input">
@@ -91,7 +96,12 @@ const TourDetails = () => {
                                 {
                                    reviews?.map(review => (
                                     <div className='review__item'>
-                                        <img src='' alt='' /> {/*{avatar}*/}
+                                     <img
+                                        src={avatarUrl}
+                                        alt="User Avatar"
+                                        className="rounded-circle"
+                                        style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                                    />
 
                                         <div className="w-100">
                                             <div className='d-flex align-items-center justify-content-between'>
