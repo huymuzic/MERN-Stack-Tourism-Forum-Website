@@ -11,6 +11,7 @@ router.get("/check-login", verifyToken, (req, res) => {
     success: true,
     message: "User is logged in",
     user: req.user,
+    rem: req.rememberMe,
   });
 });
 router.get("/logout", logout);

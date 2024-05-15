@@ -27,6 +27,9 @@ import UsersList from "../Pages/Admin/components/users/index";
 import OtherUserProfile from "../Pages/OtherUserProfile/index";
 import ConfigPage from "../Pages/ConfigPage";
 import ThankYou from "../Pages/ThankYou";
+import TermsOfService from "../Pages/TermsOfService/index";
+import PrivacyPolicy from "../Pages/PrivacyPolicy/index";
+
 const Routers = () => {
   return (
     <Routes>
@@ -49,7 +52,7 @@ const Routers = () => {
         <Route path="forum-posts" element={<ForumPostsList />} />
         <Route path="users" element={<UsersList />} />
       </Route>
-      <Route path="/account" element={<UserAccount />} />
+      <Route path="/my-account" element={<UserAccount />} />
       <Route path="/profile/:id" element={<OtherUserProfile />} />
       <Route path="/admin/users/users/:id" element={<OtherUserProfile />} />
       <Route path="/account/profile" element={<Profile />} />
@@ -61,6 +64,8 @@ const Routers = () => {
       <Route path="/resetPass" element={<ResetPassword />} />
       <Route path="/config-page" element={<ConfigPage />} />
       <Route path="/thank-you" element={<ThankYou />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
     </Routes>
   );
 };

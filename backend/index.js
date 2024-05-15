@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
@@ -10,8 +11,11 @@ import forumRoute from "./routes/forum.js";
 import postRoute from "./routes/post.js";
 import formRoute from "./routes/form.js";
 import tourRoute from "./routes/tour.js";
+import reviewRoute from "./routes/review.js";
+import bookingRoute from "./routes/booking.js";
 
 dotenv.config();
+const __dirname = path.resolve();
 const port = process.env.PORT || 3000;
 const app = express();
 const corsOptions = {
@@ -40,6 +44,14 @@ app.use("/api/forum", forumRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/form", formRoute);
 app.use("/api/v1/tours", tourRoute);
+app.use("/api/v1/reviews", reviewRoute);
+app.use("/api/v1/booking", bookingRoute);
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
 // testing
 app.get("/", (req, res) => {

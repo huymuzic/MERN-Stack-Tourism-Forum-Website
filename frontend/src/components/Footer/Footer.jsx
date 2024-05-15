@@ -126,8 +126,8 @@ const Footer = () => {
     <div className='col-10 mx-auto'>
         <ul className='list-unstyled d-flex flex-row gap-3 justify-content-evenly'>
             <li>&copy; 2024 Cosmic Travel</li>
-            <li><Link to="#" className='custom-anchor'>Terms of Service</Link></li>
-            <li><Link to="#" className='custom-anchor'>Cookie consent</Link></li>
+            <li><Link to="/terms-of-service" className='custom-anchor'>Terms of Service</Link></li>
+            <li><Link to="/privacy-policy" className='custom-anchor'>Cookie consent</Link></li>
         </ul>
     </div>   
     </> 
