@@ -14,7 +14,6 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }
     const [showOptions, setShowOptions] = useState(false);
     const optionsRef = useRef(null);
     const baseURL = import.meta.env.VITE_BASE_URL;
-    const token = localStorage.getItem('accessToken');
     const navigate = useNavigate();
 
     useEffect(() => {

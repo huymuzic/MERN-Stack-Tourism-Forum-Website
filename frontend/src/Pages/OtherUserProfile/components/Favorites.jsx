@@ -15,10 +15,10 @@ function Favorites() {
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/favorites/${userId}`, {
                 method: "GET",
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
+                },
             });
             const result = await response.json();
             if (response.ok) {
@@ -45,9 +45,9 @@ function Favorites() {
         try {
             const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
                 method: 'PUT',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ userId })
             });
@@ -85,9 +85,9 @@ function Favorites() {
           const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
           const response = await fetch(url, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
             },
           });
           if (response.ok) {
@@ -107,9 +107,9 @@ function Favorites() {
           const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
           const response = await fetch(url, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
             },
           });
           if (response.ok) {

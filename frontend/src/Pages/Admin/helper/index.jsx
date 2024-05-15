@@ -1,5 +1,7 @@
-const token = localStorage.getItem('accessToken');
-export const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
+export const headers = 
+{
+    credentials: 'include',
+    headers: {
+          'Content-Type': 'application/json',
+      },
 };

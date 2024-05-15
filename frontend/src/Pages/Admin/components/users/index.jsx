@@ -6,21 +6,21 @@ import debounce from "../../../../helper";
 import { pushError, pushSuccess } from "../../../../components/Toast";
 import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete/useCustomAutocomplete";
 import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
-import NoData from '../NoData'
+import NoData from "../NoData";
 import { headers } from "../../helper";
 
 const userSearchTypes = [
   {
     id: 1,
     name: "Username",
-    value: "username"
+    value: "username",
   },
   {
     id: 2,
     name: "Email",
-    value: "email"
-  }
-]
+    value: "email",
+  },
+];
 
 export default function UsersList() {
   const pageSize = 5;
@@ -28,22 +28,22 @@ export default function UsersList() {
   const [filter, setFilter] = useState({
     searchType: userSearchTypes[0],
     page: 1,
-    searchValue: '',
-    status: undefined
+    searchValue: "",
+    status: undefined,
   });
   const [paging, setPaging] = useState({
     data: [],
     totalCount: 0,
-    totalPages: 0
-  })
+    totalPages: 0,
+  });
 
   const searchRef = useRef(null);
   const searchTypeRef = useRef(null);
 
   const handleResetFilter = () => {
-    setFilter({ searchValue: '', searchType: userSearchTypes[0], page: 1 });
+    setFilter({ searchValue: "", searchType: userSearchTypes[0], page: 1 });
     if (searchRef.current) {
-      searchRef.current.value = '';
+      searchRef.current.value = "";
     }
   };
   const handleOnChangeSearch = useCallback(
@@ -54,72 +54,81 @@ export default function UsersList() {
   );
   const handleOnChangeStatus = (c) => {
     setFilter((prev) => ({ ...prev, status: c, page: 1 }));
-  }
+  };
   const handleOnChangeRole = (r) => {
     setFilter((prev) => ({ ...prev, role: r, page: 1 }));
-  }
+  };
 
   const handleLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`);
+      const url = new URL(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`
+      );
       const response = await fetch(url, {
-        method: 'PUT',
+        method: "PUT",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
-        pushSuccess('Lock user successfully');
-        fetchUsers()
+        pushSuccess("Lock user successfully");
+        fetchUsers();
       } else {
-        pushError('Failed to lock user');
-        throw new Error('Failed to lock user');
+        pushError("Failed to lock user");
+        throw new Error("Failed to lock user");
       }
     } catch (error) {
-      pushError('Failed to lock user');
+      pushError("Failed to lock user");
     }
   };
 
   const handleUnLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`);
+      const url = new URL(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`
+      );
       const response = await fetch(url, {
-        method: 'PUT',
+        method: "PUT",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
-        pushSuccess('Unlock user successfully');
-        fetchUsers()
+        pushSuccess("Unlock user successfully");
+        fetchUsers();
       } else {
-        pushError('Failed to unlock user');
-        throw new Error('Failed to unlock user');
+        pushError("Failed to unlock user");
+        throw new Error("Failed to unlock user");
       }
     } catch (error) {
-      pushError('Failed to unlock user');
+      pushError("Failed to unlock user");
     }
   };
   const fetchUsers = async () => {
-    setLoading(true)
+    setLoading(true);
     const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/list`);
-    url.searchParams.append('page', filter.page);
-    url.searchParams.append('limit', pageSize);
+    url.searchParams.append("page", filter.page);
+    url.searchParams.append("limit", pageSize);
     if (filter.status) {
-      url.searchParams.append('status', filter.status.Value)
+      url.searchParams.append("status", filter.status.Value);
     }
     if (filter.role) {
-      url.searchParams.append('role', filter.role.Value)
+      url.searchParams.append("role", filter.role.Value);
     }
-    url.searchParams.append('search', filter.searchValue);
-    url.searchParams.append('searchType', filter.searchType);
+    url.searchParams.append("search", filter.searchValue);
+    url.searchParams.append("searchType", filter.searchType);
 
-    return fetch(url, { headers })
+    return fetch(url, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
-          pushError('Failed to get list user');
+          pushError("Failed to get list user");
         }
         return response.json();
       })
@@ -127,56 +136,72 @@ export default function UsersList() {
         setPaging(data);
       })
       .catch((error) => {
-        console.log("🚀 ~ fetchUsers ~ error:", error)
+        console.log("🚀 ~ fetchUsers ~ error:", error);
         setLoading(false);
-      }).finally(() => setLoading(false))
+      })
+      .finally(() => setLoading(false));
   };
   useEffect(() => {
     fetchUsers();
   }, [filter.page, filter.searchValue, filter.status, filter.role]);
 
-
   const statusAutocomplete = useCustomAutocomplete({
     list: {
       options: userStatuses,
-      searchFields: ['Name'],
+      searchFields: ["Name"],
     },
   });
 
   const roleAutocomplete = useCustomAutocomplete({
     list: {
       options: userRoles,
-      searchFields: ['Name']
-    }
-  })
+      searchFields: ["Name"],
+    },
+  });
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", gap: "32px" }}>
-      <WrapperFilter onReset={handleResetFilter} customAction={
-        <div className="input-group ps-4" >
-          <select className="form-select" style={{ maxWidth: '140px', width: "25%", cursor: "pointer" }} ref={searchTypeRef} onChange={(e) => {
-            setFilter((prev) => {
-              return ({ ...prev, searchType: e.target.value })
-            })
-          }}>
-            {userSearchTypes.map(type => (
-              <option key={type.value} value={type.value}>{type.name}</option>
-            ))}
-          </select>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search"
-            aria-label="Search"
-            ref={searchRef}
-            onChange={(e) => {
-              handleOnChangeSearch(e.target.value);
-            }}
-          />
-        </div>
-      }>
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "32px",
+      }}
+    >
+      <WrapperFilter
+        onReset={handleResetFilter}
+        customAction={
+          <div className="input-group ps-4">
+            <select
+              className="form-select"
+              style={{ maxWidth: "140px", width: "25%", cursor: "pointer" }}
+              ref={searchTypeRef}
+              onChange={(e) => {
+                setFilter((prev) => {
+                  return { ...prev, searchType: e.target.value };
+                });
+              }}
+            >
+              {userSearchTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search"
+              aria-label="Search"
+              ref={searchRef}
+              onChange={(e) => {
+                handleOnChangeSearch(e.target.value);
+              }}
+            />
+          </div>
+        }
+      >
         <div className="d-flex flex-row justify-content-space-between pt-3 pb-3">
-
-        <div className="pe-4" style={{ width: "50%" }}>
+          <div className="pe-4" style={{ width: "50%" }}>
             <CustomAutocomplete
               {...statusAutocomplete}
               getOptionLabel={(o) => o.Name}
@@ -200,21 +225,26 @@ export default function UsersList() {
               }}
             />
           </div>
-
-
         </div>
-      </WrapperFilter >
+      </WrapperFilter>
       <BasePaginationList
         titleTotal="Total users"
         totalItems={paging.totalCount}
         list={paging.data}
         loading={loading}
-        renderItem={(user) => <UserItem key={user.id} user={user} handleLockConfirm={(userId) => handleLockConfirm(userId)} handleUnLockConfirm={(userId) => handleUnLockConfirm(userId)} />}
+        renderItem={(user) => (
+          <UserItem
+            key={user.id}
+            user={user}
+            handleLockConfirm={(userId) => handleLockConfirm(userId)}
+            handleUnLockConfirm={(userId) => handleUnLockConfirm(userId)}
+          />
+        )}
         totalPages={paging.totalPages}
         page={filter.page}
         onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}
         renderEmpty={() => <NoData>No Data</NoData>}
       />
-    </div >
+    </div>
   );
 }

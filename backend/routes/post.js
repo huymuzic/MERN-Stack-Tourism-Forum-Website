@@ -19,10 +19,10 @@ const router = express.Router();
 router.get("/all", verifyUser, getAllPosts);
 
 // Fetch posts by a specific user
-router.get("/user/:userId", verifyUser, getPostsByUser);
+router.get("/user/:userId", getPostsByUser);
 
 // Fetch favorite posts by a specific user
-router.get("/favorites/:userId", verifyUser, getFavoritePostsByUser);
+router.get("/favorites/:userId", getFavoritePostsByUser);
 
 // Create a new post
 router.post("/user/:userId/create", verifyUser, createPost);
