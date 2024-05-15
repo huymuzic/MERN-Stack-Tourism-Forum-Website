@@ -8,12 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 
 function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }) {
-    const [editMode, setEditMode] = useState(false);
     const { user} = useUser();
     const [isLiked, setIsLiked] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const optionsRef = useRef(null);
-    const baseURL = import.meta.env.VITE_BASE_URL;
     const navigate = useNavigate();
 
     useEffect(() => {

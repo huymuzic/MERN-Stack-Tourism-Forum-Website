@@ -76,7 +76,6 @@ export const deleteUser = async (req, res) => {
 // get Single user
 export const getSingleUser = async (req, res) => {
   const id = req.params.id;
-
   try {
     let user = await User.findById(id);
     if (!user) {
@@ -347,7 +346,7 @@ export const getListUser = async (req, res) => {
 };
 
 // Lock user
-export const lockUser = async (req, res) => {
+export const inactiveUser = async (req, res) => {
   const id = req.params.id;
   try {
     const updatedUser = await User.findByIdAndUpdate(
@@ -372,7 +371,7 @@ export const lockUser = async (req, res) => {
 };
 
 // Unlock user
-export const unlockUser = async (req, res) => {
+export const activeUser = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -380,6 +379,31 @@ export const unlockUser = async (req, res) => {
       id,
       {
         $set: { status: "active" },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully unlocked user",
+      data: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to unlock user. Try again",
+    });
+  }
+};
+
+export const lockUser = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: { status: "locked" },
       },
       { new: true }
     );
