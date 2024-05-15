@@ -6,7 +6,10 @@ import tourImg04 from "../images/tour-img04.jpg";
 import tourImg05 from "../images/tour-img05.jpg";
 import tourImg06 from "../images/tour-img06.jpg";
 import tourImg07 from "../images/tour-img07.jpg";
-
+import tourImg08 from "../images/tour-img09.jpeg";
+import a from "../images/a.jpeg";
+import b from "../images/b.jpeg";
+import c from "../images/c.jpg";
 const tours = [
   {
     id: "01",
@@ -134,15 +137,15 @@ const tours = [
   },
   {
     id: "08",
-    title: "Snowy Mountains, Thailand",
-    city: "Bangkok",
-    country: "Thailand",
+    title: "Jaflong, Sylhet",
+    city: "Bangladesh",
+    country: "Bangladesh",
     price: 99,
     ageRange: "19-99",
     duration: 3,
     reviews: [],
     avgRating: 4.5,
-    photo: tourImg,
+    photo: c,
     featured: false,
   },
 ];
