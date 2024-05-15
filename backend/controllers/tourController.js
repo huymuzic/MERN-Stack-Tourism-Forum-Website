@@ -1,4 +1,23 @@
 import Tour from "../models/Tour.js";
+import Destination from "../models/destination.js";
+
+export const createDestination = async (req, res) => {
+  const newDestination = new Destination(req.body);
+
+  try {
+    const savedDestination = await newDestination.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully upload image url",
+      data: savedDestination,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to create. Try again" });
+  }
+};
 
 export const createTour = async (req, res) => {
   const newTour = new Tour(req.body);
@@ -155,5 +174,22 @@ export const getTourCount = async (req, res) => {
     res.status(200).json({ success: true, data: tourCount });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const getTopDestinations = async (req, res) => {
+  try {
+    const destinations = await Destination.find({});
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched top destinations",
+      data: destinations,
+    });
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
