@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link, Element, animateScroll as scroll } from "react-scroll";
 
 const PrivacyPolicy = () => {
-  window.scrollTo(0, 0);
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   return (
     <>
@@ -11,15 +14,17 @@ const PrivacyPolicy = () => {
           <Col>
             <h1>Privacy Policy</h1>
             <hr />
-            <section>
-              <h2>1. Introduction</h2>
-              <br />
-              <p>
-                We are committed to protecting your privacy. This policy
-                outlines how we collect, use, and safeguard your personal
-                information.
-              </p>
-            </section>
+            <Element name="section1">
+              <section>
+                <h2>1. Introduction</h2>
+                <br />
+                <p>
+                  We are committed to protecting your privacy. This policy
+                  outlines how we collect, use, and safeguard your personal
+                  information.
+                </p>
+              </section>
+            </Element>
             <section>
               <h2>2. Information We Collect</h2>
               <br />
@@ -91,6 +96,8 @@ const PrivacyPolicy = () => {
           </Col>
         </Row>
       </Container>
+      {/* Links to sections */}
+      <Link to="section1" smooth={true} duration={500}></Link>
     </>
   );
 };

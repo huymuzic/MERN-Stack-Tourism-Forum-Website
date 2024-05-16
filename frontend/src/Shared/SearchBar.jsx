@@ -17,48 +17,59 @@ const SearchBar = () => {
   let pricePattern = /^\d{1,4}$/;
   let tourPeriodPattern = /^\d{1,2}$/;
 
-  const searchHandler = async () => {
+  const searchHandler = async (event) => {
+    event.preventDefault();
     const location = locationRef.current.value;
     const price = priceRef.current.value;
     const tourPeriod = tourPeriodRef.current.value;
 
     const newErrors = {}; // Object to store validation errors
+    const queryParams = [];
 
-    if (!location) {
-      newErrors.location = "Location is required.";
-    } else if (!locationPattern.test(location)) {
-      newErrors.location =
-        "Please enter a valid location (only characters allowed)";
+    if (location) {
+      if (!locationPattern.test(location)) {
+        newErrors.location =
+          "Please enter a valid location (only characters allowed)";
+      } else {
+        queryParams.push(`country=${location}`);
+      }
     }
 
-    if (!price) {
-      newErrors.price = "Price is required.";
-    } else if (!pricePattern.test(price)) {
-      newErrors.price = "Please enter a valid price (max 4 numbers)";
+    if (price) {
+      if (!pricePattern.test(price)) {
+        newErrors.price = "Please enter a valid price (max 4 numbers)";
+      } else {
+        queryParams.push(`price=${price}`);
+      }
     }
 
-    if (!tourPeriod) {
-      newErrors.tourPeriod = "Tour period is required.";
-    } else if (!tourPeriodPattern.test(tourPeriod)) {
-      newErrors.tourPeriod = "Please enter a valid tour period (max 2 numbers)";
+    if (tourPeriod) {
+      if (!tourPeriodPattern.test(tourPeriod)) {
+        newErrors.tourPeriod =
+          "Please enter a valid tour period (max 2 numbers)";
+      } else {
+        queryParams.push(`duration=${tourPeriod}`);
+      }
     }
 
     setErrors(newErrors); // Update errors state
 
-    const res = await fetch(
-      `http://localhost:4000/api/v1/tours/search/getTourBySearch?country=${location}&duration=${tourPeriod}&price=${price}`
-    );
+    if (Object.keys(newErrors).length === 0 && queryParams.length > 0) {
+      const res = await fetch(
+        `http://localhost:4000/api/v1/tours/search/getTourBySearch?country=${location}&duration=${tourPeriod}&price=${price}`
+      );
 
-    if (!res.ok) {
-      pushError("Something went wrong");
+      if (!res.ok) {
+        pushError("Something went wrong");
+      }
+
+      const result = await res.json();
+
+      navigate(
+        `/tours/search?country=${location}&duration=${tourPeriod}&price=${price}`,
+        { state: result.data }
+      );
     }
-
-    const result = await res.json();
-
-    navigate(
-      `/tours/search?country=${location}&duration=${tourPeriod}&price=${price}`,
-      { state: result.data }
-    );
   };
 
   return (
