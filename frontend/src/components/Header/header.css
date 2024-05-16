@@ -144,7 +144,7 @@ nav button:focus-visible {
     .dropdown {
         order: 3;
     }
-    
+
     #navbarSupportedContent {
         position: absolute;
         top: 100%;
@@ -155,4 +155,3 @@ nav button:focus-visible {
     }
 
 }
-

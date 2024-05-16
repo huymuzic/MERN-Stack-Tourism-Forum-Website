@@ -1,15 +1,15 @@
 import express from "express";
 import {
-    getAllPosts,
-    getPostsByUser,
-    createPost,
-    updatePost,
-    deletePost,
-    toggleLikePost,
-    getFavoritePostsByUser,
-    getListPosts,
-    hidePost,
-    unhidePost
+  getAllPosts,
+  getPostsByUser,
+  createPost,
+  updatePost,
+  deletePost,
+  toggleLikePost,
+  getFavoritePostsByUser,
+  getListPosts,
+  hidePost,
+  unhidePost,
 } from "../controllers/postController.js";
 import { verifyUser, verifyAdmin } from "../utils/verifyToken.js";
 
@@ -37,7 +37,7 @@ router.delete("/delete/:postId", verifyUser, deletePost);
 router.put("/like/:postId", verifyUser, toggleLikePost);
 
 // get List Posts
-router.get("/list", verifyUser, getListPosts)
+router.get("/list", verifyUser, getListPosts);
 // Hide Post
 router.put("/hide/:id", verifyAdmin, hidePost);
 // Unhide post

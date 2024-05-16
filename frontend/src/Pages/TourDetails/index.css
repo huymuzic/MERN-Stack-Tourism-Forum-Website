@@ -9,7 +9,8 @@
     margin-bottom: 2.5rem;
 }
 
-.tour__info, .tour__reviews {
+.tour__info,
+.tour__reviews {
     border-radius: .5rem;
     border: 1px solid rgb(229, 231, 235);
     padding: 2rem;
