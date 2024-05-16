@@ -15,7 +15,8 @@ const Layout = ({ isLoading }) => {
   if (
     location.pathname.startsWith("/forum") ||
     location.pathname === "/search" ||
-    location.pathname.startsWith("/users")
+    location.pathname.startsWith("/users") ||
+    location.pathname.startsWith("/profile")
   ) {
     return (
       <ForumHeader>
