@@ -40,7 +40,8 @@
     font-size: .9rem !important;
 }
 
-.tour__rating i, .tour__location i {
+.tour__rating i,
+.tour__location i {
     font-size: 1rem !important;
 }
 

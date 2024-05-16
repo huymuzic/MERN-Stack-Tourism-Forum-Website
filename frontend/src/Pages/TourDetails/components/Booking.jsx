@@ -1,103 +1,120 @@
-import React, {useState, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
-import { pushError } from '../../../components/Toast';
-import './booking.css'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { pushError } from "../../../components/Toast";
+import "./booking.css";
 
-import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
+import {
+  Form,
+  FormGroup,
+  ListGroup,
+  ListGroupItem,
+  Button,
+} from "react-bootstrap";
 
 const Booking = ({ tour, avgRating }) => {
-    const navigate = useNavigate();
-    const [numPeople, setNumPeople] = useState(1);
-    const { price, reviews } = tour;
-    const [peopleValue, setPeopleValue] = useState('01');
-    const [totalPrice, setTotalPrice] = useState(price);
+  const navigate = useNavigate();
+  const [numPeople, setNumPeople] = useState(1);
+  const { price, reviews } = tour;
+  const [peopleValue, setPeopleValue] = useState("01");
+  const [totalPrice, setTotalPrice] = useState(price);
 
-    useEffect(() => {
-        setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
-        setTotalPrice(price * numPeople);
-    }, [numPeople, price]);
-    // const [credentials, setCredentials] = useState({
-    //     userId: '01',
-    //     userEmail: 'example@gmail.com',
-    //     fullName:'',
-    //     phone:'',
-    //     guestSize: `0${numPeople}`,
-    //     bookTime:'',
-    // });
+  useEffect(() => {
+    setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
+    setTotalPrice(price * numPeople);
+  }, [numPeople, price]);
 
-    const incrementPeople = () => {
-        setNumPeople(prevNumPeople => Math.min(prevNumPeople + 1, 10));
-    };
+  const incrementPeople = () => {
+    setNumPeople((prevNumPeople) => Math.min(prevNumPeople + 1, 10));
+  };
 
-    const decrementPeople = () => {
-        setNumPeople(prevNumPeople => Math.max(prevNumPeople - 1, 1));
-    };
+  const decrementPeople = () => {
+    setNumPeople((prevNumPeople) => Math.max(prevNumPeople - 1, 1));
+  };
 
-    const handleBookFormChange = e => {
+  const handleBookFormChange = (e) => {};
+
+  const handleBookFormSubmit = (e) => {
+    e.preventDefault();
+    const bookTime = document.getElementById("bookTime").value;
+
+    if (bookTime.trim() === "") {
+      pushError("Date input is empty");
+      return;
     }
+    navigate("/thank-you");
+  };
 
-    const handleBookFormSubmit = e => {
-        e.preventDefault();
-        const bookTime = document.getElementById('bookTime').value;
+  return (
+    <div className="booking">
+      <div className="booking__top d-flex align-items-center justify-content-between">
+        <h3>
+          ${price} <span>/ adult</span>
+        </h3>
+        <span className="tour__rating d-flex align-items-center">
+          <i className="ri ri-star-s-fill"></i>
+          {avgRating === 0 ? null : avgRating} ({reviews?.length})
+        </span>
+      </div>
 
-        if (bookTime.trim() === '') {
-            pushError('Date input is empty');
-        return;
-    }
-        navigate('/thank-you');
-    };
+      {/* ==================== Booking form starts ================== */}
+      <div className="booking__form">
+        <h5>Information</h5>
+        <Form className="booking_info-form d-flex flex-column justify-content-center align-items-flex-start p-3 gap-3">
+          <div className="booking_first_container">
+            <span>People</span>
+            <span>
+              <i className="fa-duotone fa-user-group"></i>
+            </span>
+            <span className="wrapper">
+              <span className="minus" onClick={decrementPeople}>
+                -
+              </span>
+              <span className="num">{peopleValue}</span>
+              <span className="plus" onClick={incrementPeople}>
+                +
+              </span>
+            </span>
+          </div>
+          <FormGroup className="d-flex align-items-center gap-3">
+            <input
+              type="date"
+              placeholder=""
+              id="bookTime"
+              onChange={handleBookFormChange}
+            />
+          </FormGroup>
+        </Form>
+      </div>
+      {/* ==================== Booking form ends ================== */}
 
-    return (
-        <div className='booking'>
-            <div className="booking__top d-flex align-items-center justify-content-between">
-                <h3>${price} <span>/ adult</span></h3>
-                    <span className='tour__rating d-flex align-items-center'>
-                        <i className="ri ri-star-s-fill"></i> 
-                        {avgRating === 0 ? null : avgRating} ({reviews?.length})
-                    </span>                 
-            </div>
+      {/* ==================== Booking bottom ================== */}
+      <div className="booking__bottom">
+        <ListGroup>
+          <ListGroupItem className="border-0 px-0 book_form_row">
+            <h5 className="d-flex align-items-center gap-1">
+              ${price} <i className="ri-close-line"></i> {numPeople} person(s)
+            </h5>
+            <span> ${price * numPeople}</span>
+          </ListGroupItem>
+          <ListGroupItem className="border-0 px-0 book_form_row">
+            <h5>Service charge</h5>
+            <span> ${10 * numPeople}</span>
+          </ListGroupItem>
+          <ListGroupItem className="border-0 px-0 total book_form_row">
+            <h5>Total</h5>
+            <span> ${price * numPeople + 10 * numPeople}</span>
+          </ListGroupItem>
+        </ListGroup>
 
-            {/* ==================== Booking form starts ================== */}
-            <div className="booking__form">
-                <h5>Information</h5>
-                <Form className='booking_info-form d-flex flex-column justify-content-center align-items-flex-start p-3 gap-3'>
-                    <div className='booking_first_container'>
-                    <span>People</span>
-                    <span><i className="fa-duotone fa-user-group"></i></span>
-                    <span className='wrapper'>
-                        <span className='minus' onClick={decrementPeople}>-</span>
-                        <span className='num'>{peopleValue}</span>
-                        <span className='plus' onClick={incrementPeople}>+</span>
-                    </span> 
-                    </div>
-                    <FormGroup className='d-flex align-items-center gap-3'>
-                        <input type='date' placeholder='' id="bookTime" onChange={handleBookFormChange} />
-                    </FormGroup>
-                </Form>
-            </div>    
-            {/* ==================== Booking form ends ================== */}
-
-            {/* ==================== Booking bottom ================== */}
-            <div className='booking__bottom'>
-                <ListGroup>
-                    <ListGroupItem className='border-0 px-0 book_form_row'>
-                        <h5 className='d-flex align-items-center gap-1'>${price} <i className='ri-close-line'></i> {numPeople} person(s)</h5>
-                        <span> ${price * numPeople}</span>
-                    </ListGroupItem>
-                    <ListGroupItem className='border-0 px-0 book_form_row'>
-                        <h5>Service charge</h5>
-                        <span> ${10 * numPeople}</span>
-                    </ListGroupItem>
-                    <ListGroupItem className='border-0 px-0 total book_form_row'>
-                        <h5>Total</h5>
-                        <span> ${price * numPeople + 10 * numPeople}</span>
-                    </ListGroupItem>
-                </ListGroup>
-
-                <Button className='btn primary__btn w-100 mt-4 book__btn normal__pad' onClick={handleBookFormSubmit}>Book Now</Button>
-            </div>
-        </div>
-    );
+        <Button
+          className="btn primary__btn w-100 mt-4 book__btn normal__pad"
+          onClick={handleBookFormSubmit}
+        >
+          Book Now
+        </Button>
+      </div>
+    </div>
+  );
 };
 
-export default Booking
+export default Booking;

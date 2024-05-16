@@ -27,8 +27,8 @@
     font-weight: 500;
 }
 
-.service__item p {
+.service__p {
     font-size: 0.9rem;
-    color: var(--text-color);
+    margin-bottom: 1rem !important;
+    color: var(--heading-color) !important;
 }
-

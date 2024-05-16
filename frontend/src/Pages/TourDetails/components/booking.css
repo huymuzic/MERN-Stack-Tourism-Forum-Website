@@ -3,7 +3,7 @@
     border-radius: .5rem;
     border: 1px solid black;
     position: sticky;
-    top: 30%;
+    top: 28%;
 }
 
 .booking__top {
@@ -73,7 +73,7 @@
 }
 
 .wrapper span.num {
-    font-size:1.8rem;
+    font-size: 1.8rem;
     border-right: 2px solid rgba(0, 0, 0, 0.2);
     border-left: 2px solid rgba(0, 0, 0, 0.2);
     pointer-events: none;
@@ -109,7 +109,9 @@
     align-items: center !important;
     justify-content: space-between !important;
 }
-.book_form_row h5, .book_form_row span {
+
+.book_form_row h5,
+.book_form_row span {
     font-size: 1rem !important;
     font-weight: 500;
     color: var(--heading-color) !important;
@@ -119,14 +121,15 @@
     margin-top: 2rem !important;
 }
 
-.total h5, .total span {
+.total h5,
+.total span {
     color: var(--heading-color) !important;
     font-weight: 700 !important;
     font-size: 1.1rem !important;
 }
 
 .book__btn:hover {
-    background-color: var(--dark-primary-color) !important; 
+    background-color: var(--dark-primary-color) !important;
 }
 
 .normal_pad {

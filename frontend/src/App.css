@@ -111,7 +111,7 @@ ul {
   color: var(--heading-color) !important;
 }
 
-.nav a.active { 
+.nav a.active {
   color: var(--primary-color) !important;
 }
 
@@ -252,4 +252,3 @@ h6 {
 .body-2 {
   font-size: 12px !important;
 }
-
