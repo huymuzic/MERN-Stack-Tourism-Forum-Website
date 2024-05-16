@@ -13,7 +13,9 @@ import {
   getListUser,
   lockUser,
   activeUser,
-  inactiveUser
+  inactiveUser,
+  createOrUpdateTheme,
+  getTheme
 } from "../controllers/userController.js";
 const router = express.Router();
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
@@ -62,5 +64,9 @@ router.put("/unlock/:id", verifyAdmin, activeUser);
 router.put("/active/:id", verifyUser, activeUser);
 // Inactive user
 router.put("/inactive/:id", verifyUser, inactiveUser);
+// CreateOrUpdateTheme
+router.post('/theme', verifyUser, createOrUpdateTheme);
+// getTheme
+router.get('/theme/:userId', verifyUser, getTheme);
 
 export default router;

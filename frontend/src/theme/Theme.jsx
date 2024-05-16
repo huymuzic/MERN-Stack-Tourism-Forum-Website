@@ -1,7 +1,8 @@
-import { createContext, useContext, useState } from "react";
-import color from './Color'
+import { createContext, useContext, useEffect, useState } from "react";
+import _color from './Color'
 import PropTypes from 'prop-types';
 import tinycolor from "tinycolor2";
+import { pushError } from "../components/Toast";
 
 function createCustomTheme(color) {
   const theme = `
@@ -16,19 +17,19 @@ function createCustomTheme(color) {
       .btn-primary {
         background-color: ${color.primary};
         border: none;
-        color: ${color.white};
+        color: ${color.buttonTextColor};
       }
       .btn-check:checked + .btn,
       .btn.btn-primary.active,
       .btn.btn-primary.show,
       .btn.btn-primary:first-child:active,
       :not(.btn-check) + .btn.btn-primary:active {
-          background-color: ${tinycolor(color.darkPrimary).darken(10).toString()};
+          background-color: ${tinycolor(color.buttonHover).darken(10).toString()};
           border: none;
           color: ${color.white};
       }
       .btn-primary:hover {
-        background-color: ${color.darkPrimary};
+        background-color: ${color.buttonHover};
       }
       .btn-secondary {
         background-color: ${color.grey300};
@@ -55,14 +56,14 @@ function createCustomTheme(color) {
       .btn.btn-outline-primary.show,
       .btn.btn-outline-primary:first-child:active,
       :not(.btn-check) + .btn.btn-outline-primary:active {
-          background-color: ${tinycolor(color.darkPrimary).darken(10).toString()};
-          border-color: ${tinycolor(color.darkPrimary).darken(10).toString()};
-          color: ${color.white};
+          background-color: ${color.white};
+          border-color: ${tinycolor(color.buttonHover).darken(10).toString()};
+          color: ${tinycolor(color.buttonHover).darken(10).toString()};
       }
       .btn-outline-primary:hover {
-        background-color: ${color.primary} ;
-        color: ${color.white} ;
-        border-color: ${color.primary} !important ;
+        background-color: ${color.white};
+        color: ${color.buttonHover} ;
+        border-color: ${color.buttonHover} !important ;
       }
       .btn-outline-danger {
         border-color: ${color.danger} ;
@@ -97,25 +98,42 @@ function createCustomTheme(color) {
   return theme;
 }
 
-function useThemeContext() {
+function useThemeContext(userId) {
   const [isLoadingTheme, setIsLoadingTheme] = useState(false)
-  // let newColor
-  // const fetchTheme = async () => {
-  //   return fetch("")
-  //     .then((response) => {
-  //       // if (!response.ok) {
-  //       //   pushError('Failed to get theme');
-  //       // }
-  //       return;
-  //     })
-  //     .then((data) => {
-  //       newColor = { ...color, ...data }
-  //     })
-  //     .catch(() => {
-  //       setIsLoadingTheme(false)
-  //     }).finally(() => setIsLoadingTheme(false))
-  // }
+  const [color, setColor] = useState(_color)
+  const fetchTheme = async () => {
+    setIsLoadingTheme(true);
+    const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/theme/${userId}`);
+
+    try {
+      let data
+      if (!userId) return;
+      const response = await fetch(url, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        // pushError('Failed to get theme');
+        setIsLoadingTheme(false);
+        return;
+      }
+
+      data = await response.json();
+      setColor({ ...color, ...data.theme })
+    } catch (error) {
+      console.log("🚀 ~ fetchUser ~ error:", error);
+    } finally {
+      setIsLoadingTheme(false);
+    }
+  }
+  useEffect(() => {
+    fetchTheme();
+  }, [userId]);
   const theme = createCustomTheme(color);
+  console.log("🚀 ~ useThemeContext ~ color:", color)
   return {
     theme,
     color,
@@ -128,9 +146,8 @@ export const useTheme = () => useContext(ThemeContext);
 
 
 export const ThemeProvider = (props) => {
-  const { children, customTheme } = props;
-  const themeContext = useThemeContext(customTheme);
-  console.log("🚀 ~ ThemeProvider ~ themeContext:", themeContext)
+  const { children, userId } = props;
+  const themeContext = useThemeContext(userId);
 
   return (
     <ThemeContext.Provider value={themeContext}>
@@ -140,6 +157,6 @@ export const ThemeProvider = (props) => {
 };
 
 ThemeProvider.propTypes = {
-  customTheme: PropTypes.object,
+  userId: PropTypes.string,
   children: PropTypes.node.isRequired,
 };

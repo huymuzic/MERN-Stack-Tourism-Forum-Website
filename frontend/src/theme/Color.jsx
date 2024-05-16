@@ -22,6 +22,11 @@ const color = {
     grey400: '#C5C5C5',
     grey600: '#85858A',
 
+    headerBgColor: "#FFFFFF",
+    headerTextColor: "#0B2727",
+
+    buttonText: "#FFFFFF",
+    buttonHover: "#c46200"
 
 };
 

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const themeSchema = new mongoose.Schema(
   {
-    primaryColor: {
+    primary: {
       type: String,
       required: true,
     },
