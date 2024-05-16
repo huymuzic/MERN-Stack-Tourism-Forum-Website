@@ -1,43 +1,46 @@
 import mongoose from "mongoose";
 
-const postSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    default: null,
+const postSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      default: null,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    childrenIds: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Post",
+      default: [],
+    },
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      default: null,
+    },
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    likes: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+    },
+    category: {
+      type: String,
+      default: null,
+    },
+    status: {
+      type: String,
+      enum: ["archived", "deleted", "unarchived"],
+      default: "unarchived",
+    },
   },
-  content: {
-    type: String,
-    required: true,
-  },
-  childrenIds: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "Post",
-    default: [],
-  },
-  parentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Post",
-    default: null,
-  },
-  authorId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
-  likes: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-  },
-  category: {
-    type: String,
-    default: null,
-  },
-  status: {
-    type: String,
-    enum: ["archived", "deleted", 'unarchived'],
-    default: 'unarchived',
-  },
-}, { timestamps: true });
+  { timestamps: true }
+);
 
 const Post = mongoose.model("Post", postSchema);
 

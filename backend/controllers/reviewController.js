@@ -3,7 +3,14 @@ import Review from "../models/Review.js";
 
 export const createReview = async (req, res) => {
   const tourId = req.params.tourId;
-  const newReview = new Review({ ...req.body });
+  const { reviewText, rating } = req.body;
+  const newReview = new Review({
+    productId: tourId,
+    username: req.user.username,
+    avatar: req.user.avatar,
+    reviewText,
+    rating,
+  });
 
   try {
     // save new review to reviews collection on db

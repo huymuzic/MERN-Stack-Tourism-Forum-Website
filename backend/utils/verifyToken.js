@@ -2,9 +2,9 @@ import jwt, { decode } from "jsonwebtoken";
 import User from "../models/user.js";
 
 export const verifyToken = async (req, res, next) => {
-  const token = 
-  req.cookies.accessToken ||
-  (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+  const token =
+    req.cookies.accessToken ||
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   if (!token) {
     return res.status(401).json({
       success: false,
@@ -40,7 +40,10 @@ export const verifyToken = async (req, res, next) => {
 
 export const verifyUser = (req, res, next) => {
   verifyToken(req, res, next, () => {
-    if  ( (req.user.id === req.params.id ) && ( req.user.status == "active")|| req.user.role === "admin")  {
+    if (
+      (req.user.id === req.params.id && req.user.status == "active") ||
+      req.user.role === "admin"
+    ) {
       next();
     } else {
       return res.status(401).json({
