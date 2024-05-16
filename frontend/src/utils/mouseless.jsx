@@ -9,9 +9,14 @@ const FocusManager = ({ children }) => {
                 event.preventDefault(); 
                 const current = document.activeElement;
                 const suitableElement = findSuitableFocusTarget(current, event.key);
-                console.log("🚀 ~ handleKeyDown ~ suitableElement:", suitableElement)
-
                 if (suitableElement) {
+                    if (suitableElement.tagName.toLowerCase() === 'button') {
+                        const linkInsideButton = suitableElement.querySelector('a');
+                        if (linkInsideButton) {
+                            linkInsideButton.focus();
+                            return; 
+                        }
+                    }
                     suitableElement.focus();
                 }
             }
@@ -20,13 +25,11 @@ const FocusManager = ({ children }) => {
             let currentElement = element;
             while (currentElement && currentElement !== document.body) {
                 const focusableElements = findFocusableElements(currentElement, direction);
-                console.log("🚀 ~ findSuitableFocusTarget ~ focusableElements:", focusableElements)
                 if (focusableElements.length > 0) {
                     const bestFitElement = focusableElements.reduce((best, current) => {
                         return (calculateDistance(document.activeElement.getBoundingClientRect(), current.getBoundingClientRect()) <
                                 calculateDistance(document.activeElement.getBoundingClientRect(), best.getBoundingClientRect())) ? current : best;
                     });
-                    console.log("🚀 ~ bestFitElement ~ bestFitElement:", bestFitElement.getBoundingClientRect())
                     if (isValidTarget(document.activeElement.getBoundingClientRect(), bestFitElement.getBoundingClientRect(), direction)) {
                         return bestFitElement;
                     }
