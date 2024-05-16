@@ -63,17 +63,19 @@ export const register = async (req, res) => {
 // user login
 export const login = async (req, res) => {
   const { email, pwd, rem } = req.body;
-
   try {
     const user = await User.findOne({ email: email });
-
     // if no user is found
     if (!user) {
       return res
         .status(400)
         .json({ success: false, message: "User not found" });
     }
-
+    if (user.status == "locked") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Your account has been locked, please contact to admin!" });
+    }
     // if user is found, check password and compare with hashed password
 
     const checkCorrectPassword = await bcrypt.compare(pwd, user.password);

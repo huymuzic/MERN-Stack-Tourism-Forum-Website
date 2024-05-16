@@ -14,6 +14,7 @@ function UserAccount() {
   const [activeNav, setActiveNav] = useState('Profile');
   const [confirmActive, setConfirmActive] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
+  const [loading, setLoading] = useState(true); 
   const [announceConfirm, setAnnounceConfirm] = useState(false);
   const baseURL = import.meta.env.VITE_BASE_URL;
   const NAV_ITEMS = {
@@ -22,10 +23,17 @@ function UserAccount() {
     Themes: Themes,
     Favorites: Favorites,
   };
-  
-  useEffect(() => {
-  }, [user]);
+  const [showActions, setShowActions] = useState(false);
 
+  const toggleActions = () => setShowActions(!showActions); 
+
+ useEffect(() => {
+    if (!user) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [user, setUser]);
   useEffect(() => {
     setInputPassword('');
     setAnnounceConfirm(false);
@@ -116,49 +124,102 @@ function UserAccount() {
   const date = new Date(user?.createdAt);
   const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
+  if (loading) {
+    return <div>Loading...</div>;  // Display a loading message or spinner
+  }
   return (
 <>
   <div className="container mt-4" style={{ maxWidth: '1200px' }}>
     {/* Profile Header */}
     <div className="row justify-content-center mb-3">
-      <div className="col-md-10">
-        <div
-          className="card"
-          style={{
-            padding: '15px',
-            border: '2px solid #ccc',
-            borderRadius: '8px',
-            backgroundColor: 'white',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <div className="row align-items-center">
-            <div className="col-auto">
-              <img
-                src={avatarUrl}
-                alt="User Avatar"
-                style={{
-                  border: '3px solid #ccc',
-                  borderRadius: '50%',
-                  width: '150px',
-                  height: '150px',
-                }}
-              />
-            </div>
-            <div className="col">
-              <h2 style={{ fontWeight: 'bold', fontSize: '2rem' }}>{user.name}</h2>
-              <p style={{ fontSize: '1.25rem' }}>@{user.username}</p>
-              <div className="mb-3 d-flex">
-                <span className="badge bg-primary me-2" style={{ fontSize: '1.25rem', padding: '10px' }}>
-                  Posts: {user.posts ? user.posts.length : 0}
-                </span>
-                <span className="badge bg-success" style={{ fontSize: '1.25rem', padding: '10px' }}>
-                  Favorites: {user.likes ? user.likes.length : 0}
-                </span>
-              </div>
+    <div className="col-md-10">
+      <div
+        className="card"
+        style={{
+          padding: '15px',
+          border: '2px solid #ccc',
+          borderRadius: '8px',
+          backgroundColor: 'white',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <div className="row align-items-start">
+          <div className="col-auto">
+            <img
+              src={avatarUrl}
+              alt="User Avatar"
+              style={{
+                border: '3px solid #ccc',
+                borderRadius: '50%',
+                width: '150px',
+                height: '150px',
+              }}
+            />
+          </div>
+          <div className="col">
+            <h2 style={{ fontWeight: 'bold', fontSize: '2rem' }}>
+              {user?.name} {user?.role === 'admin' && (
+                <i className="fa-sharp fa-solid fa-shield-halved"></i>
+              )}
+            </h2>
+            <p style={{ fontSize: '1.25rem' }}>@{user?.username}</p>
+            <div className="mb-3 d-flex">
+              <span
+                className="badge bg-primary me-2"
+                style={{ fontSize: '1.25rem', padding: '10px' }}
+              >
+                Posts: {user?.posts ? user.posts.length : 0}
+              </span>
+              <span
+                className="badge bg-success"
+                style={{ fontSize: '1.25rem', padding: '10px' }}
+              >
+                Favorites: {user?.likes ? user.likes.length : 0}
+              </span>
             </div>
           </div>
-          {/* Navigation tabs under the profile header */}
+          <div className="col-auto">
+              <div className="dropdown">
+                <button
+                  className="btn btn-light"
+                  onClick={toggleActions}
+                  style={{ fontSize: "1.5rem", backgroundColor: "white", border: "none" }}
+                >
+                  . . .
+                </button>
+                {showActions && (
+                  <ul
+                    className="dropdown-menu show"
+                    style={{ display: "block", backgroundColor: "white",position: "absolute", right: 0 }}
+                  >
+                    <li>
+                      <button
+                        className={`dropdown-item btn ${
+                          user.status === "active" ? "btn-danger" : "btn-success"
+                        }`}
+                        style={{ fontSize: "0.9rem", padding: "6px" }}
+                        onClick={() =>  setConfirmActive(true)}
+                      >
+                        {user.status === "active" ? "Inactivate Account" : "Activate Account"}
+                      </button>
+                    </li>
+                    {user.status === "active" && (
+                      <li>
+                        <button
+                          className="dropdown-item btn btn-danger"
+                          style={{ fontSize: "0.9rem", padding: "6px" }}
+                          onClick={handleDeleteInfo}
+                        >
+                          Delete Account
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                )}
+              </div>
+            </div>
+        </div>
+       {/* Navigation tabs under the profile header */}
           <ul className="nav nav-tabs mt-2">
             {Object.keys(NAV_ITEMS).map((item) => (
               <li key={item} className="nav-item">
@@ -181,52 +242,31 @@ function UserAccount() {
     <div className="row justify-content-center">
       <div className="col-md-10" style={{ display: 'flex'}}>
         {/* Info Component */}
-        <div className="col-md-2" style={{ marginRight: '10px' }}>
+        <div className="col-md-3" style={{ marginRight: '10px' }}>
           <div className="card mb-3">
-            <div className="card-body text-center">
+            <div className="card-body text-start">
               <h5
                 className="card-title"
                 style={{
                   fontWeight: 'bold',
                   fontSize: '1.4rem',
                   position: 'relative',
-                  left: '-20px',
                 }}
               >
-                Info
+                Info:
               </h5>
-              <div className="d-flex flex-column align-items-center">
+              <div className="d-flex flex-column align-items-start">
                 <p className="mb-1" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Joined:</p>
                 <p className="mb-2" style={{ fontStyle: 'italic', fontSize: '1.1rem' }}>{formattedDate}</p>
                 <p className="mb-1" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Role:</p>
-                <p className="mb-1" style={{ fontSize: '1.1rem' }}>{user.role}</p>
+                <p className="mb-1" style={{ fontSize: '1.1rem' }}>{user?.role == 'admin'&&<i className="fa-sharp fa-solid fa-shield-halved"></i>} {user.role}</p>
               </div>
             </div>
-          </div>
-
-          {/* Inactivate and Delete Buttons */}
-          <div className="d-grid gap-2">
-            <button
-              className={`btn ${user.status === 'active' ? 'btn-danger' : 'btn-success'}`}
-              style={{ fontSize: '0.9rem', width: '100%', padding: '6px' }}
-              onClick={() => setConfirmActive(true)}
-            >
-              {user.status === 'active' ? 'Inactivate Account' : 'Activate Account'}
-            </button>
-            {user.status === 'active' && (
-              <button
-                className="btn btn-danger"
-                style={{ fontSize: '0.9rem', width: '100%', padding: '6px' }}
-                onClick={handleDeleteInfo}
-              >
-                Delete Account
-              </button>
-            )}
           </div>
         </div>
 
         {/* ActiveComponent or Profile Component */}
-        <div className="col-md-8" style={{ marginLeft: '10px', marginTop: "0px" }}>
+        <div className="col-md-7" style={{ marginLeft: '10px', marginTop: "0px" }}>
           {user.status === 'active' ? (
             <ActiveComponent />
           ) : (
@@ -253,15 +293,6 @@ function UserAccount() {
           <div className="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Please Provide Your Password</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={handleCancel}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div class="modal-body">
               <input

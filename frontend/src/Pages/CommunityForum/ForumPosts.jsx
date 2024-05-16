@@ -172,7 +172,7 @@ function Post() {
                     <div className='col-8 d-flex border-2 border-bottom pb-3'>
                         <div name='content-area' className='container-xxl d-inline-block'>
                             <div className="d-flex">
-                                <a href='#'>
+                            <a href={`/profile/${post.authorId?._id}`} style={{ textDecoration: 'none' }}>
                                     <img height='45' width='45' 
                                         className='rounded-5' 
                                         alt='profile picture' 

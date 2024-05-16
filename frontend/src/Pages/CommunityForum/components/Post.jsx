@@ -54,10 +54,10 @@ function Post(props) {
             console.error(error);
         }
     };
-
+    
     return <div className='col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
         <div className="d-flex mt-3 ms-2">
-            <a className='ps-3 d-block' href='#'>
+            <a className='ps-3 d-block'  href={`/profile/${post.authorId?._id}`}>
                 <img height='45' width='45'
                     className='rounded-5'
                     alt='profile picture'
@@ -83,8 +83,8 @@ function Post(props) {
         </div>
 
         <div className="ms-4 d-flex align-items-center gap-2 mb-2">
-            <div className={`${categoryColors[post.category].color} square`} />
-            <span>{categoryColors[post.category].name}</span>
+            <div className={`${categoryColors[post.category]?.color} square`} />
+            <span>{categoryColors[post.category]?.name}</span>
         </div>
 
         <Link to={`/forum/p/${post._id}`} name='content-area' className='text-reset'>
