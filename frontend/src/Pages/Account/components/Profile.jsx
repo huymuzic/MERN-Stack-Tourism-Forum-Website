@@ -6,7 +6,7 @@ import { useUser } from "../../../utils/UserContext";
 const Profile = () => {
 
   const baseURL = import.meta.env.VITE_BASE_URL;
-  const { user,setUser } = useUser(); 
+  const { user, setUser } = useUser();
   const [selectedAvatarFile, setSelectedAvatarFile] = useState(null);
   const [inputPassword, setInputPassword] = useState('');
   const [newName, setNewName] = useState('');
@@ -28,29 +28,29 @@ const Profile = () => {
     hasSpecialChars: false,
   });
 
-  
+
   const fetchInfo = async (userId) => {
     const token = localStorage.getItem('accessToken');  // Retrieve token inside function
     try {
-        const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            }
-        });
-        const jsonResponse = await response.json();
-        if (response.ok) {
-          setUser(jsonResponse.data);  
-        } else {
-            throw new Error(jsonResponse.message || 'Failed to fetch user info');
+      const response = await fetch(`${baseURL}/api/v1/users/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         }
+      });
+      const jsonResponse = await response.json();
+      if (response.ok) {
+        setUser(jsonResponse.data);
+      } else {
+        throw new Error(jsonResponse.message || 'Failed to fetch user info');
+      }
     } catch (error) {
-        console.error('Fetch user info error:', error);
+      console.error('Fetch user info error:', error);
     }
-};
-useEffect(() => {
-}, [user]);
+  };
+  useEffect(() => {
+  }, [user]);
   useEffect(() => {
     if (user) {
       setNewName(user.name);
@@ -153,9 +153,10 @@ useEffect(() => {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/upload-avatar/${user._id}`, {
         method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+        credentials: "include",
+        // headers: {
+        //   "Content-Type": "application/json"
+        // },
         body: formData,
       });
       const data = await response.json();
@@ -173,11 +174,11 @@ useEffect(() => {
 
   return (
     <div className='container mt-0'>
-    <div className='row justify-content-center'>
+      <div className='row justify-content-center'>
         <div className='card' style={{ width: '100%', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <div className='card-body d-flex align-items-center'>
             <div className='profile-details flex-grow-1'>
-            <h2 className='mb-3'>My Profile</h2>
+              <h2 className='mb-3'>My Profile</h2>
               {isChanging ? (
                 <>
                   <div className='mb-3'>
@@ -233,7 +234,7 @@ useEffect(() => {
                 </>
               )}
             </div>
-            <div className='ms-3'>  
+            <div className='ms-3'>
               <img
                 src={tempAvatar}
                 alt='User Avatar'
@@ -246,77 +247,77 @@ useEffect(() => {
         </div>
       </div>
 
-    {avatarModal && (
-      <div className='modal show' style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-        <div className='modal-dialog'>
-          <div className='modal-content'>
-            <div className='modal-header'>
-              <h5 className='modal-title'>Update Your Avatar</h5>
-            </div>
-            <div className='modal-body'>
-              <img src={tempAvatar} alt='Preview Avatar' className='img-thumbnail mb-3' />
-              <input type='file' className='form-control' onChange={handleAvatarChange} />
-              <input
-                type='text'
-                className='form-control mt-2'
-                placeholder='Or enter image URL'
-                onChange={(e) => setTempAvatar(e.target.value)}
-              />
-            </div>
-            <div className='modal-footer'>
-              <button className='btn btn-success' onClick={handleAvatarUpdate}>
-                Confirm
-              </button>
-              <button className='btn btn-secondary' onClick={() => setAvatarModal(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-
-    {isVerifying && (
-      <div
-        className='modal show'
-        tabIndex='-1'
-        style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}
-      >
-        <div className='modal-dialog'>
-          <div className='modal-content'>
-            <div className='modal-header'>
-              <h5 className='modal-title'>Verify Your Password</h5>
-              <button type='button' className='btn-close' onClick={() => setIsVerifying(false)}></button>
-            </div>
-            <div className='modal-body'>
-              <input
-                type='password'
-                className='form-control'
-                placeholder='Enter current password'
-                value={inputPassword}
-                onChange={(e) => setInputPassword(e.target.value)}
-              />
-            </div>
-            <div className='modal-footer'>
-              <button className='btn btn-success' onClick={handleVerifyPassword}>
-                Verify
-              </button>
+      {avatarModal && (
+        <div className='modal show' style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className='modal-dialog'>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <h5 className='modal-title'>Update Your Avatar</h5>
+              </div>
+              <div className='modal-body'>
+                <img src={tempAvatar} alt='Preview Avatar' className='img-thumbnail mb-3' />
+                <input type='file' className='form-control' onChange={handleAvatarChange} />
+                <input
+                  type='text'
+                  className='form-control mt-2'
+                  placeholder='Or enter image URL'
+                  onChange={(e) => setTempAvatar(e.target.value)}
+                />
+              </div>
+              <div className='modal-footer'>
+                <button className='btn btn-success' onClick={handleAvatarUpdate}>
+                  Confirm
+                </button>
+                <button className='btn btn-secondary' onClick={() => setAvatarModal(false)}>
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    {announceConfirm && (
-      <div
-        className='alert alert-success position-fixed  bottom-0 end-0 translate-middle' style={{ zIndex: 9999 }}
-      >
-        <strong>Success!</strong> Your profile has been updated.
-        <button type='button' className='btn-close' onClick={() => setAnnounceConfirm(false)}></button>
-      </div>
-    )}
-  </div>
-);
+      {isVerifying && (
+        <div
+          className='modal show'
+          tabIndex='-1'
+          style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}
+        >
+          <div className='modal-dialog'>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <h5 className='modal-title'>Verify Your Password</h5>
+                <button type='button' className='btn-close' onClick={() => setIsVerifying(false)}></button>
+              </div>
+              <div className='modal-body'>
+                <input
+                  type='password'
+                  className='form-control'
+                  placeholder='Enter current password'
+                  value={inputPassword}
+                  onChange={(e) => setInputPassword(e.target.value)}
+                />
+              </div>
+              <div className='modal-footer'>
+                <button className='btn btn-success' onClick={handleVerifyPassword}>
+                  Verify
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {announceConfirm && (
+        <div
+          className='alert alert-success position-fixed  bottom-0 end-0 translate-middle' style={{ zIndex: 9999 }}
+        >
+          <strong>Success!</strong> Your profile has been updated.
+          <button type='button' className='btn-close' onClick={() => setAnnounceConfirm(false)}></button>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Profile;

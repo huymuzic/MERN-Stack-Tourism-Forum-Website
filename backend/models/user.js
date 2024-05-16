@@ -43,6 +43,11 @@ const userSchema = new mongoose.Schema(
       default: "active",
       required: true,
     },
+    theme: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Theme",
+      default: null,
+    }
   },
   { timestamps: true }
 );

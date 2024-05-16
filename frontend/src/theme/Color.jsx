@@ -10,10 +10,10 @@ const color = {
     lightDanger: '#FCE8E5',
 
     success: '#009D4F',
-    successLight: '#009D4F10',
+    successLight: '#E5F5ED',
 
     warning: '#FFB600',
-    warningLight: '#FFB60010',
+    warningLight: '#FFF8E5',
 
     white: '#FFFFFF',
     grey100: '#FAFAFA',

@@ -29,6 +29,7 @@ import ConfigPage from "../Pages/ConfigPage";
 import ThankYou from "../Pages/ThankYou";
 import TermsOfService from "../Pages/TermsOfService/index";
 import PrivacyPolicy from "../Pages/PrivacyPolicy/index";
+import MyAccount from "../Pages/MyAccount";
 
 const Routers = () => {
   return (
@@ -52,7 +53,8 @@ const Routers = () => {
         <Route path="forum-posts" element={<ForumPostsList />} />
         <Route path="users" element={<UsersList />} />
       </Route>
-      <Route path="/my-account" element={<UserAccount />} />
+      <Route path="/account" element={<UserAccount />} />
+      <Route path="/my-account" element={<MyAccount />} />
       <Route path="/profile/:id" element={<OtherUserProfile />} />
       <Route path="/admin/users/users/:id" element={<OtherUserProfile />} />
       <Route path="/my-account/profile" element={<Profile />} />
