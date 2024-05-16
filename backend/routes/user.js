@@ -12,7 +12,8 @@ import {
   getAvatar,
   getListUser,
   lockUser,
-  unlockUser,
+  activeUser,
+  inactiveUser
 } from "../controllers/userController.js";
 const router = express.Router();
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
@@ -56,6 +57,10 @@ router.get("/avatar/:filename", getAvatar);
 // Lock user
 router.put("/lock/:id", verifyAdmin, lockUser);
 // Unlock user
-router.put("/unlock/:id", verifyAdmin, unlockUser);
+router.put("/unlock/:id", verifyAdmin, activeUser);
+// Active user
+router.put("/active/:id", verifyUser, activeUser);
+// Inactive user
+router.put("/inactive/:id", verifyUser, inactiveUser);
 
 export default router;

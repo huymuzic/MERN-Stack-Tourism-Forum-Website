@@ -153,10 +153,7 @@ const Profile = () => {
     try {
       const response = await fetch(`${baseURL}/api/v1/users/upload-avatar/${user._id}`, {
         method: 'PUT',
-        credentials: "include",
-        // headers: {
-        //   "Content-Type": "application/json"
-        // },
+        credentials: 'include',
         body: formData,
       });
       const data = await response.json();
