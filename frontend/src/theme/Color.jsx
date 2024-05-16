@@ -25,8 +25,8 @@ const color = {
     headerBgColor: "#FFFFFF",
     headerTextColor: "#0B2727",
 
-    buttonText: "#FFFFFF",
-    buttonHover: "#c46200"
+    buttonTextColor: "#FFFFFF",
+    buttonHoverColor: "#c46200"
 
 };
 

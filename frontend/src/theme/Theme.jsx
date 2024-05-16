@@ -24,12 +24,12 @@ function createCustomTheme(color) {
       .btn.btn-primary.show,
       .btn.btn-primary:first-child:active,
       :not(.btn-check) + .btn.btn-primary:active {
-          background-color: ${tinycolor(color.buttonHover).darken(10).toString()};
+          background-color: ${tinycolor(color.buttonHoverColor).darken(10).toString()};
           border: none;
           color: ${color.white};
       }
       .btn-primary:hover {
-        background-color: ${color.buttonHover};
+        background-color: ${color.buttonHoverColor};
       }
       .btn-secondary {
         background-color: ${color.grey300};
@@ -57,13 +57,13 @@ function createCustomTheme(color) {
       .btn.btn-outline-primary:first-child:active,
       :not(.btn-check) + .btn.btn-outline-primary:active {
           background-color: ${color.white};
-          border-color: ${tinycolor(color.buttonHover).darken(10).toString()};
-          color: ${tinycolor(color.buttonHover).darken(10).toString()};
+          border-color: ${tinycolor(color.buttonHoverColor).darken(10).toString()};
+          color: ${tinycolor(color.buttonHoverColor).darken(10).toString()};
       }
       .btn-outline-primary:hover {
         background-color: ${color.white};
-        color: ${color.buttonHover} ;
-        border-color: ${color.buttonHover} !important ;
+        color: ${color.buttonHoverColor} ;
+        border-color: ${color.buttonHoverColor} !important ;
       }
       .btn-outline-danger {
         border-color: ${color.danger} ;
@@ -98,10 +98,58 @@ function createCustomTheme(color) {
   return theme;
 }
 
+function generatePrimaryColor(primaryColor) {
+  // const primary = new tinycolor(primaryColor);
+  const lightness = tinycolor(primaryColor).toHsl().l;
+  console.log("🚀 ~ generatePrimaryColor ~ lightness:", lightness)
+  let palette;
+
+  if (lightness < 0.2) {
+    palette = {
+      lightPrimary: tinycolor(primaryColor).lighten(60).toString(),
+      primary: tinycolor(primaryColor).lighten(30).toString(),
+      darkPrimary: tinycolor(primaryColor).toString(),
+    };
+  } else if (lightness >= 0.2 && lightness < 0.4) {
+    palette = {
+      lightPrimary: tinycolor(primaryColor).lighten(45).toString(),
+      primary: tinycolor(primaryColor).lighten(20).toString(),
+      darkPrimary: tinycolor(primaryColor).toString(),
+    };
+  } else if (lightness >= 0.4 && lightness < 0.6) {
+    palette = {
+      lightPrimary: tinycolor(primaryColor).lighten(30).toString(),
+      primary: tinycolor(primaryColor).toString(),
+      darkPrimary: tinycolor(primaryColor).darken(30).toString(),
+    };
+  } else if (lightness >= 0.6 && lightness < 0.8) {
+    palette = {
+      lightPrimary: tinycolor(primaryColor).toString(),
+      primary: tinycolor(primaryColor).darken(20).toString(),
+      darkPrimary: tinycolor(primaryColor).darken(45).toString(),
+    };
+  } else if (lightness >= 0.8) {
+    palette = {
+      lightPrimary: tinycolor(primaryColor).toString(),
+      primary: tinycolor(primaryColor).darken(30).toString(),
+      darkPrimary: tinycolor(primaryColor).darken(45).toString(),
+    };
+  }
+
+  console.log("palette: " + palette.lightPrimary);
+  console.log("palette: " + palette.primary);
+  return palette;
+
+}
+
 function useThemeContext(userId) {
   const [isLoadingTheme, setIsLoadingTheme] = useState(false)
   const [color, setColor] = useState(_color)
+
   const fetchTheme = async () => {
+    if (!userId) {
+      setColor(_color)
+    }
     setIsLoadingTheme(true);
     const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/theme/${userId}`);
 
@@ -122,7 +170,8 @@ function useThemeContext(userId) {
       }
 
       data = await response.json();
-      setColor({ ...color, ...data.theme })
+      const primaryPalette = generatePrimaryColor(data.theme.primary)
+      setColor({ ...color, ...data.theme, ...primaryPalette })
     } catch (error) {
       console.log("🚀 ~ fetchUser ~ error:", error);
     } finally {
@@ -133,7 +182,6 @@ function useThemeContext(userId) {
     fetchTheme();
   }, [userId]);
   const theme = createCustomTheme(color);
-  console.log("🚀 ~ useThemeContext ~ color:", color)
   return {
     theme,
     color,
