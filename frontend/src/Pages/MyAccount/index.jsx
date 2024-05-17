@@ -67,7 +67,7 @@ export default function MyAccount() {
     };
     const handleActivateConfirm = async () => {
         try {
-            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/active/${user._id}`);
+            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/inactive/${user._id}`);
             const response = await fetch(url, {
                 method: 'PUT',
                 credentials: 'include',
@@ -89,7 +89,7 @@ export default function MyAccount() {
 
     const handleDeactivateConfirm = async () => {
         try {
-            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/inactive/${user._id}`);
+            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/active/${user._id}`);
             const response = await fetch(url, {
                 method: 'PUT',
                 credentials: 'include',
