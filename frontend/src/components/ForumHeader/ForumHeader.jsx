@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../../utils/UserContext";
 import { pushError, pushSuccess } from '../../components/Toast';
@@ -22,64 +22,28 @@ const nav_bar = [
     {
         name: 'Forum',
         to: '/forum',
-        icon: 'fa-solid fa-cart-shopping',
+        icon: 'fa-solid fa-comments',
     },
     {
         name: 'Tours',
         to: '/tours',
-        icon: 'fa-solid fa-comments',
+        icon: 'fa-solid fa-cart-shopping',
+    },
+    {
+        name: 'Admin',
+        to: '/admin',
+        icon: 'fa-solid fa-shield-halved',
+        check: true,
     },
 ];
 
 const ForumHeader = ({ children }) => {
-    const editorRef = useRef(null);
     const { setUser, user } = useUser();
     const navigate = useNavigate();
     const userPfp = getAvatarUrl(user?.avatar, import.meta.env.VITE_BASE_URL)
     const [isFocused, setIsFocused] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);
     const [dropdown, setDropdown] = useState(null);
-
-    const [title, setTitle] = useState("");
-    const [category, setCategory] = useState("");
-
-    const handleChildChange = () => {
-        setTitle(title);
-        setCategory(category);
-    };
-    
-    async function createTopic() {
-        if (editorRef.current) {
-            const content = editorRef.current.getContent();
-            const token = localStorage.getItem('accessToken');
-    
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        title: title,
-                        category: category,
-                        content: content,
-                    }),
-                });
-    
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-    
-                const data = await response.json();
-                document.getElementById("modalClose").click();
-                nav(`/forum/p/${data.postId}`) // navigate to post
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    }
 
     useEffect(() => {
         const history = localStorage.getItem('searchHistory');
@@ -120,8 +84,8 @@ const ForumHeader = ({ children }) => {
 
             navigate(`/search?keyword=${search}`)
 
-            e.target.click()
-            e.target.blur()
+            //e.target.click()
+            //e.target.blur()
             e.preventDefault();
         }
     }
@@ -130,22 +94,18 @@ const ForumHeader = ({ children }) => {
         try {
             const response = await fetch('/api/v1/auth/logout', {
                 method: 'GET',
-                credentials: 'include', // Send cookies with the request
+                credentials: 'include',
             });
 
-            console.log('Logout response:', response); // Log the response
+            console.log('Logout response:', response);
 
             if (response.ok) {
                 pushSuccess('Logged out successfully');
-                setSuccessMsg(true);
-                // Clear token in local storage on the browser
                 localStorage.removeItem('accessToken');
                 setUser(null);
                 navigate('/');
             } else {
-                // Handle unsuccessful logout
                 pushError('Failed to log out');
-                setErrorMsg(true);
                 const responseBody = await response.json();
                 console.error('Failed to log out', responseBody.message);
             }
@@ -162,36 +122,34 @@ const ForumHeader = ({ children }) => {
                         <img alt='Website Logo' className="img-fluid" height='150' width='150' src={logo} />
                     </Link>
                     <ul className="nav d-flex flex-column mb-auto gap-2 align-items-center">
-                        {nav_bar.map((item, index) => (
-                            <li key={index} className="nav-item rounded-5 comment col-lg-10 col-sm-4">
+                        {nav_bar.map((item, index) => {
+                            if ((item.check && user?.role === 'admin') || (!item.check)) {
+                                return <li key={index} className="nav-item rounded-5 comment col-lg-10 col-sm-4">
                                 <NavLink to={item.to} className='d-sm-flex align-items-center justify-content-sm-center justify-content-lg-start nav-link text-reset fs-5 fs-sm-2' aria-current="page">
                                     <i className={item.icon} title={item.name}></i>
                                     <span className="ps-2 d-none d-lg-inline">{item.name}</span>
                                 </NavLink>
-                            </li>
-                        ))}
+                            </li>}
+                        })}
                         <li className="mt-3 col-lg-10 col-sm-4">
                             <button
                                 id='createPost'
-                                onClick={() => editorRef.current && editorRef.current.setContent('')}
                                 type='button'
-                                className="col-10 primary__btn rounded-5 p-1"
+                                className="col-lg-10 btn-primary rounded-5 p-1 d-sm-flex align-items-center justify-content-center"
                                 data-bs-toggle="modal"
                                 data-bs-target="#postModal">
-                                Post
+                                <span className="d-none d-lg-inline">Post</span>
+                                <i className="fa-solid fa-feather-pointed d-lg-none d-md-block p-2"></i>
                             </button>
                         </li>
                     </ul>
-                    <div className="mb-5 dropdown d-flex justify-content-sm-center justify-content-lg-start col-12">
+                    <div className="mb-5 dropup d-flex justify-content-sm-center justify-content-lg-start col-12">
                         <a href="#" className="d-flex align-items-center dropdown-toggle text-reset" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src={user ? userPfp : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}
                                 alt="user profile picture" width="45" height="45" className="rounded-circle me-2" />
                             <strong className="d-none d-lg-inline">{user ? user.username : 'Guest'}</strong>
                         </a>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="user">
-                            {user !== null && user.role === 'admin' ? (
-                                <li><Link className="dropdown-item" to="/admin">Admin Portal</Link></li>
-                            ) : null}
                             <li><Link className="dropdown-item" to="/account">Dashboard</Link></li>
                             <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                             <li><hr className="dropdown-divider"></hr></li>
@@ -216,13 +174,9 @@ const ForumHeader = ({ children }) => {
                             aria-expanded="false" id="searchHistory" data-bs-toggle="dropdown"
                             onKeyDown={handleSearch}
                             onFocus={() => {
-                                dropdown.show();
                                 setIsFocused(true)
                             }}
                             onBlur={() => {
-                                setTimeout(() => {
-                                    dropdown.hide();
-                                }, 200);
                                 setIsFocused(false)
                             }}
                         />
@@ -266,10 +220,7 @@ const ForumHeader = ({ children }) => {
         </div >
 
         <Editor
-            create={true}
-            onValueChange={handleChildChange}
-            func={createTopic}
-            ref={editorRef}
+            status='post'
         />
     </>;
 };

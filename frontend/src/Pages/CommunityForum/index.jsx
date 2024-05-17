@@ -1,12 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../../utils/UserContext";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import ClipLoader from "react-spinners/ClipLoader";
+import CircularProgress from "../../components/CircularProgress";
 import { getAvatarUrl } from '../../utils/getAvar.js';
-import Post from './components/Post';
 
-const primaryColor = getComputedStyle(document.documentElement)
-    .getPropertyValue('--primary-color').trim();
+import Editor from "./components/Editor";
+import Post from './components/Post';
 
 function CommunityForum() {
     const { user } = useUser();
@@ -46,14 +45,7 @@ function CommunityForum() {
             dataLength={posts.length}
             next={fetchData}
             hasMore={posts.length < length}
-            loader=
-            {<ClipLoader
-                color={primaryColor}
-                loading={true}
-                size={45}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-            />}
+            loader={<CircularProgress />}
         >
             {user ? (
                 <div className="rounded-2 col-md-10 col-lg-6 bg-gray shadow-sm" >
@@ -71,6 +63,10 @@ function CommunityForum() {
                 return <Post key={post._id} post={post} />
             })}
         </InfiniteScroll>
+
+        <Editor
+            status='reply'
+        />
     </>
 };
 
