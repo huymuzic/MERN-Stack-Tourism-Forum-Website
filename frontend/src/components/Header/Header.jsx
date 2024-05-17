@@ -211,16 +211,16 @@ const Header = () => {
         ) : (
           <div className="nav__right d-flex align-items-center gap-4">
             <div className="nav__btns d-flex align-items-center gap-4">
-              <Button className="secondary__btn normal__pad">
-                <Link to="/login" onClick={handleNavItemClick}>
+              <Link to="/login" onClick={handleNavItemClick}>
+                <Button className="secondary__btn big__pad btn-secondary">
                   Login
-                </Link>
-              </Button>
-              <Button className="primary__btn big__pad">
-                <Link to="/register" onClick={handleNavItemClick}>
+                </Button>
+              </Link>
+              <Link to="/register" onClick={handleNavItemClick}>
+                <Button className="primary__btn big__pad btn-primary">
                   Register
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
         )}

@@ -8,7 +8,6 @@ import "./index.css";
 
 import CircularProgress from "../../components/CircularProgress";
 import ForumHeader from "../ForumHeader/ForumHeader";
-import CookieBanner from "../../Pages/Home/components/CookieBanner/index.jsx";
 
 const Layout = ({ isLoading }) => {
   const location = useLocation();
@@ -22,7 +21,6 @@ const Layout = ({ isLoading }) => {
     return (
       <ForumHeader>
         <Routers />
-        <CookieBanner />
       </ForumHeader>
     );
   }
@@ -37,7 +35,6 @@ const Layout = ({ isLoading }) => {
       <Header />
       <Routers />
       <Footer />
-      <CookieBanner />
     </>
   );
 };
