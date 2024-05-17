@@ -29,7 +29,6 @@ section {
   padding: 50px 0px;
 }
 
-p,
 h1,
 h2,
 h3,
@@ -37,7 +36,6 @@ h4,
 h5,
 h6 {
   color: var(--heading-color);
-  margin: 0;
 }
 
 a {
@@ -183,12 +181,10 @@ tr th {
 .body-1 {
   font-size: 14px !important;
   font-weight: 400 !important;
-  margin: 0!important;
 }
 
 .body-2 {
   font-size: 12px !important;
-  margin: 0!important;
 }
 
 .text-prime {
