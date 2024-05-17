@@ -17,7 +17,7 @@ const Destination = ({ item }) => {
   return (
     <>
       <div>
-        <a>
+        <a  tabindex="0">
           <div
             className="containerz"
             onMouseEnter={handleMouseEnter}
