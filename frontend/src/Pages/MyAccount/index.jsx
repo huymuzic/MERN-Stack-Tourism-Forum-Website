@@ -226,7 +226,7 @@ export default function MyAccount() {
     }, [user]);
 
     return (
-        <Container className='m-5' style={{ padding: "40px", border: "1px solid #ddd", borderRadius: "8px", textAlign: "center" }}>
+        <div className='m-5' style={{ padding: "40px", border: "1px solid #ddd", borderRadius: "8px", textAlign: "center" }}>
             {loading ? <CircularProgress /> :
                 <>
                     <Row className="mb-2 max-width-500 mx-auto">
@@ -325,7 +325,7 @@ export default function MyAccount() {
                     </Row>
                 </>
             }
-        </Container>
+        </div>
     );
 }
 const UserStatusDot = ({ status }) => {
