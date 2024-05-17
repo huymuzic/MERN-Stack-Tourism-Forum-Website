@@ -74,10 +74,8 @@ export default function UserItem({
         <>
           <div className="d-flex">
            { user.status != "locked" && <div className="me-2">
-            <Stack direction='horizontal' gap={2} className="mb-4 max-width-500 mx-auto" style={{ justifyContent: "center" }}>
-                        <UserStatusDot
-                            status={user.status}
-                        />
+            <Stack direction='horizontal' gap={3} className="mb-4 max-width-500 mx-auto" style={{ justifyContent: "center" }}>
+                        <p className = "d-flex justify-content-center">{userStatus.Name}</p>
                         <CustomTooltip text={user.status == "active" ? "Deactive" : "Activate"}>
                             <Form >
                                 <Form.Check
@@ -94,7 +92,7 @@ export default function UserItem({
                             title="Unlock User Confirmation"
                             desc={`Are you sure you want to unlock the user ${user.username}?`}
                         />
-                    </Stack>
+                </Stack>
 
             </div> }
             <div>
@@ -232,8 +230,7 @@ UserStatusBox.propTypes = {
 const UserStatusDot = ({ status }) => {
   const userStatus = userStatuses.find((item) => item.Value === status);
   return (
-      <Stack direction='horizontal' gap={2}>
-          <div style={{ width: "12px", height: "12px", borderRadius: "100%", backgroundColor: userStatus?.color }}></div>
+      <Stack direction='' gap={3}>
           <p>{userStatus.Name}</p>
       </Stack>
   );
