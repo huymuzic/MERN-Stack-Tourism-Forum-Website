@@ -43,7 +43,7 @@ export default function MyAccount() {
 
     const handleActivateConfirm = async () => {
         try {
-            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${user._id}`);
+            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/inactive/${user._id}`);
             const response = await fetch(url, {
                 method: 'PUT',
                 credentials: 'include',
@@ -65,7 +65,7 @@ export default function MyAccount() {
 
     const handleDeactivateConfirm = async () => {
         try {
-            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${user._id}`);
+            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/active/${user._id}`);
             const response = await fetch(url, {
                 method: 'PUT',
                 credentials: 'include',
@@ -179,7 +179,7 @@ export default function MyAccount() {
     }, [user]);
 
     return (
-        <Container className='m-5' style={{ padding: "40px", border: "1px solid #ddd", borderRadius: "8px", textAlign: "center" }}>
+        <div className='m-5' style={{ padding: "40px", border: "1px solid #ddd", borderRadius: "8px", textAlign: "center" }}>
             {loading ? <CircularProgress /> :
                 <>
                     <Row className="mb-2 max-width-500 mx-auto">
@@ -269,7 +269,7 @@ export default function MyAccount() {
                     </Row>
                 </>
             }
-        </Container>
+        </div>
     );
 }
 const UserStatusDot = ({ status }) => {
