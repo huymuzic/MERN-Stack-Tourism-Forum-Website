@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { FaLock, FaUnlock, FaBan  } from "react-icons/fa";
+import { FaLock, FaUnlock, FaBan } from "react-icons/fa";
 import { MdBlock, MdOutlineLockOpen } from 'react-icons/md';
 import CustomToolTip from "../../../../components/CustomTooltip";
 import { usePopUp } from "../../../../components/pop-up/usePopup";
 import PopUpBase from "../../../../components/pop-up/PopUpBase";
+import color from "../../../../theme/Color";
 
 export default function UserItem({
   user,
@@ -21,19 +22,19 @@ export default function UserItem({
 
   const handleButtonClick = () => {
     if (user.status === "inactive") {
-        popUpActive.setTrue();
-    }  
+      popUpActive.setTrue();
+    }
     else {
-        popUpInactive.setTrue();
+      popUpInactive.setTrue();
     }
   };
 
   const handleClockClick = () => {
     if (user.status === "locked") {
-        popUpUnLock.setTrue();
-      } else {
-        popUpLock.setTrue();
-      }
+      popUpUnLock.setTrue();
+    } else {
+      popUpLock.setTrue();
+    }
   }
 
   const onInactiveConfirm = async () => {
@@ -56,111 +57,111 @@ export default function UserItem({
   return (
     <div className="card mb-3">
       <div className="card-body">
-      <div className="d-flex justify-content-between align-items-center">
-      <div className="d-flex flex-row align-items-center">
-        <Link
-          to={`/profile/${user._id}`}
-          style={{
-            textDecoration: 'none',
-            display: 'flex',
-            alignItems: 'flex-end',
-          }}
-        >
-          <h5
-            className="card-title"
-            style={{ cursor: 'pointer', margin: 0 }}
-          >
-            {user.username}
-          </h5>
-        </Link>
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-row align-items-center">
+            <Link
+              to={`/profile/${user._id}`}
+              style={{
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'flex-end',
+              }}
+            >
+              <h5
+                className="card-title"
+                style={{ cursor: 'pointer', margin: 0 }}
+              >
+                {user.username}
+              </h5>
+            </Link>
 
-        <div className="ms-3">
-          <UserStatusBox status={user.status} />
-        </div>
-      </div>
-      {user.role !== 'admin' && (
-        <>
-          <div className="d-flex">
-            <div className="me-2">
-              {user.status === 'inactive' ? (
-                <>
-                  <CustomToolTip text="Activate user" position={'top'}>
-                    <button
-                      className="btn btn-sm btn-outline-warning"
-                      onClick={handleButtonClick}
-                    >
-                      <MdBlock color="inherit" size={14} />
-                    </button>
-                  </CustomToolTip>
-                  <PopUpBase
-                    {...popUpActive}
-                    onConfirm={onActiveConfirm}
-                    title="Activate User Confirmation"
-                    desc={`Are you sure you want to activate the user ${user.username}?`}
-                  />
-                </>
-              ) : (
-                <>
-                  <CustomToolTip text="Deactivate user" position={'top'}>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={handleButtonClick}
-                      data-tip="Deactivate User"
-                    >
-                      <MdOutlineLockOpen color="inherit" size={14} />
-                    </button>
-                  </CustomToolTip>
-                  <PopUpBase
-                    {...popUpInactive}
-                    onConfirm={onInactiveConfirm}
-                    title="Deactivate User Confirmation"
-                    desc={`Are you sure you want to deactivate the user ${user.username}?`}
-                  />
-                </>
-              )}
-            </div>
-            <div>
-              {user.status === 'locked' ? (
-                <>
-                  <CustomToolTip text="Unlock user" position={'top'}>
-                    <button
-                      className="btn btn-sm btn-outline-warning"
-                      onClick={handleClockClick}
-                    >
-                      <FaLock color="inherit" size={14} />
-                    </button>
-                  </CustomToolTip>
-                  <PopUpBase
-                    {...popUpUnLock}
-                    onConfirm={onUnLockConfirm}
-                    title="Unlock User Confirmation"
-                    desc={`Are you sure you want to unlock the user ${user.username}?`}
-                  />
-                </>
-              ) : (
-                <>
-                  <CustomToolTip text="Lock user" position={'top'}>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={handleClockClick}
-                      data-tip="Lock User"
-                    >
-                      <FaUnlock color="inherit" size={14} />
-                    </button>
-                  </CustomToolTip>
-                  <PopUpBase
-                    {...popUpLock}
-                    onConfirm={onLockConfirm}
-                    title="Lock User Confirmation"
-                    desc={`Are you sure you want to lock the user ${user.username}?`}
-                  />
-                </>
-              )}
+            <div className="ms-3">
+              <UserStatusBox status={user.status} />
             </div>
           </div>
-        </>
-      )}
-    </div>
+          {user.role !== 'admin' && (
+            <>
+              <div className="d-flex">
+                <div className="me-2">
+                  {user.status === 'inactive' ? (
+                    <>
+                      <CustomToolTip text="Activate user" position={'top'}>
+                        <button
+                          className="btn btn-sm btn-outline-warning"
+                          onClick={handleButtonClick}
+                        >
+                          <MdBlock color="inherit" size={14} />
+                        </button>
+                      </CustomToolTip>
+                      <PopUpBase
+                        {...popUpActive}
+                        onConfirm={onActiveConfirm}
+                        title="Activate User Confirmation"
+                        desc={`Are you sure you want to activate the user ${user.username}?`}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <CustomToolTip text="Deactivate user" position={'top'}>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={handleButtonClick}
+                          data-tip="Deactivate User"
+                        >
+                          <MdOutlineLockOpen color="inherit" size={14} />
+                        </button>
+                      </CustomToolTip>
+                      <PopUpBase
+                        {...popUpInactive}
+                        onConfirm={onInactiveConfirm}
+                        title="Deactivate User Confirmation"
+                        desc={`Are you sure you want to deactivate the user ${user.username}?`}
+                      />
+                    </>
+                  )}
+                </div>
+                <div>
+                  {user.status === 'locked' ? (
+                    <>
+                      <CustomToolTip text="Unlock user" position={'top'}>
+                        <button
+                          className="btn btn-sm btn-outline-warning"
+                          onClick={handleClockClick}
+                        >
+                          <FaLock color="inherit" size={14} />
+                        </button>
+                      </CustomToolTip>
+                      <PopUpBase
+                        {...popUpUnLock}
+                        onConfirm={onUnLockConfirm}
+                        title="Unlock User Confirmation"
+                        desc={`Are you sure you want to unlock the user ${user.username}?`}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <CustomToolTip text="Lock user" position={'top'}>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={handleClockClick}
+                          data-tip="Lock User"
+                        >
+                          <FaUnlock color="inherit" size={14} />
+                        </button>
+                      </CustomToolTip>
+                      <PopUpBase
+                        {...popUpLock}
+                        onConfirm={onLockConfirm}
+                        title="Lock User Confirmation"
+                        desc={`Are you sure you want to lock the user ${user.username}?`}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
         <hr />
         <div className="d-flex flex-row">
           <p className="card-text me-3 mb-0">
@@ -214,17 +215,17 @@ export const userStatuses = [
     Id: 1,
     Value: "active",
     Name: "Active",
-    bgColor: "#C8E6C9",
-    color: "green",
+    bgColor: color.successLight,
+    color: color.success,
   },
   {
     Id: 2,
     Value: "inactive",
     Name: "Inactive",
-    bgColor: "#F5F5F5",
-    color: "grey",
+    bgColor: color.warningLight,
+    color: color.warning,
   },
-  { Id: 3, Value: "locked", Name: "Locked", bgColor: "#FF0000", color: "black" },
+  { Id: 3, Value: "locked", Name: "Disabled", bgColor: color.grey200, color: color.grey400 },
 ];
 
 export const userRoles = [

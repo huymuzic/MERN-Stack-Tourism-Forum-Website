@@ -66,7 +66,7 @@ nav button:focus-visible {
     margin-bottom: .4rem;
 }
 
-.nav__item a {
+/* .nav__item a {
     color: var(--heading-color);
 }
 
@@ -76,7 +76,7 @@ nav button:focus-visible {
 
 .nav__item a.active__link {
     color: var(--light-secondary-color) !important;
-}
+} */
 
 .nav__link {
     cursor: pointer;
