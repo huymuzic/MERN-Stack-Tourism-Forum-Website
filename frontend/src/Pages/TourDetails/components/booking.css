@@ -125,10 +125,6 @@
     font-size: 1.1rem !important;
 }
 
-.btn {
-    padding: 0 !important;
-}
-
 .book__btn:hover {
     background-color: var(--dark-primary-color) !important; 
 }

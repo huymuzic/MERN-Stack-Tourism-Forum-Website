@@ -1,11 +1,16 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import formatDate from './components/DateFormat';
 import { useUser } from '../../utils/UserContext';
 import Editor from "./components/Editor";
 import Reply from "./components/Reply";
 import { Link } from 'react-router-dom';
+import CircularProgress from "../../components/CircularProgress";
 import { getAvatarUrl } from '../../utils/getAvar.js';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { handleLike, populateImages } from './components/ApiCalls.jsx';
+
+import { Navigation } from 'swiper/modules';
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -25,13 +30,10 @@ function Post() {
 
     const [post, setPost] = useState([]);
     const [target, setTarget] = useState([]);
-    const [activePost, setActivePost] = useState([]);
     const [path, setPath] = useState([]);
 
     const nav = useNavigate();
-    const { user, setUser } = useUser();
-
-    const editorRef = useRef(null);
+    const { user } = useUser();
 
     function findPath(root, target, path) {
         const tempPath = path || []
@@ -44,71 +46,13 @@ function Post() {
         }
     }
 
-    async function replyTopic() {
-        const content = editorRef.current.getContent();
-        const token = localStorage.getItem('accessToken');
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}/reply`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    content: content,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to like post');
-            }
-
-            const responseBody = await response.json();
-            setPost(responseBody.post);
-            setUser(responseBody.user);
-            nav(`/forum/p/${id}`)
-            document.getElementById("modalClose").click();
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async function handleLike(postId) {
-        const token = localStorage.getItem('accessToken');
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to like post');
-            }
-
-            const responseBody = await response.json();
-            setPost(responseBody.post);
-            setUser(responseBody.user);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     function renderReplies() {
         if (post._id === target._id && post.childrenIds) {
             return <>
                 {post.childrenIds.map(child => (
                     <Reply
-                        editorRef={editorRef}
+                        key={child._id}
                         child={child}
-                        index={child._id}
-                        handleLike={handleLike}
-                        setActivePost={setActivePost}
                         post={post}
                     />
                 ))}
@@ -118,20 +62,14 @@ function Post() {
                 {path.length > 0 && path.map(child => (
                     <>
                         <Reply
-                            editorRef={editorRef}
+                            key={child._id}
                             child={child}
-                            index={child._id}
-                            handleLike={handleLike}
-                            setActivePost={setActivePost}
                             post={post}
                         />
-                        {target.childrenIds.map(child => (
+                        {child === target && target.childrenIds.map(childx => (
                             <Reply
-                                editorRef={editorRef}
-                                child={child}
-                                index={child._id}
-                                handleLike={handleLike}
-                                setActivePost={setActivePost}
+                                key={childx._id}
+                                child={childx}
                                 post={post}
                             />
                         ))}
@@ -147,9 +85,20 @@ function Post() {
                 const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}`);
                 const data = await response.json();
 
-                setPost(data.root);
-                setTarget(data.post);
-                findPath(data.root, data.post)
+                if (data.root.images && data.root.images.length > 0) {
+                    populateImages(data.root.images).then((images) => {
+                        data.root.images = images;
+                        setPost(data.root);
+                        setTarget(data.post);
+                        findPath(data.root, data.post);
+                    })
+                } else {
+                    setPost(data.root);
+                    setTarget(data.post);
+                    findPath(data.root, data.post);
+                }
+
+
             } catch (error) {
                 nav('/forum')
                 console.error('Error:', error);
@@ -172,13 +121,13 @@ function Post() {
                     <div className='col-8 d-flex border-2 border-bottom pb-3'>
                         <div name='content-area' className='container-xxl d-inline-block'>
                             <div className="d-flex">
-                                <a href='#'>
-                                    <img height='45' width='45' 
-                                        className='rounded-5' 
-                                        alt='profile picture' 
+                                <Link to={`/profile/${post.authorId && post.authorId._id}`}>
+                                    <img height='45' width='45'
+                                        className='rounded-5'
+                                        alt='profile picture'
                                         src={post.authorId ? getAvatarUrl(post.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                                     </img>
-                                </a>
+                                </Link>
 
                                 <div className='d-flex' name='heading'>
                                     <div>
@@ -186,7 +135,7 @@ function Post() {
                                             <>
                                                 <strong className='ms-2'>{post.authorId.username}</strong>
                                                 <span className={`${post.authorId.role === 'admin' ? 'd-inline-block' : 'd-none'} ps-1`}>
-                                                    <i className="fa-sharp fa-solid fa-shield-halved"></i>
+                                                    <i className="fa-solid fa-shield-halved"></i>
                                                 </span>
                                                 <p className='ms-2'>@{post.authorId.username}</p>
                                             </>
@@ -197,9 +146,43 @@ function Post() {
                                 </div>
                             </div>
 
-                            <div name='content'
-                                dangerouslySetInnerHTML={{ __html: post.content }}>
+                            <div name='title'>
+                                <h5>{post.title}</h5>
                             </div>
+
+                            <div name='content' className='pre-wrap'>
+                                {post.content}
+                            </div>
+
+                            {post.images?.length > 0 &&
+                                <Swiper
+                                    style={{ height: '400px' }}
+                                    spaceBetween={30}
+                                    centeredSlides={true}
+                                    navigation={{
+                                        nextEl: ".image-swiper-button-next",
+                                        prevEl: ".image-swiper-button-prev",
+                                        disabledClass: "swiper-button-disabled"
+                                    }}
+                                    modules={[Navigation]}
+                                    className="mySwiper my-3 w-75"
+                                    rewind={true}
+                                >
+                                    {post.images.map((image, index) =>
+                                        <SwiperSlide key={index}>
+                                            {image instanceof Blob ?
+                                                <img src={URL.createObjectURL(image)} alt={`image-${index}`} className='object-fit-cover img-fluid rounded-2' />
+                                                : <CircularProgress />}
+                                        </SwiperSlide>
+                                    )}
+                                    <button type='button' className="ctm-btn swiper-button image-swiper-button-prev position-absolute btn-index top-50 start-0">
+                                        <i className="fa-solid fa-arrow-left text-prime p-2 fs-4" />
+                                    </button>
+                                    <button type='button' className="ctm-btn swiper-button image-swiper-button-next position-absolute btn-index top-50 end-0">
+                                        <i className="fa-solid fa-arrow-right text-prime p-2 fs-4" />
+                                    </button>
+                                </Swiper>
+                            }
 
                             <div name='interaction' className='d-flex justify-content-end gap-2'>
                                 {post.likes ?
@@ -210,19 +193,16 @@ function Post() {
                                     </button>
                                     : <></>}
 
-                                <div className='d-flex align-items-center gap-2 rounded ctm-btn px-3 py-2'>
+                                <div className='d-flex align-items-center gap-2 rounded px-3 py-2'>
                                     <span>{countChildren(post)}</span>
                                     <i className="fa-regular fa-comment"></i>
                                 </div>
 
                                 <button
                                     data-bs-toggle="modal"
-                                    data-bs-target="#postModal"
+                                    data-bs-target="#replyModal"
                                     className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                                    onClick={() => {
-                                        editorRef.current.setContent('')
-                                        setActivePost(post)
-                                    }}
+                                    onClick={() => nav(`/forum/p/${post._id}`)}
                                 >
                                     <i className="fa-solid fa-share"></i>
                                     <span>Reply</span>
@@ -242,10 +222,7 @@ function Post() {
             )}
 
             <Editor
-                create={false}
-                post={activePost}
-                func={replyTopic}
-                ref={editorRef}
+                status='reply'
             />
         </article>
     );

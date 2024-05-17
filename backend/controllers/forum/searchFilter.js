@@ -1,19 +1,15 @@
 import Post from "../../models/Post.js"
 
 export async function searchFilter(req, res) {
-    const { title, keyword, category } = req.query;
-    let filter = { parentId: null };
+    const { title, keyword } = req.query;
+    let filter = {};
 
     if (title) {
-        filter.title = { $regex: `^${title}$`, $options: 'i' };
+        filter.title = { $regex: title, $options: 'i' };
     }
 
     if (keyword) {
-        filter.content = { $regex: `^${keyword}$`, $options: 'i' };
-    }
-
-    if (category) {
-        filter.category = category;
+        filter.content = { $regex: keyword, $options: 'i' };
     }
 
     try {
@@ -23,6 +19,8 @@ export async function searchFilter(req, res) {
             .limit(5);
 
         const length = await Post.countDocuments(filter);
+
+        console.log(keyword, posts.length, req.headers.skip)
 
         res.json({posts: posts, length: length});
     } catch(error) {

@@ -28,14 +28,13 @@ const postSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     default: [],
   },
-  category: {
-    type: String,
-    default: null,
-  },
   status: {
     type: String,
     enum: ["archived", "deleted", 'unarchived'],
     default: 'unarchived',
+  },
+  images: {
+    type: [mongoose.Schema.Types.ObjectId],
   },
 }, { timestamps: true });
 

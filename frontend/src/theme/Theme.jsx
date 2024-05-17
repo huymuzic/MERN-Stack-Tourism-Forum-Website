@@ -98,7 +98,6 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = (props) => {
   const { children, customTheme } = props;
   const themeContext = useThemeContext(customTheme);
-  console.log("🚀 ~ ThemeProvider ~ themeContext:", themeContext)
 
   return (
     <ThemeContext.Provider value={themeContext}>

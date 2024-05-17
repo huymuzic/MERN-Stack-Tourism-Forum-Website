@@ -117,28 +117,8 @@ ul {
   color: var(--primary-color) !important;
 }
 
-.category {
-  border-top: 2px solid gray;
-}
-
-.bd-announce {
-  background-color: #E2231A;
-}
-
-.bd-discuss {
-  background-color: #CEE741;
-}
-
 tr th {
   padding-bottom: 10px;
-}
-
-.category-links {
-  color: #0f82af;
-}
-
-.category-date {
-  color: gray;
 }
 
 .truncate {
@@ -204,48 +184,6 @@ tr th {
   height: 12px;
 }
 
-
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0 !important;
-}
-
-h1 {
-  font-size: 40px !important;
-  font-weight: 500 !important;
-}
-
-h2 {
-  font-size: 32px !important;
-  font-weight: 500 !important;
-}
-
-h3 {
-  font-size: 24px !important;
-  font-weight: 500 !important;
-}
-
-h4 {
-  font-size: 20px !important;
-  font-weight: 500 !important;
-}
-
-h5 {
-  font-size: 16px !important;
-  font-weight: 500 !important;
-}
-
-h6 {
-  font-size: 14px !important;
-  font-weight: 500 !important;
-}
-
 .body-1 {
   font-size: 14px !important;
   font-weight: 400 !important;
@@ -255,3 +193,14 @@ h6 {
   font-size: 12px !important;
 }
 
+.text-prime {
+  color: var(--primary-color) !important;
+}
+
+.btn-index {
+  z-index: 1000;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}

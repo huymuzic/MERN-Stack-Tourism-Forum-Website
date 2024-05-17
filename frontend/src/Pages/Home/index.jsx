@@ -26,96 +26,99 @@ const heroImages = [heroImage2, heroImage1, heroImage3, heroImage4];
 const Home = () => {
 
     return <>
-    
-    {/* Hero Section Starts */}
+
+        {/* Hero Section Starts */}
         <Container className='hero__container'>
             <Swiper
                 spaceBetween={30}
                 effect={'fade'}
                 centeredSlides={true}
                 autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-            }}
-            keyboard={{
-            enabled: true,
-            }}            
-            pagination={{
-            clickable: true,
-            }}
-            navigation={true}
-            modules={[EffectFade, Keyboard, Autoplay, Pagination]}
-            className="mySwiper"
+                    delay: 2500,
+                    disableOnInteraction: false,
+                }}
+                keyboard={{
+                    enabled: true,
+                }}
+                pagination={{
+                    clickable: true,
+                }}
+                navigation={{
+                    nextEl: '',
+                    prevEl: '',
+                }}
+                modules={[EffectFade, Keyboard, Autoplay, Pagination]}
+                className="mySwiper"
             >
-            {heroImages.map((image, index) => (
-              <SwiperSlide key={index}>
-                <Container className="custom__container">
-                  <div className="hero__slide p-5">
-                    <h1>Join the conversation with</h1>
-                    <h1>
-                      <span className="highlight">travelers</span> around the world
-                      today
-                    </h1>
-                    <p>
-                      Dive into a world of discovery with our curated selection
-                      of tours designed to immerse you in the beauty of each
-                      destination
-                    </p>
-                    <Button className="primary__btn big__pad"><Link to='/forum'>JOIN NOW</Link></Button>
-                  </div>
-                  <div className='swiper__slide__image'>
-                    <img src={image} alt=""/>
-                  </div>
-                </Container>
-              </SwiperSlide>
-            ))}
-            </Swiper>            
+                {heroImages.map((image, index) => (
+                    <SwiperSlide key={index}>
+                        <Container className="custom__container">
+                            <div className="hero__slide p-5">
+                                <h1>Join the conversation with</h1>
+                                <h1>
+                                    <span className="highlight">travelers</span> around the world
+                                    today
+                                </h1>
+                                <p>
+                                    Dive into a world of discovery with our curated selection
+                                    of tours designed to immerse you in the beauty of each
+                                    destination
+                                </p>
+                                <Button className="primary__btn big__pad"><Link to='/forum'>JOIN NOW</Link></Button>
+                            </div>
+                            <div className='swiper__slide__image'>
+                                <img src={image} alt="" />
+                            </div>
+                        </Container>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
         </Container>
-    {/* Hero Section Ends */}
-    
-    {/*SERVICES SECTION STARTS */}
-    <section id = "a">
-        <Container>
-            <Row>
-                <Col lg='3'>
-                    <h5 className="services__subtitle">What we serve</h5>
-                    <h2 className= "services__title">We offer our best services</h2>
-                </Col>
-                <ServiceList />
-            </Row>
-        </Container>
-    </section>
-    {/* SERVICES SECTION ENDS */}
+        {/* Hero Section Ends */}
 
-    {/* FEATURED TOUR SECTION STARTS*/}
-    <section>
-        <Container>
-            <Row>
-                <Col lg='12' className='mb-5'>
-                    <Subtitle subtitle={'Explore'} />
-                    <h2 className='featured__tour-title'>Our featured tours</h2>
-                </Col>
-                <FeaturedTourList />
-            </Row>
-        </Container>
-    </section>
-    {/* FEATURED TOUR SECTION ENDS*/}
+        {/*SERVICES SECTION STARTS */}
+        <section id="a">
+            <Container>
+                <Row>
+                    <Col lg='3'>
+                        <h5 className="services__subtitle">What we serve</h5>
+                        <h2 className="services__title">We offer our best services</h2>
+                    </Col>
+                    <ServiceList />
+                </Row>
+            </Container>
+        </section>
+        {/* SERVICES SECTION ENDS */}
 
-    {/* TOUR DESTINATIONS SECTION STARTS */}
-    <section>
-        <Container>
-            <Row>
-                <Col lg='12'>
-                    <div className='d-flex align-items-center justify-content-center'><h2>Top Destinations</h2></div>
-                </Col>    
-                <div className='container image-container'>            
-                <DestinationList /> 
-                </div>
-            </Row>   
-        </Container>    
-    </section>
-    {/* TOUR DESTINATIONS SECTION ENDS */}
-    <ContactModal />
+        {/* FEATURED TOUR SECTION STARTS*/}
+        <section>
+            <Container>
+                <Row>
+                    <Col lg='12' className='mb-5'>
+                        <Subtitle subtitle={'Explore'} />
+                        <h2 className='featured__tour-title'>Our featured tours</h2>
+                    </Col>
+                    <FeaturedTourList />
+                </Row>
+            </Container>
+        </section>
+        {/* FEATURED TOUR SECTION ENDS*/}
+
+        {/* TOUR DESTINATIONS SECTION STARTS */}
+        <section>
+            <Container>
+                <Row>
+                    <Col lg='12'>
+                        <div className='d-flex align-items-center justify-content-center'><h2>Top Destinations</h2></div>
+                    </Col>
+                    <div className='container image-container'>
+                        <DestinationList />
+                    </div>
+                </Row>
+            </Container>
+        </section>
+        {/* TOUR DESTINATIONS SECTION ENDS */}
+        <ContactModal />
     </>
 };
 
