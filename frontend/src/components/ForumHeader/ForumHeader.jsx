@@ -150,7 +150,7 @@ const ForumHeader = ({ children }) => {
                             <strong className="d-none d-lg-inline">{user ? user.username : 'Guest'}</strong>
                         </a>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="user">
-                            <li><Link className="dropdown-item" to="/account">Dashboard</Link></li>
+                            <li><Link className="dropdown-item" to="/my-account">Dashboard</Link></li>
                             <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                             <li><hr className="dropdown-divider"></hr></li>
                             <li><Link className="dropdown-item" onClick={handleLogout}>Sign out</Link></li>
