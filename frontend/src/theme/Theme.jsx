@@ -185,8 +185,7 @@ function useThemeContext(userId) {
   return {
     theme,
     color,
-    isLoadingTheme,
-    fetchTheme
+    isLoadingTheme
   };
 }
 const ThemeContext = createContext({});

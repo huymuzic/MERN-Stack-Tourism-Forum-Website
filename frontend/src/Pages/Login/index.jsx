@@ -1,6 +1,6 @@
 //modules
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,11 +25,9 @@ function Login() {
   const [callAPI, setCallAPI] = useState(false);
   const { user, setUser } = useUser();
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user]);
+  if (user) {
+    navigate("/");
+  }
 
   const togglePasswordVisibility = (e) => {
     setShowPassword(!showPassword);

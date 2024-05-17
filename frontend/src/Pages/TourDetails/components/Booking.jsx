@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { pushError } from "../../../components/Toast";
-import { useUser } from "../../../utils/UserContext";
 import "./booking.css";
 
 import {
@@ -14,7 +13,6 @@ import {
 
 const Booking = ({ tour, avgRating }) => {
   const navigate = useNavigate();
-  const { user } = useUser();
   const [numPeople, setNumPeople] = useState(1);
   const { price, reviews } = tour;
   const [peopleValue, setPeopleValue] = useState("01");
@@ -22,7 +20,7 @@ const Booking = ({ tour, avgRating }) => {
 
   useEffect(() => {
     setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
-    setTotalPrice(price * numPeople + 10 * numPeople);
+    setTotalPrice(price * numPeople);
   }, [numPeople, price]);
 
   const incrementPeople = () => {
@@ -33,15 +31,14 @@ const Booking = ({ tour, avgRating }) => {
     setNumPeople((prevNumPeople) => Math.max(prevNumPeople - 1, 1));
   };
 
+  const handleBookFormChange = (e) => {};
+
   const handleBookFormSubmit = (e) => {
     e.preventDefault();
-    if (!user) {
-      pushError("Please login to book a tour");
-    }
     const bookTime = document.getElementById("bookTime").value;
 
     if (bookTime.trim() === "") {
-      pushError("Please choose a date");
+      pushError("Date input is empty");
       return;
     }
     navigate("/thank-you");
@@ -64,7 +61,7 @@ const Booking = ({ tour, avgRating }) => {
         <h5>Information</h5>
         <Form className="booking_info-form d-flex flex-column justify-content-center align-items-flex-start p-3 gap-3">
           <div className="booking_first_container">
-            <span tabIndex="0">People</span>
+            <span tabindex="0">People</span>
             <span>
               <i className="fa-duotone fa-user-group"></i>
             </span>
@@ -97,7 +94,12 @@ const Booking = ({ tour, avgRating }) => {
             </span>
           </div>
           <FormGroup className="d-flex align-items-center gap-3">
-            <input type="date" placeholder="" id="bookTime" />
+            <input
+              type="date"
+              placeholder=""
+              id="bookTime"
+              onChange={handleBookFormChange}
+            />
           </FormGroup>
         </Form>
       </div>
@@ -118,12 +120,11 @@ const Booking = ({ tour, avgRating }) => {
           </ListGroupItem>
           <ListGroupItem className="border-0 px-0 total book_form_row">
             <h5>Total</h5>
-            <span> ${totalPrice}</span>
+            <span> ${price * numPeople + 10 * numPeople}</span>
           </ListGroupItem>
         </ListGroup>
 
         <Button
-        variant="primary"
           className="btn primary__btn w-100 mt-4 book__btn normal__pad"
           onClick={handleBookFormSubmit}
         >

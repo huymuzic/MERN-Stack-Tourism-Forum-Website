@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./index.css";
-import { Link, Element, animateScroll as scroll } from "react-scroll";
 import { Container, Row, Col, Form, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import calculateAvgRating from "../../utils/avgRating";
@@ -12,7 +11,8 @@ import useFetch from "../../hooks/useFetch.jsx";
 
 const TourDetails = () => {
   const baseURL = import.meta.env.VITE_BASE_URL;
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+  const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
   const { id } = useParams();
   const reviewMsgRef = useRef("");
   const [tourRating, setTourRating] = useState(null);
@@ -29,13 +29,13 @@ const TourDetails = () => {
   useEffect(() => {
     if (tour && reviews) {
       setReviewsArray(reviews);
+
       setReviewCount(reviews.length);
     }
+    window.scrollTo(0, 0);
   }, [tour, reviews]);
 
-  useEffect(() => {
-    scroll.scrollToTop();
-  }, []);
+  console.log(reviewsArray);
 
   useEffect(() => {
     if (reviewsArray.length > 0) {
@@ -52,10 +52,6 @@ const TourDetails = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const reviewText = reviewMsgRef.current.value;
-    if (!user) {
-      pushError("Please login to submit a review");
-      return;
-    }
     if (!tourRating) {
       pushError("Please rate the tour");
       return;
@@ -94,9 +90,7 @@ const TourDetails = () => {
           <Row>
             <Col lg="8">
               <div className="tour__content">
-                <Element name="section1">
-                  <h2>{title}</h2>
-                </Element>
+                <h2>{title}</h2>
 
                 <div className="d-flex align-items-center gap-2">
                   <span className="tour__rating d-flex align-items-center gap-1">
@@ -223,8 +217,6 @@ const TourDetails = () => {
           </Row>
         </Container>
       </section>
-      {/* Links to sections */}
-      <Link to="section1" smooth={true} duration={500}></Link>
     </>
   );
 };

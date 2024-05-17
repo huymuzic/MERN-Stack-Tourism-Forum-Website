@@ -1,12 +1,8 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
-import { gfs } from "../utils/gridfsconfig.js";
-import {
-  sendOTPEmail,
-  generateAndStoreOTP,
-  checkOTPAndUpdatePassword,
-} from "../utils/otp.js";
-import { getStoredOTP, clearOTP } from "../utils/otpStorage.js";
+import { gfs } from '../utils/gridfsconfig.js';
+import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
+import { getStoredOTP, clearOTP } from '../utils/otpStorage.js';
 import Theme from "../models/Theme.js";
 const saltRounds = 10;
 // create new user
@@ -467,9 +463,7 @@ export const createOrUpdateTheme = async (req, res) => {
 
     let theme;
     if (user.theme) {
-      theme = await Theme.findByIdAndUpdate(user.theme._id, themeData, {
-        new: true,
-      });
+      theme = await Theme.findByIdAndUpdate(user.theme._id, themeData, { new: true });
     } else {
       theme = new Theme(themeData);
       await theme.save();
@@ -484,6 +478,7 @@ export const createOrUpdateTheme = async (req, res) => {
   }
 };
 
+
 // get Theme
 
 export const getTheme = async (req, res) => {
@@ -494,7 +489,7 @@ export const getTheme = async (req, res) => {
   }
 
   try {
-    const user = await User.findById(userId).populate("theme");
+    const user = await User.findById(userId).populate('theme');
 
     if (!user) {
       return res.status(404).json({ error: "User not found." });

@@ -17,23 +17,25 @@ const Destination = ({ item }) => {
   return (
     <>
       <div>
-        <div
-          className="containerz"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <img
-            className="images"
-            src={photo}
-            alt="top-destination"
-            style={{ filter: `brightness(${imageBrightness})` }}
-          />
-          <div className="titleContainer">
-            <div className="topDestinationLink">
-              <strong>{title}</strong>
+        <a  tabindex="0">
+          <div
+            className="containerz"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <img
+              className="images"
+              src={photo}
+              alt="top-destination"
+              style={{ filter: `brightness(${imageBrightness})` }}
+            />
+            <div className="titleContainer">
+              <div className="topDestinationLink">
+                <strong>{title}</strong>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </>
   );

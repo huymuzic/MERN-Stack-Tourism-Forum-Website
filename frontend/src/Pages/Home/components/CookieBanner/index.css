@@ -1,7 +1,6 @@
 .accept__btn {
     width: 6rem !important;
     background-color: var(--primary-color) !important;
-    font-weight: 500 !important;
 }
 
 .deny__btn {

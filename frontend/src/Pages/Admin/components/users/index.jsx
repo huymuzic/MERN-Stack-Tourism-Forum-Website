@@ -233,6 +233,7 @@ export default function UsersList() {
             </select>
             <input
               type="text"
+              tabindex="0"
               className="form-control"
               placeholder="Search"
               aria-label="Search"
@@ -251,6 +252,7 @@ export default function UsersList() {
               getOptionLabel={(o) => o.Name}
               label={"Statuses"}
               value={filter.status}
+              tabindex="0"
               placeholder={"All statuses"}
               onChange={(s) => {
                 handleOnChangeStatus(s);
@@ -263,6 +265,7 @@ export default function UsersList() {
               getOptionLabel={(o) => o.Name}
               label={"Roles"}
               value={filter.role}
+              tabindex="0"
               placeholder={"All roles"}
               onChange={(r) => {
                 handleOnChangeRole(r);
