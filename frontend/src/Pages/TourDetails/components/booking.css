@@ -113,7 +113,9 @@
     align-items: center !important;
     justify-content: space-between !important;
 }
-.book_form_row h5, .book_form_row span {
+
+.book_form_row h5,
+.book_form_row span {
     font-size: 1rem !important;
     font-weight: 500;
     color: var(--heading-color) !important;
@@ -123,14 +125,15 @@
     margin-top: 2rem !important;
 }
 
-.total h5, .total span {
+.total h5,
+.total span {
     color: var(--heading-color) !important;
     font-weight: 700 !important;
     font-size: 1.1rem !important;
 }
 
 .book__btn:hover {
-    background-color: var(--dark-primary-color) !important; 
+    background-color: var(--dark-primary-color) !important;
 }
 
 .normal_pad {

@@ -10,10 +10,10 @@ const color = {
     lightDanger: '#FCE8E5',
 
     success: '#009D4F',
-    successLight: '#009D4F10',
+    successLight: '#E5F5ED',
 
     warning: '#FFB600',
-    warningLight: '#FFB60010',
+    warningLight: '#FFF8E5',
 
     white: '#FFFFFF',
     grey100: '#FAFAFA',
@@ -22,6 +22,11 @@ const color = {
     grey400: '#C5C5C5',
     grey600: '#85858A',
 
+    headerBgColor: "#FFFFFF",
+    headerTextColor: "#0B2727",
+
+    buttonTextColor: "#FFFFFF",
+    buttonHoverColor: "#c46200"
 
 };
 
