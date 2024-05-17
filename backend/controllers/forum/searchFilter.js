@@ -20,8 +20,6 @@ export async function searchFilter(req, res) {
 
         const length = await Post.countDocuments(filter);
 
-        console.log(keyword, posts.length, req.headers.skip)
-
         res.json({posts: posts, length: length});
     } catch(error) {
         console.error(error);
