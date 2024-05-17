@@ -169,7 +169,7 @@ const TourDetails = () => {
                         required
                       ></input>
                       <button
-                        className="btn primary__btn text-white"
+                        className="btn primary__btn btn-primary"
                         type="submit"
                       >
                         Submit

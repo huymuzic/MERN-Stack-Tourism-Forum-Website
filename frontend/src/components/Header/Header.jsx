@@ -24,6 +24,10 @@ const nav__links = [
     path: "/tours",
     display: "Tours",
   },
+  {
+    path: "/admin",
+    display: "Admin Portal",
+  },
 ];
 
 function toggleDropdown() {
@@ -40,10 +44,10 @@ function toggleDropdown() {
 }
 
 const Header = () => {
+  const { color } = useTheme();
   const baseURL = import.meta.env.VITE_BASE_URL;
   const { user, setUser } = useUser();
   const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
-  const { color } = useTheme()
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -112,10 +116,12 @@ const Header = () => {
   });
 
   return (
-    <nav className="header custom__navbar navbar navbar-expand-lg" style={{ backgroundColor: color.headerBgColor }}>
+    <nav
+      className="header custom__navbar navbar navbar-expand-lg"
+      style={{ backgroundColor: color.headerBgColor }}
+    >
       <style>
-        {
-          `
+        {`
           .nav__item a {
             color: ${color.headerTextColor};
           }
@@ -125,8 +131,7 @@ const Header = () => {
           .nav__item a.active__link {
             color: ${color.primary} !important;
         }
-          `
-        }
+          `}
       </style>
       <Container className="header__container bd-gutter">
         {/* NAVIGATION SECTION STARTS */}
@@ -199,16 +204,9 @@ const Header = () => {
               className="dropdown-menu user__icon__dropdown"
               aria-labelledby="user"
             >
-              {user !== null && user.role === "admin" ? (
-                <li>
-                  <Link className="dropdown-item" to="/admin">
-                    Admin Portal
-                  </Link>
-                </li>
-              ) : null}
               <li>
                 <Link className="dropdown-item" to="/my-account">
-                  Dashboard
+                  My Account
                 </Link>
               </li>
               <li>
@@ -229,16 +227,16 @@ const Header = () => {
         ) : (
           <div className="nav__right d-flex align-items-center gap-4">
             <div className="nav__btns d-flex align-items-center gap-4">
-              <Button className="secondary__btn normal__pad">
-                <Link to="/login" onClick={handleNavItemClick}>
+              <Link to="/login" onClick={handleNavItemClick}>
+                <Button className="secondary__btn big__pad btn-secondary">
                   Login
-                </Link>
-              </Button>
-              <Button className="primary__btn big__pad">
-                <Link to="/register" onClick={handleNavItemClick}>
+                </Button>
+              </Link>
+              <Link to="/register" onClick={handleNavItemClick}>
+                <Button className="primary__btn big__pad btn-primary">
                   Register
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
         )}

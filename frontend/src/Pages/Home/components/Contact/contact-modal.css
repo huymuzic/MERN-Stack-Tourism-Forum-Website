@@ -36,8 +36,6 @@ body {
 
 .contact__form button {
     padding: 15px;
-    background: var(--primary-color);
-    color: #fff;
     font-size: 18px;
     border: 0;
     outline: none;

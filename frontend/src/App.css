@@ -71,7 +71,7 @@ ul {
 
 .secondary__btn {
   background: transparent !important;
-  color: var(--heading-color) !important;
+  color: var(--heading-color);
   border: none !important;
   font-weight: 500 !important;
   cursor: pointer;
