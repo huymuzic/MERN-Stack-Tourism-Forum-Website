@@ -5,6 +5,7 @@ import { pushError, pushSuccess } from '../../components/Toast';
 import { getAvatarUrl } from '../../utils/getAvar.js';
 import { Dropdown } from 'bootstrap';
 import Editor from "../../Pages/CommunityForum/components/Editor";
+import { useTheme } from "../../theme/Theme.jsx";
 
 import logo from '../../assets/images/logo.png'
 
@@ -44,6 +45,7 @@ const ForumHeader = ({ children }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);
     const [dropdown, setDropdown] = useState(null);
+    const { color } = useTheme();
 
     useEffect(() => {
         const history = localStorage.getItem('searchHistory');
@@ -118,6 +120,21 @@ const ForumHeader = ({ children }) => {
         <div className='d-flex'>
             <header className="d-flex justify-content-end sticky-top vh-100 col-lg-3 col-sm-2 border-2 border-end">
                 <nav className="d-flex flex-column col-lg-8 col-sm-12 gap-2">
+                    <style>
+                        {
+                            `
+                                .nav a {
+                                    color: ${color.headerTextColor};
+                                }
+                                .nav a:hover {
+                                    color: ${color.primary};
+                                }
+                                .nav a.active {
+                                    color: ${color.primary} !important;
+                                }
+                            `
+                        }
+                    </style>
                     <Link to="/">
                         <img alt='Website Logo' className="img-fluid" height='150' width='150' src={logo} />
                     </Link>
@@ -125,11 +142,12 @@ const ForumHeader = ({ children }) => {
                         {nav_bar.map((item, index) => {
                             if ((item.check && user?.role === 'admin') || (!item.check)) {
                                 return <li key={index} className="nav-item rounded-5 comment col-lg-10 col-sm-4">
-                                <NavLink to={item.to} className='d-sm-flex align-items-center justify-content-sm-center justify-content-lg-start nav-link text-reset fs-5 fs-sm-2' aria-current="page">
-                                    <i className={item.icon} title={item.name}></i>
-                                    <span className="ps-2 d-none d-lg-inline">{item.name}</span>
-                                </NavLink>
-                            </li>}
+                                    <NavLink to={item.to} className='d-sm-flex align-items-center justify-content-sm-center justify-content-lg-start nav-link text-reset fs-5 fs-sm-2' aria-current="page">
+                                        <i className={item.icon} title={item.name}></i>
+                                        <span className="ps-2 d-none d-lg-inline">{item.name}</span>
+                                    </NavLink>
+                                </li>
+                            }
                         })}
                         <li className="mt-3 col-lg-10 col-sm-4">
                             <button
@@ -150,7 +168,7 @@ const ForumHeader = ({ children }) => {
                             <strong className="d-none d-lg-inline">{user ? user.username : 'Guest'}</strong>
                         </a>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="user">
-                            <li><Link className="dropdown-item" to="/account">Dashboard</Link></li>
+                            <li><Link className="dropdown-item" to="/my-account">Dashboard</Link></li>
                             <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                             <li><hr className="dropdown-divider"></hr></li>
                             <li><Link className="dropdown-item" onClick={handleLogout}>Sign out</Link></li>
