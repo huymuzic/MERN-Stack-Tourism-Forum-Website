@@ -3,7 +3,6 @@ import nodemailer from "nodemailer";
 dotenv.config();
 
 export const sendContactForm = async (req, res) => {
-  console.log("form endpoint reached");
   const { fullName, email, phoneNumber, message } = req.body;
   const transporter = nodemailer.createTransport({
     service: "gmail",

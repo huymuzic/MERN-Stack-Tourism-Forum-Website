@@ -128,6 +128,9 @@ export const getTourBySearch = async (req, res) => {
   if (req.query.country) {
     query.country = new RegExp(req.query.country, "i");
   }
+  if (req.query.city) {
+    query.city = new RegExp(req.query.city, "i");
+  }
   if (req.query.duration) {
     query.duration = { $gte: parseInt(req.query.duration) };
   }

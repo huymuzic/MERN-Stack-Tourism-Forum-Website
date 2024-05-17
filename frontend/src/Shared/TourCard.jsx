@@ -5,7 +5,7 @@ import calculateAvgRating from "../utils/avgRating";
 import "./tour-card.css";
 
 const TourCard = ({ tour }) => {
-  const { _id, title, country, price, photo, featured, reviews } = tour;
+  const { _id, title, country, city, price, photo, featured, reviews } = tour;
 
   const { totalRating, avgRating } = calculateAvgRating(reviews);
 
@@ -20,7 +20,7 @@ const TourCard = ({ tour }) => {
         <CardBody>
           <div className="card__top d-flex align-items-center justify-content-between">
             <span className="tour__location d-flex align-items-center gap-1">
-              <i className="ri ri-map-pin-line"></i> {country}
+              <i className="ri ri-map-pin-line"></i> {city}, {country}
             </span>
             <span className="tour__location d-flex align-items-center gap-1">
               <i className="ri ri-star-fill"></i>{" "}
