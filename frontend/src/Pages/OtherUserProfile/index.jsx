@@ -24,16 +24,15 @@ const OtherUserProfile = () => {
   const [activeNav, setActiveNav] = useState("Posts");
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_BASE_URL;
-  const token = localStorage.getItem("accessToken");
-
   const NAV_ITEMS = {
     Posts: UserPosts,
     Favorites: Favorites,
   };
   const ActiveComponent = NAV_ITEMS[activeNav];
-
   const popUpActivate = usePopUp();
   const popUpDeactivate = usePopUp();
+  const popUpLock =  usePopUp();
+  const popUpUnlock = usePopUp();
   useEffect(() => {
     fetchOtherUserInfo();
   }, [id, user]); // Note: Be cautious with including state that changes often as dependencies
@@ -108,7 +107,63 @@ const OtherUserProfile = () => {
     } catch {}
     popUpDeactivate.onClose();
   };
-  const handleDeleteUser = async () => {};
+
+  const onChangeStatus = () => {
+    if (otherUserInfo.status == "locked") {
+      popUpUnlock.setTrue()
+    } else {
+      popUpLock.setTrue()
+    }
+
+}
+  const handleLockConfirm = async () => {
+    try {
+      const url = new URL(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${id}`
+      );
+      const response = await fetch(url, {
+        method: 'PUT',
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushSuccess("Lock user successfully");
+        fetchOtherUserInfo();
+      } else {
+        pushError("Failed to lock user");
+        throw new Error("Failed to lock user");
+      }
+    } catch (error) {
+    }
+
+    popUpLock.onClose()
+  };
+  const handleUnLockConfirm = async () => {
+    try {
+      const url = new URL(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${id}`
+      );
+      const response = await fetch(url, {
+        method: 'PUT',
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushSuccess("Unlock user successfully");
+        fetchOtherUserInfo();
+      } else {
+        pushError("Failed to unlock user");
+        throw new Error("Failed to unlock user");
+      }
+    } catch (error) {
+    }
+   
+    popUpUnlock.onClose()
+  };
   return (
     <Container className="mt-4">
       <Row className="justify-content-center mb-3">
@@ -161,15 +216,18 @@ const OtherUserProfile = () => {
                       <Dropdown.Item onClick={handleToggleStatus}>
                         Toggle Status
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={() => navigate("/account")}>
+                    {user?._id === otherUserInfo._id &&
+                      <Dropdown.Item onClick={() => navigate("/my-account")}>
                         Edit Profile
                       </Dropdown.Item>
+                      }
+                      {user?.role === "admin" &&
                       <Dropdown.Item
-                        onClick={handleDeleteUser}
+                        onClick={onChangeStatus}
                         className="text-danger"
                       >
-                        Delete Account
-                      </Dropdown.Item>
+                        {otherUserInfo.status == "locked"? "Unlock Account" : "Lock Account"}
+                      </Dropdown.Item> }
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
@@ -219,6 +277,18 @@ const OtherUserProfile = () => {
         onConfirm={onDeactivateConfirm}
         title="Deactivate Account"
         desc="Are you sure you want to deactivate this account?"
+      />
+       <PopUpBase
+              {...popUpLock}
+              onConfirm={handleLockConfirm}
+              title="Lock User Confirmation"
+              desc={`Are you sure you want to lock the user ${otherUserInfo.username}?`}
+          />
+        <PopUpBase
+          {...popUpUnlock}
+          onConfirm={handleUnLockConfirm}
+          title="Unlock User Confirmation"
+          desc={`Are you sure you want to unlock the user ${otherUserInfo.username}?`}
       />
     </Container>
   );

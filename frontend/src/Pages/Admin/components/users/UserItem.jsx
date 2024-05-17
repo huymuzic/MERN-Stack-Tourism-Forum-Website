@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { FaLock, FaUnlock, FaBan  } from "react-icons/fa";
-import { MdBlock, MdOutlineLockOpen } from 'react-icons/md';
 import CustomToolTip from "../../../../components/CustomTooltip";
 import { usePopUp } from "../../../../components/pop-up/usePopup";
 import PopUpBase from "../../../../components/pop-up/PopUpBase";
+import { Form, Stack } from 'react-bootstrap';
+import CustomTooltip from '../../../../components/CustomTooltip';
 
 export default function UserItem({
   user,
@@ -14,20 +15,20 @@ export default function UserItem({
   handleInactiveCofirm,
   handleActiveConfirm
 }) {
-  const popUpInactive = usePopUp();
   const popUpLock = usePopUp();
   const popUpUnLock = usePopUp();
   const popUpActive = usePopUp();
+  const userStatus = userStatuses.find((item) => item.Value === user.status)
 
-  const handleButtonClick = () => {
-    if (user.status === "inactive") {
-        popUpActive.setTrue();
-    }  
-    else {
-        popUpInactive.setTrue();
+  const onChangeStatus = () => {
+    popUpActive.onClose()
+    if (user.status == "active") {
+        return handleInactiveCofirm(user._id)
+    } else {
+        return handleActiveConfirm(user._id)
     }
-  };
 
+}
   const handleClockClick = () => {
     if (user.status === "locked") {
         popUpUnLock.setTrue();
@@ -35,15 +36,6 @@ export default function UserItem({
         popUpLock.setTrue();
       }
   }
-
-  const onInactiveConfirm = async () => {
-    popUpInactive.onClose();
-    handleInactiveCofirm(user._id);
-  };
-  const onActiveConfirm = async () => {
-    popUpActive.onClose();
-    handleActiveConfirm(user._id);
-  };
   const onUnLockConfirm = async () => {
     popUpUnLock.onClose();
     handleUnLockConfirm(user._id);
@@ -81,44 +73,30 @@ export default function UserItem({
       {user.role !== 'admin' && (
         <>
           <div className="d-flex">
-            <div className="me-2">
-              {user.status === 'inactive' ? (
-                <>
-                  <CustomToolTip text="Activate user" position={'top'}>
-                    <button
-                      className="btn btn-sm btn-outline-warning"
-                      onClick={handleButtonClick}
-                    >
-                      <MdBlock color="inherit" size={14} />
-                    </button>
-                  </CustomToolTip>
-                  <PopUpBase
-                    {...popUpActive}
-                    onConfirm={onActiveConfirm}
-                    title="Activate User Confirmation"
-                    desc={`Are you sure you want to activate the user ${user.username}?`}
-                  />
-                </>
-              ) : (
-                <>
-                  <CustomToolTip text="Deactivate user" position={'top'}>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={handleButtonClick}
-                      data-tip="Deactivate User"
-                    >
-                      <MdOutlineLockOpen color="inherit" size={14} />
-                    </button>
-                  </CustomToolTip>
-                  <PopUpBase
-                    {...popUpInactive}
-                    onConfirm={onInactiveConfirm}
-                    title="Deactivate User Confirmation"
-                    desc={`Are you sure you want to deactivate the user ${user.username}?`}
-                  />
-                </>
-              )}
-            </div>
+           { user.status != "locked" && <div className="me-2">
+            <Stack direction='horizontal' gap={2} className="mb-4 max-width-500 mx-auto" style={{ justifyContent: "center" }}>
+                        <UserStatusDot
+                            status={user.status}
+                        />
+                        <CustomTooltip text={user.status == "active" ? "Deactive" : "Activate"}>
+                            <Form >
+                                <Form.Check
+                                    type="switch"
+                                    id="custom-switch"
+                                    checked={userStatus.Value == "active" ? true : false}
+                                    onClick={() => popUpActive.setTrue()}
+                                />
+                            </Form>
+                        </CustomTooltip>
+                        <PopUpBase
+                            {...popUpActive}
+                            onConfirm={onChangeStatus}
+                            title="Unlock User Confirmation"
+                            desc={`Are you sure you want to unlock the user ${user.username}?`}
+                        />
+                    </Stack>
+
+            </div> }
             <div>
               {user.status === 'locked' ? (
                 <>
@@ -250,4 +228,13 @@ const getUserRoleName = (role) => {
 };
 UserStatusBox.propTypes = {
   status: PropTypes.string.isRequired,
+};
+const UserStatusDot = ({ status }) => {
+  const userStatus = userStatuses.find((item) => item.Value === status);
+  return (
+      <Stack direction='horizontal' gap={2}>
+          <div style={{ width: "12px", height: "12px", borderRadius: "100%", backgroundColor: userStatus?.color }}></div>
+          <p>{userStatus.Name}</p>
+      </Stack>
+  );
 };
