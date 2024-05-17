@@ -17,3 +17,18 @@
     background-color: var(--secondary-color);
     color: #fff;
 }
+
+.tours__loading {
+    position: absolute;
+    top: 78%;
+    left: 4%;
+    height: 100%;
+    width: 90vw !important;
+    padding: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    z-index: 1000;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}

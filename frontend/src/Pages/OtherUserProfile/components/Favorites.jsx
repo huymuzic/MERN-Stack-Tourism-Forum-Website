@@ -2,109 +2,165 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
-import { useUser } from '../../../utils/UserContext';
-
+import { useUser } from "../../../utils/UserContext";
+import { pushError, pushSuccess } from "../../../components/Toast";
 function Favorites() {
+  const [favoritePosts, setFavoritePosts] = useState([]);
+  const { user, setUser } = useUser();
+  const { id } = useParams();
+  const token = localStorage.getItem("accessToken");
+  const baseURL = import.meta.env.VITE_BASE_URL;
+  const fetchFavoritePostsByUser = async (userId) => {
+    try {
+      const response = await fetch(
+        `${baseURL}/api/v1/posts/favorites/${userId}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = await response.json();
+      if (response.ok) {
+        if (userId === id) {
+          // Return all posts if it's the user's own favorites
+          return result;
+        } else {
+          // Filter results to include only posts with 'unarchived' status for others
+          const filteredPosts = result.filter(
+            (post) => post.status === "unarchived"
+          );
+          return filteredPosts;
+        }
+      } else {
+        throw new Error(result.message || "Failed to fetch favorite posts");
+      }
+    } catch (error) {
+      console.error("Fetch favorite posts error:", error);
+      return [];
+    }
+  };
 
-    const [favoritePosts, setFavoritePosts] = useState([]);
-    const { user,setUser } = useUser();
-    const { id } = useParams();
-    const baseURL = import.meta.env.VITE_BASE_URL
-    const fetchFavoritePostsByUser = async (userId) => {
+  const toggleLike = async (
+    postId,
+    userId,
+    setUserPosts = null,
+    setFavoritePosts = null
+  ) => {
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        const { post, favoritePosts, favorPostIds } = result;
 
-        const token = localStorage.getItem('accessToken');
+        if (setUserPosts) {
+          setUserPosts((prev) =>
+            prev.map((p) => (p._id === postId ? post : p))
+          );
+        }
 
-        try {
-            const response = await fetch(`${baseURL}/api/v1/posts/favorites/${userId}`, {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const result = await response.json();
-            if (response.ok) {
-                return result;
-            } else {
-                throw new Error(result.message || 'Failed to fetch favorite posts');
-            }
-        } catch (error) {
-            console.error('Fetch favorite posts error:', error);
-            return [];
-        } 
-    };
-
-        const toggleLike = async (postId, userId, setUserPosts = null, setFavoritePosts = null) => {
-
-        const token = localStorage.getItem('accessToken');
-
-        try {
-            const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ userId })
-            });
-            const result = await response.json();
-            if (response.ok) {
-                const { post, favoritePosts, userLikes } = result;
-
-                if (setUserPosts) {
-                    setUserPosts((prev) =>
-                        prev.map((p) => (p._id === postId ? post : p))
-                    );
-                }
-
-                if (setFavoritePosts) {
-                    setFavoritePosts(favoritePosts);
-                }
-
-                // Update logged-in user's likes
-                updateUserLikes(userLikes);
-
-                console.log('Toggled like:', post, 'Favorite Posts:', favoritePosts);
-            } else {
-                throw new Error(result.message || 'Failed to toggle like');
-            }
-        } catch (error) {
-            console.error('Toggle like error:', error);
-            setError(error.toString());
-        } 
-    };
-
-    const updateUserLikes = (likes) => {
-        setUser((prev) => ({
-            ...prev,
-            likes,
-        }));
-    };
-
-    const handleToggleLike = (postId) => {
-        toggleLike(postId, user._id , null, setFavoritePosts); // Update favorite posts after toggling like
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const posts = await fetchFavoritePostsByUser(id); // Replace USER_ID with actual user ID
-            setFavoritePosts(posts);
-        };
+        if (setFavoritePosts) {
+          setFavoritePosts(favoritePosts);
+        }
+        // Update logged-in user's likes
+        updateUserLikes(favorPostIds);
+        if (favorPostIds.indexOf(postId) != -1) {
+          pushSuccess("You successfully like this post!");
+        } else {
+          pushError("You successfully unlike this post!");
+        }
+      } else {
+        throw new Error(result.message || "Failed to toggle like");
+      }
+    } catch (error) {
+      console.error("Toggle like error:", error);
+      setError(error.toString());
+    }
+  };
+  const handleLockConfirm = async (userId) => {
+    try {
+      const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushError("Hide post successfully");
         fetchData();
-    }, []);
+      } else {
+        pushError("Failed to hide post");
+        throw new Error("Failed to lock user");
+      }
+    } catch (error) {}
+  };
 
-    return (
-        <div>
-            {favoritePosts.length ? (
-                favoritePosts.map((post) => <PostCard key={post._id} post={post} onToggleLike={handleToggleLike} />)
-            ) : (
-                <p>No favorite posts available</p>
-            )}
-        </div>
-    );
+  const handleUnLockConfirm = async (userId) => {
+    try {
+      const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushSuccess("Unhide post successfully");
+        fetchData();
+      } else {
+        pushError("Failed to unhide post");
+        throw new Error("Failed to unlock user");
+      }
+    } catch (error) {}
+  };
+  const updateUserLikes = (likes) => {
+    setUser((prev) => ({
+      ...prev,
+      likes,
+    }));
+  };
+
+  const handleToggleLike = (postId) => {
+    toggleLike(postId, user._id, null, null); // Update favorite posts after toggling like
+  };
+  const fetchData = async () => {
+    const posts = await fetchFavoritePostsByUser(id);
+    setFavoritePosts(posts);
+  };
+  useEffect(() => {
+    fetchData();
+  }, [user, id]);
+
+  return (
+    <div>
+      {favoritePosts.length ? (
+        favoritePosts.map((post) => (
+          <PostCard
+            key={post._id}
+            post={post}
+            onToggleLike={handleToggleLike}
+            handleLockConfirm={(id) => handleLockConfirm(id)}
+            handleUnLockConfirm={(id) => handleUnLockConfirm(id)}
+          />
+        ))
+      ) : (
+        <p>No favorite posts available</p>
+      )}
+    </div>
+  );
 }
 
 export default Favorites;
-
-
-

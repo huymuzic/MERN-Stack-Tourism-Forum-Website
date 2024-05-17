@@ -10,25 +10,28 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import { UserProvider } from './utils/UserContext';
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './theme/Theme.jsx';
+import FocusManager from './utils/mouseless.jsx'
 //import { ToastConfig } from './components/Toast/ToastConfig.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
+      {/* <ThemeProvider> */}
         <UserProvider>
-          <App />
-          <ToastContainer
-            autoClose={3000}
-            hideProgressBar
-            closeButton={false}
-            position={'bottom-left'}
-            newestOnTop
-            pauseOnFocusLoss={false}
-            style={{ fontFamily: 'inherit' }}
-          />
+          <FocusManager>
+            <App />
+            <ToastContainer
+              autoClose={3000}
+              hideProgressBar
+              closeButton={false}
+              position={'bottom-left'}
+              newestOnTop
+              pauseOnFocusLoss={false}
+              style={{ fontFamily: 'inherit' }}
+            />
+          </FocusManager>
         </UserProvider>
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </BrowserRouter>
   </React.StrictMode>,
 )

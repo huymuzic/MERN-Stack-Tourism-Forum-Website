@@ -39,10 +39,15 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["active", "inactive"],
+      enum: ["active", "inactive","locked"],
       default: "active",
       required: true,
     },
+    theme: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Theme",
+      default: null,
+    }
   },
   { timestamps: true }
 );

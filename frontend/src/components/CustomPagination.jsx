@@ -1,6 +1,10 @@
 import PropTypes from "prop-types";
 import { useTheme } from "../theme/Theme";
 
+function scrollToTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+}
+
 const CustomPagination = ({ totalPages, currentPage, onChange }) => {
   const { color } = useTheme()
   const getPageNumbers = () => {
@@ -36,6 +40,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
     if (page === "..." || page === currentPage) {
       return;
     }
+    scrollToTop()
     onChange(page);
   };
 
@@ -51,8 +56,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           cursor: currentPage === 1 ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}
-        onClick={() => handlePageChange(1)}
-        disabled={currentPage === 1}
+        onClick={() => currentPage === 1 ? null : handlePageChange(1)}
       >
         {"<<"}
       </button>
@@ -66,8 +70,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           cursor: currentPage === 1 ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
+        onClick={() => currentPage === 1 ? null : handlePageChange(currentPage - 1)}
       >
         {"<"}
       </button>
@@ -99,7 +102,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           cursor: currentPage === totalPages ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}
-        onClick={() => handlePageChange(currentPage + 1)}
+        onClick={() => currentPage === totalPages ? null : handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         {">"}
@@ -114,7 +117,7 @@ const CustomPagination = ({ totalPages, currentPage, onChange }) => {
           cursor: currentPage === totalPages ? "not-allowed" : "pointer",
           border: "1px solid #ddd",
         }}
-        onClick={() => handlePageChange(totalPages)}
+        onClick={() => currentPage === totalPages ? null : handlePageChange(totalPages)}
         disabled={currentPage === totalPages}
       >
         {">>"}

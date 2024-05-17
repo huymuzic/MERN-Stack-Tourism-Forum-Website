@@ -1,13 +1,16 @@
 import { createContext, useState, useContext } from 'react';
+import { ThemeProvider } from '../theme/Theme';
 
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-   
+
     return (
         <UserContext.Provider value={{ user, setUser }}>
-            {children}
+            <ThemeProvider userId={user?._id}>
+                {children}
+            </ThemeProvider>
         </UserContext.Provider>
     );
 }

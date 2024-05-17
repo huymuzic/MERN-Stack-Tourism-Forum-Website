@@ -1,9 +1,10 @@
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 import User from "../models/user.js";
 
 export const verifyToken = async (req, res, next) => {
   const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1];
+    req.cookies.accessToken ||
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   if (!token) {
     return res.status(401).json({
       success: false,
@@ -21,24 +22,28 @@ export const verifyToken = async (req, res, next) => {
         }
       });
     });
+    const rememberMe = decoded.exp ? true : false;
     // Fetch the user object from the database based on the decoded user ID
     const userObject = await User.findOne({ _id: decoded.id });
 
     // Attach the user object to the request for further processing
     req.user = userObject;
-
+    req.rememberMe = rememberMe;
     next();
   } catch (err) {
     return res.status(401).json({
       success: false,
-      message: "Token is invalid",
+      message: err.message,
     });
   }
 };
 
 export const verifyUser = (req, res, next) => {
   verifyToken(req, res, next, () => {
-    if (req.user.id === req.params.id || req.user.role === "admin") {
+    if (
+      (req.user.id === req.params.id && req.user.status == "active") ||
+      req.user.role === "admin"
+    ) {
       next();
     } else {
       return res.status(401).json({

@@ -40,7 +40,6 @@ const nav_bar = [
 const ForumHeader = ({ children }) => {
     const { setUser, user } = useUser();
     const navigate = useNavigate();
-
     const userPfp = getAvatarUrl(user?.avatar, import.meta.env.VITE_BASE_URL)
     const [isFocused, setIsFocused] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);

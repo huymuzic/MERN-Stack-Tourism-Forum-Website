@@ -27,10 +27,12 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.3",
+    "react-scroll": "^1.9.0",
     "react-spinners": "^0.13.8",
     "react-toastify": "^10.0.5",
     "remixicon": "^4.2.0",
     "swiper": "^11.1.1",
+    "tinycolor2": "^1.6.0",
     "tourism-website": "file:.."
   },
   "devDependencies": {

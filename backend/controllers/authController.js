@@ -10,7 +10,6 @@ export const register = async (req, res) => {
     return res.status(400).send("Missing fields");
   }
   const token = req.body.token;
-  console.log("Token:", token);
   const response = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SITE_SECRET}&response=${token}`,
     {
@@ -63,21 +62,26 @@ export const register = async (req, res) => {
 // user login
 export const login = async (req, res) => {
   const { email, pwd, rem } = req.body;
-
   try {
     const user = await User.findOne({ email: email });
-
     // if no user is found
     if (!user) {
       return res
         .status(400)
         .json({ success: false, message: "User not found" });
     }
-
+    if (user.status == "locked") {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Your account has been locked, please contact to admin!",
+        });
+    }
     // if user is found, check password and compare with hashed password
-    
-    const checkCorrectPassword = bcrypt.compare(pwd, user.password);
- 
+
+    const checkCorrectPassword = await bcrypt.compare(pwd, user.password);
+
     // if password is incorrect
     if (!checkCorrectPassword) {
       return res
@@ -92,16 +96,16 @@ export const login = async (req, res) => {
       const token = jwt.sign(
         { signInTime: Date.now(), id: user._id, role: user.role },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: '365d' }
+        { expiresIn: "365d" }
       );
       res
         .cookie("accessToken", token, {
-          httpOnly: true,
           expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
         })
         .status(200)
         .json({
-          token,  
+          token,
           data: { ...rest },
           role,
           message: "User logged in successfully",
@@ -115,6 +119,7 @@ export const login = async (req, res) => {
       res
         .cookie("accessToken", token, {
           httpOnly: true,
+          expires: 0,
         })
         .status(200)
         .json({
@@ -136,10 +141,7 @@ export const login = async (req, res) => {
 // user logout
 export const logout = async (req, res) => {
   try {
-    console.log("Logout request received");
-
     res.clearCookie("accessToken", { httpOnly: true });
-    console.log("Cleared token and cookie");
 
     res.status(200).json({
       success: true,

@@ -1,19 +1,21 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useTheme } from '../../theme/Theme';
 
 function AutocompleteOption(props) {
-    const [backgroundColor, setBackgroundColor] = useState(props.select ? 'var(--light-primary-color)' : 'inherit');
+    const {color} = useTheme()
+    const [backgroundColor, setBackgroundColor] = useState(props.select ? color.lightPrimary : 'inherit');
 
     useEffect(() => {
-        setBackgroundColor(props.select ? 'var(--light-primary-color)' : 'inherit');
+        setBackgroundColor(props.select ? color.lightPrimary : 'inherit');
     }, [props.select]);
 
     const handleMouseEnter = () => {
-        setBackgroundColor(props.select ? 'var(--light-primary-color)' : '#eeeeee');
+        setBackgroundColor(props.select ? color.lightPrimary : '#eeeeee');
     };
 
     const handleMouseLeave = () => {
-        setBackgroundColor(props.select ? 'var(--light-primary-color)' : 'inherit');
+        setBackgroundColor(props.select ? color.lightPrimary : 'inherit');
     };
 
     const handleClick = (e) => {

@@ -9,7 +9,8 @@
     margin-bottom: 2.5rem;
 }
 
-.tour__info, .tour__reviews {
+.tour__info,
+.tour__reviews {
     border-radius: .5rem;
     border: 1px solid rgb(229, 231, 235);
     padding: 2rem;
@@ -54,6 +55,7 @@
 }
 
 .rating__group span {
+    position: relative;
     font-size: 1.1rem;
     display: flex;
     align-items: center;
@@ -129,4 +131,17 @@
 
 .custom-hr {
     border-top: 3px solid !important;
+}
+
+.star__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    transition: width 0.3s ease;
+    display: inline-block;
+    vertical-align: bottom;
+    color: gold !important;
 }

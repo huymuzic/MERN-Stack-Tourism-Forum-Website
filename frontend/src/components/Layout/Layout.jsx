@@ -1,30 +1,42 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import { useLocation } from "react-router-dom";
 
-import Header from '../Header/Header';
-import Routers from '../../Router/Routers';
-import Footer from '../Footer/Footer';
+import Header from "../Header/Header";
+import Routers from "../../Router/Routers";
+import Footer from "../Footer/Footer";
+import "./index.css";
 
-import ForumHeader from '../ForumHeader/ForumHeader';
+import CircularProgress from "../../components/CircularProgress";
+import ForumHeader from "../ForumHeader/ForumHeader";
 
-const Layout = ({isLoading}) => {
-    const location = useLocation();
+const Layout = ({ isLoading }) => {
+  const location = useLocation();
 
-    if (location.pathname.startsWith('/forum') || location.pathname === '/search' || location.pathname.startsWith('/users')) {
-        return (
-            <ForumHeader>
-                <Routers />
-            </ForumHeader>
-        );
-    }
-  
+  if (
+    location.pathname.startsWith("/forum") ||
+    location.pathname === "/search" ||
+    location.pathname.startsWith("/users") ||
+    location.pathname.startsWith("/profile")
+  ) {
     return (
-    <>
-        <Header isLoading={isLoading}/>
+      <ForumHeader>
         <Routers />
-        <Footer />
-    </>
+      </ForumHeader>
     );
+  }
+
+  return (
+    <>
+      {isLoading && (
+        <div className="home__loading">
+          <CircularProgress />
+        </div>
+      )}
+      <Header />
+      <Routers />
+      <Footer />
+    </>
+  );
 };
 
 export default Layout;
