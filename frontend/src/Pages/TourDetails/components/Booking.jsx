@@ -123,6 +123,7 @@ const Booking = ({ tour, avgRating }) => {
         </ListGroup>
 
         <Button
+        variant="primary"
           className="btn primary__btn w-100 mt-4 book__btn normal__pad"
           onClick={handleBookFormSubmit}
         >

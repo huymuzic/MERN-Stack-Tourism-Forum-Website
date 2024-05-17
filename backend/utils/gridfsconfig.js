@@ -33,8 +33,10 @@ const storage = new GridFsStorage({
 
 // Set up GridFSBucket to stream files to/from MongoDB
 let gfs;
+let postGfs;
 mongoose.connection.once('open', () => {
   gfs = new GridFSBucket(mongoose.connection.db, { bucketName: 'avatars' });
+  postGfs = new GridFSBucket(mongoose.connection.db, { bucketName: 'photos' });
 }); 
 
-export { storage, gfs };
+export { storage, gfs, postGfs };

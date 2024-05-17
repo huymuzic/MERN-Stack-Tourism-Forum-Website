@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PopUpBase from '../../../components/pop-up/PopUpBase';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, FloatingLabel, Form, Stack, Tooltip } from 'react-bootstrap';
-import CircularProgress from '../../../components/CircularProgress';
+import { Button, FloatingLabel, Form, Stack } from 'react-bootstrap';
 import { TiDelete } from 'react-icons/ti';
 import { pushError } from '../../../components/Toast';
 
@@ -99,7 +98,6 @@ export default function PopUpUpdateProfile(props) {
                         })}
                         disabled={disabled || props.isLoading}
                     >
-                        {props.isLoading && <CircularProgress />}
                         Save
                     </Button>
                 </Stack>
@@ -122,7 +120,6 @@ export default function PopUpUpdateProfile(props) {
                                     <p className='body-1'>{getSvg(avatar || '').name}</p>
                                     <TiDelete fontSize={24} style={{ cursor: "pointer" }} onClick={() => {
                                         setAvatar('');
-                                        setDirtyAvatar(true)
                                         const inputElement = document.getElementById('upload-input');
                                         if (inputElement) {
                                             inputElement.value = '';

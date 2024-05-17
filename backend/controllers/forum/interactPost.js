@@ -1,6 +1,5 @@
 import Post from "../../models/Post.js"
-
-const categories = ['announce', 'discuss'];
+import uploadFiles from "../../utils/uploadImages.js";
 
 async function findRootPostId(postId) {
     const post = await Post.findById(postId);
@@ -34,7 +33,7 @@ export async function like(req, res) {
 
         await post.save();
         const updatedUser = await req.user.save();
-        
+
         const rootPost = await findRootPostId(postId);
         const updPost = await Post.findById(rootPost).populate(['parentId', 'authorId', {
             path: 'childrenIds',
@@ -49,37 +48,44 @@ export async function like(req, res) {
 }
 
 export async function reply(req, res) {
-    try {
-        const postId = req.params.id;
-
-        const post = await Post.findOne({ _id: postId });
-        if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
+    uploadFiles(req, res, async (err) => {
+        if (err) {
+            res.status(500).json({ message: err.message });
         }
 
-        req.user.posts.push(postId);
+        try {
+            const postId = req.params.id;
 
-        const updatedUser = await req.user.save();
+            const post = await Post.findOne({ _id: postId });
+            if (!post) {
+                return res.status(404).json({ message: 'Post not found' });
+            }
 
-        const newReply = new Post({
-            authorId: req.user._id,
-            content: req.body.content,
-            parentId: postId,
-        });
+            const newReply = new Post({
+                authorId: req.user._id,
+                content: req.body.content,
+                parentId: postId,
+                images: req.files.map(file => file.id)
+            });
 
-        const reply = await newReply.save();
+            const reply = await newReply.save();
 
-        post.childrenIds.push(reply._id);
+            req.user.posts.push(reply._id);
 
-        await post.save();
-        const rootPost = await findRootPostId(postId);
-        const updPost = await Post.findById(rootPost).populate(['parentId', 'authorId', {
-            path: 'childrenIds',
-            populate: { path: 'authorId' }
-        }]);
+            const updatedUser = await req.user.save();
 
-        res.status(200).json({ post: updPost, user: updatedUser });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+            post.childrenIds.push(reply._id);
+
+            await post.save();
+            const rootPost = await findRootPostId(postId);
+            const updPost = await Post.findById(rootPost).populate(['parentId', 'authorId', {
+                path: 'childrenIds',
+                populate: { path: 'authorId' }
+            }]);
+
+            res.status(200).json({ post: updPost, user: updatedUser, repId: reply._id });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    });
 }
