@@ -1,12 +1,13 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { FaLock, FaUnlock, FaBan } from "react-icons/fa";
-import { MdBlock, MdOutlineLockOpen } from 'react-icons/md';
-import CustomToolTip from "../../../../components/CustomTooltip";
+import { FaLock, FaUnlock } from "react-icons/fa";
+import CustomTooltip from "../../../../components/CustomTooltip";
 import { usePopUp } from "../../../../components/pop-up/usePopup";
 import PopUpBase from "../../../../components/pop-up/PopUpBase";
 import color from "../../../../theme/Color";
+import { Button, Col, Container, Form, Image, Row, Stack } from 'react-bootstrap';
 
 export default function UserItem({
   user,
@@ -15,40 +16,25 @@ export default function UserItem({
   handleInactiveCofirm,
   handleActiveConfirm
 }) {
-  const popUpInactive = usePopUp();
   const popUpLock = usePopUp();
   const popUpUnLock = usePopUp();
-  const popUpActive = usePopUp();
+  const popUpActivate = usePopUp();
+  const userStatus = userStatuses.find((item) => item.Value === user.status);
 
-  const handleButtonClick = () => {
-    if (user.status === "inactive") {
-      popUpActive.setTrue();
-    }
-    else {
-      popUpInactive.setTrue();
-    }
-  };
-
-  const handleClockClick = () => {
-    if (user.status === "locked") {
-      popUpUnLock.setTrue();
+  const onChangeStatus = () => {
+    popUpActivate.onClose();
+    if (userStatus.Value === "active") {
+      return handleInactiveCofirm(user._id);
     } else {
-      popUpLock.setTrue();
+      return handleActiveConfirm(user._id);
     }
-  }
+  };
 
-  const onInactiveConfirm = async () => {
-    popUpInactive.onClose();
-    handleInactiveCofirm(user._id);
-  };
-  const onActiveConfirm = async () => {
-    popUpActive.onClose();
-    handleActiveConfirm(user._id);
-  };
   const onUnLockConfirm = async () => {
     popUpUnLock.onClose();
     handleUnLockConfirm(user._id);
   };
+
   const onLockConfirm = async () => {
     popUpLock.onClose();
     handleLockConfirm(user._id);
@@ -83,54 +69,41 @@ export default function UserItem({
             <>
               <div className="d-flex">
                 <div className="me-2">
-                  {user.status === 'inactive' ? (
-                    <>
-                      <CustomToolTip text="Activate user" position={'top'}>
-                        <button
-                          className="btn btn-sm btn-outline-warning"
-                          onClick={handleButtonClick}
-                        >
-                          <MdBlock color="inherit" size={14} />
-                        </button>
-                      </CustomToolTip>
+                  {user.status !== "locked" && (
+                    <Stack direction="horizontal" gap={2} className="mb-4 max-width-500 mx-auto" style={{ justifyContent: "center" }}>
+                      <UserStatusDot status={user.status} />
+
+                      <CustomTooltip text={userStatus.Value === "active" ? "Deactivate" : "Activate"}>
+                        <Form>
+                          <Form.Check
+                            type="switch"
+                            id="custom-switch"
+                            checked={userStatus.Value === "active"}
+                            onClick={() => popUpActivate.setTrue()}
+                          />
+                        </Form>
+                      </CustomTooltip>
+
                       <PopUpBase
-                        {...popUpActive}
-                        onConfirm={onActiveConfirm}
-                        title="Activate User Confirmation"
-                        desc={`Are you sure you want to activate the user ${user.username}?`}
+                        {...popUpActivate}
+                        onConfirm={onChangeStatus}
+                        title="Change User Status Confirmation"
+                        desc={`Are you sure you want to ${userStatus.Value === "active" ? "deactivate" : "activate"} the user ${user.username}?`}
                       />
-                    </>
-                  ) : (
-                    <>
-                      <CustomToolTip text="Deactivate user" position={'top'}>
-                        <button
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={handleButtonClick}
-                          data-tip="Deactivate User"
-                        >
-                          <MdOutlineLockOpen color="inherit" size={14} />
-                        </button>
-                      </CustomToolTip>
-                      <PopUpBase
-                        {...popUpInactive}
-                        onConfirm={onInactiveConfirm}
-                        title="Deactivate User Confirmation"
-                        desc={`Are you sure you want to deactivate the user ${user.username}?`}
-                      />
-                    </>
+                    </Stack>
                   )}
                 </div>
                 <div>
                   {user.status === 'locked' ? (
                     <>
-                      <CustomToolTip text="Unlock user" position={'top'}>
+                      <CustomTooltip text="Unlock user" position="top">
                         <button
                           className="btn btn-sm btn-outline-warning"
-                          onClick={handleClockClick}
+                          onClick={() => popUpUnLock.setTrue()}
                         >
                           <FaLock color="inherit" size={14} />
                         </button>
-                      </CustomToolTip>
+                      </CustomTooltip>
                       <PopUpBase
                         {...popUpUnLock}
                         onConfirm={onUnLockConfirm}
@@ -140,15 +113,15 @@ export default function UserItem({
                     </>
                   ) : (
                     <>
-                      <CustomToolTip text="Lock user" position={'top'}>
+                      <CustomTooltip text="Lock user" position="top">
                         <button
                           className="btn btn-sm btn-outline-danger"
-                          onClick={handleClockClick}
+                          onClick={() => popUpLock.setTrue()}
                           data-tip="Lock User"
                         >
                           <FaUnlock color="inherit" size={14} />
                         </button>
-                      </CustomToolTip>
+                      </CustomTooltip>
                       <PopUpBase
                         {...popUpLock}
                         onConfirm={onLockConfirm}
@@ -178,16 +151,12 @@ export default function UserItem({
         <div className="d-flex flex-row">
           <p className="card-text me-3 mb-0">
             <small className="text-muted">
-              {`Created At: ${moment(user.createdAt).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )}`}
+              {`Created At: ${moment(user.createdAt).format("YYYY-MM-DD HH:mm:ss")}`}
             </small>
           </p>
           <p className="card-text mb-0">
             <small className="text-muted">
-              {`Updated At: ${moment(user.updatedAt).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )}`}
+              {`Updated At: ${moment(user.updatedAt).format("YYYY-MM-DD HH:mm:ss")}`}
             </small>
           </p>
         </div>
@@ -208,6 +177,8 @@ UserItem.propTypes = {
   }).isRequired,
   handleLockConfirm: PropTypes.func.isRequired,
   handleUnLockConfirm: PropTypes.func.isRequired,
+  handleInactiveCofirm: PropTypes.func.isRequired,
+  handleActiveConfirm: PropTypes.func.isRequired,
 };
 
 export const userStatuses = [
@@ -237,18 +208,28 @@ export const UserStatusBox = ({ status }) => {
   const userStatus = userStatuses.find((item) => item.Value === status);
 
   return (
-    <div
-      className="px-2 py-1 rounded"
-      style={{ backgroundColor: userStatus?.bgColor }}
-    >
+    <div className="px-2 py-1 rounded" style={{ backgroundColor: userStatus?.bgColor }}>
       <p style={{ color: userStatus?.color, margin: 0 }}>{userStatus?.Name}</p>
     </div>
   );
 };
+
 const getUserRoleName = (role) => {
   const userRole = userRoles.find((item) => item.Value === role);
   return userRole ? userRole.Name : "";
 };
+
 UserStatusBox.propTypes = {
   status: PropTypes.string.isRequired,
+};
+
+const UserStatusDot = ({ status }) => {
+  const userStatus = userStatuses.find((item) => item.Value === status);
+
+  return (
+    <Stack direction="horizontal" gap={2}>
+      <div style={{ width: "12px", height: "12px", borderRadius: "100%", backgroundColor: userStatus?.color }}></div>
+      <p className="body-1">{userStatus?.Name}</p>
+    </Stack>
+  );
 };
