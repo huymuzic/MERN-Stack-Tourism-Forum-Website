@@ -1,8 +1,9 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
-import { gfs } from "../utils/gridfsconfig.js";
-import { sendOTPEmail, generateAndStoreOTP } from "../utils/otp.js";
-import { getStoredOTP, clearOTP } from "../utils/otpStorage.js";
+import { gfs } from '../utils/gridfsconfig.js';
+import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
+import { getStoredOTP, clearOTP } from '../utils/otpStorage.js';
+import Theme from "../models/Theme.js";
 const saltRounds = 10;
 // create new user
 export const createUser = async (req, res) => {
@@ -77,7 +78,7 @@ export const deleteUser = async (req, res) => {
 export const getSingleUser = async (req, res) => {
   const id = req.params.id;
   try {
-    let user = await User.findById(id);
+    let user = await User.findById(id).populate('theme');
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -440,5 +441,67 @@ export const lockUser = async (req, res) => {
       success: false,
       message: "Failed to unlock user. Try again",
     });
+  }
+};
+
+
+
+// CreateOrUpdateTheme 
+export const createOrUpdateTheme = async (req, res) => {
+  const { userId, themeData } = req.body;
+
+  if (!userId || !themeData) {
+    return res.status(400).json({ error: "User ID and theme data are required." });
+  }
+
+  try {
+    const user = await User.findById(userId).populate('theme');
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    let theme;
+    if (user.theme) {
+      theme = await Theme.findByIdAndUpdate(user.theme._id, themeData, { new: true });
+    } else {
+      theme = new Theme(themeData);
+      await theme.save();
+      user.theme = theme._id;
+      await user.save();
+    }
+
+    res.status(200).json({ message: "Theme updated successfully.", theme });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
+
+
+// get Theme
+
+export const getTheme = async (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required." });
+  }
+
+  try {
+    const user = await User.findById(userId).populate('theme');
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    if (!user.theme) {
+      return res.status(404).json({ error: "Theme not found for this user." });
+    }
+
+    res.status(200).json({ theme: user.theme });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error." });
   }
 };

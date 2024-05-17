@@ -1,0 +1,13 @@
+.max-width-500 {
+    max-width: 500px;
+}
+
+.form-switch{
+    cursor: pointer;
+}
+.form-check-input {
+    cursor: pointer;
+}
+.form-check-input:checked{
+    cursor: pointer;
+}
