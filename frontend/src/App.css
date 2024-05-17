@@ -111,10 +111,6 @@ ul {
   color: var(--heading-color) !important;
 }
 
-.nav a.active {
-  color: var(--primary-color) !important;
-}
-
 tr th {
   padding-bottom: 10px;
 }
