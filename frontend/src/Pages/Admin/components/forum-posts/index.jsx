@@ -36,7 +36,6 @@ export default function ForumPostsList() {
   const [loading, setLoading] = useState(false);
   const searchRef = useRef(null);
   const searchTypeRef = useRef(null);
-  const token = localStorage.getItem("accessToken");
   const handleResetFilter = () => {
     setFilter({ searchValue: "", searchType: forumPostSearchType[0], page: 1 });
     if (searchRef.current) {

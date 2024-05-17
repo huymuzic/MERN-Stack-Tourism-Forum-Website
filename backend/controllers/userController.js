@@ -178,8 +178,8 @@ export const getAllUser = async (req, res) => {
 };
 
 export const checkPassword = async (req, res) => {
-  const { password } = req.body; // Ensure this data is received securely
-  const userId = req.user.id; // User ID from the verified token
+  const { password } = req.body; 
+  const userId = req.user.id; 
 
   try {
     const user = await User.findById(userId);
