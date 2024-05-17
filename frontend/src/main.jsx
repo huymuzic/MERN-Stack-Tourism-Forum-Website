@@ -16,9 +16,9 @@ import FocusManager from './utils/mouseless.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
+      {/* <ThemeProvider> */}
         <UserProvider>
-        <FocusManager>
+          <FocusManager>
             <App />
             <ToastContainer
               autoClose={3000}
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             />
           </FocusManager>
         </UserProvider>
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </BrowserRouter>
   </React.StrictMode>,
 )
