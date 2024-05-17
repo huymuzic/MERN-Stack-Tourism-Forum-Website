@@ -9,6 +9,7 @@ import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import logo from "../../assets/images/logo.png";
 import { pushError, pushSuccess } from "../Toast";
+import { useTheme } from "../../theme/Theme";
 
 const nav__links = [
   {
@@ -22,6 +23,10 @@ const nav__links = [
   {
     path: "/tours",
     display: "Tours",
+  },
+  {
+    path: "/admin",
+    display: "Admin Portal",
   },
 ];
 
@@ -39,6 +44,7 @@ function toggleDropdown() {
 }
 
 const Header = () => {
+  const { color } = useTheme();
   const baseURL = import.meta.env.VITE_BASE_URL;
   const { user, setUser } = useUser();
   const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
@@ -182,16 +188,9 @@ const Header = () => {
               className="dropdown-menu user__icon__dropdown"
               aria-labelledby="user"
             >
-              {user !== null && user.role === "admin" ? (
-                <li>
-                  <Link className="dropdown-item" to="/admin">
-                    Admin Portal
-                  </Link>
-                </li>
-              ) : null}
               <li>
                 <Link className="dropdown-item" to="/my-account">
-                  Dashboard
+                  My Account
                 </Link>
               </li>
               <li>

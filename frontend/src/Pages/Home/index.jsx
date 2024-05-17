@@ -25,7 +25,6 @@ import ServiceList from "./components/ServiceList/ServiceList";
 import DestinationList from "./components/Destinations/DestinationList";
 import FeaturedTourList from "./components/FeaturedTours/FeaturedTourList";
 import ContactModal from "./components/Contact/ContactModal";
-import CookieBanner from "./components/CookieBanner";
 
 const heroImages = [heroImage2, heroImage1, heroImage3, heroImage4];
 
@@ -71,7 +70,7 @@ const Home = () => {
                       destination
                     </p>
                     <Link to="/forum">
-                      <Button className="primary__btn big__pad">
+                      <Button className="primary__btn big__pad btn-primary">
                         JOIN NOW
                       </Button>
                     </Link>
@@ -132,7 +131,6 @@ const Home = () => {
       </section>
       {/* TOUR DESTINATIONS SECTION ENDS */}
       <ContactModal />
-      <CookieBanner />
       {/* Links to sections */}
       <ScrollLink to="section1" smooth={true} duration={500}></ScrollLink>
     </>
