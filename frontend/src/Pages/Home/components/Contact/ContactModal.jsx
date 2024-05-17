@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FloatingLabel, Form } from "react-bootstrap";
 import "./contact-modal.css";
 import { pushError, pushSuccess } from "../../../../components/Toast";
 
@@ -47,44 +48,41 @@ const ContactModal = () => {
     <div className="contact__modal">
       <form className="contact__form" onSubmit={handleSubmit}>
         <h3>GET IN TOUCH</h3>
-        <div className="input-group contact__input">
-          <input
+        <FloatingLabel label="Full Name">
+          <Form.Control
             type="text"
             name="fullName"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="Full Name"
-            required
           />
-        </div>
-        <div className="input-group contact__input">
-          <input
+        </FloatingLabel>
+        <FloatingLabel label="Email">
+          <Form.Control
             type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            required
           />
-        </div>
-        <div className="input-group contact__input">
-          <input
+        </FloatingLabel>
+        <FloatingLabel label="Phone Number">
+          <Form.Control
             type="text"
             name="phoneNumber"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="Phone Number"
-            required
           />
-        </div>
-        <textarea
+        </FloatingLabel>
+        <Form.Control
+          as="textarea"
           name="message"
           rows="4"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="How can we help you?"
-          required
-        ></textarea>
+        />
         <button type="submit" disabled={loading}>
           {loading ? "Sending..." : "Send"}
         </button>

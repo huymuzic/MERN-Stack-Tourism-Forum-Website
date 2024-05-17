@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useUser } from "../../utils/UserContext";
 import UserPosts from "./components/UserPosts";
-import { useTheme } from "../../theme/Theme.jsx";
 import Favorites from "./components/Favorites";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import {
@@ -21,20 +20,20 @@ import { usePopUp } from "../../components/pop-up/usePopup";
 const OtherUserProfile = () => {
   const { user, setUser } = useUser();
   const { id } = useParams();
-  const { color } = useTheme();
   const [otherUserInfo, setOtherUserInfo] = useState({});
   const [activeNav, setActiveNav] = useState("Posts");
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_BASE_URL;
+  const token = localStorage.getItem("accessToken");
+
   const NAV_ITEMS = {
     Posts: UserPosts,
     Favorites: Favorites,
   };
   const ActiveComponent = NAV_ITEMS[activeNav];
+
   const popUpActivate = usePopUp();
   const popUpDeactivate = usePopUp();
-  const popUpLock = usePopUp();
-  const popUpUnlock = usePopUp();
   useEffect(() => {
     fetchOtherUserInfo();
   }, [id, user]); // Note: Be cautious with including state that changes often as dependencies
@@ -109,67 +108,14 @@ const OtherUserProfile = () => {
     } catch {}
     popUpDeactivate.onClose();
   };
-
-  const onChangeStatus = () => {
-    if (otherUserInfo.status == "locked") {
-      popUpUnlock.setTrue();
-    } else {
-      popUpLock.setTrue();
-    }
-  };
-  const handleLockConfirm = async () => {
-    try {
-      const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${id}`
-      );
-      const response = await fetch(url, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        pushSuccess("Lock user successfully");
-        fetchOtherUserInfo();
-      } else {
-        pushError("Failed to lock user");
-        throw new Error("Failed to lock user");
-      }
-    } catch (error) {}
-
-    popUpLock.onClose();
-  };
-  const handleUnLockConfirm = async () => {
-    try {
-      const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${id}`
-      );
-      const response = await fetch(url, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        pushSuccess("Unlock user successfully");
-        fetchOtherUserInfo();
-      } else {
-        pushError("Failed to unlock user");
-        throw new Error("Failed to unlock user");
-      }
-    } catch (error) {}
-
-    popUpUnlock.onClose();
-  };
+  const handleDeleteUser = async () => {};
   return (
     <Container className="mt-4">
       <Row className="justify-content-center mb-3">
         <Col md={12}>
           <Card className="p-3 user-profile-card">
             <Row className="align-items-start">
-              <Col xs={12} md={9} className="d-flex align-items-center ">
+              <Col xs={12} md={9} className="d-flex align-items-center">
                 <img
                   src={getAvatarUrl(otherUserInfo.avatar, baseURL)}
                   alt="User Avatar"
@@ -206,33 +152,24 @@ const OtherUserProfile = () => {
                 </div>
               </Col>
               {(user?.role === "admin" || user?._id === otherUserInfo._id) && (
-                <Col xs="auto" className="align-items-start">
+                <Col xs="auto" className="align-items-start ">
                   <Dropdown className="ellipsis-dropdown">
-                    <Dropdown.Toggle
-                      variant="primary"
-                      id="dropdown-basic"
-                    >
+                    <Dropdown.Toggle variant="light" id="dropdown-basic">
                       <span>. . .</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={handleToggleStatus}>
                         Toggle Status
                       </Dropdown.Item>
-                      {user?._id === otherUserInfo._id && (
-                        <Dropdown.Item onClick={() => navigate("/my-account")}>
-                          Edit Profile
-                        </Dropdown.Item>
-                      )}
-                      {user?.role === "admin" && (
-                        <Dropdown.Item
-                          onClick={onChangeStatus}
-                          className="text-danger"
-                        >
-                          {otherUserInfo.status == "locked"
-                            ? "Unlock Account"
-                            : "Lock Account"}
-                        </Dropdown.Item>
-                      )}
+                      <Dropdown.Item onClick={() => navigate("/account")}>
+                        Edit Profile
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={handleDeleteUser}
+                        className="text-danger"
+                      >
+                        Delete Account
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
@@ -245,20 +182,10 @@ const OtherUserProfile = () => {
               className="mt-3"
             >
               <Nav.Item>
-                <Nav.Link
-                  eventKey="Posts"
-                  className={activeNav === "Posts" ? "btn-primary" : ""}
-                >
-                  Posts
-                </Nav.Link>
+                <Nav.Link eventKey="Posts">Posts</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link
-                  eventKey="Favorites"
-                  className={activeNav === "Favorites" ? "btn-primary" : ""}
-                >
-                  Favorites
-                </Nav.Link>
+                <Nav.Link eventKey="Favorites">Favorites</Nav.Link>
               </Nav.Item>
             </Nav>
           </Card>
@@ -292,18 +219,6 @@ const OtherUserProfile = () => {
         onConfirm={onDeactivateConfirm}
         title="Deactivate Account"
         desc="Are you sure you want to deactivate this account?"
-      />
-      <PopUpBase
-        {...popUpLock}
-        onConfirm={handleLockConfirm}
-        title="Lock User Confirmation"
-        desc={`Are you sure you want to lock the user ${otherUserInfo.username}?`}
-      />
-      <PopUpBase
-        {...popUpUnlock}
-        onConfirm={handleUnLockConfirm}
-        title="Unlock User Confirmation"
-        desc={`Are you sure you want to unlock the user ${otherUserInfo.username}?`}
       />
     </Container>
   );

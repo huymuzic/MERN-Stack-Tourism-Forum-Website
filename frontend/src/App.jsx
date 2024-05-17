@@ -26,7 +26,7 @@ function App() {
         setUser(response.ok ? { ...resBody.user } : null);
         setTimeout(() => {
           setIsLoading(false);
-        }, 2000);
+        }, 1500);
       } catch (error) {
         console.error("Error checking login status:", error);
       }

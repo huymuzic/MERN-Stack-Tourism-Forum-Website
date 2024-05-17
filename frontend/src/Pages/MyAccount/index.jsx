@@ -11,9 +11,10 @@ import PopUpUpdateProfile from './components/PopUpUpdateProfile'
 import { usePopUp } from '../../components/pop-up/usePopup';
 import { userStatuses } from '../Admin/components/users/UserItem';
 import PopUpBase from '../../components/pop-up/PopUpBase';
-import { useNavigate } from 'react-router-dom';
 import CircularProgress from '../../components/CircularProgress';
 import PopUpEditTheme from './components/PopUpEditTheme';
+import { useTheme } from '../../theme/Theme';
+import PopUpEditPassword from './components/PopUpEditPassword';
 
 export const defaultSettingTheme = {
     primary: "#ff7e01",
@@ -28,10 +29,11 @@ export const defaultSettingTheme = {
 export default function MyAccount() {
     const popUpActivate = usePopUp();
     const popUpEditProfile = usePopUp();
+    const popUpEditPassword = usePopUp();
     const popUpEditTheme = usePopUp();
     const { user } = useUser();
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate()
+    const { fetchTheme } = useTheme()
     const [userProfile, setUserProfile] = useState({
         username: "",
         email: "",
@@ -41,6 +43,28 @@ export default function MyAccount() {
 
     const userStatus = userStatuses.find((item) => item.Value === userProfile.status)
 
+    const handleChangePassword = async ({ currentPassword, newPassword }) => {
+        popUpEditPassword.onClose()
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/users/verify-password`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password: currentPassword }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                handleUpdateProfile({ password: newPassword })
+            } else {
+                pushError("Incorrect password, please try again.")
+                throw new Error(data.message || 'Incorrect password, please try again.');
+            }
+        } catch (error) {
+            console.log("🚀 ~ handleVerifyPassword ~ error:", error)
+        }
+    };
     const handleActivateConfirm = async () => {
         try {
             const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/inactive/${user._id}`);
@@ -120,6 +144,28 @@ export default function MyAccount() {
         }
     };
 
+    const handleAvatarUpdate = async (avatar) => {
+        if (!avatar) return;
+        const formData = new FormData();
+        formData.append('avatar', avatar);
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/users/upload-avatar/${user._id}`, {
+                method: 'PUT',
+                credentials: 'include',
+                body: formData,
+            });
+            await response.json();
+            if (response.ok) {
+                fetchUser()
+            } else {
+                pushError('Failed to update avatar');
+
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    };
     const handleUpdateTheme = async (settingTheme) => {
         popUpEditTheme.onClose()
         try {
@@ -131,12 +177,13 @@ export default function MyAccount() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                   userId: userProfile._id,
-                   themeData: settingTheme
+                    userId: userProfile._id,
+                    themeData: settingTheme
                 }),
             });
             if (response.ok) {
                 pushSuccess('Edit theme successfully');
+                fetchTheme()
                 fetchUser()
             } else {
                 pushError('Failed to edit theme');
@@ -234,10 +281,16 @@ export default function MyAccount() {
                             <Stack direction="horizontal" style={{ justifyContent: "space-around", alignItems: "center" }}>
                                 <p className='body-1'>**********</p>
                                 <CustomTooltip text='Edit password'>
-                                    <Button variant='outline-primary' style={{ padding: "0px 8px" }}>
+                                    <Button variant='outline-primary' style={{ padding: "0px 8px" }} onClick={() => popUpEditPassword.setTrue()}>
                                         <FaEdit style={{ cursor: "pointer" }} size={"12px"}></FaEdit>
                                     </Button>
                                 </CustomTooltip>
+                                <PopUpEditPassword
+                                    {...popUpEditPassword}
+                                    onConfirm={(data) => {
+                                        handleChangePassword(data)
+                                    }}
+                                />
                             </Stack>
                         </Col>
                     </Row>
@@ -251,7 +304,10 @@ export default function MyAccount() {
                             <PopUpUpdateProfile
                                 {...popUpEditProfile}
                                 user={userProfile}
-                                onConfirm={(data) => handleUpdateProfile(data)}
+                                onConfirm={(data) => {
+                                    handleUpdateProfile(data.user)
+                                    handleAvatarUpdate(data.avatar)
+                                }}
                             />
 
                         </Col>
