@@ -7,6 +7,7 @@ export async function handleLike(postId, setPost, setUser) {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
         });
 
         if (!response.ok) {
