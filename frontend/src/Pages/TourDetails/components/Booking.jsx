@@ -61,18 +61,36 @@ const Booking = ({ tour, avgRating }) => {
         <h5>Information</h5>
         <Form className="booking_info-form d-flex flex-column justify-content-center align-items-flex-start p-3 gap-3">
           <div className="booking_first_container">
-            <span>People</span>
+            <span tabindex="0">People</span>
             <span>
               <i className="fa-duotone fa-user-group"></i>
             </span>
             <span className="wrapper">
-              <span className="minus" onClick={decrementPeople}>
+              <button
+                className="guests__container"
+                type="button"
+                onClick={decrementPeople}
+                aria-label="Decrease number of guests"
+              >
                 -
-              </span>
-              <span className="num">{peopleValue}</span>
-              <span className="plus" onClick={incrementPeople}>
+              </button>
+              <button className="guests__container">
+                <span
+                  className="numberOfGuests"
+                  aria-live="polite"
+                  aria-atomic="true"
+                >
+                  {peopleValue}
+                </span>
+              </button>
+              <button
+                className="guests__container"
+                type="button"
+                onClick={incrementPeople}
+                aria-label="Increase number of guests"
+              >
                 +
-              </span>
+              </button>
             </span>
           </div>
           <FormGroup className="d-flex align-items-center gap-3">

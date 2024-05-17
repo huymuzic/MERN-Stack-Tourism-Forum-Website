@@ -20,6 +20,7 @@ import ServiceList from "./components/ServiceList/ServiceList";
 import DestinationList from "./components/Destinations/DestinationList";
 import FeaturedTourList from "./components/FeaturedTours/FeaturedTourList";
 import ContactModal from "./components/Contact/ContactModal";
+import CookieBanner from "./components/CookieBanner";
 
 const heroImages = [heroImage2, heroImage1, heroImage3, heroImage4];
 
@@ -60,9 +61,9 @@ const Home = () => {
                     tours designed to immerse you in the beauty of each
                     destination
                   </p>
-                  <Button className="primary__btn big__pad">
-                    <Link to="/forum">JOIN NOW</Link>
-                  </Button>
+                  <Link to="/forum">
+                    <Button className="primary__btn big__pad">JOIN NOW</Button>
+                  </Link>
                 </div>
                 <div className="swiper__slide__image">
                   <img src={image} alt="" />
@@ -119,6 +120,7 @@ const Home = () => {
       </section>
       {/* TOUR DESTINATIONS SECTION ENDS */}
       <ContactModal />
+      <CookieBanner />
     </>
   );
 };

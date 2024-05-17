@@ -4,9 +4,6 @@ import { Col } from "react-bootstrap";
 
 import useFetch from "../../../../hooks/useFetch";
 
-
-const baseURL = "http://localhost:4000/api/v1";
-
 const FeaturedTourList = () => {
   const { data: featuredTours } = useFetch(
     "http://localhost:4000/api/v1/tours/search/getFeaturedTours"

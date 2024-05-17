@@ -5,6 +5,7 @@ import "./index.css";
 import TourCard from "../../Shared/TourCard";
 import SearchBar from "../../Shared/SearchBar";
 import CircularProgress from "../../components/CircularProgress";
+import CustomPagination from "../../components/CustomPagination";
 
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -29,6 +30,10 @@ const Tours = () => {
     }
     window.scrollTo(0, 0);
   }, [toursLoading, countLoading, page, tourCount, tours]);
+
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber - 1);
+  };
   return (
     <>
       <CommonSection title={"All Tours"} />
@@ -53,7 +58,7 @@ const Tours = () => {
                 <TourCard tour={tour} />
               </Col>
             ))}
-            <Col lg="12">
+            {/* <Col lg="12">
               <div className="pagination d-flex align-items-center justify-content-center mt-4 gap-3">
                 {[...Array(pageCount).keys()].map((number) => (
                   <span
@@ -65,6 +70,13 @@ const Tours = () => {
                   </span>
                 ))}
               </div>
+            </Col> */}
+            <Col lg="12">
+              <CustomPagination
+                totalPages={pageCount}
+                currentPage={page + 1}
+                onChange={handlePageChange}
+              />
             </Col>
           </Row>
         </Container>

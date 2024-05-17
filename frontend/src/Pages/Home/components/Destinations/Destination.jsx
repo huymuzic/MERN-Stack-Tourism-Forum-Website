@@ -17,7 +17,7 @@ const Destination = ({ item }) => {
   return (
     <>
       <div>
-        <a href="#">
+        <a>
           <div
             className="containerz"
             onMouseEnter={handleMouseEnter}
@@ -26,7 +26,7 @@ const Destination = ({ item }) => {
             <img
               className="images"
               src={photo}
-              alt=""
+              alt="top-destination"
               style={{ filter: `brightness(${imageBrightness})` }}
             />
             <div className="titleContainer">

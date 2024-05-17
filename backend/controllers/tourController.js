@@ -123,17 +123,20 @@ export const getAllTour = async (req, res) => {
 };
 
 export const getTourBySearch = async (req, res) => {
-  // i means case sensitive
-  const country = new RegExp(req.query.country, "i");
-  const duration = parseInt(req.query.duration);
-  const price = parseInt(req.query.price);
+  let query = {};
+
+  if (req.query.country) {
+    query.country = new RegExp(req.query.country, "i");
+  }
+  if (req.query.duration) {
+    query.duration = { $gte: parseInt(req.query.duration) };
+  }
+  if (req.query.price) {
+    query.price = { $lte: parseInt(req.query.price) };
+  }
 
   try {
-    const tours = await Tour.find({
-      country,
-      duration: { $gte: duration },
-      price: { $lte: price },
-    }).populate("reviews");
+    const tours = await Tour.find(query).populate("reviews");
 
     res.status(200).json({
       success: true,
