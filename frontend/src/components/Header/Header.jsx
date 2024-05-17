@@ -9,6 +9,7 @@ import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import logo from "../../assets/images/logo.png";
 import { pushError, pushSuccess } from "../Toast";
+import { useTheme } from "../../theme/Theme.jsx";
 
 const nav__links = [
   {
@@ -42,6 +43,7 @@ const Header = () => {
   const baseURL = import.meta.env.VITE_BASE_URL;
   const { user, setUser } = useUser();
   const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
+  const { color } = useTheme()
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -110,7 +112,22 @@ const Header = () => {
   });
 
   return (
-    <nav className="header custom__navbar navbar navbar-expand-lg">
+    <nav className="header custom__navbar navbar navbar-expand-lg" style={{ backgroundColor: color.headerBgColor }}>
+      <style>
+        {
+          `
+          .nav__item a {
+            color: ${color.headerTextColor};
+          }
+          .nav__item a:hover {
+            color: ${color.primary};
+          }
+          .nav__item a.active__link {
+            color: ${color.primary} !important;
+        }
+          `
+        }
+      </style>
       <Container className="header__container bd-gutter">
         {/* NAVIGATION SECTION STARTS */}
         {/* LOGO SECTION STARTS */}

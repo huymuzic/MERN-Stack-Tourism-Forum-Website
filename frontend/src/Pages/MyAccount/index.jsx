@@ -11,10 +11,10 @@ import PopUpUpdateProfile from './components/PopUpUpdateProfile'
 import { usePopUp } from '../../components/pop-up/usePopup';
 import { userStatuses } from '../Admin/components/users/UserItem';
 import PopUpBase from '../../components/pop-up/PopUpBase';
-import { useNavigate } from 'react-router-dom';
 import CircularProgress from '../../components/CircularProgress';
 import PopUpEditTheme from './components/PopUpEditTheme';
 import { useTheme } from '../../theme/Theme';
+import PopUpEditPassword from './components/PopUpEditPassword';
 
 export const defaultSettingTheme = {
     primary: "#ff7e01",
@@ -29,6 +29,7 @@ export const defaultSettingTheme = {
 export default function MyAccount() {
     const popUpActivate = usePopUp();
     const popUpEditProfile = usePopUp();
+    const popUpEditPassword = usePopUp();
     const popUpEditTheme = usePopUp();
     const { user } = useUser();
     const [loading, setLoading] = useState(false);
@@ -42,9 +43,31 @@ export default function MyAccount() {
 
     const userStatus = userStatuses.find((item) => item.Value === userProfile.status)
 
+    const handleChangePassword = async ({ currentPassword, newPassword }) => {
+        popUpEditPassword.onClose()
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/users/verify-password`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password: currentPassword }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                handleUpdateProfile({ password: newPassword })
+            } else {
+                pushError("Incorrect password, please try again.")
+                throw new Error(data.message || 'Incorrect password, please try again.');
+            }
+        } catch (error) {
+            console.log("🚀 ~ handleVerifyPassword ~ error:", error)
+        }
+    };
     const handleActivateConfirm = async () => {
         try {
-            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${user._id}`);
+            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/active/${user._id}`);
             const response = await fetch(url, {
                 method: 'PUT',
                 credentials: 'include',
@@ -66,7 +89,7 @@ export default function MyAccount() {
 
     const handleDeactivateConfirm = async () => {
         try {
-            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${user._id}`);
+            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/inactive/${user._id}`);
             const response = await fetch(url, {
                 method: 'PUT',
                 credentials: 'include',
@@ -258,10 +281,16 @@ export default function MyAccount() {
                             <Stack direction="horizontal" style={{ justifyContent: "space-around", alignItems: "center" }}>
                                 <p className='body-1'>**********</p>
                                 <CustomTooltip text='Edit password'>
-                                    <Button variant='outline-primary' style={{ padding: "0px 8px" }}>
+                                    <Button variant='outline-primary' style={{ padding: "0px 8px" }} onClick={() => popUpEditPassword.setTrue()}>
                                         <FaEdit style={{ cursor: "pointer" }} size={"12px"}></FaEdit>
                                     </Button>
                                 </CustomTooltip>
+                                <PopUpEditPassword
+                                    {...popUpEditPassword}
+                                    onConfirm={(data) => {
+                                        handleChangePassword(data)
+                                    }}
+                                />
                             </Stack>
                         </Col>
                     </Row>
