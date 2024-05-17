@@ -1,14 +1,11 @@
 import { openDB } from 'idb';
 
 export async function handleLike(postId, setPost, setUser) {
-    const token = localStorage.getItem('accessToken');
-
     try {
         const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
             },
         });
 
@@ -25,8 +22,6 @@ export async function handleLike(postId, setPost, setUser) {
 };
 
 export async function replyTopic(content, images, nav, id) {
-    const token = localStorage.getItem('accessToken');
-
     try {
         const formData = new FormData();
         formData.append('content', content);
@@ -36,9 +31,6 @@ export async function replyTopic(content, images, nav, id) {
 
         const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}/reply`, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
             credentials: 'include',
             body: formData,
         });
@@ -95,8 +87,6 @@ export const populateImages = async (imagesArray) => {
 };
 
 export async function createTopic(title, content, images, navigate) {
-    const token = localStorage.getItem('accessToken');
-
     try {
         const formData = new FormData();
         formData.append('title', title);
@@ -107,9 +97,6 @@ export async function createTopic(title, content, images, navigate) {
 
         const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
             credentials: 'include',
             body: formData,
         });
