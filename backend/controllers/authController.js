@@ -10,7 +10,6 @@ export const register = async (req, res) => {
     return res.status(400).send("Missing fields");
   }
   const token = req.body.token;
-  console.log("Token:", token);
   const response = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SITE_SECRET}&response=${token}`,
     {
@@ -74,7 +73,10 @@ export const login = async (req, res) => {
     if (user.status == "locked") {
       return res
         .status(400)
-        .json({ success: false, message: "Your account has been locked, please contact to admin!" });
+        .json({
+          success: false,
+          message: "Your account has been locked, please contact to admin!",
+        });
     }
     // if user is found, check password and compare with hashed password
 

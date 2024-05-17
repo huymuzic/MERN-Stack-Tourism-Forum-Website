@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./index.css";
 
+import {
+  Link as ScrollLink,
+  Element,
+  animateScroll as scroll,
+} from "react-scroll";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
@@ -20,58 +25,66 @@ import ServiceList from "./components/ServiceList/ServiceList";
 import DestinationList from "./components/Destinations/DestinationList";
 import FeaturedTourList from "./components/FeaturedTours/FeaturedTourList";
 import ContactModal from "./components/Contact/ContactModal";
+import CookieBanner from "./components/CookieBanner";
 
 const heroImages = [heroImage2, heroImage1, heroImage3, heroImage4];
 
 const Home = () => {
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
   return (
     <>
       {/* Hero Section Starts */}
-      <Container className="hero__container">
-        <Swiper
-          spaceBetween={30}
-          effect={"fade"}
-          centeredSlides={true}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          keyboard={{
-            enabled: true,
-          }}
-          pagination={{
-            clickable: true,
-          }}
-          navigation={true}
-          modules={[EffectFade, Keyboard, Autoplay, Pagination]}
-          className="mySwiper"
-        >
-          {heroImages.map((image, index) => (
-            <SwiperSlide key={index}>
-              <Container className="custom__container">
-                <div className="hero__slide p-5">
-                  <h1>Join the conversation with</h1>
-                  <h1>
-                    <span className="highlight">travelers</span> around the
-                    world today
-                  </h1>
-                  <p className="homepage__p">
-                    Dive into a world of discovery with our curated selection of
-                    tours designed to immerse you in the beauty of each
-                    destination
-                  </p>
-                  <Button className="primary__btn big__pad">
-                    <Link to="/forum">JOIN NOW</Link>
-                  </Button>
-                </div>
-                <div className="swiper__slide__image">
-                  <img src={image} alt="" />
-                </div>
-              </Container>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Container>
+      <Element name="section1">
+        <Container className="hero__container">
+          <Swiper
+            spaceBetween={30}
+            effect={"fade"}
+            centeredSlides={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            keyboard={{
+              enabled: true,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            modules={[EffectFade, Keyboard, Autoplay, Pagination]}
+            className="mySwiper"
+          >
+            {heroImages.map((image, index) => (
+              <SwiperSlide key={index}>
+                <Container className="custom__container">
+                  <div className="hero__slide p-5">
+                    <h1>Join the conversation with</h1>
+                    <h1>
+                      <span className="highlight">travelers</span> around the
+                      world today
+                    </h1>
+                    <p className="homepage__p">
+                      Dive into a world of discovery with our curated selection
+                      of tours designed to immerse you in the beauty of each
+                      destination
+                    </p>
+                    <Link to="/forum">
+                      <Button className="primary__btn big__pad">
+                        JOIN NOW
+                      </Button>
+                    </Link>
+                  </div>
+                  <div className="swiper__slide__image">
+                    <img src={image} alt="" />
+                  </div>
+                </Container>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Container>
+      </Element>
       {/* Hero Section Ends */}
 
       {/*SERVICES SECTION STARTS */}
@@ -119,6 +132,9 @@ const Home = () => {
       </section>
       {/* TOUR DESTINATIONS SECTION ENDS */}
       <ContactModal />
+      <CookieBanner />
+      {/* Links to sections */}
+      <ScrollLink to="section1" smooth={true} duration={500}></ScrollLink>
     </>
   );
 };

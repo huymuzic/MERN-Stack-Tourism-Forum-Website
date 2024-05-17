@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CommonSection from "../../Shared/CommonSection";
 import { Container, Row, Col } from "react-bootstrap";
 
 import { useLocation } from "react-router-dom";
 import TourCard from "../../Shared/TourCard";
+import SearchBar from "../../Shared/SearchBar";
 
 const SearchResultList = () => {
   const location = useLocation();
+  const [data, setData] = useState(location.state);
 
-  const [data] = useState(location.state);
+  useEffect(() => {
+    setData(location.state);
+  }, [location.state]);
 
   return (
     <>
       <CommonSection title={"Tour Search Result"} />
+      <section>
+        <Container>
+          <Row>
+            <SearchBar />
+          </Row>
+        </Container>
+      </section>
       <section>
         <Container>
           <Row>

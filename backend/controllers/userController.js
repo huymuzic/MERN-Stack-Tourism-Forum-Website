@@ -1,8 +1,12 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
-import { gfs } from '../utils/gridfsconfig.js';
-import { sendOTPEmail, generateAndStoreOTP, checkOTPAndUpdatePassword } from '../utils/otp.js';
-import { getStoredOTP, clearOTP } from '../utils/otpStorage.js';
+import { gfs } from "../utils/gridfsconfig.js";
+import {
+  sendOTPEmail,
+  generateAndStoreOTP,
+  checkOTPAndUpdatePassword,
+} from "../utils/otp.js";
+import { getStoredOTP, clearOTP } from "../utils/otpStorage.js";
 import Theme from "../models/Theme.js";
 const saltRounds = 10;
 // create new user
@@ -78,7 +82,7 @@ export const deleteUser = async (req, res) => {
 export const getSingleUser = async (req, res) => {
   const id = req.params.id;
   try {
-    let user = await User.findById(id).populate('theme');
+    let user = await User.findById(id).populate("theme");
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -444,18 +448,18 @@ export const lockUser = async (req, res) => {
   }
 };
 
-
-
-// CreateOrUpdateTheme 
+// CreateOrUpdateTheme
 export const createOrUpdateTheme = async (req, res) => {
   const { userId, themeData } = req.body;
 
   if (!userId || !themeData) {
-    return res.status(400).json({ error: "User ID and theme data are required." });
+    return res
+      .status(400)
+      .json({ error: "User ID and theme data are required." });
   }
 
   try {
-    const user = await User.findById(userId).populate('theme');
+    const user = await User.findById(userId).populate("theme");
 
     if (!user) {
       return res.status(404).json({ error: "User not found." });
@@ -463,7 +467,9 @@ export const createOrUpdateTheme = async (req, res) => {
 
     let theme;
     if (user.theme) {
-      theme = await Theme.findByIdAndUpdate(user.theme._id, themeData, { new: true });
+      theme = await Theme.findByIdAndUpdate(user.theme._id, themeData, {
+        new: true,
+      });
     } else {
       theme = new Theme(themeData);
       await theme.save();
@@ -478,7 +484,6 @@ export const createOrUpdateTheme = async (req, res) => {
   }
 };
 
-
 // get Theme
 
 export const getTheme = async (req, res) => {
@@ -489,7 +494,7 @@ export const getTheme = async (req, res) => {
   }
 
   try {
-    const user = await User.findById(userId).populate('theme');
+    const user = await User.findById(userId).populate("theme");
 
     if (!user) {
       return res.status(404).json({ error: "User not found." });

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link, Element, animateScroll as scroll } from "react-scroll";
 
 const TermsOfService = () => {
-  window.scrollTo(0, 0);
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   return (
     <>
@@ -11,16 +14,18 @@ const TermsOfService = () => {
           <Col>
             <h1>Terms of Use</h1>
             <hr />
-            <section>
-              <h2>1. Introduction</h2>
-              <br />
-              <p>
-                Welcome to our tourism booking platform! By using our website,
-                you agree to comply with and be bound by these terms and
-                conditions. If you do not agree with any part of these terms,
-                please do not use our platform.
-              </p>
-            </section>
+            <Element name="section1">
+              <section>
+                <h2>1. Introduction</h2>
+                <br />
+                <p>
+                  Welcome to our tourism booking platform! By using our website,
+                  you agree to comply with and be bound by these terms and
+                  conditions. If you do not agree with any part of these terms,
+                  please do not use our platform.
+                </p>
+              </section>
+            </Element>
             <section>
               <h2>2. Copyright</h2>
               <br />
@@ -84,6 +89,8 @@ const TermsOfService = () => {
           </Col>
         </Row>
       </Container>
+      {/* Links to sections */}
+      <Link to="section1" smooth={true} duration={500}></Link>
     </>
   );
 };

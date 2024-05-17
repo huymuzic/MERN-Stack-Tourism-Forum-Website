@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CommonSection from "../../Shared/CommonSection";
+import { Link, Element, animateScroll as scroll } from "react-scroll";
 
 import "./index.css";
 import TourCard from "../../Shared/TourCard";
 import SearchBar from "../../Shared/SearchBar";
 import CircularProgress from "../../components/CircularProgress";
+import CustomPagination from "../../components/CustomPagination";
 
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -27,15 +29,24 @@ const Tours = () => {
       const pages = Math.ceil(tourCount / 8);
       setPageCount(pages);
     }
-    window.scrollTo(0, 0);
   }, [toursLoading, countLoading, page, tourCount, tours]);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber - 1);
+  };
   return (
     <>
       <CommonSection title={"All Tours"} />
       <section>
         <Container>
           <Row>
-            <SearchBar />
+            <Element name="section1">
+              <SearchBar />
+            </Element>
           </Row>
         </Container>
       </section>
@@ -53,7 +64,7 @@ const Tours = () => {
                 <TourCard tour={tour} />
               </Col>
             ))}
-            <Col lg="12">
+            {/* <Col lg="12">
               <div className="pagination d-flex align-items-center justify-content-center mt-4 gap-3">
                 {[...Array(pageCount).keys()].map((number) => (
                   <span
@@ -65,10 +76,19 @@ const Tours = () => {
                   </span>
                 ))}
               </div>
+            </Col> */}
+            <Col lg="12">
+              <CustomPagination
+                totalPages={pageCount}
+                currentPage={page + 1}
+                onChange={handlePageChange}
+              />
             </Col>
           </Row>
         </Container>
       </section>
+      {/* Links to sections */}
+      <Link to="section1" smooth={true} duration={500}></Link>
     </>
   );
 };
