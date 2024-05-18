@@ -229,7 +229,6 @@ const UserStatusDot = ({ status }) => {
   return (
     <Stack direction="horizontal" gap={2}>
       <div style={{ width: "12px", height: "12px", borderRadius: "100%", backgroundColor: userStatus?.color }}></div>
-      <p className="body-1">{userStatus?.Name}</p>
     </Stack>
   );
 };
