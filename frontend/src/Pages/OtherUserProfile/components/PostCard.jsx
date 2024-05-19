@@ -68,10 +68,10 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }
                             <Row>
                                 <Col className="align-items-center">
                                     <Card.Title><strong>{post.title}</strong></Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted">@{post.authorId.username}</Card.Subtitle>
+                                    <Card.Subtitle className="mb-2 text-muted">@{post.authorId?.username}</Card.Subtitle>
                                     <Card.Text><small>{new Date(post.createdAt).toLocaleString()}</small></Card.Text>
                                 </Col>
-                                {(post.authorId._id === user?._id || user?.role === 'admin') && (
+                                {(post.authorId?._id === user?._id || user?.role === 'admin') && (
                                     <Col xs="auto" className="align-items-end">
                                         <Dropdown>
                                             <Dropdown.Toggle
