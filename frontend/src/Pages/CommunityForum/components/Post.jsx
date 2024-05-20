@@ -3,7 +3,7 @@ import formatDate from '../components/DateFormat.js';
 import { getAvatarUrl } from '../../../utils/getAvar.js';
 import { useUser } from '../../../utils/UserContext';
 import { useState } from 'react';
-import { handleLike } from './ApiCalls.jsx';
+import { handleLike, handledelete } from './ApiCalls.jsx';
 import { usePopUp } from "../../../components/pop-up/usePopup";
 import PopUpBase from "../../../components/pop-up/PopUpBase";
 
