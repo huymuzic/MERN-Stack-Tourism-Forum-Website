@@ -130,7 +130,27 @@ function Favorites() {
       likes,
     }));
   };
+  const handleDelete = async (postId) => {
+    try {
+        const response = await fetch(`${baseURL}/api/forum/p/${postId}/deletePost`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        });
 
+        if (!response.ok) {
+            throw new Error('Failed to delete post');
+        }
+
+        const responseBody = await response.json();
+        fetchData();
+        pushSuccess('Deleted post');
+    } catch (error) {
+        console.error(error);
+    }
+};
   const handleToggleLike = (postId) => {
     toggleLike(postId, user._id, null, null); // Update favorite posts after toggling like
   };
@@ -152,6 +172,7 @@ function Favorites() {
             onToggleLike={handleToggleLike}
             handleLockConfirm={(id) => handleLockConfirm(id)}
             handleUnLockConfirm={(id) => handleUnLockConfirm(id)}
+            handleDelete={(id) => handleDelete(id)}
           />
         ))
       ) : (

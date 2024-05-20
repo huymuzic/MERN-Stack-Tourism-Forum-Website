@@ -131,6 +131,27 @@ function UserPosts() {
       }
     } catch (error) {}
   };
+  const handleDelete = async (postId) => {
+    try {
+        const response = await fetch(`${baseURL}/api/forum/p/${postId}/deletePost`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete post');
+        }
+
+        const responseBody = await response.json();
+        fetchData();
+        pushSuccess('Deleted post');
+    } catch (error) {
+        console.error(error);
+    }
+};
   const fetchData = async () => {
     const posts = await fetchPostsByUser(id); // Replace USER_ID with actual user ID
     setUserPosts(posts);
@@ -149,6 +170,7 @@ function UserPosts() {
             onToggleLike={handleToggleLike}
             handleLockConfirm={(id) => handleLockConfirm(id)}
             handleUnLockConfirm={(id) => handleUnLockConfirm(id)}
+            handleDelete={(id) => handleDelete(id)}
           />
         ))
       ) : (
