@@ -38,6 +38,10 @@ const postSchema = new mongoose.Schema(
       enum: ["archived", "deleted", "unarchived"],
       default: "unarchived",
     },
+    images: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+    }
   },
   { timestamps: true }
 );

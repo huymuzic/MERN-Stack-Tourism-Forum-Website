@@ -1,4 +1,5 @@
 import { openDB } from 'idb';
+import { pushSuccess, pushError } from '../../../components/Toast';
 
 export async function handleLike(postId, setPost, setUser) {
     try {
@@ -17,6 +18,7 @@ export async function handleLike(postId, setPost, setUser) {
         const responseBody = await response.json();
         setPost(responseBody.post);
         setUser(responseBody.user);
+        pushSuccess('Post liked');
     } catch (error) {
         console.error(error);
     }
@@ -45,8 +47,10 @@ export async function replyTopic(content, images, nav, id) {
         //setPost(responseBody.post);
         //setUser(responseBody.user);
         nav(`/forum/p/${responseBody.repId}`)
-        document.getElementById("modalClose").click();
+        document.getElementById("replyModalClose").click();
+        pushSuccess('Replied to post');
     } catch (error) {
+        pushError('Failed to reply to post');
         console.error(error.message);
     }
 }
@@ -108,9 +112,11 @@ export async function createTopic(title, content, images, navigate) {
         }
 
         const data = await response.json();
-        document.getElementById("modalClose").click();
         navigate(`/forum/p/${data.postId}`)
+        document.getElementById("postModalClose").click();
+        pushSuccess('Post created');
     } catch (error) {
+        pushError('Failed to create post');
         console.error('Error:', error.message);
     }
 }

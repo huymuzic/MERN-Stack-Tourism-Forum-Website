@@ -2,8 +2,9 @@ import Post from "../../models/Post.js";
 
 export async function posts(req, res) {
     try {
-        const posts = await Post.find({ parentId: null})
+        const posts = await Post.find({ parentId: null })
             .populate(['authorId', 'childrenIds'])
+            .sort({ 'updatedAt': -1 })
             .skip(Number(req.headers.skip) || 0)
             .limit(5);
         

@@ -126,9 +126,26 @@ function Reply(props) {
                 <span>Reply</span>
             </button>
 
-            <button className='rounded ctm-btn px-3 py-2'>
-                <i className="fa-solid fa-ellipsis"></i>
-            </button>
+            {child.authorId && user?._id === child.authorId?._id && (<>
+                <button className='rounded ctm-btn px-3 py-2' data-bs-toggle='dropdown'>
+                    <i className="fa-solid fa-ellipsis"></i>
+                </button>
+
+                <ul className="dropdown-menu">
+                    <li>
+                        <button className="dropdown-item">
+                            <i className="fa-solid fa-pencil pe-2"></i>
+                            <span>Edit</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item text-danger">
+                            <i className="fa-solid fa-trash-can pe-2"></i>
+                            <span>Delete</span>
+                        </button>
+                    </li>
+                </ul>
+            </>)}
         </div>
     </div>)
 }

@@ -67,6 +67,10 @@ function CommunityForum() {
         <Editor
             status='reply'
         />
+
+        <Editor
+            status='edit'
+        />
     </>
 };
 

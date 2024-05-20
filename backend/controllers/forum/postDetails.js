@@ -21,7 +21,8 @@ export async function details(req, res) {
 
         const post = await Post.findOne({ _id: id }).populate(['parentId', 'authorId', {
             path: 'childrenIds',
-            populate: [{ path: 'authorId' }, { path: 'parentId'}]
+            populate: [{ path: 'authorId' }, { path: 'parentId'}],
+            options: { sort: { 'updatedAt': -1 } }
         }]);
 
         const rootPost = post.parentId === null ? post : await cursivePopulate(post);

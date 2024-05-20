@@ -68,7 +68,7 @@ const MyEditor = (props) => {
                         <button
                             type="button"
                             className="btn-close"
-                            id='modalClose'
+                            id={`${status}ModalClose`}
                             data-bs-dismiss="modal"
                             aria-label="Close"
                             onClick={() => {

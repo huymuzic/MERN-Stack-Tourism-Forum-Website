@@ -17,6 +17,7 @@ function SearchFilter() {
     const [searchParams] = useSearchParams();
     const title = searchParams.get('title');
     const keyword = searchParams.get('keyword');
+    const sort = searchParams.get('sort');
 
     const conParams = () => {
         let paramString = '?'
@@ -26,14 +27,18 @@ function SearchFilter() {
         }
 
         if (keyword) {
-            paramString += `keyword=${keyword}`;
+            paramString += `keyword=${keyword}&`;
+        }
+
+        if (sort) {
+            paramString += `sort=${sort}`;
         }
 
         return paramString;
     };
 
     const paramExists = () => {
-        return title || keyword;
+        return title || keyword || sort;
     }
 
     const searchPost = async (clearedF, clearedS) => {
@@ -63,7 +68,7 @@ function SearchFilter() {
         setSkip(0);
 
         searchPost([], 0);
-    }, [location, title, keyword])
+    }, [location, title, keyword, sort])
 
     function onSubmit(data) {
         let url = '?';
@@ -74,6 +79,8 @@ function SearchFilter() {
         if (data.content) {
             url += `keyword=${data.content}&`;
         }
+        
+        url += `sort=${data.sort || -1}&`;
 
         url = url.endsWith('&') || url.endsWith('?') ? url.slice(0, -1) : url;
 
@@ -105,6 +112,18 @@ function SearchFilter() {
                             placeholder="Enter your keywords"
                             {...register("content")}
                         />
+                    </div>
+                    <div className="col-12">
+                        <label htmlFor="sortInput" className="form-label">Sort options</label>
+                        <select 
+                            className='form-select'
+                            id='sortInput'
+                            aria-describedby="sortInput"
+                            {...register("sort")}
+                        >
+                            <option value='-1'>Newest to Oldest</option>
+                            <option value='1'>Oldest to Newest</option>
+                        </select>
                     </div>
                     <button type='submit' className='rounded-5 btn btn-primary'>
                         Search
