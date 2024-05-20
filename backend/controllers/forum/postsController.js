@@ -8,7 +8,7 @@ export async function posts(req, res) {
             .skip(Number(req.headers.skip) || 0)
             .limit(5);
         
-        const length = await Post.countDocuments({ parentId: null });
+        const length = await Post.countDocuments({ parentId: null, status: 'unarchived' });
 
         res.json({posts: posts, length: length});
     } catch (error) {

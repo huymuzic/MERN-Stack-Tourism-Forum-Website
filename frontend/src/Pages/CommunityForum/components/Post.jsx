@@ -4,6 +4,8 @@ import { getAvatarUrl } from '../../../utils/getAvar.js';
 import { useUser } from '../../../utils/UserContext';
 import { useState } from 'react';
 import { handleLike } from './ApiCalls.jsx';
+import { usePopUp } from "../../../components/pop-up/usePopup";
+import PopUpBase from "../../../components/pop-up/PopUpBase";
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -21,9 +23,15 @@ function countChildren(post) {
 const Post = (props) => {
     const [post, setPost] = useState(props.post);
     const { user, setUser } = useUser();
+    const popUpDelete = usePopUp();
     const navigate = useNavigate();
 
-    return ( post.status === 'unarchived' && <div className='px-3 col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
+    const onDeleteConfirm = async () => {
+        popUpDelete.onClose()
+        handledelete(post._id, setPost)
+    };
+
+    return (post.status === 'unarchived' && <div className='px-3 col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
         <div className="d-flex mt-3 ms-2">
             <Link className='ps-3 d-block' to={`/profile/${post.authorId && post.authorId._id}`}>
                 <img height='45' width='45'
@@ -97,7 +105,10 @@ const Post = (props) => {
                         </button>
                     </li>
                     <li>
-                        <button className="dropdown-item text-danger">
+                        <button 
+                            className="dropdown-item text-danger"
+                            onClick={() => popUpDelete.setTrue()}
+                        >
                             <i className="fa-solid fa-trash-can pe-2"></i>
                             <span>Delete</span>
                         </button>
@@ -105,6 +116,12 @@ const Post = (props) => {
                 </ul>
             </>)}
         </div>
+        <PopUpBase
+            {...popUpDelete}
+            onConfirm={onDeleteConfirm}
+            title="Delete post Confirmation"
+            desc={`Are you sure you want to delete this post?`}
+        />
     </div>
 )};
 
