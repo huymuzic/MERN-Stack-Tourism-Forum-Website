@@ -76,8 +76,8 @@ function SearchFilter() {
             url += `title=${data.title}&`;
         }
 
-        if (data.content) {
-            url += `keyword=${data.content}&`;
+        if (data.keywords) {
+            url += `keyword=${data.keywords}&`;
         }
         
         url += `sort=${data.sort || -1}&`;
@@ -103,14 +103,14 @@ function SearchFilter() {
                         />
                     </div>
                     <div className="col-12">
-                        <label htmlFor="contentInput" className="form-label">Keywords</label>
+                        <label htmlFor="keywordsInput" className="form-label">Keywords</label>
                         <input
                             type="text"
                             className='form-control'
-                            id="contentInput"
-                            aria-describedby="contentInput"
+                            id="keywordsInput"
+                            aria-describedby="keywordsInput"
                             placeholder="Enter your keywords"
-                            {...register("content")}
+                            {...register("keywords")}
                         />
                     </div>
                     <div className="col-12">

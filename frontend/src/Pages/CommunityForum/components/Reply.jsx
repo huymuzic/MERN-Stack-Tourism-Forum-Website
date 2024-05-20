@@ -107,7 +107,7 @@ function Reply(props) {
                 <button className='d-flex align-items-center gap-3 rounded ctm-btn px-3 py-2 heart'
                     onClick={() => handleLike(child._id)}>
                     <span>{child.likes.length}</span>
-                    <i className={`fa-heart ${child.likes.includes(user._id) ? 'fa-solid' : 'fa-regular'}`}></i>
+                    <i className={`fa-heart ${user && child.likes.includes(user._id) ? 'fa-solid' : 'fa-regular'}`}></i>
                 </button>
                 : <></>}
 
@@ -117,10 +117,12 @@ function Reply(props) {
             </div>
 
             <button
-                data-bs-toggle="modal"
-                data-bs-target="#replyModal"
+                data-bs-toggle={user ? "modal" : ""}
+                data-bs-target={user ? "#replyModal" : ""}
                 className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                onClick={() => nav(`/forum/p/${child._id}`)}
+                onClick={() => {
+                    nav(user ? `/forum/p/${child._id}` : '/login')
+                }}
             >
                 <i className="fa-solid fa-share"></i>
                 <span>Reply</span>

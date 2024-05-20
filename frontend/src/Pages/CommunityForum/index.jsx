@@ -63,14 +63,6 @@ function CommunityForum() {
                 return <Post key={post._id} post={post} />
             })}
         </InfiniteScroll>
-
-        <Editor
-            status='reply'
-        />
-
-        <Editor
-            status='edit'
-        />
     </>
 };
 
