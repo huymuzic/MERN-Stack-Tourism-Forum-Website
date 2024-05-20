@@ -132,7 +132,7 @@ function Favorites() {
   };
   const handleDelete = async (postId) => {
     try {
-        const response = await fetch(`${baseURL}/api/forum/p/${postId}/deletePost`, {
+        const response = await fetch(`${baseUrl}/api/forum/p/${postId}/deletePost`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

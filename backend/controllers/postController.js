@@ -21,7 +21,7 @@ export const getPostsByUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         const postIds = user.posts;
-        const posts = await Post.find({ authorId: userId  , _id: { $in: user.posts } }).populate("authorId", "username email").exec();
+        const posts = await Post.find({ authorId: userId  , _id: { $in: user.posts },  status: { $in: ["archived", "unarchived"] }  }).populate("authorId", "username email").exec();
         res.json(posts);
     } catch (err) {
         console.error("Error fetching user posts:", err);
@@ -38,7 +38,7 @@ export const getFavoritePostsByUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         const FavorpostIds = user.likes;
-        const posts = await Post.find({ _id: { $in: FavorpostIds }, parentId: null }).populate("authorId", "username email").exec();
+        const posts = await Post.find({ _id: { $in: FavorpostIds }, parentId: null,  status: { $in: ["archived", "unarchived"] }  }).populate("authorId", "username email").exec();
         res.json(posts);
     } catch (err) {
         console.error("Error fetching favorite posts:", err);
