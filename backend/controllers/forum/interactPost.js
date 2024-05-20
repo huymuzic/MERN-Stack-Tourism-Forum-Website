@@ -13,6 +13,29 @@ async function findRootPostId(postId) {
         return findRootPostId(post.parentId);
     }
 }
+export const deletePost = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const updPost = await Post.findByIdAndUpdate(
+        id,
+        {
+          $set: { status: "deleted" },
+        },
+        { new: true }
+      );
+  
+      res.status(200).json({
+        success: true,
+        message: "Successfully delete post",
+        post: updPost,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to delete post. Try again",
+      });
+    }
+  };
 
 export const deletePost = async (req, res) => {
     const id = req.params.id;

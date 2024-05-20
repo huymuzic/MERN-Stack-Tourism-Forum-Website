@@ -61,7 +61,22 @@ const PrivacyPolicy = () => {
             </section>
             <section>
               <h2>4. Data Sharing and Security</h2>
-              <p></p>
+              <br />
+              <p>
+                We take your privacy and data security very seriously. The
+                personal information we collect, including email, username,
+                password, and posts, is stored securely in our database.
+              </p>
+              <p>
+                We use your email and username and password for authentication
+                and to manage your account. We do not share your personal
+                information with third parties without your consent
+              </p>
+              <p>
+                We encryped your password so we do not have access to the actual
+                password of your account. The password is hashed and store it in
+                our database.
+              </p>
             </section>
             <section>
               <h2>5. Your Rights</h2>

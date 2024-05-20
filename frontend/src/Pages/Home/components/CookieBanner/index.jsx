@@ -63,7 +63,7 @@ const bannerStyle = {
   backgroundColor: "#ffffff",
   borderTop: "1px solid #cccccc",
   padding: "10px 0",
-  zIndex: 1000,
+  zIndex: 10000,
 };
 
 const textStyle = {

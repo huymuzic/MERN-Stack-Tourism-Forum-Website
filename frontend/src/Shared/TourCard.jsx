@@ -3,6 +3,7 @@ import { Card, CardBody } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import calculateAvgRating from "../utils/avgRating";
 import "./tour-card.css";
+import { environment } from "../config";
 
 const TourCard = ({ tour }) => {
   const { _id, title, country, city, price, photo, featured, reviews } = tour;
@@ -13,8 +14,10 @@ const TourCard = ({ tour }) => {
     <div className="tour__card">
       <Card className="card__tour">
         <div className="tour__img">
-          <img src={photo} alt="tour-img" />
-          {featured && <span>Featured</span>}
+          <Link to={`/tours/${_id} `}>
+            <img src={environment == "PROD" ? photo : `./src${photo}`} alt="tour-img" />
+            {featured && <span>Featured</span>}
+          </Link>
         </div>
 
         <CardBody>

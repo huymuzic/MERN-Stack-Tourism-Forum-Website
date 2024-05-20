@@ -4,15 +4,15 @@ import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 import { useUser } from "../../../utils/UserContext";
 import { pushError, pushSuccess } from "../../../components/Toast";
+import { baseUrl } from "../../../config";
 function Favorites() {
   const [favoritePosts, setFavoritePosts] = useState([]);
   const { user, setUser } = useUser();
   const { id } = useParams();
-  const baseURL = import.meta.env.VITE_BASE_URL;
   const fetchFavoritePostsByUser = async (userId) => {
     try {
       const response = await fetch(
-        `${baseURL}/api/v1/posts/favorites/${userId}`,
+        `${baseUrl}/api/v1/posts/favorites/${userId}`,
         {
           method: "GET",
           credentials: "include",
@@ -49,7 +49,7 @@ function Favorites() {
     setFavoritePosts = null
   ) => {
     try {
-      const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
+      const response = await fetch(`${baseUrl}/api/v1/posts/like/${postId}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -87,7 +87,7 @@ function Favorites() {
   };
   const handleLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -107,7 +107,7 @@ function Favorites() {
 
   const handleUnLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userunhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",

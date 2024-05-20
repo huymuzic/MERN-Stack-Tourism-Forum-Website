@@ -79,20 +79,6 @@ export const updatePost = async (req, res) => {
     }
 };
 
-// Delete a post
-export const deletePost = async (req, res) => {
-    const { postId } = req.params;
-    try {
-        const deletedPost = await Post.findByIdAndDelete(postId);
-        if (!deletedPost) {
-            return res.status(404).json({ message: "Post not found" });
-        }
-        res.json({ message: "Post deleted successfully" });
-    } catch (err) {
-        console.error("Error deleting post:", err);
-        res.status(500).json({ message: err.message });
-    }
-};
 
 // Toggle like/favorite on a post
 export const toggleLikePost = async (req, res) => {
@@ -258,6 +244,30 @@ export const hidePost = async (req, res) => {
       res.status(500).json({
         success: false,
         message: "Failed to unhide post. Try again",
+      });
+    }
+  };
+
+  export const deletePost = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const updatedUser = await Post.findByIdAndUpdate(
+        id,
+        {
+          $set: { status: "deleted" },
+        },
+        { new: true }
+      );
+  
+      res.status(200).json({
+        success: true,
+        message: "Successfully delete post",
+        data: updatedUser,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to delete post. Try again",
       });
     }
   };

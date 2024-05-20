@@ -11,21 +11,22 @@ import CustomPagination from "../../components/CustomPagination";
 import { Container, Row, Col } from "react-bootstrap";
 
 import useFetch from "../../hooks/useFetch";
+import { baseUrl } from "../../config";
 
 const Tours = () => {
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
-  const [isToursLoading, setIsToursLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data: tours, isLoading: toursLoading } = useFetch(
-    `http://localhost:4000/api/v1/tours?page=${page}`
+    `${baseUrl}/api/v1/tours?page=${page}`
   );
   const { data: tourCount, isLoading: countLoading } = useFetch(
-    `http://localhost:4000/api/v1/tours/search/getTourCount`
+    `${baseUrl}/api/v1/tours/search/getTourCount`
   );
   useEffect(() => {
     if (!toursLoading && !countLoading && tours.length && tourCount) {
-      setIsToursLoading(false);
+      setIsLoading(false);
       const pages = Math.ceil(tourCount / 8);
       setPageCount(pages);
     }
@@ -53,30 +54,18 @@ const Tours = () => {
       <section className="pt-0">
         <Container>
           <Row>
-            {isToursLoading && (
-              <div className="tours__loading">
+            {isLoading ? (
+              <Container className="d-flex justify-content-center">
                 <CircularProgress />
-              </div>
+              </Container>
+            ) : (
+              tours?.map((tour) => (
+                <Col lg="3" className="mb-4" key={tour.id}>
+                  {" "}
+                  <TourCard tour={tour} />
+                </Col>
+              ))
             )}
-            {tours?.map((tour) => (
-              <Col lg="3" className="mb-4" key={tour.id}>
-                {" "}
-                <TourCard tour={tour} />
-              </Col>
-            ))}
-            {/* <Col lg="12">
-              <div className="pagination d-flex align-items-center justify-content-center mt-4 gap-3">
-                {[...Array(pageCount).keys()].map((number) => (
-                  <span
-                    key={number}
-                    onClick={() => setPage(number)}
-                    className={page === number ? "active__page" : ""}
-                  >
-                    {number + 1}
-                  </span>
-                ))}
-              </div>
-            </Col> */}
             <Col lg="12">
               <CustomPagination
                 totalPages={pageCount}

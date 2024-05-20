@@ -110,3 +110,22 @@
     "featured": false
    }
 ]
+
+[
+  {
+    "title": "Hero image 1",
+    "photo": "./images/hero-image-1.jpg",
+  }
+  {
+    "title": "Hero image 2",
+    "photo": "./images/hero-image-2.jpg",
+  }
+  {
+    "title": "Hero image 3",
+    "photo": "./images/hero-image-3.jpg",
+  }
+  {
+    "title": "Hero image 4",
+    "photo": "./images/hero-image-4.jpg",
+  }
+]

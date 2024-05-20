@@ -4,18 +4,18 @@ import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 import { useUser } from "../../../utils/UserContext";
 import { pushError, pushSuccess } from "../../../components/Toast";
+import { baseUrl } from "../../../config";
 
 function UserPosts() {
   const [userPosts, setUserPosts] = useState([]);
   const { user, setUser } = useUser();
   const { id } = useParams();
-  const baseURL = import.meta.env.VITE_BASE_URL;
 
   const fetchPostsByUser = async (userId) => {
  
 
     try {
-      const response = await fetch(`${baseURL}/api/v1/posts/user/${userId}`, {
+      const response = await fetch(`${baseUrl}/api/v1/posts/user/${userId}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -42,7 +42,7 @@ function UserPosts() {
     setFavoritePosts = null
   ) => {
     try {
-      const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
+      const response = await fetch(`${baseUrl}/api/v1/posts/like/${postId}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -93,7 +93,7 @@ function UserPosts() {
   };
   const handleLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -114,7 +114,7 @@ function UserPosts() {
   const handleUnLockConfirm = async (userId) => {
     try {
       console.log("work nì");
-      const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userunhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",

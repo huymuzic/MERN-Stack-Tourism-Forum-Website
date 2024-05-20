@@ -5,6 +5,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import CircularProgress from "../../components/CircularProgress";
 import Post from './components/Post';
 import NoData from "../Admin/components/NoData";
+import { baseUrl } from '../../config';
 
 function SearchFilter() {
     const { register, handleSubmit } = useForm({});
@@ -43,7 +44,7 @@ function SearchFilter() {
 
     const searchPost = async (clearedF, clearedS) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/search${conParams()}`, {
+            const response = await fetch(`${baseUrl}/api/forum/search${conParams()}`, {
                 headers: {
                     'skip': clearedS !== undefined ? clearedS : skip,
                 }

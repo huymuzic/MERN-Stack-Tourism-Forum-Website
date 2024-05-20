@@ -8,6 +8,7 @@ import NoData from "../NoData";
 import debounce from "../../../../helper";
 import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete/useCustomAutocomplete";
 import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
+import { baseUrl } from "../../../../config";
 
 const forumPostSearchType = [
   {
@@ -57,7 +58,7 @@ export default function ForumPostsList() {
 
   const fetchForumPosts = async () => {
     setLoading(true);
-    const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/posts/list`);
+    const url = new URL(`${baseUrl}/api/v1/posts/list`);
     url.searchParams.append("page", filter.page);
     url.searchParams.append("limit", pageSize);
     if (filter.status) {
@@ -66,10 +67,12 @@ export default function ForumPostsList() {
     url.searchParams.append("search", filter.searchValue);
     url.searchParams.append("searchType", filter.searchType);
 
-    return fetch(url, { credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    }, })
+    return fetch(url, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           pushError("Failed to get list user");
@@ -89,10 +92,10 @@ export default function ForumPostsList() {
   const handleLockConfirm = async (id) => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/posts/hide/${id}`
+        `${baseUrl}/api/v1/posts/hide/${id}`
       );
       const response = await fetch(url, {
-        method: 'PUT',
+        method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +120,7 @@ export default function ForumPostsList() {
   const handleUnLockConfirm = async (id) => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/posts/unhide/${id}`
+        `${baseUrl}/api/v1/posts/unhide/${id}`
       );
       const response = await fetch(url, {
         method: "PUT",

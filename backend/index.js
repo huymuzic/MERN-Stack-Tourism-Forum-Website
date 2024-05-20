@@ -13,10 +13,10 @@ import formRoute from "./routes/form.js";
 import tourRoute from "./routes/tour.js";
 import reviewRoute from "./routes/review.js";
 import bookingRoute from "./routes/booking.js";
+import imagesRoute from "./routes/images.js";
 
 dotenv.config();
 const __dirname = path.resolve();
-const port = process.env.PORT || 3000;
 const app = express();
 const corsOptions = {
   origin: true,
@@ -24,15 +24,17 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization", "skip"],
 };
 const mongoURI = process.env.MONGO_URI;
+
 // database connection
 const connect = async () => {
   try {
-    mongoose.connect(mongoURI);
+    await mongoose.connect(mongoURI, {});
     console.log("MongoDB is connected");
   } catch (err) {
     console.error("MongoDB connection error:", err.message);
   }
 };
+
 // middleware
 app.use(express.json());
 app.use(cors(corsOptions));
@@ -46,16 +48,17 @@ app.use("/api/v1/form", formRoute);
 app.use("/api/v1/tours", tourRoute);
 app.use("/api/v1/reviews", reviewRoute);
 app.use("/api/v1/booking", bookingRoute);
+app.use("/api/v1/images", imagesRoute);
 
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
+app.use(
+  "/assets/images",
+  express.static(path.join(__dirname, "frontend", "src", "assets", "images"))
+);
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-});
-
-// testing
-app.get("/", (req, res) => {
-  res.send("Hello World");
 });
 
 app.use((err, req, res, next) => {
@@ -68,7 +71,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || 3000, () => {
   connect();
-  console.log(`Server is running on port ${port}`);
+  console.log("Server is running on port 3000");
 });

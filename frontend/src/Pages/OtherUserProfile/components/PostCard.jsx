@@ -5,8 +5,9 @@ import { FaHeart, FaRegHeart, FaComment } from 'react-icons/fa';
 import { useUser } from "../../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../theme/Theme.jsx";
+import { pushError, pushSuccess } from "../../../components/Toast";
 
-function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }) {
+function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm, handleDelete }) {
     const { user } = useUser();
     const { color } = useTheme();
     const [isLiked, setIsLiked] = useState(false);
@@ -25,6 +26,10 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }
     };
 
     const handleLike = () => {
+        if (!user) {
+            navigate(`/login`);
+            pushError("Please log in to perform this action")
+        }
         onToggleLike(post._id);
         setIsLiked(!isLiked);
     };
@@ -87,6 +92,7 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }
                                                 <Dropdown.Item onClick={handleButtonClick}>
                                                     {post.status === "unarchived" ? "Hide Post" : "Unhide Post"}
                                                 </Dropdown.Item>
+                                                <Dropdown.Item onClick={handleDelete}>Delete Post</Dropdown.Item>
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </Col>

@@ -25,7 +25,7 @@ const OtherUserProfile = () => {
   const [otherUserInfo, setOtherUserInfo] = useState({});
   const [activeNav, setActiveNav] = useState("Posts");
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_BASE_URL;
+  const baseURL = "https://cosmic-travel.onrender.com";
   const NAV_ITEMS = {
     Posts: UserPosts,
     Favorites: Favorites,
@@ -208,10 +208,7 @@ const OtherUserProfile = () => {
               {(user?.role === "admin" || user?._id === otherUserInfo._id) && (
                 <Col xs="auto" className="align-items-start">
                   <Dropdown className="ellipsis-dropdown">
-                    <Dropdown.Toggle
-                      variant="primary"
-                      id="dropdown-basic"
-                    >
+                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
                       <span>. . .</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
