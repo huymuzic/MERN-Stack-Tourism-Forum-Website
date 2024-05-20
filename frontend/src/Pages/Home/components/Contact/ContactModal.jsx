@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "./contact-modal.css";
 import { pushError, pushSuccess } from "../../../../components/Toast";
@@ -39,7 +39,7 @@ const ContactModal = () => {
         }
       );
 
-      const resBody = await res.json();
+      await res.json();
       if (res.ok) {
         pushSuccess("Form submitted successfully!");
         setFullName("");
