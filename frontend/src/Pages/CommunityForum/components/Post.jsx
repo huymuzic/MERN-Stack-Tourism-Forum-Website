@@ -23,7 +23,7 @@ const Post = (props) => {
     const { user, setUser } = useUser();
     const navigate = useNavigate();
 
-    return <div className='px-3 col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
+    return ( post.status === 'unarchived' && <div className='px-3 col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
         <div className="d-flex mt-3 ms-2">
             <Link className='ps-3 d-block' to={`/profile/${post.authorId && post.authorId._id}`}>
                 <img height='45' width='45'
@@ -106,6 +106,6 @@ const Post = (props) => {
             </>)}
         </div>
     </div>
-};
+)};
 
 export default Post;
