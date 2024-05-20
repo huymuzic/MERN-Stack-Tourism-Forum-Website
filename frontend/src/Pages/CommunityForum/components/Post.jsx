@@ -3,7 +3,10 @@ import formatDate from '../components/DateFormat.js';
 import { getAvatarUrl } from '../../../utils/getAvar.js';
 import { useUser } from '../../../utils/UserContext';
 import { useState } from 'react';
-import { handleLike } from './ApiCalls.jsx';
+import { handleLike, handledelete } from './ApiCalls.jsx';
+import { usePopUp } from "../../../components/pop-up/usePopup";
+import PopUpBase from "../../../components/pop-up/PopUpBase";
+import { baseUrl } from '../../../config/index.js';
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -21,15 +24,21 @@ function countChildren(post) {
 const Post = (props) => {
     const [post, setPost] = useState(props.post);
     const { user, setUser } = useUser();
+    const popUpDelete = usePopUp();
     const navigate = useNavigate();
 
-    return <div className='px-3 col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
+    const onDeleteConfirm = async () => {
+        popUpDelete.onClose()
+        handledelete(post._id, setPost)
+    };
+
+    return (post.status === 'unarchived' && <div className='px-3 col-md-10 col-lg-6 comment rounded-top bg-gray shadow-sm'>
         <div className="d-flex mt-3 ms-2">
             <Link className='ps-3 d-block' to={`/profile/${post.authorId && post.authorId._id}`}>
                 <img height='45' width='45'
                     className='rounded-5'
                     alt='profile picture'
-                    src={post.authorId ? getAvatarUrl(post.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                    src={post.authorId ? getAvatarUrl(post.authorId.avatar, baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                 </img>
             </Link>
 
@@ -84,26 +93,37 @@ const Post = (props) => {
                 <span>Reply</span>
             </button>
 
-            <button className='rounded ctm-btn px-3 py-2' data-bs-toggle='dropdown'>
-                <i className="fa-solid fa-ellipsis"></i>
-            </button>
+            {post.authorId && user?._id === post.authorId._id && (<>
+                <button className='rounded ctm-btn px-3 py-2' data-bs-toggle='dropdown'>
+                    <i className="fa-solid fa-ellipsis"></i>
+                </button>
 
-            <ul className="dropdown-menu">
-                <li>
-                    <button className="dropdown-item">
-                        <i className="fa-solid fa-pencil pe-2"></i>
-                        <span>Edit</span>
-                    </button>
-                </li>
-                <li>
-                    <button className="dropdown-item text-danger">
-                        <i className="fa-solid fa-trash-can pe-2"></i>
-                        <span>Delete</span>
-                    </button>
-                </li>
-            </ul>
+                <ul className="dropdown-menu">
+                    <li>
+                        <button className="dropdown-item">
+                            <i className="fa-solid fa-pencil pe-2"></i>
+                            <span>Edit</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button 
+                            className="dropdown-item text-danger"
+                            onClick={() => popUpDelete.setTrue()}
+                        >
+                            <i className="fa-solid fa-trash-can pe-2"></i>
+                            <span>Delete</span>
+                        </button>
+                    </li>
+                </ul>
+            </>)}
         </div>
+        <PopUpBase
+            {...popUpDelete}
+            onConfirm={onDeleteConfirm}
+            title="Delete post Confirmation"
+            desc={`Are you sure you want to delete this post?`}
+        />
     </div>
-};
+)};
 
 export default Post;

@@ -4,20 +4,18 @@ import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 import { useUser } from "../../../utils/UserContext";
 import { pushError, pushSuccess } from "../../../components/Toast";
+import { baseUrl } from "../../../config";
 
 function UserPosts() {
   const [userPosts, setUserPosts] = useState([]);
   const { user, setUser } = useUser();
   const { id } = useParams();
 
-  const token = localStorage.getItem("accessToken");
-  const baseURL = import.meta.env.VITE_BASE_URL;
-
   const fetchPostsByUser = async (userId) => {
-    const token = localStorage.getItem("accessToken");
+ 
 
     try {
-      const response = await fetch(`${baseURL}/api/v1/posts/user/${userId}`, {
+      const response = await fetch(`${baseUrl}/api/v1/posts/user/${userId}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -43,10 +41,8 @@ function UserPosts() {
     setUserPosts = null,
     setFavoritePosts = null
   ) => {
-    const token = localStorage.getItem("accessToken");
-
     try {
-      const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
+      const response = await fetch(`${baseUrl}/api/v1/posts/like/${postId}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -97,7 +93,7 @@ function UserPosts() {
   };
   const handleLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -118,7 +114,7 @@ function UserPosts() {
   const handleUnLockConfirm = async (userId) => {
     try {
       console.log("work nì");
-      const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userunhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -135,6 +131,27 @@ function UserPosts() {
       }
     } catch (error) {}
   };
+  const handleDelete = async (postId) => {
+    try {
+        const response = await fetch(`${baseUrl}/api/forum/p/${postId}/deletePost`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete post');
+        }
+
+        const responseBody = await response.json();
+        fetchData();
+        pushSuccess('Deleted post');
+    } catch (error) {
+        console.error(error);
+    }
+};
   const fetchData = async () => {
     const posts = await fetchPostsByUser(id); // Replace USER_ID with actual user ID
     setUserPosts(posts);
@@ -153,6 +170,7 @@ function UserPosts() {
             onToggleLike={handleToggleLike}
             handleLockConfirm={(id) => handleLockConfirm(id)}
             handleUnLockConfirm={(id) => handleUnLockConfirm(id)}
+            handleDelete={(id) => handleDelete(id)}
           />
         ))
       ) : (

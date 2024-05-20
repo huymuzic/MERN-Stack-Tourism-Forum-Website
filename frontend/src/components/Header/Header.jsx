@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import { Container, Button } from "react-bootstrap";
@@ -10,25 +9,7 @@ import { getAvatarUrl } from "../../utils/getAvar.js";
 import logo from "../../assets/images/logo.png";
 import { pushError, pushSuccess } from "../Toast";
 import { useTheme } from "../../theme/Theme.jsx";
-
-const nav__links = [
-  {
-    path: "/home",
-    display: "Home",
-  },
-  {
-    path: "/forum",
-    display: "Forum",
-  },
-  {
-    path: "/tours",
-    display: "Tours",
-  },
-  {
-    path: "/admin",
-    display: "Admin Portal",
-  },
-];
+import { baseUrl } from "../../config/index.js";
 
 function toggleDropdown() {
   var dropdownMenus = document.getElementsByClassName("user__icon__dropdown");
@@ -45,20 +26,16 @@ function toggleDropdown() {
 
 const Header = () => {
   const { color } = useTheme();
-  const baseURL = import.meta.env.VITE_BASE_URL;
   const { user, setUser } = useUser();
-  const avatarUrl = getAvatarUrl(user?.avatar, baseURL);
   const navigate = useNavigate();
+  const avatarUrl = getAvatarUrl(user?.avatar, baseUrl);
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(
-        import.meta.env.VITE_BASE_URL + "/api/v1/auth/logout",
-        {
-          method: "GET",
-          credentials: "include", // Send cookies with the request
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/v1/auth/logout`, {
+        method: "GET",
+        credentials: "include", // Send cookies with the request
+      });
 
       if (response.ok) {
         localStorage.removeItem("loggedInBefore");
@@ -84,15 +61,10 @@ const Header = () => {
   };
 
   const removeMargin = () => {
-    if (window.innerWidth >= 992) {
+    if (window.innerWidth < 992) {
       const navItems = document.getElementById("navItems");
       if (navItems) {
-        navItems.classList.add("margin");
-      }
-    } else {
-      const navItems = document.getElementById("navItems");
-      if (navItems) {
-        navItems.classList.remove("margin");
+        navItems.classList.add("no__margin");
       }
     }
   };
@@ -100,11 +72,7 @@ const Header = () => {
     const logo = document.querySelector(".navbar-brand");
     if (window.innerWidth < 992 && user === null) {
       if (logo) {
-        logo.style.marginLeft = "10.5rem";
-      }
-    } else {
-      if (logo) {
-        logo.style.marginLeft = "initial";
+        logo.style.margin = "auto";
       }
     }
   };
@@ -114,6 +82,28 @@ const Header = () => {
   document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", centerLogo);
   });
+
+  const nav__links = [
+    {
+      path: "/home",
+      display: "Home",
+    },
+    {
+      path: "/forum",
+      display: "Forum",
+    },
+    {
+      path: "/tours",
+      display: "Tours",
+    },
+  ];
+
+  if (user !== null && user.role === "admin") {
+    nav__links.push({
+      path: "/admin",
+      display: "Admin Portal",
+    });
+  }
 
   return (
     <nav
@@ -151,6 +141,7 @@ const Header = () => {
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            onClick={handleNavItemClick}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -210,6 +201,11 @@ const Header = () => {
                 </Link>
               </li>
               <li>
+                <Link className="dropdown-item" to={`/profile/${user._id}`}>
+                  My Post History
+                </Link>
+              </li>
+              <li>
                 <Link className="dropdown-item" to="/history">
                   Purchased History
                 </Link>
@@ -225,18 +221,20 @@ const Header = () => {
             </ul>
           </li>
         ) : (
-          <div className="nav__right d-flex align-items-center gap-4">
-            <div className="nav__btns d-flex align-items-center gap-4">
-              <Link to="/login" onClick={handleNavItemClick}>
-                <Button className="secondary__btn big__pad btn-secondary">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register" onClick={handleNavItemClick}>
-                <Button className="primary__btn big__pad btn-primary">
-                  Register
-                </Button>
-              </Link>
+          <div className="login-register-buttons">
+            <div className="nav__right d-flex align-items-center gap-4">
+              <div className="nav__btns d-flex align-items-center gap-4">
+                <Link to="/login" onClick={handleNavItemClick}>
+                  <Button className="secondary__btn big__pad btn-secondary login">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/register" onClick={handleNavItemClick}>
+                  <Button className="primary__btn big__pad btn-primary register">
+                    Register
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         )}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "./contact-modal.css";
 import { pushError, pushSuccess } from "../../../../components/Toast";
+import { baseUrl } from "../../../../config";
 
 const ContactModal = () => {
   const [fullName, setFullName] = useState("");
@@ -29,7 +30,7 @@ const ContactModal = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/form/contact`,
+        `${baseUrl}/api/v1/form/contact`,
         {
           method: "POST",
           headers: {

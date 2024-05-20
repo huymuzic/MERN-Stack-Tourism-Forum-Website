@@ -1,8 +1,8 @@
 import Post from "../../models/Post.js"
 
 export async function searchFilter(req, res) {
-    const { title, keyword } = req.query;
-    let filter = {};
+    const { title, keyword, sort } = req.query;
+    let filter = { status: 'unarchived' };
 
     if (title) {
         filter.title = { $regex: title, $options: 'i' };
@@ -15,6 +15,7 @@ export async function searchFilter(req, res) {
     try {
         const posts = await Post.find(filter)
             .populate(['authorId', 'childrenIds'])
+            .sort({ 'updatedAt': Number(sort) || -1 })
             .skip(Number(req.headers.skip) || 0)
             .limit(5);
 

@@ -5,8 +5,7 @@ import { useUser } from "./utils/UserContext";
 import { pushSuccess } from "./components/Toast";
 import { useTheme } from "./theme/Theme";
 import CookieBanner from "./Pages/Home/components/CookieBanner/index";
-
-const baseURL = import.meta.env.VITE_BASE_URL;
+import { baseUrl } from "./config";
 
 function App() {
   const { theme } = useTheme();
@@ -16,7 +15,7 @@ function App() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch(`${baseURL}/api/v1/auth/check-login`, {
+        const response = await fetch(`${baseUrl}/api/v1/auth/check-login`, {
           method: "GET",
           credentials: "include",
         });
@@ -25,11 +24,10 @@ function App() {
           localStorage.removeItem("loggedInBefore");
         }
         setUser(response.ok ? { ...resBody.user } : null);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1500);
       } catch (error) {
         console.error("Error checking login status:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -39,10 +37,10 @@ function App() {
   useEffect(() => {
     const handlePushSuccess = async () => {
       if (user && !localStorage.getItem("loggedInBefore")) {
-        setTimeout(() => {
+        if (!isLoading) {
           pushSuccess(`Welcome back, ${user.name}!`);
           localStorage.setItem("loggedInBefore", "true");
-        }, 1500);
+        }
       }
     };
 

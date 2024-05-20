@@ -1,8 +1,10 @@
 import { openDB } from 'idb';
+import { pushSuccess, pushError } from '../../../components/Toast';
+import { baseUrl } from '../../../config';
 
 export async function handleLike(postId, setPost, setUser) {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/like`, {
+        const response = await fetch(`${baseUrl}/api/forum/p/${postId}/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -17,6 +19,29 @@ export async function handleLike(postId, setPost, setUser) {
         const responseBody = await response.json();
         setPost(responseBody.post);
         setUser(responseBody.user);
+        pushSuccess('Post liked');
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export async function handledelete(postId, setPost) {
+    try {
+        const response = await fetch(`${baseUrl}/api/forum/p/${postId}/deletePost`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete post');
+        }
+
+        const responseBody = await response.json();
+        setPost(responseBody.post);
+        pushSuccess('Deleted post')
     } catch (error) {
         console.error(error);
     }
@@ -30,7 +55,7 @@ export async function replyTopic(content, images, nav, id) {
             formData.append('images', image);
         });
 
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}/reply`, {
+        const response = await fetch(`${baseUrl}/api/forum/p/${id}/reply`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -45,8 +70,10 @@ export async function replyTopic(content, images, nav, id) {
         //setPost(responseBody.post);
         //setUser(responseBody.user);
         nav(`/forum/p/${responseBody.repId}`)
-        document.getElementById("modalClose").click();
+        document.getElementById("replyModalClose").click();
+        pushSuccess('Replied to post');
     } catch (error) {
+        pushError('Failed to reply to post');
         console.error(error.message);
     }
 }
@@ -67,7 +94,7 @@ export const populateImages = async (imagesArray) => {
         if (cachedImage) {
             blob = cachedImage.blob;
         } else {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/images/${image}`);
+            const response = await fetch(`${baseUrl}/api/forum/images/${image}`);
             blob = await response.blob();
 
             try {
@@ -96,7 +123,7 @@ export async function createTopic(title, content, images, navigate) {
             formData.append('images', image);
         });
 
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`, {
+        const response = await fetch(`${baseUrl}/api/forum`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -108,9 +135,11 @@ export async function createTopic(title, content, images, navigate) {
         }
 
         const data = await response.json();
-        document.getElementById("modalClose").click();
         navigate(`/forum/p/${data.postId}`)
+        document.getElementById("postModalClose").click();
+        pushSuccess('Post created');
     } catch (error) {
+        pushError('Failed to create post');
         console.error('Error:', error.message);
     }
 }

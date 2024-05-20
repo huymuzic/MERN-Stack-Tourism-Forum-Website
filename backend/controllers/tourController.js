@@ -1,5 +1,5 @@
 import Tour from "../models/Tour.js";
-import Destination from "../models/destination.js";
+import Destination from "../models/Destination.js";
 
 export const createDestination = async (req, res) => {
   const newDestination = new Destination(req.body);

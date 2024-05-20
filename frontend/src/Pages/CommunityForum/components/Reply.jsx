@@ -41,7 +41,7 @@ function Reply(props) {
         <div className='d-flex'>
             <Link className='ps-3' to={`/profile/${child.authorId && child.authorId._id}`}>
                 <img height='45' width='45' className='rounded-5' alt='profile picture'
-                    src={child.authorId ? getAvatarUrl(child.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                    src={child.authorId ? getAvatarUrl(child.authorId.avatar, "https://cosmic-travel.onrender.com") : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                 </img>
             </Link>
 
@@ -126,9 +126,26 @@ function Reply(props) {
                 <span>Reply</span>
             </button>
 
-            <button className='rounded ctm-btn px-3 py-2'>
-                <i className="fa-solid fa-ellipsis"></i>
-            </button>
+            {child.authorId && user?._id === child.authorId?._id && (<>
+                <button className='rounded ctm-btn px-3 py-2' data-bs-toggle='dropdown'>
+                    <i className="fa-solid fa-ellipsis"></i>
+                </button>
+
+                <ul className="dropdown-menu">
+                    <li>
+                        <button className="dropdown-item">
+                            <i className="fa-solid fa-pencil pe-2"></i>
+                            <span>Edit</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item text-danger">
+                            <i className="fa-solid fa-trash-can pe-2"></i>
+                            <span>Delete</span>
+                        </button>
+                    </li>
+                </ul>
+            </>)}
         </div>
     </div>)
 }

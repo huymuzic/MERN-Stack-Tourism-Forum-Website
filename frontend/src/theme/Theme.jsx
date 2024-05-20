@@ -3,6 +3,7 @@ import _color from './Color'
 import PropTypes from 'prop-types';
 import tinycolor from "tinycolor2";
 import { pushError } from "../components/Toast";
+import { baseUrl } from "../config";
 
 function createCustomTheme(color) {
   const theme = `
@@ -151,7 +152,7 @@ function useThemeContext(userId) {
       setColor(_color)
     }
     setIsLoadingTheme(true);
-    const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/theme/${userId}`);
+    const url = new URL(`${baseUrl}/api/v1/users/theme/${userId}`);
 
     try {
       let data

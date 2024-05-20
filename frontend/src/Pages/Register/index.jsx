@@ -7,10 +7,10 @@ import { ErrorMessage } from "@hookform/error-message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
+import { pushError, pushSuccess } from "../../components/Toast";
 
 import ReCAPTCHA from "react-google-recaptcha";
-
-const baseURL = import.meta.env.VITE_BASE_URL;
+import { baseUrl } from "../../config";
 
 function Register() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function Register() {
   const recaptchaRef = useRef(null);
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
-
+  const Sitekey = "6Lf5mtApAAAAAF8KWzqQLrZS8-NtQHNhWmS6h_iI"
   const togglePassword = (e) => {
     setShowPassword(!showPassword);
   };
@@ -58,13 +58,16 @@ function Register() {
     const dataWithToken = { ...dataToSend, token: recaptchaToken };
 
     try {
-      const response = await fetch(`${baseURL}/api/v1/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataWithToken),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataWithToken),
+        }
+      );
 
       const responseBody = await response.json();
       const responseMsg = responseBody.message;
@@ -255,7 +258,7 @@ function Register() {
         <div className="mb-3">
           <ReCAPTCHA
             ref={recaptchaRef}
-            sitekey={import.meta.env.VITE_SITE_KEY}
+            sitekey={Sitekey}
           />
         </div>
 

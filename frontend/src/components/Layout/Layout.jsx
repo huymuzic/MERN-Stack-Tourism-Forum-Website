@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import Routers from "../../Router/Routers";
 import Footer from "../Footer/Footer";
-import "./index.css";
 
 import CircularProgress from "../../components/CircularProgress";
 import ForumHeader from "../ForumHeader/ForumHeader";

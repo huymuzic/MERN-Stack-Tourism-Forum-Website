@@ -8,8 +8,9 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import { pushError, pushSuccess } from "../../components/Toast";
 import { useUser } from "../../utils/UserContext";
+import CircularProgress from "../../components/CircularProgress";
+import { baseUrl } from "../../config";
 
-const baseURL = import.meta.env.VITE_BASE_URL;
 
 function Login() {
   const navigate = useNavigate();
@@ -37,14 +38,17 @@ function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(`${baseURL}/api/v1/auth/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/auth/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const responseBody = await response.json();
       if (!response.ok) {
@@ -62,7 +66,6 @@ function Login() {
         window.location.reload();
       }
     } catch (error) {
-      console.error("Error:", error);
       if (!errorMsg) {
         pushError("Failed to login. Please try again");
         setErrorMsg(true);

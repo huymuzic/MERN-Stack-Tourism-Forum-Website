@@ -4,16 +4,15 @@ import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 import { useUser } from "../../../utils/UserContext";
 import { pushError, pushSuccess } from "../../../components/Toast";
+import { baseUrl } from "../../../config";
 function Favorites() {
   const [favoritePosts, setFavoritePosts] = useState([]);
   const { user, setUser } = useUser();
   const { id } = useParams();
-  const token = localStorage.getItem("accessToken");
-  const baseURL = import.meta.env.VITE_BASE_URL;
   const fetchFavoritePostsByUser = async (userId) => {
     try {
       const response = await fetch(
-        `${baseURL}/api/v1/posts/favorites/${userId}`,
+        `${baseUrl}/api/v1/posts/favorites/${userId}`,
         {
           method: "GET",
           credentials: "include",
@@ -49,9 +48,8 @@ function Favorites() {
     setUserPosts = null,
     setFavoritePosts = null
   ) => {
-    const token = localStorage.getItem("accessToken");
     try {
-      const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
+      const response = await fetch(`${baseUrl}/api/v1/posts/like/${postId}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -89,7 +87,7 @@ function Favorites() {
   };
   const handleLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${baseURL}/api/v1/posts/userhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -109,7 +107,7 @@ function Favorites() {
 
   const handleUnLockConfirm = async (userId) => {
     try {
-      const url = new URL(`${baseURL}/api/v1/posts/userunhide/${userId}`);
+      const url = new URL(`${baseUrl}/api/v1/posts/userunhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -132,7 +130,27 @@ function Favorites() {
       likes,
     }));
   };
+  const handleDelete = async (postId) => {
+    try {
+        const response = await fetch(`${baseUrl}/api/forum/p/${postId}/deletePost`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        });
 
+        if (!response.ok) {
+            throw new Error('Failed to delete post');
+        }
+
+        const responseBody = await response.json();
+        fetchData();
+        pushSuccess('Deleted post');
+    } catch (error) {
+        console.error(error);
+    }
+};
   const handleToggleLike = (postId) => {
     toggleLike(postId, user._id, null, null); // Update favorite posts after toggling like
   };
@@ -154,6 +172,7 @@ function Favorites() {
             onToggleLike={handleToggleLike}
             handleLockConfirm={(id) => handleLockConfirm(id)}
             handleUnLockConfirm={(id) => handleUnLockConfirm(id)}
+            handleDelete={(id) => handleDelete(id)}
           />
         ))
       ) : (

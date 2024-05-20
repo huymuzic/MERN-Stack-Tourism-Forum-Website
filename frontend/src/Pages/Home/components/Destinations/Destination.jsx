@@ -1,9 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import "./destination-list.css";
+import { useSearch } from "../../../../utils/SearchContext";
+import { environment } from "../../../../config";
 
 const Destination = ({ item }) => {
   const [imageBrightness, setImageBrightness] = useState(0.8);
+  const { searchHandler } = useSearch();
 
   const handleMouseEnter = () => {
     setImageBrightness(1);
@@ -11,6 +14,10 @@ const Destination = ({ item }) => {
 
   const handleMouseLeave = () => {
     setImageBrightness(0.8);
+  };
+
+  const handleDestinationClick = () => {
+    searchHandler({ city: item.title });
   };
 
   const { photo, title } = item;
@@ -21,10 +28,11 @@ const Destination = ({ item }) => {
           className="containerz"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onClick={handleDestinationClick}
         >
           <img
             className="images"
-            src={photo}
+            src={environment == "PROD" ? photo : `./src${photo}`}
             alt="top-destination"
             style={{ filter: `brightness(${imageBrightness})` }}
           />

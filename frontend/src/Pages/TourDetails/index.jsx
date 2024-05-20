@@ -9,9 +9,10 @@ import { pushError, pushSuccess } from "../../components/Toast";
 import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import useFetch from "../../hooks/useFetch.jsx";
+import { baseUrl } from "../../config/index.js";
 
 const TourDetails = () => {
-  const baseURL = import.meta.env.VITE_BASE_URL;
+  const baseURL = "https://cosmic-travel.onrender.com";
   const { user } = useUser();
   const { id } = useParams();
   const reviewMsgRef = useRef("");
@@ -21,7 +22,9 @@ const TourDetails = () => {
   const [avgRating, setAvgRating] = useState("");
   const [totalRating, setTotalRating] = useState(0);
 
-  const { data: tour } = useFetch(`http://localhost:4000/api/v1/tours/${id}`);
+  const { data: tour } = useFetch(
+    `${baseUrl}/api/v1/tours/${id}`
+  );
 
   const { photo, title, price, reviews, country, city, duration, ageRange } =
     tour || {};
@@ -61,17 +64,20 @@ const TourDetails = () => {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/reviews/${id}`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          reviewText: reviewText,
-          rating: tourRating,
-        }),
-      });
+      const res = await fetch(
+        `${baseUrl}/api/v1/reviews/${id}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            reviewText: reviewText,
+            rating: tourRating,
+          }),
+        }
+      );
       if (res.ok) {
         const newReview = await res.json();
         pushSuccess("Review submitted successfully");

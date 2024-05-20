@@ -41,7 +41,7 @@ const nav_bar = [
 const ForumHeader = ({ children }) => {
     const { setUser, user } = useUser();
     const navigate = useNavigate();
-    const userPfp = getAvatarUrl(user?.avatar, import.meta.env.VITE_BASE_URL)
+    const userPfp = getAvatarUrl(user?.avatar, "https://cosmic-travel.onrender.com")
     const [isFocused, setIsFocused] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);
     const [dropdown, setDropdown] = useState(null);

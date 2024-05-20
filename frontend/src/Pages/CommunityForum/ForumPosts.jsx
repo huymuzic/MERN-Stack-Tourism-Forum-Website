@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { handleLike, populateImages } from './components/ApiCalls.jsx';
 
 import { Navigation } from 'swiper/modules';
+import { baseUrl } from '../../config/index.js';
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -82,7 +83,7 @@ function Post() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}`);
+                const response = await fetch(`${baseUrl}/api/forum/p/${id}`);
                 const data = await response.json();
 
                 if (data.root.images && data.root.images.length > 0) {
@@ -125,7 +126,7 @@ function Post() {
                                     <img height='45' width='45'
                                         className='rounded-5'
                                         alt='profile picture'
-                                        src={post.authorId ? getAvatarUrl(post.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                                        src={post.authorId ? getAvatarUrl(post.authorId.avatar, baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                                     </img>
                                 </Link>
 
@@ -208,9 +209,26 @@ function Post() {
                                     <span>Reply</span>
                                 </button>
 
-                                <button className='rounded ctm-btn px-3 py-2'>
-                                    <i className="fa-solid fa-ellipsis"></i>
-                                </button>
+                                {post.authorId && user?._id === post.authorId._id && (<>
+                                    <button className='rounded ctm-btn px-3 py-2' data-bs-toggle='dropdown'>
+                                        <i className="fa-solid fa-ellipsis"></i>
+                                    </button>
+
+                                    <ul className="dropdown-menu">
+                                        <li>
+                                            <button className="dropdown-item">
+                                                <i className="fa-solid fa-pencil pe-2"></i>
+                                                <span>Edit</span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button className="dropdown-item text-danger">
+                                                <i className="fa-solid fa-trash-can pe-2"></i>
+                                                <span>Delete</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </>)}
                             </div>
                         </div>
                     </div>
@@ -223,6 +241,10 @@ function Post() {
 
             <Editor
                 status='reply'
+            />
+
+            <Editor
+                status='edit'
             />
         </article>
     );

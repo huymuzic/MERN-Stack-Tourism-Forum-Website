@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import "./search-bar.css";
 import { Col, Form, FormGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { pushError } from "../components/Toast";
 import { useLocation } from "react-router-dom";
-
+import { useSearch } from "../utils/SearchContext";
 const SearchBar = () => {
   // Form validation
   const countryRef = useRef("");
@@ -13,18 +12,15 @@ const SearchBar = () => {
   const tourPeriodRef = useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const { searchHandler } = useSearch();
 
   const [errors, setErrors] = useState({}); // State for validation errors
   const [query, setQuery] = useState({
     country: "",
+    city: "",
     price: "",
     tourPeriod: "",
   });
-
-  let countryPattern = /^[a-zA-Z\s\-]+$/;
-  let cityPattern = /^[a-zA-Z\s\-]+$/;
-  let pricePattern = /^\d{1,4}$/;
-  let tourPeriodPattern = /^\d{1,2}$/;
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -46,80 +42,30 @@ const SearchBar = () => {
     tourPeriodRef.current.value = tourPeriodParam;
   }, [location.search]);
 
-  const searchHandler = async (event) => {
+  const handleSearch = async (event) => {
     event.preventDefault();
     const country = countryRef.current.value;
     const city = cityRef.current.value;
     const price = priceRef.current.value;
     const tourPeriod = tourPeriodRef.current.value;
 
-    const newErrors = {}; // Object to store validation errors
-    const queryParams = [];
-
-    if (country) {
-      if (!countryPattern.test(country)) {
-        newErrors.country =
-          "Please enter a valid country (only characters allowed)";
-      } else {
-        queryParams.push(`country=${country}`);
-      }
-    }
-
-    if (city) {
-      if (!cityPattern.test(city)) {
-        newErrors.city = "Please enter a valid city (only characters allowed)";
-      } else {
-        queryParams.push(`city=${city}`);
-      }
-    }
-
-    if (price) {
-      if (!pricePattern.test(price)) {
-        newErrors.price = "Please enter a valid price (max 4 numbers)";
-      } else {
-        queryParams.push(`price=${price}`);
-      }
-    }
-
-    if (tourPeriod) {
-      if (!tourPeriodPattern.test(tourPeriod)) {
-        newErrors.tourPeriod =
-          "Please enter a valid tour period (max 2 numbers)";
-      } else {
-        queryParams.push(`duration=${tourPeriod}`);
-      }
-    }
-
-    setErrors(newErrors); // Update errors state
-
-    if (Object.keys(newErrors).length === 0 && queryParams.length > 0) {
-      const res = await fetch(
-        `http://localhost:4000/api/v1/tours/search/getTourBySearch?country=${country}&city=${city}&duration=${tourPeriod}&price=${price}`
-      );
-
-      if (!res.ok) {
-        pushError("Something went wrong");
-      }
-
-      const result = await res.json();
-
-      navigate(
-        `/tours/search?country=${country}&city=${city}&duration=${tourPeriod}&price=${price}`,
-        { state: result.data }
-      );
-    }
+    const searchParams = { country, city, price, tourPeriod };
+    searchHandler(searchParams);
   };
 
   return (
     <Col lg="12">
       <div className="search__bar">
         <Form className="d-flex align-items-center gap-4">
-          <FormGroup className="form-group d-flex gap-3 form__group form__group-fast">
+          <FormGroup
+            className="form-group d-flex gap-3 form__group form__group-fast"
+            onClick={() => countryRef.current.focus()}
+          >
             <span>
               <i className="ri ri-map-pin-line"></i>
             </span>
             <div>
-              <h6>Country</h6>
+              <h6 className="l6">Country</h6>
               <input
                 type="text"
                 placeholder="Where are you going?"
@@ -132,7 +78,10 @@ const SearchBar = () => {
               </div>
             </div>
           </FormGroup>
-          <FormGroup className="form-group d-flex gap-3 form__group form__group-fast">
+          <FormGroup
+            className="form-group d-flex gap-3 form__group form__group-fast"
+            onClick={() => cityRef.current.focus()}
+          >
             <span>
               <i className="ri ri-building-line"></i>
             </span>
@@ -150,7 +99,10 @@ const SearchBar = () => {
               </div>
             </div>
           </FormGroup>
-          <FormGroup className="form-group d-flex gap-3 form__group form__group-fast">
+          <FormGroup
+            className="form-group d-flex gap-3 form__group form__group-fast"
+            onClick={() => priceRef.current.focus()}
+          >
             <span>
               <i className="ri ri-money-dollar-circle-line"></i>
             </span>
@@ -169,7 +121,10 @@ const SearchBar = () => {
               </div>
             </div>
           </FormGroup>
-          <FormGroup className="form-group d-flex gap-3 form__group form__group-last">
+          <FormGroup
+            className="form-group d-flex gap-3 form__group form__group-last"
+            onClick={() => tourPeriodRef.current.focus()}
+          >
             <span>
               <i className="ri ri-map-pin-time-line"></i>
             </span>
@@ -188,7 +143,12 @@ const SearchBar = () => {
               </div>
             </div>
           </FormGroup>
-          <span className="search__icon" type="submit" onClick={searchHandler}>
+          <span
+            className="search__icon"
+            type="submit"
+            onClick={handleSearch}
+            tabindex="0"
+          >
             <i className="ri-search-line"></i>
           </span>
         </Form>
