@@ -21,6 +21,7 @@ export const deletePost = async (req, res) => {
       id,
       {
         $set: { status: "deleted" },
+        deletedAt: new Date()
       },
       { new: true }
     );
