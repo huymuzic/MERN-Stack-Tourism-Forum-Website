@@ -24,6 +24,28 @@ export async function handleLike(postId, setPost, setUser) {
     }
 };
 
+export async function handledelete(postId, setPost) {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/deletePost`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete post');
+        }
+
+        const responseBody = await response.json();
+        setPost(responseBody.post);
+        pushSuccess('Deleted post')
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 export async function replyTopic(content, images, nav, id) {
     try {
         const formData = new FormData();
