@@ -2,7 +2,7 @@ import Post from "../../models/Post.js"
 
 export async function searchFilter(req, res) {
     const { title, keyword, sort } = req.query;
-    let filter = {};
+    let filter = { status: 'unarchived' };
 
     if (title) {
         filter.title = { $regex: title, $options: 'i' };
