@@ -1,2 +1,2 @@
-export const baseUrl = "https://cosmic-travel.onrender.com"
-export const environment = "PROD"
+export const baseUrl = import.meta.env.VITE_BASE_URL
+export const environment = "DEV"
