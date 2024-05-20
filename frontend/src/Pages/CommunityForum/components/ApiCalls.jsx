@@ -67,8 +67,7 @@ export async function replyTopic(content, images, nav, id) {
         }
 
         const responseBody = await response.json();
-        //setPost(responseBody.post);
-        //setUser(responseBody.user);
+        
         nav(`/forum/p/${responseBody.repId}`)
         document.getElementById("replyModalClose").click();
         pushSuccess('Replied to post');

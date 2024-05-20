@@ -84,10 +84,8 @@ const Post = (props) => {
             </div>
 
             <button
-                data-bs-toggle="modal"
-                data-bs-target="#replyModal"
                 className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                onClick={() => navigate(`/forum/p/${post._id}`)}
+                onClick={() => navigate(user ? `/forum/p/${post._id}` : '/login', { state: { openModal: true } })}
             >
                 <i className="fa-solid fa-share"></i>
                 <span>Reply</span>
@@ -106,7 +104,7 @@ const Post = (props) => {
                         </button>
                     </li>
                     <li>
-                        <button 
+                        <button
                             className="dropdown-item text-danger"
                             onClick={() => popUpDelete.setTrue()}
                         >
@@ -124,6 +122,7 @@ const Post = (props) => {
             desc={`Are you sure you want to delete this post?`}
         />
     </div>
-)};
+    )
+};
 
 export default Post;

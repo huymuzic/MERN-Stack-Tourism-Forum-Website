@@ -84,7 +84,7 @@ const ForumHeader = ({ children }) => {
             setSearchHistory(newSearchHistory);
             localStorage.setItem('searchHistory', JSON.stringify(newSearchHistory));
 
-            navigate(`/search?keyword=${search}`)
+            navigate(`/search?keyword=${search}&sort=-1`)
 
             //e.target.click()
             //e.target.blur()
