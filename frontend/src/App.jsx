@@ -4,6 +4,7 @@ import Layout from "./components/Layout/Layout";
 import { useUser } from "./utils/UserContext";
 import { pushSuccess } from "./components/Toast";
 import { useTheme } from "./theme/Theme";
+import CookieBanner from "./Pages/Home/components/CookieBanner/index";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -41,7 +42,7 @@ function App() {
         setTimeout(() => {
           pushSuccess(`Welcome back, ${user.name}!`);
           localStorage.setItem("loggedInBefore", "true");
-        }, 2000);
+        }, 1500);
       }
     };
 
@@ -52,6 +53,7 @@ function App() {
     <>
       <style>{theme}</style>
       <Layout isLoading={isLoading} />
+      <CookieBanner />
     </>
   );
 }

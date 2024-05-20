@@ -54,12 +54,12 @@ function Login() {
           setCallAPI(true);
         }
       } else {
-        navigate("/");
-        window.location.reload();
         if (!successMsg) {
           pushSuccess(`Login successfully!`);
           setSuccessMsg(true);
         }
+        navigate("/");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error:", error);

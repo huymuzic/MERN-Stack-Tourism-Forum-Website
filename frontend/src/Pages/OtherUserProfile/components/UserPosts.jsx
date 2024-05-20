@@ -9,12 +9,10 @@ function UserPosts() {
   const [userPosts, setUserPosts] = useState([]);
   const { user, setUser } = useUser();
   const { id } = useParams();
-
-  const token = localStorage.getItem("accessToken");
   const baseURL = import.meta.env.VITE_BASE_URL;
 
   const fetchPostsByUser = async (userId) => {
-    const token = localStorage.getItem("accessToken");
+ 
 
     try {
       const response = await fetch(`${baseURL}/api/v1/posts/user/${userId}`, {
@@ -43,8 +41,6 @@ function UserPosts() {
     setUserPosts = null,
     setFavoritePosts = null
   ) => {
-    const token = localStorage.getItem("accessToken");
-
     try {
       const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
         method: "PUT",

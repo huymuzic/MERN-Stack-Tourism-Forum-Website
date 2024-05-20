@@ -10,8 +10,21 @@ const ContactModal = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const validateForm = () => {
+    if (!fullName) pushError("Full Name is required");
+    if (!email) {
+      pushError("Email is required");
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      pushError("Email is invalid");
+    }
+    if (!phoneNumber) pushError("Phone Number is required");
+    if (!message) pushError("Message is required");
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setLoading(true);
 
     try {
@@ -83,7 +96,7 @@ const ContactModal = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="How can we help you?"
         />
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="btn-primary">
           {loading ? "Sending..." : "Send"}
         </button>
       </form>

@@ -8,7 +8,6 @@ function Favorites() {
   const [favoritePosts, setFavoritePosts] = useState([]);
   const { user, setUser } = useUser();
   const { id } = useParams();
-  const token = localStorage.getItem("accessToken");
   const baseURL = import.meta.env.VITE_BASE_URL;
   const fetchFavoritePostsByUser = async (userId) => {
     try {
@@ -49,7 +48,6 @@ function Favorites() {
     setUserPosts = null,
     setFavoritePosts = null
   ) => {
-    const token = localStorage.getItem("accessToken");
     try {
       const response = await fetch(`${baseURL}/api/v1/posts/like/${postId}`, {
         method: "PUT",

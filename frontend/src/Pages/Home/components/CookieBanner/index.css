@@ -7,7 +7,6 @@
 .deny__btn {
     width: 6rem !important;
     background-color: var(--secondary-color) !important;
-    color: #fff !important;
 }
 
 .deny__btn:hover {
