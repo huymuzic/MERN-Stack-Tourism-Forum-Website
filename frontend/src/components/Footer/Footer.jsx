@@ -67,7 +67,7 @@ const Footer = () => {
               </div>
             </Col>
             <Col lg="3">
-              <h5 className="footer__link-title">Discover</h5>
+              <h5 className="footer__link-title l5">Discover</h5>
               <ListGroup className="footer__quick-links">
                 {quick__links.map((item, index) => (
                   <ListGroupItem key={index} className="ps-0 border-0">
@@ -77,7 +77,7 @@ const Footer = () => {
               </ListGroup>
             </Col>
             <Col lg="3">
-              <h5 className="footer__link-title">Quick Links</h5>
+              <h5 className="footer__link-title l5">Quick Links</h5>
               <ListGroup className="footer__quick-links">
                 {quick__links2.map((item, index) => (
                   <ListGroupItem key={index} className="ps-0 border-0">
@@ -93,10 +93,10 @@ const Footer = () => {
               </ListGroup>
             </Col>
             <Col lg="3">
-              <h5 className="footer__link-title">Contact</h5>
+              <h5 className="footer__link-title l5">Contact</h5>
               <ListGroup className="footer__quick-links">
                 <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
-                  <h6 className="mb-0 d-flex align-items-center gap-2">
+                  <h6 className="mb-0 d-flex align-items-center gap-2 l6">
                     <span>
                       <i className="ri-map-pin-line"></i>
                     </span>
@@ -106,7 +106,7 @@ const Footer = () => {
                   <p className="mb-0">702 Nguyen Van Linh District 7</p>
                 </ListGroupItem>
                 <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
-                  <h6 className="mb-0 d-flex align-items-center gap-2">
+                  <h6 className="mb-0 d-flex align-items-center gap-2 l6">
                     <span>
                       <i className="ri-mail-line"></i>
                     </span>
@@ -116,7 +116,7 @@ const Footer = () => {
                   <p className="mb-0">cosmictravel123@gmail.com</p>
                 </ListGroupItem>
                 <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
-                  <h6 className="mb-0 d-flex align-items-center gap-2">
+                  <h6 className="mb-0 d-flex align-items-center gap-2 l6">
                     <span>
                       <i className="ri-phone-fill"></i>
                     </span>

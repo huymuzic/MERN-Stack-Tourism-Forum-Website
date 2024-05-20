@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { handleLike, populateImages } from './components/ApiCalls.jsx';
 
 import { Navigation } from 'swiper/modules';
+import { baseUrl } from '../../config/index.js';
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -91,7 +92,7 @@ function Post() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}`);
+                const response = await fetch(`${baseUrl}/api/forum/p/${id}`);
                 const data = await response.json();
 
                 if (data.root.images && data.root.images.length > 0) {
@@ -141,7 +142,7 @@ function Post() {
                                     <img height='45' width='45'
                                         className='rounded-5'
                                         alt='profile picture'
-                                        src={post.authorId ? getAvatarUrl(post.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                                        src={post.authorId ? getAvatarUrl(post.authorId.avatar, baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                                     </img>
                                 </Link>
 

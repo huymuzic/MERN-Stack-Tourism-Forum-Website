@@ -1,9 +1,10 @@
 import { openDB } from 'idb';
 import { pushSuccess, pushError } from '../../../components/Toast';
+import { baseUrl } from '../../../config';
 
 export async function handleLike(postId, setPost, setUser) {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/like`, {
+        const response = await fetch(`${baseUrl}/api/forum/p/${postId}/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +27,7 @@ export async function handleLike(postId, setPost, setUser) {
 
 export async function handledelete(postId, setPost) {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${postId}/deletePost`, {
+        const response = await fetch(`${baseUrl}/api/forum/p/${postId}/deletePost`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ export async function replyTopic(content, images, nav, id) {
             formData.append('images', image);
         });
 
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/p/${id}/reply`, {
+        const response = await fetch(`${baseUrl}/api/forum/p/${id}/reply`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -92,7 +93,7 @@ export const populateImages = async (imagesArray) => {
         if (cachedImage) {
             blob = cachedImage.blob;
         } else {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum/images/${image}`);
+            const response = await fetch(`${baseUrl}/api/forum/images/${image}`);
             blob = await response.blob();
 
             try {
@@ -121,7 +122,7 @@ export async function createTopic(title, content, images, navigate) {
             formData.append('images', image);
         });
 
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`, {
+        const response = await fetch(`${baseUrl}/api/forum`, {
             method: 'POST',
             credentials: 'include',
             body: formData,

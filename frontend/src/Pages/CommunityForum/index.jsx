@@ -6,6 +6,7 @@ import { getAvatarUrl } from '../../utils/getAvar.js';
 
 import Editor from "./components/Editor";
 import Post from './components/Post';
+import { baseUrl } from "../../config/index.js";
 
 function CommunityForum() {
     const { user } = useUser();
@@ -13,11 +14,11 @@ function CommunityForum() {
     const [posts, setPosts] = useState([]);
     const [length, setLength] = useState(0);
     const [skip, setSkip] = useState(0);
-    const userPfp = getAvatarUrl(user?.avatar, import.meta.env.VITE_BASE_URL)
+    const userPfp = getAvatarUrl(user?.avatar, baseUrl)
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/forum`, {
+            const response = await fetch(`${baseUrl}/api/forum`, {
                 headers: {
                     'skip': skip,
                 },
@@ -64,6 +65,6 @@ function CommunityForum() {
             })}
         </InfiniteScroll>
     </>
-};
+}
 
 export default CommunityForum;

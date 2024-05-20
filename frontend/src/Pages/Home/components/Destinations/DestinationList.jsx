@@ -1,12 +1,14 @@
 import React from "react";
 import Destination from "./Destination";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Container } from "react-bootstrap";
 
 import useFetch from "../../../../hooks/useFetch";
+import CircularProgress from "../../../../components/CircularProgress";
+import { baseUrl } from "../../../../config";
 
 const DestinationList = () => {
-  const { data: topDestinations } = useFetch(
-    "http://localhost:4000/api/v1/tours/search/getTopDestinations"
+  const { data: topDestinations, loading } = useFetch(
+    `${baseUrl}/api/v1/tours/search/getTopDestinations`
   );
 
   const firstHalf = [];
@@ -22,20 +24,28 @@ const DestinationList = () => {
 
   return (
     <>
-      <Row className="destination-list-1">
-        {firstHalf.map((item, index) => (
-          <Col key={index}>
-            <Destination item={item} />
-          </Col>
-        ))}
-      </Row>
-      <Row className="destination-list-2">
-        {secondHalf.map((item, index) => (
-          <Col key={index}>
-            <Destination item={item} />
-          </Col>
-        ))}
-      </Row>
+      {loading ? (
+        <Container className="d-flex justify-content-center">
+          <CircularProgress />
+        </Container>
+      ) : (
+        <>
+          <Row className="destination-list-1">
+            {firstHalf.map((item, index) => (
+              <Col key={index}>
+                <Destination item={item} />
+              </Col>
+            ))}
+          </Row>
+          <Row className="destination-list-2">
+            {secondHalf.map((item, index) => (
+              <Col key={index}>
+                <Destination item={item} />
+              </Col>
+            ))}
+          </Row>
+        </>
+      )}
     </>
   );
 };

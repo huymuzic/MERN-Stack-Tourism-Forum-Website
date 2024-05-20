@@ -5,8 +5,10 @@ import { FaHeart, FaRegHeart, FaComment } from 'react-icons/fa';
 import { useUser } from "../../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../theme/Theme.jsx";
-
-function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }) {
+import { pushError, pushSuccess } from "../../../components/Toast";
+import { usePopUp } from "../../../components/pop-up/usePopup";
+import PopUpBase from "../../../components/pop-up/PopUpBase";
+function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm, handleDelete }) {
     const { user } = useUser();
     const { color } = useTheme();
     const [isLiked, setIsLiked] = useState(false);
@@ -19,12 +21,19 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }
             setIsLiked(user.likes.includes(post._id));
         }
     }, [user, post._id]);
-
+    const popUpDelete = usePopUp();
     const handleEdit = () => {
         navigate(`/forum/p/${post._id}`);
     };
-
+    const onDeleteConfirm = async () => {
+        popUpDelete.onClose()
+        handleDelete(post._id)
+    };
     const handleLike = () => {
+        if (!user) {
+            navigate(`/login`);
+            pushError("Please log in to perform this action")
+        }
         onToggleLike(post._id);
         setIsLiked(!isLiked);
     };
@@ -87,6 +96,7 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }
                                                 <Dropdown.Item onClick={handleButtonClick}>
                                                     {post.status === "unarchived" ? "Hide Post" : "Unhide Post"}
                                                 </Dropdown.Item>
+                                                <Dropdown.Item onClick={() => popUpDelete.setTrue()}>Delete Post</Dropdown.Item>
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </Col>
@@ -115,8 +125,17 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm }
                     </Card>
                 </Col>
             </Row>
+            <PopUpBase
+            {...popUpDelete}
+            onConfirm={onDeleteConfirm}
+            title="Delete post Confirmation"
+            desc={`Are you sure you want to delete this post?`}
+        />
         </Container>
     );
 }
 
 export default PostCard;
+
+
+

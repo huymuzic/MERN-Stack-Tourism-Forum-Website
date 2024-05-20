@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { handleLike, handledelete } from './ApiCalls.jsx';
 import { usePopUp } from "../../../components/pop-up/usePopup";
 import PopUpBase from "../../../components/pop-up/PopUpBase";
+import { baseUrl } from '../../../config/index.js';
 
 function countChildren(post) {
     if (!post.childrenIds || post.childrenIds.length === 0) {
@@ -37,7 +38,7 @@ const Post = (props) => {
                 <img height='45' width='45'
                     className='rounded-5'
                     alt='profile picture'
-                    src={post.authorId ? getAvatarUrl(post.authorId.avatar, import.meta.env.VITE_BASE_URL) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                    src={post.authorId ? getAvatarUrl(post.authorId.avatar, baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                 </img>
             </Link>
 

@@ -33,6 +33,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    images: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+   },
     status: {
       type: String,
       enum: ["archived", "deleted", "unarchived"],
@@ -41,7 +45,8 @@ const postSchema = new mongoose.Schema(
     images: {
       type: [mongoose.Schema.Types.ObjectId],
       default: [],
-    }
+    },
+    deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );

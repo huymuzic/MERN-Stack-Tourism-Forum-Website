@@ -3,11 +3,12 @@
 
 :root {
   --primary-color: #ff7e01;
-  --dark-primary-color: #E57100;
+  --dark-primary-color: #e57100;
   --light-primary-color: #f5cba3;
+  --light-secondary-color: #ff9733;
   --secondary-color: #faa935;
   --light-secondary-color: #ff9733;
-  --disable-color: #F2F2F2;
+  --disable-color: #f2f2f2;
   --heading-color: #0b2727;
   --text-color: #6e7074;
   --font-name: "Montserrat", sans-serif;
@@ -50,13 +51,13 @@ ul {
 }
 
 .primary__btn {
-  background: var(--secondary-color) !important;
+  background: var(--secondary-color);
   border: none !important;
   cursor: pointer;
 }
 
 .primary__btn:hover {
-  background: var(--dark-primary-color) !important;
+  background: var(--dark-primary-color);
 }
 
 .primary__btn a {
@@ -70,7 +71,6 @@ ul {
 }
 
 .secondary__btn {
-  background: transparent !important;
   color: var(--heading-color);
   border: none !important;
   font-weight: 500 !important;
@@ -98,7 +98,7 @@ ul {
   font-size: 1.1rem;
   color: var(--heading-color) !important;
   font-weight: 500;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .section__subtitle {
@@ -157,7 +157,6 @@ tr th {
   transition: background-color 0.1s ease;
 }
 
-
 #a {
   padding-top: 100px;
 }
@@ -183,12 +182,12 @@ tr th {
 .body-1 {
   font-size: 14px !important;
   font-weight: 400 !important;
-  margin: 0!important;
+  margin: 0 !important;
 }
 
 .body-2 {
   font-size: 12px !important;
-  margin: 0!important;
+  margin: 0 !important;
 }
 
 .text-prime {
@@ -201,4 +200,17 @@ tr th {
 
 .pre-wrap {
   white-space: pre-wrap;
+}
+
+.home__loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000 !important;
 }

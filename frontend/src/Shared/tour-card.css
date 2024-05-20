@@ -1,98 +1,102 @@
 .tour__img img {
-    width: 100%;
-    border-radius: 5px 5px 0 0 !important;
+  width: 100%;
+  border-radius: 5px 5px 0 0 !important;
 }
 
 .card__tour {
-    border: none !important;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px !important;
+  border: none !important;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px !important;
 }
 
 .tour__img {
-    position: relative;
+  position: relative;
 }
 
 .tour__img span {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: max-content !important;
-    height: max-content !important;
-    z-index: 10 !important;
-    background: var(--primary-color);
-    color: #fff;
-    padding: 0.3rem 0.5rem !important;
-    border-radius: 3px 0 0 0 !important;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: max-content !important;
+  height: max-content !important;
+  z-index: 10 !important;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 0.3rem 0.5rem !important;
+  border-radius: 3px 0 0 0 !important;
 }
 
 .card__top span i {
-    color: var(--secondary-color);
+  color: var(--secondary-color);
 }
 
 .tour__rating {
-    font-size: .9rem !important;
-    color: var(--text-color);
+  font-size: 0.9rem !important;
+  color: var(--text-color);
 }
 
 .tour__location {
-    color: var(--heading-color);
-    font-weight: 500;
-    font-size: .9rem !important;
+  color: var(--heading-color);
+  font-weight: 500;
+  font-size: 0.9rem !important;
 }
 
 .tour__rating i,
 .tour__location i {
-    font-size: 1rem !important;
+  font-size: 1rem !important;
 }
 
 .tour__title {
-    margin-top: 1rem !important;
-    font-size: 1.1rem !important;
-    cursor: pointer;
+  margin-top: 1rem !important;
+  font-size: 1.1rem !important;
+  cursor: pointer;
 }
 
 .tour__title a {
-    text-decoration: none;
-    color: var(--heading-color);
-    transition: .3s;
+  text-decoration: none;
+  color: var(--heading-color);
+  transition: 0.3s;
 }
 
 .tour__title a:hover {
-    color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+.tour__title h5 {
+  margin-bottom: 0.5rem !important;
 }
 
 .card__bottom h5 {
-    color: var(--secondary-color);
-    font-size: 1.1rem !important;
-    font-weight: 700;
+  color: var(--secondary-color);
+  font-size: 1.1rem !important;
+  font-weight: 700;
 }
 
 .card__bottom h5 span {
-    font-weight: 500;
-    color: var(--text-color);
-    font-size: 0.8rem !important;
+  font-weight: 500;
+  color: var(--text-color);
+  font-size: 0.8rem !important;
 }
 
 .booking__btn {
-    background: var(--secondary-color) !important;
-    cursor: pointer;
+  background: var(--secondary-color);
+  cursor: pointer;
 }
 
 .book__btn__pad {
-    padding: 0.2rem 0.5rem !important;
+  padding: 0.2rem 0.5rem !important;
 }
 
 .booking__btn:hover {
-    cursor: pointer;
-    background-color: var(--light-secondary-color) !important;
+  cursor: pointer;
+  background-color: var(--light-secondary-color);
 }
 
 .booking__btn a {
-    text-decoration: none;
-    font-size: 0.9rem !important;
-    color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem !important;
+  color: #fff;
 }
 
 .booking__btn a:hover {
-    color: #fff;
+  color: #fff;
 }

@@ -8,6 +8,7 @@ import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete
 import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
 import NoData from "../NoData";
 import { headers } from "../../helper";
+import { baseUrl } from "../../../../config";
 
 const userSearchTypes = [
   {
@@ -39,7 +40,6 @@ export default function UsersList() {
 
   const searchRef = useRef(null);
   const searchTypeRef = useRef(null);
-
   const handleResetFilter = () => {
     setFilter({ searchValue: "", searchType: userSearchTypes[0], page: 1 });
     if (searchRef.current) {
@@ -62,7 +62,7 @@ export default function UsersList() {
   const handleInactiveCofirm = async (userId) => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/inactive/${userId}`
+        `${baseUrl}/api/v1/users/inactive/${userId}`
       );
       const response = await fetch(url, {
         method: "PUT",
@@ -86,7 +86,7 @@ export default function UsersList() {
   const handleActiveConfirm = async (userId) => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/active/${userId}`
+        `${baseUrl}/api/v1/users/active/${userId}`
       );
       const response = await fetch(url, {
         method: "PUT",
@@ -105,14 +105,14 @@ export default function UsersList() {
     } catch (error) {
       pushError("Failed to active user");
     }
-  };  
+  };
   const handleLockConfirm = async (userId) => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${userId}`
+        `${baseUrl}/api/v1/users/lock/${userId}`
       );
       const response = await fetch(url, {
-        method: 'PUT',
+        method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -132,10 +132,10 @@ export default function UsersList() {
   const handleUnLockConfirm = async (userId) => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${userId}`
+        `${baseUrl}/api/v1/users/unlock/${userId}`
       );
       const response = await fetch(url, {
-        method: 'PUT',
+        method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +154,7 @@ export default function UsersList() {
   };
   const fetchUsers = async () => {
     setLoading(true);
-    const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/v1/users/list`);
+    const url = new URL(`${baseUrl}/api/v1/users/list`);
     url.searchParams.append("page", filter.page);
     url.searchParams.append("limit", pageSize);
     if (filter.status) {
@@ -166,10 +166,12 @@ export default function UsersList() {
     url.searchParams.append("search", filter.searchValue);
     url.searchParams.append("searchType", filter.searchType);
 
-    return fetch(url, { credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    }, })
+    return fetch(url, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           pushError("Failed to get list user");
@@ -282,8 +284,8 @@ export default function UsersList() {
             user={user}
             handleLockConfirm={(userId) => handleLockConfirm(userId)}
             handleActiveConfirm={(userId) => handleActiveConfirm(userId)}
-            handleInactiveCofirm = {(userId) => handleInactiveCofirm(userId)}
-            handleUnLockConfirm = {(userId) => handleUnLockConfirm(userId)}
+            handleInactiveCofirm={(userId) => handleInactiveCofirm(userId)}
+            handleUnLockConfirm={(userId) => handleUnLockConfirm(userId)}
           />
         )}
         totalPages={paging.totalPages}
