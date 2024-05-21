@@ -1,5 +1,5 @@
 //modules
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
@@ -10,6 +10,7 @@ import "./index.css";
 import { pushError, pushSuccess } from "../../components/Toast";
 
 import ReCAPTCHA from "react-google-recaptcha";
+import TermsPrivacyBanner from "./TermsPrivacyBanner";
 import { baseUrl } from "../../config";
 
 function Register() {
@@ -28,12 +29,12 @@ function Register() {
   const recaptchaRef = useRef(null);
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
-  const Sitekey = "6Lf5mtApAAAAAF8KWzqQLrZS8-NtQHNhWmS6h_iI"
-  const togglePassword = (e) => {
+  const Sitekey = "6Lf5mtApAAAAAF8KWzqQLrZS8-NtQHNhWmS6h_iI";
+  const togglePassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const toggleConfPassword = (e) => {
+  const toggleConfPassword = () => {
     setShowConfPassword(!showConfPassword);
   };
 
@@ -58,16 +59,13 @@ function Register() {
     const dataWithToken = { ...dataToSend, token: recaptchaToken };
 
     try {
-      const response = await fetch(
-        `${baseUrl}/api/v1/auth/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataWithToken),
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/v1/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataWithToken),
+      });
 
       const responseBody = await response.json();
       const responseMsg = responseBody.message;
@@ -256,10 +254,7 @@ function Register() {
         </div>
 
         <div className="mb-3">
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={Sitekey}
-          />
+          <ReCAPTCHA ref={recaptchaRef} sitekey={Sitekey} />
         </div>
 
         <p>
@@ -274,6 +269,7 @@ function Register() {
           Submit
         </button>
       </form>
+      <TermsPrivacyBanner />
     </>
   );
 }

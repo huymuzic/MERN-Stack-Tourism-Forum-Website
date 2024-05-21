@@ -88,7 +88,6 @@ const TourDetails = () => {
       pushError("Please try again later");
     }
   };
-
   return (
     <>
       <section>

@@ -6,6 +6,7 @@ export const createReview = async (req, res) => {
   const { reviewText, rating } = req.body;
   const newReview = new Review({
     productId: tourId,
+    userId: req.user._id,
     username: req.user.username,
     avatar: req.user.avatar,
     reviewText,

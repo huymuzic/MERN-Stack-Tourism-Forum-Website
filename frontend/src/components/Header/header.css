@@ -226,6 +226,13 @@ nav button:focus-visible {
   }
 
   .l {
-    margin-left: 0 !important;
+    margin: 0 !important;
+    position: relative;
+    left: 4%;
+  }
+
+  .nm {
+    position: absolute;
+    left: 7%;
   }
 }
