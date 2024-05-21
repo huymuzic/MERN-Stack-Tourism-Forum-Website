@@ -12,7 +12,6 @@ import useFetch from "../../hooks/useFetch.jsx";
 import { baseUrl } from "../../config/index.js";
 
 const TourDetails = () => {
-  const baseURL = "https://cosmic-travel.onrender.com";
   const { user } = useUser();
   const { id } = useParams();
   const reviewMsgRef = useRef("");

@@ -7,7 +7,7 @@ import { handleLike, populateImages } from './ApiCalls.jsx';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from "../../../components/CircularProgress";
 import { Swiper, SwiperSlide } from 'swiper/react';
-
+import { baseUrl } from '../../../config/index.js';
 import { Navigation } from 'swiper/modules';
 
 function countChildren(post) {
@@ -41,7 +41,7 @@ function Reply(props) {
         <div className='d-flex'>
             <Link className='ps-3' to={`/profile/${child.authorId && child.authorId._id}`}>
                 <img height='45' width='45' className='rounded-5' alt='profile picture'
-                    src={child.authorId ? getAvatarUrl(child.authorId.avatar, "https://cosmic-travel.onrender.com") : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                    src={child.authorId ? getAvatarUrl(child.authorId.avatar,baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                 </img>
             </Link>
 
