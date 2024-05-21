@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { pushError } from "../../../components/Toast";
 import { useUser } from "../../../utils/UserContext";
@@ -123,7 +123,7 @@ const Booking = ({ tour, avgRating }) => {
         </ListGroup>
 
         <Button
-        variant="primary"
+          variant="primary"
           className="btn primary__btn w-100 mt-4 book__btn normal__pad"
           onClick={handleBookFormSubmit}
         >

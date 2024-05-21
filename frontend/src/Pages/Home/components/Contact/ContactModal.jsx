@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "./contact-modal.css";
 import { pushError, pushSuccess } from "../../../../components/Toast";
@@ -12,35 +12,55 @@ const ContactModal = () => {
   const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
-    if (!fullName) pushError("Full Name is required");
-    if (!email) {
-      pushError("Email is required");
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      pushError("Email is invalid");
+    const errors = [];
+
+    if (!fullName) {
+      errors.push("Full Name is required");
     }
-    if (!phoneNumber) pushError("Phone Number is required");
-    if (!message) pushError("Message is required");
+
+    if (!email) {
+      errors.push("Email is required");
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.push("Email is invalid");
+    }
+
+    if (!phoneNumber) {
+      errors.push("Phone Number is required");
+    }
+
+    if (!message) {
+      errors.push("Message is required");
+    }
+
+    if (errors.length > 0) {
+      setLoading(true);
+      errors.forEach((error) => pushError(error));
+      return false;
+    }
+
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `${baseUrl}/api/v1/form/contact`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ fullName, email, phoneNumber, message }),
-        }
-      );
+      const res = await fetch(`${baseUrl}/api/v1/form/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fullName, email, phoneNumber, message }),
+      });
 
-      const resBody = await res.json();
+      await res.json();
       if (res.ok) {
         pushSuccess("Form submitted successfully!");
         setFullName("");

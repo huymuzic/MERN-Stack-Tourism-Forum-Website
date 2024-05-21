@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 
 import {
@@ -29,26 +29,20 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
-    const response = await fetch(
-      `${baseUrl}/api/v1/images/`
-    );
+    const response = await fetch(`${baseUrl}/api/v1/images/`);
     const Images = await response.json();
     if (Images && Images.data) {
       if (environment == "PROD") {
+        setHeroImages(Images.data.filter((item) => item.title == "Hero image"));
+      } else {
         setHeroImages(
-          Images.data.filter((item) => item.title !== "Common Section Image")
-        );
-      }
-      else {
-      console.log("🚀 ~ fetchData ~ Images:", Images)
-
-        setHeroImages(
-          Images.data.filter((item) => item.title !== "Common Section Image")
+          Images.data
+            .filter((item) => item.title == "Hero image")
             .map((item) => {
               return {
                 ...item,
-                photo: `./src${item.photo}`
-              }
+                photo: `./src${item.photo}`,
+              };
             })
         );
       }
@@ -119,7 +113,7 @@ const Home = () => {
       {/* Hero Section Ends */}
 
       {/*SERVICES SECTION STARTS */}
-      <section>
+      <section id="a">
         <Container>
           <Row>
             <Col lg="3">

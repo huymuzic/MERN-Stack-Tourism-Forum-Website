@@ -73,3 +73,9 @@ img[alt="footer-logo"] {
   color: var(--text-color) !important;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 768px) {
+  .footer {
+    padding-top: 30px !important;
+  }
+}

@@ -6,6 +6,8 @@ import { pushSuccess } from "./components/Toast";
 import { useTheme } from "./theme/Theme";
 import CookieBanner from "./Pages/Home/components/CookieBanner/index";
 import { baseUrl } from "./config";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function App() {
   const { theme } = useTheme();
@@ -15,13 +17,10 @@ function App() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch(
-          `${baseUrl}/api/v1/auth/check-login`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/auth/check-login`, {
+          method: "GET",
+          credentials: "include",
+        });
         const resBody = await response.json();
         if (!resBody.rem && localStorage.getItem("loggedInBefore") === "true") {
           localStorage.removeItem("loggedInBefore");

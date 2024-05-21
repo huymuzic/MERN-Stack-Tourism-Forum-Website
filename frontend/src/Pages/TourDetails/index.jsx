@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import "./index.css";
 import { Link, Element, animateScroll as scroll } from "react-scroll";
 import { Container, Row, Col, Form, ListGroup } from "react-bootstrap";
@@ -10,6 +10,7 @@ import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import useFetch from "../../hooks/useFetch.jsx";
 import { baseUrl } from "../../config/index.js";
+import { environment } from "../../config/index.js";
 
 const TourDetails = () => {
   const { user } = useUser();
@@ -21,9 +22,7 @@ const TourDetails = () => {
   const [avgRating, setAvgRating] = useState("");
   const [totalRating, setTotalRating] = useState(0);
 
-  const { data: tour } = useFetch(
-    `${baseUrl}/api/v1/tours/${id}`
-  );
+  const { data: tour } = useFetch(`${baseUrl}/api/v1/tours/${id}`);
 
   const { photo, title, price, reviews, country, city, duration, ageRange } =
     tour || {};
@@ -63,20 +62,17 @@ const TourDetails = () => {
       return;
     }
     try {
-      const res = await fetch(
-        `${baseUrl}/api/v1/reviews/${id}`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            reviewText: reviewText,
-            rating: tourRating,
-          }),
-        }
-      );
+      const res = await fetch(`${baseUrl}/api/v1/reviews/${id}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reviewText: reviewText,
+          rating: tourRating,
+        }),
+      });
       if (res.ok) {
         const newReview = await res.json();
         pushSuccess("Review submitted successfully");
@@ -91,7 +87,6 @@ const TourDetails = () => {
       pushError("Please try again later");
     }
   };
-
   return (
     <>
       <section>
@@ -118,8 +113,10 @@ const TourDetails = () => {
                     <i className="ri-map-pin-2-line"></i> {city}, {country}
                   </span>
                 </div>
-                <img src={photo} alt="" />
-
+                <img
+                  src={environment == "PROD" ? photo : `./src${photo}`}
+                  alt={title}
+                />
                 <div className="tour__info">
                   <div className="d-flex flex-column align-items-start justify-content-center tour__extra-details">
                     <h5>Description</h5>
@@ -186,7 +183,7 @@ const TourDetails = () => {
                     {reviewsArray.map((review) => (
                       <div className="review__item" key={review._id}>
                         <img
-                          src={getAvatarUrl(review.avatar, baseURL)}
+                          src={getAvatarUrl(review.avatar, baseUrl)}
                           alt="User Avatar"
                           className="rounded-circle"
                           style={{

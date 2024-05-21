@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./common-section.css";
 
 import { Container, Row, Col } from "react-bootstrap";
 import { baseUrl } from "../config";
+import { environment } from "../config";
 
 const CommonSection = ({ title }) => {
   const [commonSectionImage, setCommonSectionImage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        `${baseUrl}/api/v1/images/`
-      );
+      const response = await fetch(`${baseUrl}/api/v1/images/`);
       const Images = await response.json();
 
       if (Images && Images.data) {
@@ -19,7 +18,11 @@ const CommonSection = ({ title }) => {
           (item) => item.title === "Common Section Image"
         );
         if (image) {
-          setCommonSectionImage(image.photo);
+          if (environment === "PROD") {
+            setCommonSectionImage(image.photo);
+          } else {
+            setCommonSectionImage(`./src${image.photo}`);
+          }
         }
       }
     };
