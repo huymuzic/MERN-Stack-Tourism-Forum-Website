@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CommonSection from "../../Shared/CommonSection";
 import { Link, Element, animateScroll as scroll } from "react-scroll";
 

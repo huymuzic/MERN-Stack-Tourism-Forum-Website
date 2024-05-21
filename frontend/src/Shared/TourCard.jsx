@@ -16,7 +16,7 @@ const TourCard = ({ tour }) => {
           <Link to={`/tours/${_id} `}>
             <img
               src={environment == "PROD" ? photo : `./src${photo}`}
-              alt="tour-img"
+              alt={title}
             />
             {featured && <span>Featured</span>}
           </Link>

@@ -33,15 +33,11 @@ const Home = () => {
     const Images = await response.json();
     if (Images && Images.data) {
       if (environment == "PROD") {
-        setHeroImages(
-          Images.data.filter((item) => item.title !== "Common Section Image")
-        );
+        setHeroImages(Images.data.filter((item) => item.title == "Hero image"));
       } else {
-        console.log("🚀 ~ fetchData ~ Images:", Images);
-
         setHeroImages(
           Images.data
-            .filter((item) => item.title !== "Common Section Image")
+            .filter((item) => item.title == "Hero image")
             .map((item) => {
               return {
                 ...item,

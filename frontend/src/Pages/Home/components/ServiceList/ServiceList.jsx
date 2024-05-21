@@ -1,36 +1,55 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import ServiceCard from "./ServiceCard";
-import { Col } from "react-bootstrap";
-import tourGuideImg from "../../../../assets/images/guide.png";
-import customizationImg from "../../../../assets/images/customization.png";
-import cancellationImg from "../../../../assets/images/cancellation.png";
-
-const serviceData = [
-  {
-    imgUrl: tourGuideImg,
-    title: "Best Tour Guide",
-    desc: "69k+ successful trips",
-  },
-  {
-    imgUrl: customizationImg,
-    title: "Customization",
-    desc: "Multiple color themes",
-  },
-  {
-    imgUrl: cancellationImg,
-    title: "Free cancellation",
-    desc: "Stay flexible on your trip",
-  },
-];
+import { Col, Container } from "react-bootstrap";
+import { baseUrl, environment } from "../../../../config";
+import CircularProgress from "../../../../components/CircularProgress";
 
 const ServiceList = () => {
+  const [serviceImages, setServiceImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    const response = await fetch(`${baseUrl}/api/v1/images/`);
+    const Images = await response.json();
+    if (Images && Images.data) {
+      if (environment == "PROD") {
+        setServiceImages(
+          Images.data.filter((item) => item.type == "Service image")
+        );
+      } else {
+        setServiceImages(
+          Images.data
+            .filter((item) => item.type == "Service image")
+            .map((item) => {
+              return {
+                ...item,
+                photo: `./src${item.photo}`,
+              };
+            })
+        );
+      }
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
-      {serviceData.map((item, index) => (
-        <Col lg="3" key={index}>
-          <ServiceCard item={item} />
-        </Col>
-      ))}
+      {isLoading ? (
+        <Container className="d-flex justify-content-center">
+          <CircularProgress />
+        </Container>
+      ) : (
+        <>
+          {serviceImages.map((item, index) => (
+            <Col lg="3" key={index}>
+              <ServiceCard item={item} />
+            </Col>
+          ))}
+        </>
+      )}
     </>
   );
 };

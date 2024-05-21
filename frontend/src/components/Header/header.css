@@ -206,7 +206,9 @@ nav button:focus-visible {
   }
 
   .l {
-    margin-left: 1rem !important;
+    position: relative;
+    margin: 0 !important;
+    left: 1%;
   }
 }
 
@@ -226,8 +228,6 @@ nav button:focus-visible {
   }
 
   .l {
-    margin: 0 !important;
-    position: relative;
     left: 4%;
   }
 
