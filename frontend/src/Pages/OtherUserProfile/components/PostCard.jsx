@@ -8,6 +8,7 @@ import { useTheme } from "../../../theme/Theme.jsx";
 import { pushError, pushSuccess } from "../../../components/Toast";
 import { usePopUp } from "../../../components/pop-up/usePopup";
 import PopUpBase from "../../../components/pop-up/PopUpBase";
+
 function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm, handleDelete }) {
     const { user } = useUser();
     const { color } = useTheme();

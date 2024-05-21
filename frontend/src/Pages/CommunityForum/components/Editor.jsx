@@ -2,9 +2,9 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { createTopic, replyTopic } from './ApiCalls.jsx';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { pushSuccess } from '../../../components/Toast';
+import { pushError } from '../../../components/Toast';
 import { Navigation } from 'swiper/modules';
 
 import 'swiper/css';
@@ -12,7 +12,10 @@ import 'swiper/swiper-bundle.css';
 import 'swiper/css/pagination';
 
 const MyEditor = (props) => {
-    const { id } = useParams();
+    const location = useLocation();
+
+    const id = location.pathname.replace('/forum/p/', '');
+
     const { register, handleSubmit, watch, formState: { errors, dirtyFields }, reset } = useForm({});
     const { status } = props;
     const inputRef = useRef(null);
@@ -48,7 +51,7 @@ const MyEditor = (props) => {
             const fileSizeInMB = files[i].size / (1024 * 1024);
 
             if (fileSizeInMB > 1) {
-                pushSuccess('Image file is too large!');
+                pushError('Image file is too large!');
                 continue;
             }
 
@@ -103,7 +106,7 @@ const MyEditor = (props) => {
                                         required: 'Content cannot be empty.'
                                     })}>
                                 </textarea>
-                                {errors.content && <div className="invalid-feedback mb-1">{errors.content.message}</div>}
+                                {errors.content && <div className="d-block invalid-feedback mb-1">{errors.content.message}</div>}
                                 {selectedImages.length > 0 &&
                                     <Swiper
                                         spaceBetween={30}
@@ -157,7 +160,7 @@ const MyEditor = (props) => {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="submit" className="btn btn-primary col-12 rounded-3 p-1 mx-auto">Create topic</button>
+                            <input type='submit' className="btn btn-primary col-12 rounded-3 p-1 mx-auto"/>
                         </div>
                     </form>
                 </div>

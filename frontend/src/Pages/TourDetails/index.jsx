@@ -13,7 +13,6 @@ import { baseUrl } from "../../config/index.js";
 import { environment } from "../../config/index.js";
 
 const TourDetails = () => {
-  const baseURL = "https://cosmic-travel.onrender.com";
   const { user } = useUser();
   const { id } = useParams();
   const reviewMsgRef = useRef("");

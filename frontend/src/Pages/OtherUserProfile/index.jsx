@@ -17,6 +17,7 @@ import {
 import { pushSuccess, pushError } from "../../components/Toast";
 import PopUpBase from "../../components/pop-up/PopUpBase";
 import { usePopUp } from "../../components/pop-up/usePopup";
+import { baseUrl } from "../../config";
 
 const OtherUserProfile = () => {
   const { user, setUser } = useUser();
@@ -25,7 +26,6 @@ const OtherUserProfile = () => {
   const [otherUserInfo, setOtherUserInfo] = useState({});
   const [activeNav, setActiveNav] = useState("Posts");
   const navigate = useNavigate();
-  const baseURL = "https://cosmic-travel.onrender.com";
   const NAV_ITEMS = {
     Posts: UserPosts,
     Favorites: Favorites,
@@ -39,10 +39,9 @@ const OtherUserProfile = () => {
     fetchOtherUserInfo();
   }, [id, user]); // Note: Be cautious with including state that changes often as dependencies
   const elementsRef = useRef([]);
-
   const fetchOtherUserInfo = async () => {
     try {
-      const response = await fetch(`${baseURL}/api/v1/users/${id}`, {
+      const response = await fetch(`${baseUrl}/api/v1/users/${id}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -70,7 +69,7 @@ const OtherUserProfile = () => {
 
   const onActivateConfirm = async () => {
     try {
-      const url = new URL(`${baseURL}/api/v1/users/active/${id}`);
+      const url = new URL(`${baseUrl}/api/v1/users/active/${id}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -91,7 +90,7 @@ const OtherUserProfile = () => {
 
   const onDeactivateConfirm = async () => {
     try {
-      const url = new URL(`${baseURL}/api/v1/users/inactive/${id}`);
+      const url = new URL(`${baseUrl}/api/v1/users/inactive/${id}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -120,7 +119,7 @@ const OtherUserProfile = () => {
   const handleLockConfirm = async () => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/lock/${id}`
+        `${baseUrl}/api/v1/users/lock/${id}`
       );
       const response = await fetch(url, {
         method: "PUT",
@@ -143,7 +142,7 @@ const OtherUserProfile = () => {
   const handleUnLockConfirm = async () => {
     try {
       const url = new URL(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/users/unlock/${id}`
+        `${baseUrl}/api/v1/users/unlock/${id}`
       );
       const response = await fetch(url, {
         method: "PUT",
@@ -171,7 +170,7 @@ const OtherUserProfile = () => {
             <Row className="align-items-start">
               <Col xs={12} md={9} className="d-flex align-items-center ">
                 <img
-                  src={getAvatarUrl(otherUserInfo.avatar, baseURL)}
+                  src={getAvatarUrl(otherUserInfo.avatar, baseUrl)}
                   alt="User Avatar"
                   className="rounded-circle me-3"
                   width={"200px"}

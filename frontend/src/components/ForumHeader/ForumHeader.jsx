@@ -6,7 +6,7 @@ import { getAvatarUrl } from "../../utils/getAvar.js";
 import { Dropdown } from "bootstrap";
 import Editor from "../../Pages/CommunityForum/components/Editor";
 import { useTheme } from "../../theme/Theme.jsx";
-
+import { baseUrl } from "../../config/index.js";
 import logo from "../../assets/images/logo.png";
 
 const nav_bar = [
@@ -41,10 +41,7 @@ const nav_bar = [
 const ForumHeader = ({ children }) => {
   const { setUser, user } = useUser();
   const navigate = useNavigate();
-  const userPfp = getAvatarUrl(
-    user?.avatar,
-    "https://cosmic-travel.onrender.com"
-  );
+  const userPfp = getAvatarUrl(user?.avatar, baseUrl);
   const [isFocused, setIsFocused] = useState(false);
   const [searchHistory, setSearchHistory] = useState([]);
   const [dropdown, setDropdown] = useState(null);
@@ -87,7 +84,7 @@ const ForumHeader = ({ children }) => {
       setSearchHistory(newSearchHistory);
       localStorage.setItem("searchHistory", JSON.stringify(newSearchHistory));
 
-      navigate(`/search?keyword=${search}`);
+      navigate(`/search?keyword=${search}&sort=-1`);
 
       //e.target.click()
       //e.target.blur()
@@ -212,20 +209,37 @@ const ForumHeader = ({ children }) => {
                     My Account
                   </Link>
                 </li>
-                {/* <li><Link className="dropdown-item" to="/history">Purchased History</Link></li> */}
-                <li>
-                  <Link className="dropdown-item" to={`/profile/${user._id}`}>
-                    My Post History
+                <Link className="dropdown-item" to={`/profile/${user._id}`}>
+                  My Post History
+                </Link>
+                {/* <li>
+                  <Link className="dropdown-item" to="/history">
+                    Purchased History
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <hr className="dropdown-divider"></hr>
                 </li>
-                <li>
-                  <Link className="dropdown-item" onClick={handleLogout}>
-                    Sign out
-                  </Link>
-                </li>
+                {user ? (
+                  <li>
+                    <Link className="dropdown-item" onClick={handleLogout}>
+                      Sign out
+                    </Link>
+                  </li>
+                ) : (
+                  <>
+                    <li>
+                      <Link className="dropdown-item" to="/login">
+                        Sign in
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/register">
+                        Register
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </nav>
@@ -314,6 +328,10 @@ const ForumHeader = ({ children }) => {
       </div>
 
       <Editor status="post" />
+
+      <Editor status="reply" />
+
+      <Editor status="edit" />
     </>
   );
 };

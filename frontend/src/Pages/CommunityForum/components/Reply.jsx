@@ -7,7 +7,7 @@ import { handleLike, populateImages } from './ApiCalls.jsx';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from "../../../components/CircularProgress";
 import { Swiper, SwiperSlide } from 'swiper/react';
-
+import { baseUrl } from '../../../config/index.js';
 import { Navigation } from 'swiper/modules';
 
 function countChildren(post) {
@@ -41,7 +41,7 @@ function Reply(props) {
         <div className='d-flex'>
             <Link className='ps-3' to={`/profile/${child.authorId && child.authorId._id}`}>
                 <img height='45' width='45' className='rounded-5' alt='profile picture'
-                    src={child.authorId ? getAvatarUrl(child.authorId.avatar, "https://cosmic-travel.onrender.com") : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                    src={child.authorId ? getAvatarUrl(child.authorId.avatar,baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
                 </img>
             </Link>
 
@@ -107,7 +107,7 @@ function Reply(props) {
                 <button className='d-flex align-items-center gap-3 rounded ctm-btn px-3 py-2 heart'
                     onClick={() => handleLike(child._id)}>
                     <span>{child.likes.length}</span>
-                    <i className={`fa-heart ${child.likes.includes(user._id) ? 'fa-solid' : 'fa-regular'}`}></i>
+                    <i className={`fa-heart ${user && child.likes.includes(user._id) ? 'fa-solid' : 'fa-regular'}`}></i>
                 </button>
                 : <></>}
 
@@ -117,10 +117,12 @@ function Reply(props) {
             </div>
 
             <button
-                data-bs-toggle="modal"
-                data-bs-target="#replyModal"
+                data-bs-toggle={user ? "modal" : ""}
+                data-bs-target={user ? "#replyModal" : ""}
                 className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                onClick={() => nav(`/forum/p/${child._id}`)}
+                onClick={() => {
+                    nav(user ? `/forum/p/${child._id}` : '/login')
+                }}
             >
                 <i className="fa-solid fa-share"></i>
                 <span>Reply</span>

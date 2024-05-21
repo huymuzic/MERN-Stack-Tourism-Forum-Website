@@ -1,8 +1,7 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import formatDate from './components/DateFormat';
 import { useUser } from '../../utils/UserContext';
-import Editor from "./components/Editor";
 import Reply from "./components/Reply";
 import { Link } from 'react-router-dom';
 import CircularProgress from "../../components/CircularProgress";
@@ -32,7 +31,7 @@ function Post() {
     const [post, setPost] = useState([]);
     const [target, setTarget] = useState([]);
     const [path, setPath] = useState([]);
-
+    
     const nav = useNavigate();
     const { user } = useUser();
 
@@ -111,7 +110,7 @@ function Post() {
     return (
         <article className='d-flex align-items-center flex-column'>
             <div className='col-8 d-flex align-items-center'>
-                <Link to={target.parentId == null ? '/forum' : `/forum/p/${target.parentId._id}`} type="button" className="border-0 rounded-5 text-reset align-self-start">
+                <Link to ='/forum' type="button" className="border-0 rounded-5 text-reset align-self-start">
                     <i className="m-3 fa-solid fa-arrow-left"></i>
                 </Link>
                 <h5>Post details</h5>
@@ -238,14 +237,6 @@ function Post() {
             ) : (
                 <></>
             )}
-
-            <Editor
-                status='reply'
-            />
-
-            <Editor
-                status='edit'
-            />
         </article>
     );
 }
