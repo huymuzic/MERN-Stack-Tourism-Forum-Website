@@ -171,7 +171,12 @@ const ForumHeader = ({ children }) => {
                             <li><Link className="dropdown-item" to="/my-account">Dashboard</Link></li>
                             <li><Link className="dropdown-item" to="/history">Purchased History</Link></li>
                             <li><hr className="dropdown-divider"></hr></li>
-                            <li><Link className="dropdown-item" onClick={handleLogout}>Sign out</Link></li>
+                            {user ? <li><Link className="dropdown-item" onClick={handleLogout}>Sign out</Link></li>
+                            : <>
+                                <li><Link className="dropdown-item" to="/login">Sign in</Link></li>
+                                <li><Link className="dropdown-item" to="/register">Register</Link></li>
+                            </>}
+                            
                         </ul>
                     </div>
                 </nav>
