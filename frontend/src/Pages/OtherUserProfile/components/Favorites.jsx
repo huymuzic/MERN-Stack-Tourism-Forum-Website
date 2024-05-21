@@ -5,6 +5,7 @@ import PostCard from "./PostCard";
 import { useUser } from "../../../utils/UserContext";
 import { pushError, pushSuccess } from "../../../components/Toast";
 import { baseUrl } from "../../../config";
+
 function Favorites() {
   const [favoritePosts, setFavoritePosts] = useState([]);
   const { user, setUser } = useUser();
@@ -154,10 +155,12 @@ function Favorites() {
   const handleToggleLike = (postId) => {
     toggleLike(postId, user._id, null, null); // Update favorite posts after toggling like
   };
+  
   const fetchData = async () => {
     const posts = await fetchFavoritePostsByUser(id);
     setFavoritePosts(posts);
   };
+
   useEffect(() => {
     fetchData();
   }, [user, id]);

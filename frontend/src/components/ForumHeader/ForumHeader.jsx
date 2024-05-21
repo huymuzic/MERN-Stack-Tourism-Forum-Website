@@ -6,7 +6,7 @@ import { getAvatarUrl } from '../../utils/getAvar.js';
 import { Dropdown } from 'bootstrap';
 import Editor from "../../Pages/CommunityForum/components/Editor";
 import { useTheme } from "../../theme/Theme.jsx";
-
+import { baseUrl } from "../../config/index.js";
 import logo from '../../assets/images/logo.png'
 
 const nav_bar = [
@@ -41,7 +41,7 @@ const nav_bar = [
 const ForumHeader = ({ children }) => {
     const { setUser, user } = useUser();
     const navigate = useNavigate();
-    const userPfp = getAvatarUrl(user?.avatar, "https://cosmic-travel.onrender.com")
+    const userPfp = getAvatarUrl(user?.avatar, baseUrl)
     const [isFocused, setIsFocused] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);
     const [dropdown, setDropdown] = useState(null);

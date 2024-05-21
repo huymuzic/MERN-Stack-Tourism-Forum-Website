@@ -23,6 +23,7 @@ import CircularProgress from "../../components/CircularProgress";
 import PopUpEditTheme from "./components/PopUpEditTheme";
 import { useTheme } from "../../theme/Theme";
 import PopUpEditPassword from "./components/PopUpEditPassword";
+import { baseUrl } from "../../config";
 
 export const defaultSettingTheme = {
   primary: "#ff7e01",
@@ -48,7 +49,6 @@ export default function MyAccount() {
     status: "active",
   });
   const [avatar, setAvatar] = useState();
-  const baseURL = "https://cosmic-travel.onrender.com";
   const userStatus = userStatuses.find(
     (item) => item.Value === userProfile.status
   );
@@ -56,7 +56,7 @@ export default function MyAccount() {
   const handleChangePassword = async ({ currentPassword, newPassword }) => {
     popUpEditPassword.onClose();
     try {
-      const response = await fetch(`${baseURL}/api/v1/users/verify-password`, {
+      const response = await fetch(`${baseUrl}/api/v1/users/verify-password`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -79,7 +79,7 @@ export default function MyAccount() {
   };
   const handleActivateConfirm = async () => {
     try {
-      const url = new URL(`${baseURL}/api/v1/users/inactive/${user._id}`);
+      const url = new URL(`${baseUrl}/api/v1/users/inactive/${user._id}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -101,7 +101,7 @@ export default function MyAccount() {
 
   const handleDeactivateConfirm = async () => {
     try {
-      const url = new URL(`${baseURL}/api/v1/users/active/${user._id}`);
+      const url = new URL(`${baseUrl}/api/v1/users/active/${user._id}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -133,7 +133,7 @@ export default function MyAccount() {
   const handleUpdateProfile = async (partialUserUpdate) => {
     popUpEditProfile.onClose();
     try {
-      const url = new URL(`${baseURL}/api/v1/users/${user._id}`);
+      const url = new URL(`${baseUrl}/api/v1/users/${user._id}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -166,7 +166,7 @@ export default function MyAccount() {
 
     try {
       const response = await fetch(
-        `${baseURL}/api/v1/users/upload-avatar/${user._id}`,
+        `${baseUrl}/api/v1/users/upload-avatar/${user._id}`,
         {
           method: "PUT",
           credentials: "include",
@@ -187,7 +187,7 @@ export default function MyAccount() {
   const handleUpdateTheme = async (settingTheme) => {
     popUpEditTheme.onClose();
     try {
-      const url = new URL(`${baseURL}/api/v1/users/theme`);
+      const url = new URL(`${baseUrl}/api/v1/users/theme`);
       const response = await fetch(url, {
         method: "POST",
         credentials: "include",
@@ -213,7 +213,7 @@ export default function MyAccount() {
   };
   const fetchUser = async () => {
     setLoading(true);
-    const url = new URL(`${baseURL}/api/v1/users/${user._id}`);
+    const url = new URL(`${baseUrl}/api/v1/users/${user._id}`);
 
     try {
       const response = await fetch(url, {
@@ -230,7 +230,7 @@ export default function MyAccount() {
       }
 
       const data = await response.json();
-      setAvatar(getAvatarUrl(data.data.avatar, baseURL));
+      setAvatar(getAvatarUrl(data.data.avatar, baseUrl));
       setUserProfile(data.data);
     } catch (error) {
       console.log("🚀 ~ fetchUser ~ error:", error);

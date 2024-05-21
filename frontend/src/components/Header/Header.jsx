@@ -29,7 +29,7 @@ const Header = () => {
   const { color } = useTheme();
   const { user, setUser } = useUser();
   const navigate = useNavigate();
-  const avatarUrl = getAvatarUrl(user?.avatar, baseUrl);
+
 
   const handleLogout = async () => {
     try {
@@ -183,9 +183,9 @@ const Header = () => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              {user?.avatar ? (
+              {user.avatar ? (
                 <img
-                  src={avatarUrl}
+                  src= {getAvatarUrl(user.avatar, baseUrl)}
                   alt="User Avatar"
                   className="rounded-circle"
                   style={{ width: "50px", height: "50px", objectFit: "cover" }}

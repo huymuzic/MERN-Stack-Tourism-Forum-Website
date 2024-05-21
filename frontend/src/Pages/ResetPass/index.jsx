@@ -17,8 +17,7 @@ const ResetPassword = () => {
     message: "",
     type: "",
   });
-  
-  const baseURL = "https://cosmic-travel.onrender.com";
+
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -98,7 +97,7 @@ const ResetPassword = () => {
   const closeNotification = () => {
     setNotification({ show: false, message: "", type: "" });
   };
-  const avatarUrl = getAvatarUrl(userData?.avatar, baseURL);
+  const avatarUrl = getAvatarUrl(userData?.avatar, baseUrl);
   return (
     <div
       aria-live="polite"
