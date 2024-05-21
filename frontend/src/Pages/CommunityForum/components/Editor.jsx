@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { createTopic, replyTopic } from './ApiCalls.jsx';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { pushError } from '../../../components/Toast';
 import { Navigation } from 'swiper/modules';
@@ -12,7 +12,10 @@ import 'swiper/swiper-bundle.css';
 import 'swiper/css/pagination';
 
 const MyEditor = (props) => {
-    const { id } = useParams();
+    const location = useLocation();
+
+    const id = location.pathname.replace('/forum/p/', '');
+
     const { register, handleSubmit, watch, formState: { errors, dirtyFields }, reset } = useForm({});
     const { status } = props;
     const inputRef = useRef(null);

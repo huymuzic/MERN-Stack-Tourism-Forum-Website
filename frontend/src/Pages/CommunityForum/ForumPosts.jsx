@@ -31,7 +31,7 @@ function Post() {
     const [post, setPost] = useState([]);
     const [target, setTarget] = useState([]);
     const [path, setPath] = useState([]);
-    const location = useLocation();
+    
     const nav = useNavigate();
     const { user } = useUser();
 
@@ -115,13 +115,6 @@ function Post() {
                 </Link>
                 <h5>Post details</h5>
             </div>
-
-            <button
-                data-bs-toggle="modal"
-                data-bs-target="#replyModal"
-                id='replyButton'
-                className='d-none'
-            />
 
             {post ? (
                 <>
