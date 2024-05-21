@@ -84,8 +84,10 @@ const Post = (props) => {
             </div>
 
             <button
+                data-bs-toggle='modal'
+                data-bs-target='#replyModal'
                 className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                onClick={() => navigate(user ? `/forum/p/${post._id}` : '/login', { state: { openModal: true } })}
+                onClick={() => navigate(user ? `/forum/p/${post._id}` : '/login')}
             >
                 <i className="fa-solid fa-share"></i>
                 <span>Reply</span>
