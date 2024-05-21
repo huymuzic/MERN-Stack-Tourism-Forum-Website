@@ -34,7 +34,8 @@ For smoothly running the project, please make sure to install nodeJs in your dev
 ## B. Build and Run the Application
 
 ```
-Please clone branch "main" for running our local website
+**Please clone branch "main" for running our local website and our last merge branch is "Features/tours (#47)"**
+
 ```
 
 1. **Install Dependencies**:
