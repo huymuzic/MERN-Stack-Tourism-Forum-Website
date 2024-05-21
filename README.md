@@ -24,10 +24,12 @@ This is a guide for running Cosmic Travel Website Project!
     - 
 ## B. Build and Run the Application
 
-1. **Install Dependencies**: npm run build 
-2. **running project in local host**: npm start
-    Backend: http://localhost:3000
-    Frontend: http://localhost:5173
+1. **Install Dependencies**: 
+ > npm run build 
+2. **running project in local host**:
+ > npm start
+Backend: http://localhost:3000
+Frontend: http://localhost:5173
 3. **After success run, welcome to our [Cosmic Travel Website](http://localhost:5173).**
 
 ## C. Authors:
