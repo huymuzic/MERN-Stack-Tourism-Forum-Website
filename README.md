@@ -5,7 +5,9 @@
 This is a guide for running Cosmic Travel Website Project!
 
 # Cosmic Travel Website Project
-For smoothly running the project, please make sure installing nodeJs in your device.
+
+For smoothly running the project, please make sure to install nodeJs in your device.
+
 ## A. Access Detail Information
 
 1. **Live Website URL**:
@@ -28,23 +30,27 @@ For smoothly running the project, please make sure installing nodeJs in your dev
 
 5. **MongoDB Atlas database connection url**:
    - mongodb+srv://huymarky05:testpass@backenddb.xy1qasp.mongodb.net/travel-forum?retryWrites=true&w=majority&appName=BackendDB
+
 ## B. Build and Run the Application
+
 ```
 Please clone branch "main" for running our local website
 ```
+
 1. **Install Dependencies**:
 
 ```
-  npm run build
+  npm run haha
 ```
 
 2. **running project in local host**:
+
 ```
-   npm start
+   npm run hihi
 ```
-   > Backend: http://localhost:3000
-   > Frontend: http://localhost:5173
-3. **After success run, welcome to our [Cosmic Travel Website](http://localhost:5173).**
+
+> Backend: http://localhost:3000
+> Frontend: http://localhost:5173 3. **After success run, welcome to our [Cosmic Travel Website](http://localhost:5173).**
 
 ## C. Authors:
 
