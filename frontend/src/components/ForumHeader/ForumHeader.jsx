@@ -240,6 +240,14 @@ const ForumHeader = ({ children }) => {
         <Editor
             status='post'
         />
+
+        <Editor
+            status='reply'
+        />
+
+        <Editor
+            status='edit'
+        />
     </>;
 };
 

@@ -2,7 +2,6 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import formatDate from './components/DateFormat';
 import { useUser } from '../../utils/UserContext';
-import Editor from "./components/Editor";
 import Reply from "./components/Reply";
 import { Link } from 'react-router-dom';
 import CircularProgress from "../../components/CircularProgress";
@@ -35,15 +34,6 @@ function Post() {
     const location = useLocation();
     const nav = useNavigate();
     const { user } = useUser();
-
-    useEffect(() => {
-        var button = document.getElementById('replyButton')
-        console.log(location.state?.openModal)
-
-        if (location.state?.openModal && button) {
-            button.click();
-        }
-    }, [location])
 
     function findPath(root, target, path) {
         const tempPath = path || []
@@ -120,7 +110,7 @@ function Post() {
     return (
         <article className='d-flex align-items-center flex-column'>
             <div className='col-8 d-flex align-items-center'>
-                <Link to='/forum' type="button" className="border-0 rounded-5 text-reset align-self-start">
+                <Link to ='/forum' type="button" className="border-0 rounded-5 text-reset align-self-start">
                     <i className="m-3 fa-solid fa-arrow-left"></i>
                 </Link>
                 <h5>Post details</h5>
@@ -254,14 +244,6 @@ function Post() {
             ) : (
                 <></>
             )}
-
-            <Editor
-                status='reply'
-            />
-
-            <Editor
-                status='edit'
-            />
         </article>
     );
 }
