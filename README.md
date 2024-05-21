@@ -27,9 +27,11 @@ For smoothly running the project, please make sure installing nodeJs in your dev
    - Password: Admin@1
 
 5. **MongoDB Atlas database connection url**:
-   -
+   - mongodb+srv://huymarky05:testpass@backenddb.xy1qasp.mongodb.net/travel-forum?retryWrites=true&w=majority&appName=BackendDB
 ## B. Build and Run the Application
-
+```
+Please clone branch "main" for running our local website
+```
 1. **Install Dependencies**:
 
 ```
