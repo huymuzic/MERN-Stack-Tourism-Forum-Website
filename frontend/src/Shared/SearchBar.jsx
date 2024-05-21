@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./search-bar.css";
 import { Col, Form, FormGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const SearchBar = () => {
   const location = useLocation();
   const { searchHandler } = useSearch();
 
-  const [errors, setErrors] = useState({}); // State for validation errors
+  const [errors] = useState({}); // State for validation errors
   const [query, setQuery] = useState({
     country: "",
     city: "",
@@ -43,7 +43,7 @@ const SearchBar = () => {
   }, [location.search]);
 
   const handleSearch = async (event) => {
-    event.preventDefault();
+    event.preventDefault(event);
     const country = countryRef.current.value;
     const city = cityRef.current.value;
     const price = priceRef.current.value;
