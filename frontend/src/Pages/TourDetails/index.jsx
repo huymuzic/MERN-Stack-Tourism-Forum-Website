@@ -183,7 +183,7 @@ const TourDetails = () => {
                     {reviewsArray.map((review) => (
                       <div className="review__item" key={review._id}>
                         <img
-                          src={getAvatarUrl(review.avatar, baseURL)}
+                          src={getAvatarUrl(review.avatar, baseUrl)}
                           alt="User Avatar"
                           className="rounded-circle"
                           style={{
