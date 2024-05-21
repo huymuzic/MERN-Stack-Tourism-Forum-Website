@@ -36,6 +36,7 @@ export const verifyToken = async (req, res, next) => {
     });
   }
 };
+
 export const verifyUser = async (req, res, next) => {
   const token =
     req.cookies.accessToken ||
@@ -58,10 +59,14 @@ export const verifyUser = async (req, res, next) => {
     });
     const rememberMe = decoded.exp ? true : false;
     const userObject = await User.findOne({ _id: decoded.id });
+    console.log(req.params)
     if (
-      (req.user.id === req.params.id && req.user.status == "active") ||
-      req.user.role === "admin"
+      ( userObject.status == "active") ||
+      userObject.role === "admin"
     ) {
+      console.log('true')
+      req.user = userObject;
+      req.rememberMe = rememberMe;
       next();
     } else {
       return res.status(401).json({
@@ -116,7 +121,9 @@ export const verifyAdmin = async (req, res, next) => {
     // Fetch the user object from the database based on the decoded user ID
     const userObject = await User.findOne({ _id: decoded.id });
     // Attach the user object to the request for further processing
-    if (userObject.role === "admin" && req.user.status == "active") {
+    if (userObject.role === "admin" && userObject.status == "active") {
+      req.user = userObject;
+      req.rememberMe = rememberMe;
       next();
     } else {
       return res.status(401).json({
