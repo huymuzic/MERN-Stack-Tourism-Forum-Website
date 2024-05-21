@@ -34,7 +34,6 @@ const MyEditor = (props) => {
         if (status === 'post') {
             createTopic(title, content, selectedImages, navigate);
         } else if (status === 'reply') {
-            console.log(id)
             replyTopic(content, selectedImages, navigate, id);
         }
     }
