@@ -1,4 +1,3 @@
-import React from "react";
 import TourCard from "../../../../Shared/TourCard";
 import { Col, Container } from "react-bootstrap";
 

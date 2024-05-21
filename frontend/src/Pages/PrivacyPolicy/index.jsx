@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link, Element, animateScroll as scroll } from "react-scroll";
 
@@ -65,17 +65,20 @@ const PrivacyPolicy = () => {
               <p>
                 We take your privacy and data security very seriously. The
                 personal information we collect, including email, username,
-                password, and posts, is stored securely in our database.
+                password, and user&apos;s posts, is stored securely in our
+                database.
               </p>
+              <br />
               <p>
-                We use your email and username and password for authentication
-                and to manage your account. We do not share your personal
-                information with third parties without your consent
+                We use your email and password for authentication and to manage
+                your account. We do not share your personal information with
+                third parties without your consent
               </p>
+              <br />
               <p>
-                We encryped your password so we do not have access to the actual
-                password of your account. The password is hashed and store it in
-                our database.
+                We encryped your password so that we do not have access to the
+                actual password of your account. The password is hashed before
+                it is being stored in our database.
               </p>
             </section>
             <section>

@@ -1,8 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
-
-import { Container, Button } from "react-bootstrap";
+import { Container, Navbar, Button } from "react-bootstrap";
 import "./header.css";
-
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
@@ -10,19 +8,6 @@ import logo from "../../assets/images/logo.png";
 import { pushError, pushSuccess } from "../Toast";
 import { useTheme } from "../../theme/Theme.jsx";
 import { baseUrl } from "../../config/index.js";
-
-function toggleDropdown() {
-  var dropdownMenus = document.getElementsByClassName("user__icon__dropdown");
-  for (var i = 0; i < dropdownMenus.length; i++) {
-    var menu = dropdownMenus[i];
-
-    if (menu.style.display === "none") {
-      menu.setAttribute("aria-hidden", "false");
-    } else {
-      menu.setAttribute("aria-hidden", "true");
-    }
-  }
-}
 
 const Header = () => {
   const { color } = useTheme();
@@ -77,10 +62,9 @@ const Header = () => {
     }
   };
 
-  removeMargin();
-
   document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", centerLogo);
+    removeMargin();
   });
 
   const nav__links = [
@@ -106,9 +90,11 @@ const Header = () => {
   }
 
   return (
-    <nav
-      className="header custom__navbar navbar navbar-expand-lg"
+    <Navbar
+      className="header custom__navbar"
       style={{ backgroundColor: color.headerBgColor }}
+      expand="lg"
+      collapseOnSelect
     >
       <style>
         {`
@@ -124,29 +110,13 @@ const Header = () => {
           `}
       </style>
       <Container className="header__container bd-gutter">
-        {/* NAVIGATION SECTION STARTS */}
-        {/* LOGO SECTION STARTS */}
         <Link to="/" className="navbar-brand l">
           <img alt="Website Logo" height="100" width="100" src={logo}></img>
         </Link>
-        {/* LOGO SECTION ENDS */}
-
-        {/* NAVIGATION SECTION STARTS */}
-        <div className="d-lg-none hbg">
-          <button
-            className="navbar-toggler collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            onClick={handleNavItemClick}
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+        <div className="d lg-none hbg">
+          <Navbar.Toggle aria-controls="navbarSupportedContent" />
         </div>
-        <div
+        <Navbar.Collapse
           className="navbar-collapse collapse justify-content-end"
           id="navbarSupportedContent"
         >
@@ -168,13 +138,12 @@ const Header = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </Navbar.Collapse>
         {user !== null ? (
           <li className="nav-item dropdown no-bullet mb-4 nm">
             <button
               className="btn"
               type="button"
-              onClick={toggleDropdown}
               id="user"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -224,13 +193,13 @@ const Header = () => {
           <div className="login-register-buttons">
             <div className="nav__right d-flex align-items-center gap-4">
               <div className="nav__btns d-flex align-items-center gap-4">
-                <Link to="/login" onClick={handleNavItemClick}>
-                  <Button className="secondary__btn big__pad btn-secondary login">
+                <Link to="/login">
+                  <Button className="login__btn big__pad btn-secondary login">
                     Login
                   </Button>
                 </Link>
-                <Link to="/register" onClick={handleNavItemClick}>
-                  <Button className="primary__btn big__pad btn-primary register">
+                <Link to="/register">
+                  <Button className="register__btn big__pad btn-primary register">
                     Register
                   </Button>
                 </Link>
@@ -238,9 +207,8 @@ const Header = () => {
             </div>
           </div>
         )}
-        {/* NAVIGATION SECTION ENDS */}
       </Container>
-    </nav>
+    </Navbar>
   );
 };
 

@@ -117,7 +117,7 @@ const Home = () => {
       {/* Hero Section Ends */}
 
       {/*SERVICES SECTION STARTS */}
-      <section>
+      <section id="a">
         <Container>
           <Row>
             <Col lg="3">

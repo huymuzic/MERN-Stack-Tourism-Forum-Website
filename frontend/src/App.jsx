@@ -6,6 +6,8 @@ import { pushSuccess } from "./components/Toast";
 import { useTheme } from "./theme/Theme";
 import CookieBanner from "./Pages/Home/components/CookieBanner/index";
 import { baseUrl } from "./config";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function App() {
   const { theme } = useTheme();

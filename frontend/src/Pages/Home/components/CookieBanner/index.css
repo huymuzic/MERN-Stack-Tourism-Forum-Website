@@ -1,43 +1,30 @@
 .accept__btn {
-    width: 6rem !important;
-    background-color: var(--primary-color) !important;
-    font-weight: 500 !important;
+  color: #fff;
+  background-color: var(--primary-color) !important;
+  font-weight: 500 !important;
+  width: 100% !important;
 }
 
-.deny__btn {
-    width: 6rem !important;
-    background-color: var(--secondary-color) !important;
-}
-
-.deny__btn:hover {
-    background-color: var(--light-secondary-color) !important;
-
-}
-
-.cookie__btn__container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
+.accept__btn:hover {
+  background-color: var(--dark-primary-color) !important;
 }
 
 @media screen and (max-width: 670px) {
-    .deny__btn {
-        height: 8% !important;
-        font-size: .8rem !important;
-    }
-    .cookie_p {
-        font-size: .8rem !important;
-    }
+  .deny__btn {
+    height: 8% !important;
+    font-size: 0.8rem !important;
+  }
+  .cookie_p {
+    font-size: 0.8rem !important;
+  }
 }
 
 @media screen and (max-width: 576px) {
-    .deny__btn {
-        height: 7% !important;
-        font-size: .7rem !important;
-    }
-    .cookie_p {
-        font-size: .7rem !important;
-    }
+  .deny__btn {
+    height: 7% !important;
+    font-size: 0.7rem !important;
+  }
+  .cookie_p {
+    font-size: 0.7rem !important;
+  }
 }
-

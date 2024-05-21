@@ -1,4 +1,3 @@
-import React from "react";
 import Destination from "./Destination";
 import { Col, Row, Container } from "react-bootstrap";
 

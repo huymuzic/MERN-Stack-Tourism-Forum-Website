@@ -157,10 +157,6 @@ tr th {
   transition: background-color 0.1s ease;
 }
 
-#a {
-  padding-top: 100px;
-}
-
 .bg-gray {
   background-color: #efefef;
 }

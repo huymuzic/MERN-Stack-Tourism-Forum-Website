@@ -29,16 +29,13 @@ const ContactModal = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `${baseUrl}/api/v1/form/contact`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ fullName, email, phoneNumber, message }),
-        }
-      );
+      const res = await fetch(`${baseUrl}/api/v1/form/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fullName, email, phoneNumber, message }),
+      });
 
       await res.json();
       if (res.ok) {
