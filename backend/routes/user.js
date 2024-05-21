@@ -61,7 +61,7 @@ router.put("/lock/:id", verifyAdmin, lockUser);
 // Unlock user
 router.put("/unlock/:id", verifyAdmin, activeUser);
 // Active user
-router.put("/active/:id", verifyUser, activeUser);
+router.put("/active/:id", activeUser);
 // Inactive user
 router.put("/inactive/:id", verifyUser, inactiveUser);
 // CreateOrUpdateTheme
