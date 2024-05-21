@@ -209,7 +209,7 @@ const ForumHeader = ({ children }) => {
                     My Account
                   </Link>
                 </li>
-                <Link className="dropdown-item" to={`/profile/${user._id}`}>
+                <Link className="dropdown-item" to={`/profile/${user?._id}`}>
                   My Post History
                 </Link>
                 {/* <li>

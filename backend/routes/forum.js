@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 
-import { verifyToken } from "../utils/verifyToken.js";
+import { verifyToken, verifyUser } from "../utils/verifyToken.js";
 
 import { posts } from "../controllers/forum/postsController.js";
 import { details } from "../controllers/forum/postDetails.js";
@@ -25,8 +25,8 @@ router.get('/images/:id', async (req, res) => {
     }  
 });
 
-router.post("/", verifyToken, create);
-router.post("/p/:id/like", verifyToken, like);
-router.post("/p/:id/reply", verifyToken, reply);
-router.post("/p/:id/deletePost", verifyToken, deletePost);
+router.post("/", verifyUser, create);
+router.post("/p/:id/like", verifyUser, like);
+router.post("/p/:id/reply", verifyUser, reply);
+router.post("/p/:id/deletePost", verifyUser, deletePost);
 export default router;

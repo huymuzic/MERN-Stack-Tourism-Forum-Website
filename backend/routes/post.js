@@ -37,7 +37,7 @@ router.delete("/delete/:postId", verifyUser, deletePost);
 router.put("/like/:postId", verifyUser, toggleLikePost);
 
 // get List Posts
-router.get("/list", verifyUser, getListPosts);
+router.get("/list", verifyAdmin, getListPosts);
 // Hide Post
 router.put("/hide/:id", verifyAdmin, hidePost);
 // Unhide post

@@ -5,6 +5,7 @@ import { FaLock, FaUnlock } from "react-icons/fa";
 import CustomToolTip from "../../../../components/CustomTooltip";
 import { usePopUp } from "../../../../components/pop-up/usePopup";
 import PopUpBase from "../../../../components/pop-up/PopUpBase";
+import color from "../../../../theme/Color";
 
 const ForumItem = ({ post, handleLockConfirm, handleUnLockConfirm }) => {
   const popUpLock = usePopUp();
@@ -138,22 +139,22 @@ export const postStatuses = [
     Id: 1,
     Value: "unarchived",
     Name: "Active",
-    bgColor: "#C8E6C9",
-    color: "green",
+    bgColor: color.successLight,
+    color: color.success,
   },
   {
     Id: 2,
     Value: "archived",
     Name: "Inactive",
-    bgColor: "#F5F5F5",
-    color: "grey",
+    bgColor: color.grey200, 
+    color: color.grey400
   },
   {
     Id: 3,
     Value: "deleted",
     Name: "Deleted",
-    bgColor: "#DC143C",
-    color: "red",
+    bgColor: color.lightDanger,
+    color: color.danger,
   },
 ];
 

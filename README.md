@@ -6,7 +6,7 @@ This is a guide for running Cosmic Travel Website Project!
 
 # Cosmic Travel Website Project
 
-For smoothly running the project, please make sure installing nodeJs in your device.
+For smoothly running the project, please make sure to install nodeJs in your device.
 
 ## A. Access Detail Information
 
