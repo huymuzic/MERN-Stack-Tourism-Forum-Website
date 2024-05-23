@@ -20,20 +20,36 @@ export const createDestination = async (req, res) => {
 };
 
 export const createTour = async (req, res) => {
-  const newTour = new Tour(req.body);
-
+  const { title, country, city, price, ageRange, duration } = req.body;
+  // Basic validation
+  if (!title || !country || !city || !price || !ageRange || !duration) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
+  }
+  // Additional validations can be added here as needed
+  const newTour = new Tour({
+    title,
+    country,
+    city,
+    price,
+    ageRange,
+    duration,
+  });
   try {
     const savedTour = await newTour.save();
-
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Successfully created",
       data: savedTour,
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to create. Try again" });
+    res.status(500).json({
+      success: false,
+      message: "Failed to create. Try again",
+      error: err.message,
+    });
   }
 };
 
@@ -140,7 +156,6 @@ export const getTourBySearch = async (req, res) => {
 
   try {
     const tours = await Tour.find(query).populate("reviews");
-
     res.status(200).json({
       success: true,
       message: "Successful",
@@ -196,6 +211,49 @@ export const getTopDestinations = async (req, res) => {
     res.status(404).json({
       success: false,
       message: err.message,
+    });
+  }
+};
+export const getListTour = async (req, res) => {
+  try {
+    let { page, limit, status, search, searchType } = req.query;
+
+    page = parseInt(page);
+    limit = parseInt(limit);
+    const filter = {};
+
+    if (status) {
+      filter.status = status;
+    }
+    if (search) {
+      if (searchType === "Tour") {
+        filter.title = { $regex: search, $options: "i" };
+      } else if (searchType === "country") {
+        filter.country = { $regex: search, $options: "i" };
+      } else {
+        filter.$or = [
+          { title: { $regex: search, $options: "i" } },
+          { country: { $regex: search, $options: "i" } },
+        ];
+      }
+    }
+    const totalCount = await Tour.countDocuments();
+    const totalPages = (await Tour.countDocuments(filter)) / limit;
+    const tours = await Tour.find(filter)
+      .populate("reviews")
+      .limit(limit)
+      .skip((page - 1) * limit);
+    res.status(200).json({
+      success: true,
+      totalPages: Math.ceil(totalPages),
+      totalCount: totalCount,
+      message: "Successfully fetched all tours",
+      data: tours,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error. Please try again.",
     });
   }
 };

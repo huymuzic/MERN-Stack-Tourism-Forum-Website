@@ -18,6 +18,7 @@ import SearchResultList from "../Pages/SearchResultList/index";
 import ResetPassword from "../Pages/ResetPass/index";
 import ForumPostsList from "../Pages/Admin/components/forum-posts/index";
 import UsersList from "../Pages/Admin/components/users/index";
+import ToursList from  "../Pages/Admin/components/tours/index";
 import OtherUserProfile from "../Pages/OtherUserProfile/index";
 import ConfigPage from "../Pages/ConfigPage";
 import ThankYou from "../Pages/ThankYou";
@@ -45,6 +46,7 @@ const Routers = () => {
         <Route index element={<Navigate to="users" />} />
         <Route path="forum-posts" element={<ForumPostsList />} />
         <Route path="users" element={<UsersList />} />
+        <Route path="tours" element={<ToursList />} />
       </Route>
       <Route path="/my-account" element={<MyAccount />} />
       <Route path="/profile/:id" element={<OtherUserProfile />} />

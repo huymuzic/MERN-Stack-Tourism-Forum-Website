@@ -10,11 +10,12 @@ import {
   getFeaturedTour,
   getTourCount,
   getTopDestinations,
+  getListTour
 } from "../controllers/tourController.js";
 
 const router = express.Router();
 
-router.post("/", createTour);
+router.post("/create", createTour);
 
 router.put("/:id", updateTour);
 
@@ -22,8 +23,8 @@ router.delete("/:id", deleteTour);
 
 router.get("/:id", getSingleTour);
 
-router.get("/", getAllTour);
-
+// router.get("/", getAllTour);
+router.get("/", getListTour);
 router.get("/search/getTourBySearch", getTourBySearch);
 router.get("/search/getFeaturedTours", getFeaturedTour);
 router.get("/search/getTourCount", getTourCount);
