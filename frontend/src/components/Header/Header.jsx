@@ -221,11 +221,11 @@ const Header = () => {
                         My Post History
                       </Link>
                     </li>
-                    {/* <li>
+                    <li>
                       <Link className="dropdown-item" to="/history">
                         Purchased History
                       </Link>
-                    </li> */}
+                    </li>
                     <li>
                       <hr className="dropdown-divider"></hr>
                     </li>
@@ -241,12 +241,18 @@ const Header = () => {
                   <div className="nav__right d-flex align-items-center gap-4">
                     <div className="nav__btns d-flex align-items-center gap-4">
                       <Link to="/login">
-                        <Button className="login__btn big__pad btn-secondary login">
+                        <Button
+                          className="login__btn big__pad btn-secondary login"
+                          onClick={handleNavItemClick}
+                        >
                           Login
                         </Button>
                       </Link>
                       <Link to="/register">
-                        <Button className="register__btn big__pad btn-primary register">
+                        <Button
+                          className="register__btn big__pad btn-primary register"
+                          onClick={handleNavItemClick}
+                        >
                           Register
                         </Button>
                       </Link>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "../Pages/Home/index";
@@ -23,7 +22,8 @@ import ConfigPage from "../Pages/ConfigPage";
 import ThankYou from "../Pages/ThankYou";
 import TermsOfService from "../Pages/TermsOfService/index";
 import PrivacyPolicy from "../Pages/PrivacyPolicy/index";
-import MyAccount from "../Pages/MyAccount";
+import MyAccount from "../Pages/MyAccount/index";
+import Checkout from "../Pages/Checkout/index";
 
 const Routers = () => {
   return (
@@ -56,6 +56,7 @@ const Routers = () => {
       <Route path="/thank-you" element={<ThankYou />} />
       <Route path="/terms-of-service" element={<TermsOfService />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/checkout" element={<Checkout />} />
     </Routes>
   );
 };

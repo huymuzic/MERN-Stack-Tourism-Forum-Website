@@ -44,7 +44,7 @@ const Booking = ({ tour, avgRating }) => {
       pushError("Please choose a date");
       return;
     }
-    navigate("/thank-you");
+    navigate("/checkout");
   };
 
   return (

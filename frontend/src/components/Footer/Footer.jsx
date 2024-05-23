@@ -1,4 +1,3 @@
-import React from "react";
 import "./footer.css";
 import instaLogo from "../../assets/images/instagram.svg";
 import tiktokLogo from "../../assets/images/tiktok.svg";
@@ -24,10 +23,6 @@ const quick__links = [
 ];
 
 const quick__links2 = [
-  {
-    path: "",
-    display: "Contact",
-  },
   {
     path: "/Login",
     display: "Login",
