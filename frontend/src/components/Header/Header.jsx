@@ -9,6 +9,7 @@ import { pushError, pushSuccess } from "../Toast";
 import { useTheme } from "../../theme/Theme.jsx";
 import { baseUrl, environment } from "../../config/index.js";
 import CircularProgress from "../CircularProgress.jsx";
+import ToggleTheme from "./components/ToggleTheme/index.jsx";
 
 const Header = () => {
   const [logoImage, setLogoImage] = useState();
@@ -127,14 +128,14 @@ const Header = () => {
         <>
           <Navbar
             className="header custom__navbar"
-            style={{ backgroundColor: color.headerBgColor }}
+            // style={{ backgroundColor: color.headerBgColor }}
             expand="lg"
             collapseOnSelect
           >
             <style>
               {`
           .nav__item a {
-            color: ${color.headerTextColor};
+            color: ${color.textPrimary};
           }
           .nav__item a:hover {
             color: ${color.primary};
@@ -179,63 +180,66 @@ const Header = () => {
                   ))}
                 </ul>
               </Navbar.Collapse>
+              <div className="d-flex justify-content-end pe-3 mb-1 toggle-theme">
+                <ToggleTheme />
+              </div>
               {user !== null ? (
-                <li className="nav-item dropdown no-bullet mb-4 nm">
-                  <button
-                    className="btn"
-                    type="button"
-                    id="user"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {user?.avatar ? (
-                      <img
-                        src={avatarUrl}
-                        alt="User Avatar"
-                        className="rounded-circle"
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      <i className="fa-solid fa-circle-user rounded-circle fa-3x"></i>
-                    )}
-                  </button>
+                  <li className="nav-item dropdown no-bullet mb-4 nm">
+                    <button
+                      className="btn"
+                      type="button"
+                      id="user"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {user?.avatar ? (
+                        <img
+                          src={avatarUrl}
+                          alt="User Avatar"
+                          className="rounded-circle"
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : (
+                        <i className="fa-solid fa-circle-user rounded-circle fa-3x"></i>
+                      )}
+                    </button>
 
-                  <ul
-                    className="dropdown-menu user__icon__dropdown"
-                    aria-labelledby="user"
-                  >
-                    <li>
-                      <Link className="dropdown-item" to="/my-account">
-                        My Account
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to={`/profile/${user._id}`}
-                      >
-                        My Post History
-                      </Link>
-                    </li>
-                    {/* <li>
+                    <ul
+                      className="dropdown-menu user__icon__dropdown"
+                      aria-labelledby="user"
+                    >
+                      <li>
+                        <Link className="dropdown-item" to="/my-account">
+                          My Account
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to={`/profile/${user._id}`}
+                        >
+                          My Post History
+                        </Link>
+                      </li>
+                      {/* <li>
                       <Link className="dropdown-item" to="/history">
                         Purchased History
                       </Link>
                     </li> */}
-                    <li>
-                      <hr className="dropdown-divider"></hr>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" onClick={handleLogout}>
-                        Sign out
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
+                      <li>
+                        <hr className="dropdown-divider"></hr>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" onClick={handleLogout}>
+                          Sign out
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
               ) : (
                 <div className="login-register-buttons">
                   <div className="nav__right d-flex align-items-center gap-4">
@@ -245,7 +249,7 @@ const Header = () => {
                           Login
                         </Button>
                       </Link>
-                      <Link to="/register">
+                      <Link to="/register" className="d-none d-sm-block">
                         <Button className="register__btn big__pad btn-primary register">
                           Register
                         </Button>

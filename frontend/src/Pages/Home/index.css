@@ -45,7 +45,7 @@
 }
 
 .hero__slide h1 span {
-  color: var(--secondary-color) !important;
+  /* color: var(--secondary-color) !important; */
 }
 
 .custom-btn {
@@ -78,7 +78,7 @@
 }
 
 .ri {
-  color: var(--secondary-color) !important;
+  color: var(--secondary-color);
 }
 
 .services__subtitle {

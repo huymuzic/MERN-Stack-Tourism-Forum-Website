@@ -11,6 +11,7 @@ import { getAvatarUrl } from "../../utils/getAvar.js";
 import useFetch from "../../hooks/useFetch.jsx";
 import { baseUrl } from "../../config/index.js";
 import { environment } from "../../config/index.js";
+import { useTheme } from "../../theme/Theme.jsx";
 
 const TourDetails = () => {
   const { user } = useUser();
@@ -21,7 +22,7 @@ const TourDetails = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [avgRating, setAvgRating] = useState("");
   const [totalRating, setTotalRating] = useState(0);
-
+  const { color } = useTheme()
   const { data: tour } = useFetch(`${baseUrl}/api/v1/tours/${id}`);
 
   const { photo, title, price, reviews, country, city, duration, ageRange } =
@@ -117,7 +118,7 @@ const TourDetails = () => {
                   src={environment == "PROD" ? photo : `./src${photo}`}
                   alt={title}
                 />
-                <div className="tour__info">
+                <div className="tour__info" style={{ color: color.textPrimary }}>
                   <div className="d-flex flex-column align-items-start justify-content-center tour__extra-details">
                     <h5>Description</h5>
                     <div>
@@ -155,20 +156,20 @@ const TourDetails = () => {
                       {Array.from({ length: 5 }, (_, i) => (
                         <span key={i} onClick={() => setTourRating(i + 1)}>
                           <i
-                            className={`ri ${
-                              i < tourRating ? "ri-star-s-fill" : "ri-star-line"
-                            }`}
+                            className={`ri ${i < tourRating ? "ri-star-s-fill" : "ri-star-line"
+                              }`}
                           ></i>
                         </span>
                       ))}
                     </div>
 
-                    <div className="review__input">
+                    <div className="review__input" style={{ border: `1px solid ${color.secondary}` }}>
                       <input
                         type="text"
                         ref={reviewMsgRef}
                         placeholder="Share your thoughts..."
                         required
+                        style={{ backgroundColor: "inherit" }}
                       ></input>
                       <button
                         className="btn primary__btn btn-primary"

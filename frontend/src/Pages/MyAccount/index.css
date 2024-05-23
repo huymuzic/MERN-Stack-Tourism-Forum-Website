@@ -11,3 +11,9 @@
 .form-check-input:checked{
     cursor: pointer;
 }
+
+@media (max-width: 500px) {
+    .hide-on-small-screens {
+        display: none !important;
+    }
+}

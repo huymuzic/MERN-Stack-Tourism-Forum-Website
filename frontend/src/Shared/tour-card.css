@@ -19,7 +19,7 @@
   width: max-content !important;
   height: max-content !important;
   z-index: 10 !important;
-  background: var(--primary-color);
+  /* background: var(--primary-color); */
   color: #fff;
   padding: 0.3rem 0.5rem !important;
   border-radius: 3px 0 0 0 !important;
@@ -35,7 +35,7 @@
 }
 
 .tour__location {
-  color: var(--heading-color);
+  /* color: var(--heading-color); */
   font-weight: 500;
   font-size: 0.9rem !important;
 }
@@ -53,12 +53,8 @@
 
 .tour__title a {
   text-decoration: none;
-  color: var(--heading-color);
+  /* color: var(--heading-color); */
   transition: 0.3s;
-}
-
-.tour__title a:hover {
-  color: var(--secondary-color);
 }
 
 .tour__title h5 {
@@ -66,7 +62,7 @@
 }
 
 .card__bottom h5 {
-  color: var(--secondary-color);
+  /* color: var(--secondary-color); */
   font-size: 1.1rem !important;
   font-weight: 700;
 }
