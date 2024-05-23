@@ -1,11 +1,12 @@
+import { useTheme } from "../../../../theme/Theme";
 import "./service-card.css";
 
 const ServiceCard = ({ item }) => {
   const { photo, title, desc, type } = item;
-
+  const { color } = useTheme()
   return (
     <div className="service__item">
-      <div className="service__img">
+      <div className="service__img" style={{ backgroundColor: color.secondary }}>
         <img src={photo} alt={type} />
       </div>
       <h5>{title}</h5>

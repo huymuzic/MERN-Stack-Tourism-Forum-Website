@@ -14,8 +14,9 @@
 .form__group input {
   border: none;
   font-size: 0.9rem;
-  color: var(--heading-color);
+  /* color: var(--heading-color); */
   font-weight: 500;
+  background-color: inherit;
 }
 
 .form__group input:focus {

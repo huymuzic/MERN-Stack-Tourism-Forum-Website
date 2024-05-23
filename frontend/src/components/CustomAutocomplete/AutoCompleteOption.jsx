@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '../../theme/Theme';
 
 function AutocompleteOption(props) {
-    const {color} = useTheme()
+    const {color, themeMode} = useTheme()
     const [backgroundColor, setBackgroundColor] = useState(props.select ? color.lightPrimary : 'inherit');
 
     useEffect(() => {
@@ -11,7 +11,7 @@ function AutocompleteOption(props) {
     }, [props.select]);
 
     const handleMouseEnter = () => {
-        setBackgroundColor(props.select ? color.lightPrimary : '#eeeeee');
+        setBackgroundColor(props.select ? color.lightPrimary : (themeMode == "light" ? '#eeeeee' : "#353535") );
     };
 
     const handleMouseLeave = () => {

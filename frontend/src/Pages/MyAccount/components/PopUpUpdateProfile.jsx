@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PopUpBase from '../../../components/pop-up/PopUpBase';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, FloatingLabel, Form, Stack } from 'react-bootstrap';
+import { Button, Col, FloatingLabel, Form, Row, Stack } from 'react-bootstrap';
 import { TiDelete } from 'react-icons/ti';
 import { pushError } from '../../../components/Toast';
+import { baseUrl } from '../../../config';
+import { getAvatarUrl } from '../../../utils/getAvar';
 
 
 function getSvg(svg) {
+    console.log("🚀 ~ getSvg ~ svg:", svg)
     const _svg = {
         name: '',
         url: '',
@@ -21,11 +24,16 @@ function getSvg(svg) {
         _svg.url = URL.createObjectURL(svg);
     }
 
+    if (_svg.name.length > 18) {
+        _svg.name = _svg.name.substring(0, 15) + '...';
+    }
+    console.log(_svg.url);
     return _svg;
 }
 
 export default function PopUpUpdateProfile(props) {
-    const [avatar, setAvatar] = useState(props.user?.avatar || '');
+    const [avatar, setAvatar] = useState(getAvatarUrl(props.user.avatar, baseUrl));
+    console.log("🚀 ~ PopUpUpdateProfile ~ avatar:", avatar)
     const [dirtyAvatar, setDirtyAvatar] = useState(false);
 
     function handleFileChange(e) {
@@ -66,7 +74,7 @@ export default function PopUpUpdateProfile(props) {
         reset({
             name: props.user.name,
         });
-        setAvatar(props.user?.avatar || '')
+        setAvatar(getAvatarUrl(props.user.avatar, baseUrl))
         setDirtyAvatar(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.open, props.user]);
@@ -104,57 +112,69 @@ export default function PopUpUpdateProfile(props) {
             }
             desc={
                 <Stack gap={3}>
-                    <Stack direction='horizontal' gap={2} style={{ borderRadius: '10px', border: '1px dashed #C5C5C5', padding: '16px', alignItems: "center" }}>
-                        <Stack>
-                            {avatar ? (
-                                <img src={getSvg(avatar).url} alt="" style={{ height: 40, maxHeight: 40 }} />
-                            ) : (
-                                <div style={{ display: "flex", width: 32, height: 32, borderRadius: '100%', backgroundColor: '#EEEEEE', justifyContent: 'center', alignItems: 'center' }}>
-                                    <UploadIcon />
-                                </div>
-                            )}
-                        </Stack>
-                        <Stack flex={1} height={40} justifyContent="center" maxHeight={40}>
-                            {avatar ? (
-                                <Stack direction='horizontal' gap={1}>
-                                    <p className='body-1'>{getSvg(avatar || '').name}</p>
-                                    <TiDelete fontSize={24} style={{ cursor: "pointer" }} onClick={() => {
-                                        setAvatar('');
-                                        const inputElement = document.getElementById('upload-input');
-                                        if (inputElement) {
-                                            inputElement.value = '';
-                                        }
-                                    }} />
-                                </Stack>
-                            ) : (
-                                <>
-                                    <h6>Upload logo</h6>
-                                    <p className="body-2" style={{ color: 'gray' }}>
-                                        SVG, PNG, JPG, GIF | 10MB max.
-                                    </p>
-                                </>
-                            )}
-                        </Stack>
-                        <label htmlFor="upload-input">
-                            <input
-                                id="upload-input"
-                                type="file"
-                                accept=".svg, .png, .jpg, .gif"
-                                style={{ display: 'none' }}
-                                onChange={handleFileChange}
-                            />
-                            <Button
-                                variant="outline-primary"
-                                as="span"
-                                style={{
-                                    fontSize: 12,
-                                    padding: 8
-                                }}
-                            >
-                                Upload Avatar
-                            </Button>
-                        </label>
-                    </Stack>
+                    <Row style={{ borderRadius: '10px', border: '1px dashed #C5C5C5', padding: '12px', alignItems: "center", justifyContent:"space-between" }}>
+                        <Col xs={3} style={{ display: "flex", justifyContent: "flex-start" }}>
+                            <Stack>
+                                {avatar ? (
+                                    <img src={getSvg(avatar).url} alt="" style={{ maxHeight: "46px", width: "46px" }} />
+                                ) : (
+                                    <div style={{ display: "flex", width: 32, height: 32, borderRadius: '100%', backgroundColor: '#EEEEEE', justifyContent: 'center', alignItems: 'center' }}>
+                                        <UploadIcon />
+                                    </div>
+                                )}
+                            </Stack>
+                        </Col>
+                        <style>
+                            .img-name 
+                        </style>
+                        <Col className="hide-on-small-screens" xs={5}>
+                            <Stack flex={1} height={40} justifyContent="center" maxHeight={40}>
+                                {avatar ? (
+                                    <Stack direction='horizontal' gap={1} style={{ justifyContent: "flex-start" }}>
+                                        <p className='body-1'>{getSvg(avatar || '').name}</p>
+                                        <TiDelete fontSize={24} style={{ cursor: "pointer" }} onClick={() => {
+                                            setAvatar('');
+                                            const inputElement = document.getElementById('upload-input');
+                                            if (inputElement) {
+                                                inputElement.value = '';
+                                            }
+                                        }} />
+                                    </Stack>
+                                ) : (
+                                    <>
+                                        <h6>Upload logo</h6>
+                                        <p className="body-2" style={{ color: 'gray' }}>
+                                            SVG, PNG, JPG, GIF | 10MB max.
+                                        </p>
+                                    </>
+                                )}
+                            </Stack>
+                        </Col>
+
+                        <Col xs={4} style={{ display: "flex", justifyContent: "flex-end" }}>
+
+                            <label htmlFor="upload-input">
+                                <input
+                                    id="upload-input"
+                                    type="file"
+                                    accept=".svg, .png, .jpg, .gif"
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                />
+                                <Button
+                                    variant="outline-primary"
+                                    as="span"
+                                    style={{
+                                        fontSize: 12,
+                                        padding: 8
+                                    }}
+                                >
+                                    Upload Avatar
+                                </Button>
+                            </label>
+                        </Col>
+
+                    </Row>
                     <FloatingLabel label="Email">
                         <Form.Control type="email" value={props.user?.email} placeholder="name@example.com" disabled />
                     </FloatingLabel>

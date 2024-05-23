@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
+import { useTheme } from '../../../theme/Theme';
 
 
 function WrapperFilter(props) {
+    const { color, themeMode } = useTheme()
     return (
-        <div className="p-3 bg-light rounded">
+        <div className={`p-3 rounded`} style={{backgroundColor: themeMode == "light" ? color.grey200 : "#4a4949"}}>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center">
                     <IcFilter />
