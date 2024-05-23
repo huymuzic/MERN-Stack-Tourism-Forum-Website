@@ -9,8 +9,7 @@ import debounce from "../../../../helper";
 import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete/useCustomAutocomplete";
 import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
 import { baseUrl } from "../../../../config";
-import PopUpAddTour from "./TourAdd"; // Import the PopUpAddTour component
-
+import PopUpAddTour from "./TourAdd"; 
 const forumPostSearchType = [
   {
     id: 1,
@@ -21,6 +20,11 @@ const forumPostSearchType = [
     id: 2,
     name: "Country",
     value: "country",
+  },
+  {
+    id: 3,
+    name: "City",
+    value: "city",
   },
 ];
 

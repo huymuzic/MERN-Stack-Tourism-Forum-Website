@@ -117,7 +117,6 @@ export const getSingleTour = async (req, res) => {
 
 export const getAllTour = async (req, res) => {
   const page = parseInt(req.query.page);
-
   try {
     const tours = await Tour.find({})
       .populate("reviews")
@@ -230,7 +229,10 @@ export const getListTour = async (req, res) => {
         filter.title = { $regex: search, $options: "i" };
       } else if (searchType === "country") {
         filter.country = { $regex: search, $options: "i" };
-      } else {
+      } 
+      else if (searchType === "city") {
+        filter.city = { $regex: search, $options: "i" };}
+        else {
         filter.$or = [
           { title: { $regex: search, $options: "i" } },
           { country: { $regex: search, $options: "i" } },
