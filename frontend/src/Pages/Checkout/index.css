@@ -30,7 +30,7 @@
   margin-bottom: 20px;
 }
 
-.total__32Pz {
+.total__price {
   font-size: 1.25rem;
   font-weight: bold;
   display: flex;
@@ -38,27 +38,35 @@
   align-items: center;
 }
 
-.totalValue__1-Md {
+.total__value {
   color: black;
 }
 
-.container__3K0H {
+.checkout__container_1 {
   background: white;
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
   padding: 1.5rem 1.5rem 2rem;
 }
 
-.container__30uu {
+.checkout__container_2 {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   position: relative;
   padding: 20px;
 }
 
-.headerContainer__3VwO {
+.header__container {
   display: flex;
   align-items: start;
   justify-content: flex-start;
-  margin-bottom: 0.75rem;
+  margin-top: 1rem;
+}
+
+.item_icon {
+  color: var(--secondary-color);
+  font-size: 1.2rem;
 }
 
 .image__E6xL {
@@ -66,17 +74,22 @@
   object-fit: cover;
 }
 
-.titleContainer__1aZq {
+.title__container {
   margin: 0 0.75rem;
-  margin-top: 0.6rem;
+  margin-top: 1rem;
   height: 100%;
   text-align: center;
 }
 
-.title__3Avu {
+.title_1 {
   font-size: 1.2rem;
   overflow: hidden;
   line-height: 1.5rem;
+  font-weight: 500;
+}
+
+.tour_price {
+  margin-left: 1rem;
 }
 
 .price__f3Od {
@@ -84,23 +97,23 @@
   font-size: 0.8rem;
 }
 
-.list__1Hsv {
+.list__1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.divider__3jqL {
+.checkout_hr {
   margin: 20px 0;
 }
 
-.row__2M1Q {
+.row__1 {
   display: flex;
   margin: 0.25rem 0;
   align-items: flex-start;
 }
 
-.row__2M1Q > :first-child {
+.row__1 > :first-child {
   margin-right: 1rem;
   min-width: 1rem;
 }
@@ -117,6 +130,11 @@
   width: 100%;
 }
 
-.book_details {
+.book__details {
   text-align: center;
+  font-size: 1rem;
+}
+
+.checkout_date {
+  margin-left: 0.3rem;
 }

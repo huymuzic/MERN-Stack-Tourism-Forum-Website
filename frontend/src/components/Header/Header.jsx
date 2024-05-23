@@ -145,7 +145,11 @@ const Header = () => {
           `}
             </style>
             <Container className="header__container bd-gutter">
-              <Link to="/" className="navbar-brand l">
+              <Link
+                to="/"
+                className="navbar-brand l"
+                onClick={handleNavItemClick}
+              >
                 <img
                   alt="Website Logo"
                   height="100"

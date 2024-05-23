@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { pushError, pushSuccess } from "../../../components/Toast";
+import { pushError } from "../../../components/Toast";
 import { useUser } from "../../../utils/UserContext";
 import "./booking.css";
-import { baseUrl } from "../../../config";
 
 import {
   Form,
@@ -34,7 +33,7 @@ const Booking = ({ tour, avgRating }) => {
     setNumPeople((prevNumPeople) => Math.max(prevNumPeople - 1, 1));
   };
 
-  const handleBookFormSubmit = async (e) => {
+  const handleBookFormSubmit = (e) => {
     e.preventDefault();
     if (!user) {
       pushError("Please login to book a tour");
@@ -48,36 +47,21 @@ const Booking = ({ tour, avgRating }) => {
       return;
     }
 
-    try {
-      const response = await fetch(`${baseUrl}/api/v1/booking/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          userId: user._id,
-          email: user.email,
-          tourId: tour._id,
-          tourTitle: title,
-          country: tour.country,
-          city: tour.city,
-          photo: tour.photo,
-          date: bookTime,
-          price: totalPrice,
-          numPeople,
-        }),
-      });
-      const responseBody = await response.json();
-      if (response.ok) {
-        pushSuccess(responseBody.message);
-        navigate("/checkout");
-      } else {
-        throw new Error(responseBody.message);
-      }
-    } catch (error) {
-      pushError("Something went wrong while booking");
-    }
+    const bookingDetails = {
+      userId: user._id,
+      email: user.email,
+      tourId: tour._id,
+      tourTitle: title,
+      country: tour.country,
+      city: tour.city,
+      photo: tour.photo,
+      tourPrice: tour.price,
+      date: bookTime,
+      price: totalPrice,
+      numPeople,
+    };
+
+    navigate("/checkout", { state: { bookingDetails } });
   };
 
   return (
@@ -157,7 +141,7 @@ const Booking = ({ tour, avgRating }) => {
           className="btn primary__btn w-100 mt-4 book__btn normal__pad"
           onClick={handleBookFormSubmit}
         >
-          Book Now
+          Proceed to Checkout
         </Button>
       </div>
     </div>
