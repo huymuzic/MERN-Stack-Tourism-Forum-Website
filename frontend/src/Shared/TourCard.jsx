@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import calculateAvgRating from "../utils/avgRating";
 import "./tour-card.css";
 import { environment } from "../config";
-
+import { baseUrl } from "../config/index.js";
 const TourCard = ({ tour }) => {
   const { _id, title, country, city, price, photo, featured, reviews } = tour;
 
@@ -15,7 +15,7 @@ const TourCard = ({ tour }) => {
         <div className="tour__img">
           <Link to={`/tours/${_id} `}>
             <img
-              src={environment == "PROD" ? photo : `./src${photo}`}
+              src={`${baseUrl}/api/v1/tours/images/${photo}`}
               alt={title}
             />
             {featured && <span>Featured</span>}

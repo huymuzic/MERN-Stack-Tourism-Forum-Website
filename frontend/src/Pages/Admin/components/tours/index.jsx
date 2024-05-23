@@ -108,53 +108,66 @@ export default function ToursList() {
   };
 
   const handleUpdateTour = async (partialTourUpdate) => {
-    console.log("🚀 ~ handleUpdateTour ~ partialTourUpdate:", partialTourUpdate)
     try {
-      const url = new URL(`${baseUrl}/api/v1/tours/${partialTourUpdate.tour.id}`);
+      const url = new URL(`${baseUrl}/api/v1/tours/${partialTourUpdate._id}`);
+      const formData = new FormData();
+      formData.append('title', partialTourUpdate.title);
+      formData.append('country', partialTourUpdate.country);
+      formData.append('city', partialTourUpdate.city);
+      formData.append('price', partialTourUpdate.price);
+      formData.append('ageRange', partialTourUpdate.ageRange);
+      formData.append('duration', partialTourUpdate.duration);
+      if (partialTourUpdate.photo) {
+        console.log(true)
+        formData.append('photo', partialTourUpdate.photo);
+      }
+      for (let pair of formData.entries()) {
+        console.log(`${pair[0]}, ${pair[1]}`);
+      }
+        console.log("🚀 ~ handleUpdateTour ~ formData:", formData)
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: partialTourUpdate.tour?.title,
-          country: partialTourUpdate.tour?.country,
-          city: partialTourUpdate.tour?.city,
-          price: partialTourUpdate.tour?.price,
-          ageRange: partialTourUpdate.tour?.ageRange,
-          duration: partialTourUpdate.tour?.duration,
-        }),
+        body: formData,
       });
-
+  
       if (response.ok) {
-        fetchTours();  // Function to fetch the updated list of tours
+        fetchTours();  
         pushSuccess("Edit tour successfully");
       } else {
         pushError("Failed to edit tour");
         throw new Error("Failed to edit tour");
       }
     } catch (error) {
+      console.log("🚀 ~ handleUpdateTour ~ error:", error)
       pushError("Failed to edit tour");
     }
   };
+  
+  
+  const handleAddTour = async ({ tour, avatar }) => {
+    try {
+      const formData = new FormData();
+      formData.append('title', tour.title);
+      formData.append('country', tour.country);
+      formData.append('city', tour.city);
+      formData.append('price', tour.price);
+      formData.append('ageRange', tour.ageRange);
+      formData.append('duration', tour.duration);
+      if (avatar) {
+        formData.append('photo', avatar);
+      }
 
-  const handleAddTour = async (newTour) => {
-    setAddOpen(false);
-       try {
-      const url = new URL(`${baseUrl}/api/v1/tours/create`);
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTour.tour),
+      const response = await fetch(`${baseUrl}/api/v1/tours`, {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
       });
 
       if (response.ok) {
-        fetchTours();  // Function to fetch the updated list of tours
+        fetchTours(); // Refresh the tour list after successful addition
         pushSuccess("Added new tour successfully");
+        setAddOpen(false); // Close the popup after successful addition
       } else {
         pushError("Failed to add new tour");
         throw new Error("Failed to add new tour");

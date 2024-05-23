@@ -4,9 +4,12 @@ import PopUpBase from '../../../../components/pop-up/PopUpBase';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, FloatingLabel, Form, Stack } from 'react-bootstrap';
 import { pushError } from '../../../../components/Toast';
+import { TiDelete } from 'react-icons/ti';
+import { FaUpload } from 'react-icons/fa';
 
 export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
   const [avatar, setAvatar] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState('');
   const [dirtyAvatar, setDirtyAvatar] = useState(false);
 
   function handleFileChange(e) {
@@ -23,7 +26,9 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       pushError('Maximum file size is 10MB');
       return;
     }
+    
     setAvatar(file);
+    setAvatarPreview(URL.createObjectURL(file));
   }
 
   const {
@@ -40,9 +45,9 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       title: data.title.trim(),
       country: data.country.trim(),
       city: data.city.trim(),
-      price: data.price,
+      price: parseFloat(data.price),
       ageRange: data.ageRange.trim(),
-      duration: data.duration,
+      duration: parseInt(data.duration, 10),
     };
 
     onConfirm({ tour, avatar: dirtyAvatar ? avatar : null });
@@ -59,6 +64,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       duration: '',
     });
     setAvatar('');
+    setAvatarPreview('');
     setDirtyAvatar(false);
   }, [open, reset]);
 
@@ -95,11 +101,11 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
         <Stack gap={3}>
           <Stack direction='horizontal' gap={2} style={{ borderRadius: '10px', border: '1px dashed #C5C5C5', padding: '16px', alignItems: "center" }}>
             <Stack>
-              {avatar ? (
-                <img src={URL.createObjectURL(avatar)} alt="" style={{ height: 40, maxHeight: 40 }} />
+              {avatarPreview ? (
+                <img src={avatarPreview} alt="" style={{ height: 40, maxHeight: 40 }} />
               ) : (
                 <div style={{ display: "flex", width: 32, height: 32, borderRadius: '100%', backgroundColor: '#EEEEEE', justifyContent: 'center', alignItems: 'center' }}>
-                  Upload Icon
+                  <FaUpload />
                 </div>
               )}
             </Stack>
@@ -112,6 +118,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                     size="sm"
                     onClick={() => {
                       setAvatar('');
+                      setAvatarPreview('');
                       setDirtyAvatar(false);
                       const inputElement = document.getElementById('upload-input');
                       if (inputElement) {
@@ -131,22 +138,15 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                 </>
               )}
             </Stack>
-            <label htmlFor="upload-input">
+            <Button variant="outline-primary" as="label" size="sm" style={{ fontSize: 12, padding: 8 }}>
+              Upload Avatar
               <input
-                id="upload-input"
                 type="file"
                 accept=".svg, .png, .jpg, .gif"
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
-              <Button
-                variant="outline-primary"
-                as="span"
-                size="sm"
-              >
-                Upload Avatar
-              </Button>
-            </label>
+            </Button>
           </Stack>
 
           <Controller

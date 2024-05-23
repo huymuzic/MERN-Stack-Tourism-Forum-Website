@@ -1,6 +1,7 @@
 import Tour from "../models/Tour.js";
 import Destination from "../models/Destination.js";
-
+import uploadFiles from "../utils/uploadTourPhoto.js"
+import multer from 'multer';
 export const createDestination = async (req, res) => {
   const newDestination = new Destination(req.body);
 
@@ -20,62 +21,74 @@ export const createDestination = async (req, res) => {
 };
 
 export const createTour = async (req, res) => {
-  const { title, country, city, price, ageRange, duration } = req.body;
-  // Basic validation
-  if (!title || !country || !city || !price || !ageRange || !duration) {
-    return res.status(400).json({
-      success: false,
-      message: "All fields are required",
-    });
-  }
-  // Additional validations can be added here as needed
-  const newTour = new Tour({
-    title,
-    country,
-    city,
-    price,
-    ageRange,
-    duration,
+  uploadFiles(req, res, async (err) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+
+    try {
+      const { title, country, city, price, ageRange, duration } = req.body;
+      if (!title || !country || !city || !price || !ageRange || !duration) {
+        return res.status(400).json({ success: false, message: "Missing required fields" });
+      }
+
+      const newTour = new Tour({
+        title,
+        country,
+        city,
+        price,
+        ageRange,
+        duration,
+        photo: req.file ? req.file.id : null,
+      });
+
+      await newTour.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Tour created",
+        data: newTour,
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
   });
-  try {
-    const savedTour = await newTour.save();
-    res.status(201).json({
-      success: true,
-      message: "Successfully created",
-      data: savedTour,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to create. Try again",
-      error: err.message,
-    });
-  }
 };
 
 export const updateTour = async (req, res) => {
   const id = req.params.id;
+  uploadFiles(req, res, async (err) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: "File upload failed" });
+    }
 
-  try {
-    const updatedTour = await Tour.findByIdAndUpdate(
-      id,
-      {
-        $set: req.body,
-      },
-      { new: true }
-    );
+    const updateData = { ...req.body };
+    if (req.file) {
+      updateData.photo = req.file.id;
+      console.log("🚀 ~ uploadFiles ~ updateData:", updateData)
+    }
+    
+    try {
+      const updatedTour = await Tour.findByIdAndUpdate(
+        id,
+        {
+          $set: updateData,
+        },
+        { new: true }
+      );
 
-    res.status(200).json({
-      success: true,
-      message: "Successfully updated",
-      data: updatedTour,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "failed to update",
-    });
-  }
+      res.status(200).json({
+        success: true,
+        message: "Successfully updated",
+        data: updatedTour,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to update",
+      });
+    }
+  });
 };
 
 export const deleteTour = async (req, res) => {
