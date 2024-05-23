@@ -1,4 +1,3 @@
-/* Additional CSS for styling the form and summary sections */
 .checkout-page {
   padding: 20px;
 }
@@ -58,7 +57,7 @@
 .headerContainer__3VwO {
   display: flex;
   align-items: start;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 0.75rem;
 }
 
@@ -69,16 +68,14 @@
 
 .titleContainer__1aZq {
   margin: 0 0.75rem;
+  margin-top: 0.6rem;
+  height: 100%;
+  text-align: center;
 }
 
 .title__3Avu {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-size: 1.2rem;
   overflow: hidden;
-  max-height: calc(
-    2 * var(--viator-line-height) * var(--viator-font-size-body)
-  );
   line-height: 1.5rem;
 }
 

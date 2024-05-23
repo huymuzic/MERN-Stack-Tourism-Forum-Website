@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { pushError } from "../../../components/Toast";
+import { pushError, pushSuccess } from "../../../components/Toast";
 import { useUser } from "../../../utils/UserContext";
 import "./booking.css";
+import { baseUrl } from "../../../config";
 
 import {
   Form,
@@ -16,7 +17,7 @@ const Booking = ({ tour, avgRating }) => {
   const navigate = useNavigate();
   const { user } = useUser();
   const [numPeople, setNumPeople] = useState(1);
-  const { price, reviews } = tour;
+  const { price, reviews, title } = tour;
   const [peopleValue, setPeopleValue] = useState("01");
   const [totalPrice, setTotalPrice] = useState(price);
 
@@ -33,18 +34,50 @@ const Booking = ({ tour, avgRating }) => {
     setNumPeople((prevNumPeople) => Math.max(prevNumPeople - 1, 1));
   };
 
-  const handleBookFormSubmit = (e) => {
+  const handleBookFormSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
       pushError("Please login to book a tour");
+      return;
     }
+
     const bookTime = document.getElementById("bookTime").value;
 
     if (bookTime.trim() === "") {
       pushError("Please choose a date");
       return;
     }
-    navigate("/checkout");
+
+    try {
+      const response = await fetch(`${baseUrl}/api/v1/booking/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          userId: user._id,
+          email: user.email,
+          tourId: tour._id,
+          tourTitle: title,
+          country: tour.country,
+          city: tour.city,
+          photo: tour.photo,
+          date: bookTime,
+          price: totalPrice,
+          numPeople,
+        }),
+      });
+      const responseBody = await response.json();
+      if (response.ok) {
+        pushSuccess(responseBody.message);
+        navigate("/checkout");
+      } else {
+        throw new Error(responseBody.message);
+      }
+    } catch (error) {
+      pushError("Something went wrong while booking");
+    }
   };
 
   return (
@@ -59,7 +92,6 @@ const Booking = ({ tour, avgRating }) => {
         </span>
       </div>
 
-      {/* ==================== Booking form starts ================== */}
       <div className="booking__form">
         <h5>Information</h5>
         <Form className="booking_info-form d-flex flex-column justify-content-center align-items-flex-start p-3 gap-3">
@@ -101,9 +133,7 @@ const Booking = ({ tour, avgRating }) => {
           </FormGroup>
         </Form>
       </div>
-      {/* ==================== Booking form ends ================== */}
 
-      {/* ==================== Booking bottom ================== */}
       <div className="booking__bottom">
         <ListGroup>
           <ListGroupItem className="border-0 px-0 book_form_row">

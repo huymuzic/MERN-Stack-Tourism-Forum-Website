@@ -28,8 +28,7 @@ function Register() {
   const [showConfPassword, setShowConfPassword] = useState(false);
   const recaptchaRef = useRef(null);
   const [successMsg, setSuccessMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(false);
-  const Sitekey = "6Lf5mtApAAAAAF8KWzqQLrZS8-NtQHNhWmS6h_iI";
+  const Sitekey = import.meta.env.VITE_SITE_KEY;
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -70,32 +69,17 @@ function Register() {
       const responseBody = await response.json();
       const responseMsg = responseBody.message;
       if (!response.ok) {
-        if (responseMsg === "User already exists") {
-          setError("username", {
-            type: "server",
-            message: "This username is not available.",
-          });
-        } else if (responseMsg === "Email already exists") {
-          setError("email", {
-            type: "server",
-            message: "This email is not available.",
-          });
-        }
+        pushError(responseMsg);
       } else {
         navigate("/login");
-        console.log("Success:", responseMsg);
         if (!successMsg) {
-          pushSuccess("Registration successful!");
           pushSuccess("Please login to continue");
+          pushSuccess(responseMsg);
           setSuccessMsg(true);
         }
       }
     } catch (error) {
-      console.error("Error:", error);
-      if (!errorMsg) {
-        pushError("Failed to register. Please try again");
-        setErrorMsg(true);
-      }
+      pushError("Something went wrong!");
     }
   };
 
