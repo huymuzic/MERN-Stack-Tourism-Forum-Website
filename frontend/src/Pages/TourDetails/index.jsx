@@ -15,6 +15,7 @@ import { getAvatarUrl } from "../../utils/getAvar.js";
 import useFetch from "../../hooks/useFetch.jsx";
 import { baseUrl, environment } from "../../config/index.js";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../theme/Theme.jsx";
 
 const TourDetails = () => {
   const { user } = useUser();
