@@ -237,13 +237,16 @@ export default function MyAccount() {
   };
 
   useEffect(() => {
+    fetchUser();
+  }, [user]);
+
+  useEffect(() => {
     if (isFetchedUser) {
       if (!user) {
         navigate("/home");
       }
     }
-    fetchUser();
-  }, [user]);
+  }, [isFetchedUser])
 
   return (
     <div
@@ -302,9 +305,8 @@ export default function MyAccount() {
                   ? "Deactivate your account"
                   : "Activate your account"
               }
-              desc={`Are you sure you want to ${
-                userStatus.Value == "active" ? "deactivate" : "activate"
-              } your account?`}
+              desc={`Are you sure you want to ${userStatus.Value == "active" ? "deactivate" : "activate"
+                } your account?`}
             />
           </Stack>
 

@@ -258,7 +258,7 @@ const Header = () => {
                       </Link>
                       <Link to="/register">
                         <Button
-                          className="register__btn big__pad btn-primary register"
+                          className="register__btn big__pad btn-primary register d-none d-sm-block"
                           onClick={handleNavItemClick}
                         >
                           Register
