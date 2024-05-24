@@ -32,6 +32,10 @@ const quick__links2 = [
     path: "/register",
     display: "Register",
   },
+  {
+    path: "/Sitemap",
+    display: "Sitemap",
+  },
 ];
 
 const Footer = () => {

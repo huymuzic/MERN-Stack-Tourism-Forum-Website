@@ -1,0 +1,40 @@
+.sitemap-container {
+    margin-top: 40px;
+  }
+  
+  .sitemap-card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sitemap-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #343a40;
+  }
+  
+  .sitemap-list,
+  .sitemap-sublist {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .sitemap-item {
+    margin-bottom: 10px;
+  }
+  
+  .sitemap-link {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1.2rem;
+  }
+  
+  .sitemap-link:hover {
+    text-decoration: underline;
+  }
+  
+  .sitemap-sublist {
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+  

@@ -11,7 +11,6 @@ export const verifyToken = async (req, res, next) => {
       message: "Access token not found. You're not authorize",
     });
   }
-
   try {
     const decoded = await new Promise((resolve, reject) => {
       jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
@@ -37,114 +36,39 @@ export const verifyToken = async (req, res, next) => {
   }
 };
 
+export const verifyStatusChange = async (req, res, next) => {
+  await verifyToken(req, res, async () => {
+    if (req.user || req.user.role === "admin") {
+      next();
+    } else {
+      return res.status(403).json({
+        success: false,
+        message: "You're not authenticated to change the status",
+      });
+    }
+  });
+};
 export const verifyUser = async (req, res, next) => {
-  const token =
-    req.cookies.accessToken ||
-    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "Access token not found. You're not authorize",
-    });
-  }
-  try {
-    const decoded = await new Promise((resolve, reject) => {
-      jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(decodedToken);
-        }
-      });
-    });
-    const rememberMe = decoded.exp ? true : false;
-    const userObject = await User.findOne({ _id: decoded.id });
-    console.log(req.params);
-    if (userObject.status == "active" || userObject.role === "admin") {
-      console.log("true");
-      req.user = userObject;
-      req.rememberMe = rememberMe;
+  await verifyToken(req, res, async () => {
+    if ((req.user && req.user.status === "active" ) || (req.user.role === "admin") ) {
       next();
     } else {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
-        message: "You're not authorized",
+        message: "Your account is inactive, please active it.",
       });
     }
-  } catch (err) {
-    return res.status(401).json({
-      success: false,
-      message: err.message,
-    });
-  }
+  });
 };
-// export const verifyUser = (req, res, next) => {
-//   verifyToken(req, res, next, () => {
-// if (
-//   (req.user.id === req.params.id && req.user.status == "active") ||
-//   req.user.role === "admin"
-// ) {
-//       next();
-//     } else {
-//       return res.status(401).json({
-//         success: false,
-//         message: "You're not authenticated",
-//       });
-//     }
-//   });
-// };
-
-export const verifyAdmin = async (req, res, next) => {
-  const token =
-    req.cookies.accessToken ||
-    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "Access token not found. You're not authorize",
+  export const verifyAdmin = async (req, res, next) => {
+    await verifyToken(req, res, async () => {
+      if (req.user && req.user.role === "admin" && req.user.status === "active") {
+        next();
+      } else {
+        return res.status(403).json({
+          success: false,
+          message: "You're not authorized to this page, just admin can!",
+        });
+      }
     });
-  }
-
-  try {
-    const decoded = await new Promise((resolve, reject) => {
-      jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(decodedToken);
-        }
-      });
-    });
-    const rememberMe = decoded.exp ? true : false;
-    // Fetch the user object from the database based on the decoded user ID
-    const userObject = await User.findOne({ _id: decoded.id });
-    // Attach the user object to the request for further processing
-    if (userObject.role === "admin" && userObject.status == "active") {
-      req.user = userObject;
-      req.rememberMe = rememberMe;
-      next();
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: "You're not authorized",
-      });
-    }
-  } catch (err) {
-    return res.status(401).json({
-      success: false,
-      message: err.message,
-    });
-  }
-  // verifyToken(req, res, next, () => {
-
-  //   if (req.user.role === "admin") {
-  //     console.log("🚀 ~ verifyToken ~ req.user.role:", req.user.role)
-  //     next();
-  //   } else {
-  //     return res.status(401).json({
-  //       success: false,
-  //       message: "You're not authorized",
-  //     });
-  //   }
-  // });
-};
+  };

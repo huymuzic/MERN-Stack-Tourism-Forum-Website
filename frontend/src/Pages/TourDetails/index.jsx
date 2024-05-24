@@ -128,7 +128,7 @@ const TourDetails = () => {
                   </span>
                 </div>
                 <img
-                  src={environment == "PROD" ? photo : `./src${photo}`}
+                  src={`${baseUrl}/api/v1/tours/images/${photo}`}
                   alt={title}
                 />
                 <div
