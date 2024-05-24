@@ -6,6 +6,7 @@ import facebookLogo from "../../assets/images/facebook.svg";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import { useTheme } from "../../theme/Theme";
 
 const quick__links = [
   {
@@ -34,6 +35,7 @@ const quick__links2 = [
 ];
 
 const Footer = () => {
+  const { color } = useTheme();
   return (
     <>
       <footer className="footer">
@@ -41,7 +43,9 @@ const Footer = () => {
           <Row>
             <Col lg="3" className="logo-container">
               <div className="logo">
-                <img src={logo} alt="footer-logo" />
+                <Link to="/">
+                  <img src={logo} alt="footer-logo" />
+                </Link>
                 <div className="social__links d-flex align-items-center gap-5">
                   <span>
                     <Link to="#">
@@ -66,7 +70,9 @@ const Footer = () => {
               <ListGroup className="footer__quick-links">
                 {quick__links.map((item, index) => (
                   <ListGroupItem key={index} className="ps-0 border-0">
-                    <Link to={item.path}>{item.display}</Link>
+                    <Link to={item.path} style={{ color: color.textPrimary }}>
+                      {item.display}
+                    </Link>
                   </ListGroupItem>
                 ))}
               </ListGroup>
@@ -77,7 +83,9 @@ const Footer = () => {
                 {quick__links2.map((item, index) => (
                   <ListGroupItem key={index} className="ps-0 border-0">
                     {item.path ? (
-                      <Link to={item.path}>{item.display}</Link>
+                      <Link to={item.path} style={{ color: color.textPrimary }}>
+                        {item.display}
+                      </Link>
                     ) : (
                       <span id="contact" className="contact__footer">
                         {item.display}
@@ -132,12 +140,20 @@ const Footer = () => {
         <ul className="list-unstyled d-flex flex-row gap-3 justify-content-evenly">
           <li>&copy; 2024 Cosmic Travel</li>
           <li>
-            <Link to="/terms-of-service" className="custom-anchor">
+            <Link
+              to="/terms-of-service"
+              className="custom-anchor"
+              style={{ color: color.textPrimary }}
+            >
               Terms of Service
             </Link>
           </li>
           <li>
-            <Link to="/privacy-policy" className="custom-anchor">
+            <Link
+              to="/privacy-policy"
+              className="custom-anchor"
+              style={{ color: color.textPrimary }}
+            >
               Privacy Policy
             </Link>
           </li>
