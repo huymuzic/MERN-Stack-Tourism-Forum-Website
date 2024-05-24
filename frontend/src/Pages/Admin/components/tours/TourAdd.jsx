@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PopUpBase from '../../../../components/pop-up/PopUpBase';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, FloatingLabel, Form, Stack } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, Stack, InputGroup, Row, Col } from 'react-bootstrap';
 import { pushError } from '../../../../components/Toast';
 import { TiDelete } from 'react-icons/ti';
 import { FaUpload } from 'react-icons/fa';
@@ -35,6 +35,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
     handleSubmit,
     reset,
     control,
+    watch,
     formState: { isValid, isDirty },
   } = useForm({
     mode: 'all',
@@ -46,7 +47,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       country: data.country.trim(),
       city: data.city.trim(),
       price: parseFloat(data.price),
-      ageRange: data.ageRange.trim(),
+      ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
     };
 
@@ -60,7 +61,8 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       country: '',
       city: '',
       price: '',
-      ageRange: '',
+      ageFrom: '',
+      ageTo: '',
       duration: '',
     });
     setAvatar('');
@@ -68,7 +70,10 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
     setDirtyAvatar(false);
   }, [open, reset]);
 
-  const disabled = !(isValid && (isDirty || dirtyAvatar));
+  const allFields = watch(['title', 'country', 'city', 'price', 'ageFrom', 'ageTo', 'duration']);
+  const allFieldsFilled = allFields.every(field => field);
+
+  const disabled = !(isValid && (isDirty || dirtyAvatar) && allFieldsFilled);
 
   return (
     <PopUpBase
@@ -192,52 +197,81 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
             )}
           />
 
-          <Controller
-            name="price"
-            control={control}
-            rules={{
-              required: "Price is required",
-              min: {
-                value: 0,
-                message: "Price cannot be negative",
-              },
-            }}
-            render={({ field, fieldState: { error } }) => (
-              <FloatingLabel label="Price">
-                <Form.Control {...field} type="number" placeholder="Price" />
-                {error && <div className="text-danger">{error.message}</div>}
-              </FloatingLabel>
-            )}
-          />
+          <Row>
+            <Col>
+              <InputGroup>
+                <InputGroup.Text>$</InputGroup.Text>
+                <Controller
+                  name="price"
+                  control={control}
+                  rules={{
+                    required: "Price is required",
+                    min: {
+                      value: 0,
+                      message: "Price cannot be negative",
+                    },
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <FloatingLabel label="Price">
+                      <Form.Control {...field} type="number" placeholder="Price" />
+                      {error && <div className="text-danger">{error.message}</div>}
+                    </FloatingLabel>
+                  )}
+                />
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup>
+                <Controller
+                  name="duration"
+                  control={control}
+                  rules={{
+                    required: "Duration is required",
+                    min: {
+                      value: 1,
+                      message: "Duration must be at least 1 day",
+                    },
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <FloatingLabel label="Duration">
+                      <Form.Control {...field} type="number" placeholder="Duration" />
+                      {error && <div className="text-danger">{error.message}</div>}
+                    </FloatingLabel>
+                  )}
+                />
+                <InputGroup.Text>days</InputGroup.Text>
+              </InputGroup>
+            </Col>
+          </Row>
 
-          <Controller
-            name="ageRange"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FloatingLabel label="Age Range">
-                <Form.Control {...field} type="text" placeholder="Age Range" />
-                {error && <div className="text-danger">{error.message}</div>}
-              </FloatingLabel>
-            )}
-          />
-
-          <Controller
-            name="duration"
-            control={control}
-            rules={{
-              required: "Duration is required",
-              min: {
-                value: 1,
-                message: "Duration must be at least 1 day",
-              },
-            }}
-            render={({ field, fieldState: { error } }) => (
-              <FloatingLabel label="Duration (days)">
-                <Form.Control {...field} type="number" placeholder="Duration" />
-                {error && <div className="text-danger">{error.message}</div>}
-              </FloatingLabel>
-            )}
-          />
+          <Row>
+            <Col>
+              <Controller
+                name="ageFrom"
+                control={control}
+                rules={{ required: "From Age is required" }}
+                render={({ field, fieldState: { error } }) => (
+                  <FloatingLabel label="From Age">
+                    <Form.Control {...field} type="number" placeholder="From Age" />
+                    {error && <div className="text-danger">{error.message}</div>}
+                  </FloatingLabel>
+                )}
+              />
+            </Col>
+            <Col>
+              <Controller
+                name="ageTo"
+                control={control}
+                rules={{ required: "To Age is required" }}
+                render={({ field, fieldState: { error } }) => (
+                  <FloatingLabel label="To Age">
+                    <Form.Control {...field} type="number" placeholder="To Age" />
+                    {error && <div className="text-danger">{error.message}</div>}
+                  </FloatingLabel>
+                )}
+              />
+            </Col>
+          </Row>
         </Stack>
       }
     />

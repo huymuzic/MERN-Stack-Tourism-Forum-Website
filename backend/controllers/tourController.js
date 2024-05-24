@@ -242,22 +242,24 @@ export const getListTour = async (req, res) => {
         filter.title = { $regex: search, $options: "i" };
       } else if (searchType === "country") {
         filter.country = { $regex: search, $options: "i" };
-      } 
-      else if (searchType === "city") {
-        filter.city = { $regex: search, $options: "i" };}
-        else {
+      } else if (searchType === "city") {
+        filter.city = { $regex: search, $options: "i" };
+      } else {
         filter.$or = [
           { title: { $regex: search, $options: "i" } },
           { country: { $regex: search, $options: "i" } },
         ];
       }
     }
+
     const totalCount = await Tour.countDocuments();
     const totalPages = (await Tour.countDocuments(filter)) / limit;
     const tours = await Tour.find(filter)
       .populate("reviews")
+      .sort({ createdAt: -1 }) // Sort by createdAt in descending order
       .limit(limit)
       .skip((page - 1) * limit);
+
     res.status(200).json({
       success: true,
       totalPages: Math.ceil(totalPages),
@@ -269,6 +271,56 @@ export const getListTour = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error. Please try again.",
+    });
+  }
+};
+
+export const hideTour = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const updatedUser = await Tour.findByIdAndUpdate(
+      id,
+      {
+        $set: { status: "hide" },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully hide post",
+      data: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to hide post. Try again",
+    });
+  }
+};
+
+// Unlock user
+export const unhideTour = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const updatedUser = await Tour.findByIdAndUpdate(
+      id,
+      {
+        $set: { status: "unhide" },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully unhide post",
+      data: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to unhide post. Try again",
     });
   }
 };

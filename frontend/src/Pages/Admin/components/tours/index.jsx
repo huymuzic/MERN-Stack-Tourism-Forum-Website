@@ -3,13 +3,14 @@ import BasePaginationList from "../../../../components/BasePaginationList";
 import WrapperFilter from "../WrapperFilter";
 import { pushError, pushSuccess } from "../../../../components/Toast";
 import { headers } from "../../helper";
-import TourItem, { TourRating } from "./TourItem";
+import TourItem, { TourStatuses } from "./TourItem";
 import NoData from "../NoData";
 import debounce from "../../../../helper";
 import { useCustomAutocomplete } from "../../../../components/CustomAutocomplete/useCustomAutocomplete";
 import CustomAutocomplete from "../../../../components/CustomAutocomplete/CustomAutocomplete";
 import { baseUrl } from "../../../../config";
-import PopUpAddTour from "./TourAdd"; 
+import PopUpAddTour from "./TourAdd";
+
 const forumPostSearchType = [
   {
     id: 1,
@@ -33,7 +34,7 @@ export default function ToursList() {
   const [filter, setFilter] = useState({
     page: 1,
     searchValue: "",
-    searchType: forumPostSearchType[0].value,  // Initialize searchType
+    searchType: forumPostSearchType[0].value, // Initialize searchType
     status: undefined,
   });
   const [paging, setPaging] = useState({
@@ -47,7 +48,12 @@ export default function ToursList() {
   const searchTypeRef = useRef(null);
 
   const handleResetFilter = () => {
-    setFilter({ searchValue: "", searchType: forumPostSearchType[0].value, page: 1, status: undefined });
+    setFilter({
+      searchValue: "",
+      searchType: forumPostSearchType[0].value,
+      page: 1,
+      status: undefined,
+    });
     if (searchRef.current) {
       searchRef.current.value = "";
     }
@@ -55,7 +61,7 @@ export default function ToursList() {
 
   const statusAutocomplete = useCustomAutocomplete({
     list: {
-      options: TourRating,
+      options: TourStatuses,
       searchFields: ["Name"],
     },
   });
@@ -73,12 +79,12 @@ export default function ToursList() {
     url.searchParams.append("page", filter.page);
     url.searchParams.append("limit", pageSize);
     if (filter.status) {
-      url.searchParams.append("status", filter.status.Value[0]);  // Use filter.status.Value for rating range
+      url.searchParams.append("status", filter.status.Value); // Use filter.status.Value for rating range
     }
     url.searchParams.append("search", filter.searchValue);
     url.searchParams.append("searchType", filter.searchType);
 
-    console.log(url.toString());  // Log the URL to check query parameters
+    console.log(url.toString()); // Log the URL to check query parameters
 
     try {
       const response = await fetch(url, {
@@ -111,56 +117,55 @@ export default function ToursList() {
     try {
       const url = new URL(`${baseUrl}/api/v1/tours/${partialTourUpdate._id}`);
       const formData = new FormData();
-      formData.append('title', partialTourUpdate.title);
-      formData.append('country', partialTourUpdate.country);
-      formData.append('city', partialTourUpdate.city);
-      formData.append('price', partialTourUpdate.price);
-      formData.append('ageRange', partialTourUpdate.ageRange);
-      formData.append('duration', partialTourUpdate.duration);
+      formData.append("title", partialTourUpdate.title);
+      formData.append("country", partialTourUpdate.country);
+      formData.append("city", partialTourUpdate.city);
+      formData.append("price", partialTourUpdate.price);
+      formData.append("ageRange", partialTourUpdate.ageRange);
+      formData.append("duration", partialTourUpdate.duration);
       if (partialTourUpdate.photo) {
-        console.log(true)
-        formData.append('photo', partialTourUpdate.photo);
+        console.log(true);
+        formData.append("photo", partialTourUpdate.photo);
       }
       for (let pair of formData.entries()) {
         console.log(`${pair[0]}, ${pair[1]}`);
       }
-        console.log("🚀 ~ handleUpdateTour ~ formData:", formData)
+      console.log("🚀 ~ handleUpdateTour ~ formData:", formData);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
         body: formData,
       });
-  
+
       if (response.ok) {
-        fetchTours();  
+        fetchTours();
         pushSuccess("Edit tour successfully");
       } else {
         pushError("Failed to edit tour");
         throw new Error("Failed to edit tour");
       }
     } catch (error) {
-      console.log("🚀 ~ handleUpdateTour ~ error:", error)
+      console.log("🚀 ~ handleUpdateTour ~ error:", error);
       pushError("Failed to edit tour");
     }
   };
-  
-  
+
   const handleAddTour = async ({ tour, avatar }) => {
     try {
       const formData = new FormData();
-      formData.append('title', tour.title);
-      formData.append('country', tour.country);
-      formData.append('city', tour.city);
-      formData.append('price', tour.price);
-      formData.append('ageRange', tour.ageRange);
-      formData.append('duration', tour.duration);
+      formData.append("title", tour.title);
+      formData.append("country", tour.country);
+      formData.append("city", tour.city);
+      formData.append("price", tour.price);
+      formData.append("ageRange", tour.ageRange);
+      formData.append("duration", tour.duration);
       if (avatar) {
-        formData.append('photo', avatar);
+        formData.append("photo", avatar);
       }
 
       const response = await fetch(`${baseUrl}/api/v1/tours`, {
-        method: 'POST',
-        credentials: 'include',
+        method: "POST",
+        credentials: "include",
         body: formData,
       });
 
@@ -177,12 +182,61 @@ export default function ToursList() {
     }
   };
 
+  const handleHideConfirm = async (tourId) => {
+    try {
+      const url = new URL(`${baseUrl}/api/v1/tours/hide/${tourId}`);
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushSuccess("Hide tour successfully");
+        fetchTours();
+      } else {
+        pushError("Failed to hide tour");
+      }
+    } catch (error) {
+      pushError("Failed to hide tour");
+    }
+  };
+
+  const handleUnhideConfirm = async (tourId) => {
+    try {
+      const url = new URL(`${baseUrl}/api/v1/tours/unhide/${tourId}`);
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        pushSuccess("Unhide tour successfully");
+        fetchTours();
+      } else {
+        pushError("Failed to unhide tour");
+      }
+    } catch (error) {
+      pushError("Failed to unhide tour");
+    }
+  };
+
   useEffect(() => {
     fetchTours();
-  }, [filter.page, filter.searchValue, filter.status, filter.searchType]);  // Added searchType dependency
+  }, [filter.page, filter.searchValue, filter.status, filter.searchType]);
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", gap: "32px" }}>
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "32px",
+      }}
+    >
       <WrapperFilter
         onReset={handleResetFilter}
         customAction={
@@ -238,7 +292,16 @@ export default function ToursList() {
         totalItems={paging.totalCount}
         list={paging.data}
         loading={loading}
-        renderItem={(tour) => <TourItem key={tour._id} tour={tour} statusFilter={filter.status} handleUpdateTour={handleUpdateTour} />}  // Pass statusFilter to TourItem
+        renderItem={(tour) => (
+          <TourItem
+            key={tour._id}
+            tour={tour}
+            statusFilter={filter.status}
+            handleUpdateTour={handleUpdateTour}
+            handleHideConfirm={(postId) => handleHideConfirm(postId)}
+            handleUnhideConfirm={(postId) => handleUnhideConfirm(postId)}
+          />
+        )} // Pass statusFilter to TourItem
         totalPages={paging.totalPages}
         page={filter.page}
         onChangePage={(page) => setFilter((prev) => ({ ...prev, page }))}

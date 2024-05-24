@@ -12,17 +12,20 @@ import {
   getFeaturedTour,
   getTourCount,
   getTopDestinations,
-  getListTour
+  getListTour,
+   unhideTour, 
+   hideTour
 } from "../controllers/tourController.js";
+import { verifyAdmin, verifyUser , verifyStatusChange} from "../utils/verifyToken.js";
 import { postGfs } from '../utils/gridfsconfig.js';
 const router = express.Router();
 
 // Configure multer for file uploads
-router.post("/", createTour);
+router.post("/", verifyAdmin, createTour);
 
-router.put('/:id', updateTour);
+router.put('/:id', verifyAdmin, updateTour);
 
-router.delete("/:id", deleteTour);
+router.delete("/:id", verifyAdmin, deleteTour);
 
 router.get("/:id", getSingleTour);
 router.get('/images/:id', async (req, res) => {
@@ -42,5 +45,6 @@ router.get("/search/getFeaturedTours", getFeaturedTour);
 router.get("/search/getTourCount", getTourCount);
 router.get("/search/getTopDestinations", getTopDestinations);
 router.post("/destination", createDestination);
-
+router.put("/unhide/:id", verifyAdmin, unhideTour);
+router.put("/hide/:id", verifyAdmin, hideTour);
 export default router;
