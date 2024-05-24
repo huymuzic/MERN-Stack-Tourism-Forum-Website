@@ -3,6 +3,7 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import "./contact-modal.css";
 import { pushError, pushSuccess } from "../../../../components/Toast";
 import { baseUrl } from "../../../../config";
+import { useTheme } from "../../../../theme/Theme";
 
 const ContactModal = () => {
   const [fullName, setFullName] = useState("");
@@ -10,6 +11,7 @@ const ContactModal = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { color, themeMode } = useTheme();
 
   const validateForm = () => {
     const errors = [];
@@ -80,7 +82,13 @@ const ContactModal = () => {
 
   return (
     <div className="contact__modal">
-      <form className="contact__form" onSubmit={handleSubmit}>
+      <form
+        className="contact__form"
+        style={{
+          backgroundColor: themeMode == "light" ? "#f5f5f5" : "#4a4949",
+        }}
+        onSubmit={handleSubmit}
+      >
         <h3>GET IN TOUCH</h3>
         <FloatingLabel label="Full Name">
           <Form.Control
