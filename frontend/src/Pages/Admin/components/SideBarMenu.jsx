@@ -17,12 +17,12 @@ const sideBarItems = [
     }
 ]
 export default function SideBarMenu() {
-    const { color } = useTheme()
-    
+    const { color, themeMode } = useTheme()
+
     return (
         <>
-    < style >
-        {`
+            < style >
+                {`
         .side-bar-item {
             display: flex;
             padding: 16px 20px;
@@ -33,31 +33,31 @@ export default function SideBarMenu() {
         }
         
         .side-bar-item:hover {
-            background-color: #f5f5f5;
+            background-color: ${themeMode == "light" ? "#f5f5f5" : "#353535"} ;
         }
-        
+
         .active-sidebar-item {
             color: ${color.primary};
             background-color: ${color.lightPrimary};
         }
-        
+
         .active-sidebar-item:hover {
             background-color: ${color.lightPrimary}; 
         }`}
-    </style >
-        <div className='side-bar-container' style={{ minHeight: "calc(100vh - 200px)", display: "flex", flexDirection: "column" }}>
-            {sideBarItems.map((item, index) => (
-                <NavLink to={item.path} className={navClass => navClass.isActive ? "side-bar-item active-sidebar-item" : "side-bar-item"} key={index} >
-                    <div style={{ display: "flex", flexDirection: "row", gap: "24px", color: "inherit", alignItems: "center" }}>
-                        <div className="me-1">{item.icon}</div>
-                        <h6 style={{ textWrap: "nowrap", margin: "0", height: "20px" }}>
-                            {item.title}
-                        </h6>
-                    </div>
-                </NavLink>
+            </style >
+            <div className='side-bar-container' style={{ minHeight: "calc(100vh - 200px)", display: "flex", flexDirection: "column" }}>
+                {sideBarItems.map((item, index) => (
+                    <NavLink to={item.path} className={navClass => navClass.isActive ? "side-bar-item active-sidebar-item" : "side-bar-item"} key={index} >
+                        <div style={{ display: "flex", flexDirection: "row", gap: "24px", color: "inherit", alignItems: "center" }}>
+                            <div className="me-1" style={{ color: color.textPrimary }}>{item.icon}</div>
+                            <h6 style={{ textWrap: "nowrap", margin: "0", height: "20px" }}>
+                                {item.title}
+                            </h6>
+                        </div>
+                    </NavLink>
 
-            ))}
-        </div>
+                ))}
+            </div>
         </>
     )
 }

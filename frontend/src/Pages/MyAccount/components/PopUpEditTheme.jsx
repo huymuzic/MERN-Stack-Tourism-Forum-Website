@@ -3,8 +3,8 @@ import PopUpBase from '../../../components/pop-up/PopUpBase'
 import { Button, Col, Row, Stack } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
 import PropTypes from 'prop-types';
-import color from "../../../theme/Color";
-import {defaultSettingTheme} from "../index"
+import { defaultSettingTheme } from "../index"
+import { useTheme } from '../../../theme/Theme';
 
 export default function PopUpEditTheme(props) {
     const [isDirty, setIsDirty] = useState(false);
@@ -13,7 +13,7 @@ export default function PopUpEditTheme(props) {
     const [settingColors, setSettingColors] = useState();
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedChild, setSelectedChild] = useState(null);
-
+    const {color, themeMode} = useTheme()
 
 
     const handleResetColor = () => {
@@ -73,7 +73,7 @@ export default function PopUpEditTheme(props) {
             desc={
                 <Row style={{
                     borderRadius: 8,
-                    backgroundColor: color.grey100,
+                    backgroundColor: themeMode == "light" ? color.grey100 : color.grey500,
                     padding: 16,
                     margin: 8
                 }}>
@@ -90,12 +90,12 @@ export default function PopUpEditTheme(props) {
                         >
                             <h6 >Color system</h6>
                             <Button
-                                sx={{ maxHeight: '32px', width: '102px', padding: '8px 16px', textWrap: 'nowrap' }}
+                                sx={{ maxHeight: '32px', width: '102px', padding: '8px 16px', textWrap: 'nowrap', fontSize: "12px" }}
                                 component="span"
                                 variant="outline-primary"
                                 onClick={handleResetColor}
                             >
-                                <p className="body-2">Reset color</p>
+                                Reset color
                             </Button>
                         </Stack>
                     </Col>
@@ -140,6 +140,39 @@ export default function PopUpEditTheme(props) {
                                             </Col>
                                         </Row>
                                     </Col>
+
+                                    <Col xs={6} className="pb-3">
+                                        <Row className="ps-3">
+                                            <Col xs={12}>
+                                                <div className="d-flex align-items-center gap-1">
+                                                    <p className='body-2'>Secondary</p>
+                                                </div>
+                                            </Col>
+                                            <Col xs={12}>
+                                                <Stack direction='horizontal'>
+                                                    <div
+                                                        style={{
+                                                            boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
+                                                            width: 20,
+                                                            height: 20,
+                                                            borderRadius: '50%',
+                                                            backgroundColor: settingColors?.secondary,
+
+                                                        }}
+                                                    />
+                                                    <span
+                                                        style={{ cursor: 'pointer', borderBottom: '2px dashed #DDDDDD', marginLeft: '8px' }}
+                                                        onClick={(e) => {
+                                                            setOpen(true)
+                                                            handleClick(e.currentTarget.offsetLeft, e.currentTarget.offsetTop + 20, "secondary");
+                                                        }}
+                                                    >
+                                                        {settingColors?.secondary}
+                                                    </span>
+                                                </Stack>
+                                            </Col>
+                                        </Row>
+                                    </Col>
                                 </Row>
                             </Col>
                         </Row>
@@ -147,7 +180,7 @@ export default function PopUpEditTheme(props) {
 
 
                     <Col xs={12}>
-                        <Row>
+                        {/* <Row>
                             <Col xs={3}>
                                 <p style={{ textWrap: "nowrap", textAlign: "start" }} className='body-1'>
                                     Header Color
@@ -220,7 +253,7 @@ export default function PopUpEditTheme(props) {
                                     </Col>
                                 </Row>
                             </Col>
-                        </Row>
+                        </Row> */}
                     </Col>
 
 

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Button,
   Col,
-  Container,
   Form,
   Image,
   Row,
@@ -24,15 +23,18 @@ import PopUpEditTheme from "./components/PopUpEditTheme";
 import { useTheme } from "../../theme/Theme";
 import PopUpEditPassword from "./components/PopUpEditPassword";
 import { baseUrl } from "../../config";
+import color from "../../theme/Color";
 
 export const defaultSettingTheme = {
-  primary: "#ff7e01",
+  primary: color.primary,
 
-  headerBgColor: "#FFFFFF",
-  headerTextColor: "#0B2727",
+  secondary: color.secondary,
 
-  buttonTextColor: "#FFFFFF",
-  buttonHoverColor: "#c46200",
+  headerBgColor: color.headerBgColor,
+  headerTextColor: color.headerTextColor,
+
+  buttonTextColor: color.buttonTextColor,
+  buttonHoverColor: color.buttonHoverColor,
 };
 
 export default function MyAccount() {
@@ -295,55 +297,52 @@ export default function MyAccount() {
             <PopUpBase
               {...popUpActivate}
               onConfirm={onChangeStatus}
-              title="Unlock User Confirmation"
-              desc={`Are you sure you want to unlock the user ${userProfile.username}?`}
+              title={userStatus.Value == "active" ? "Deactivate your account" : "Activate your account"}
+              desc={`Are you sure you want to ${userStatus.Value == "active" ? "deactivate" : "activate"} your account?`}
             />
           </Stack>
 
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
-            <Col className="text-right">
+            <Col md={6} xs={12} className="text-right">
               <h6>Email:</h6>
             </Col>
-            <Col className="text-left">
+            <Col md={6} xs={12} className="text-left">
               <p className="body-1">{userProfile?.email}</p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
-            <Col className="text-right">
+            <Col md={6} xs={12} className="text-right">
               <h6>Username:</h6>
             </Col>
-            <Col className="text-left">
+            <Col md={6} xs={12} className="text-left">
               <p className="body-1">{userProfile?.username}</p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
-            <Col className="text-right">
+            <Col md={6} xs={12} className="text-right">
               <h6>Name:</h6>
             </Col>
-            <Col className="text-left">
+            <Col md={6} xs={12} className="text-left">
               <p className="body-1">{userProfile?.name}</p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
-            <Col className="text-right">
+            <Col md={6} xs={12} className="text-right">
               <h6>Joined at:</h6>
             </Col>
-            <Col className="text-left">
+            <Col md={6} xs={12} className="text-left">
               <p className="body-1">
                 {moment(userProfile?.createdAt).format("YYYY-MM-DD HH:mm:ss")}
               </p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
-            <Col className="text-right">
+            <Col md={6} xs={12} className="text-right">
               <h6>Password:</h6>
             </Col>
-            <Col className="text-left">
-              <Stack
-                direction="horizontal"
-                style={{ justifyContent: "space-around", alignItems: "center" }}
-              >
-                <p className="body-1">**********</p>
+            <Col md={6} xs={12} className="text-left">
+              <div style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", justifyContent: "center" }}>
+                <p className='body-1'>***********</p>
                 <CustomTooltip text="Edit password">
                   <Button
                     variant="outline-primary"
@@ -362,12 +361,13 @@ export default function MyAccount() {
                     handleChangePassword(data);
                   }}
                 />
-              </Stack>
+              </div>
+
             </Col>
           </Row>
 
           <Row className=" justify-content-between max-width-500 mx-auto">
-            <Col>
+            <Col md={6} xs={12} className='mb-3'>
               <Button onClick={() => popUpEditProfile.setTrue()}>
                 Edit Profile
               </Button>
@@ -381,7 +381,7 @@ export default function MyAccount() {
                 }}
               />
             </Col>
-            <Col>
+            <Col md={6} xs={12} className='mb-3'>
               <Button
                 variant="outline-primary"
                 onClick={() => popUpEditTheme.setTrue()}
@@ -391,14 +391,15 @@ export default function MyAccount() {
 
               <PopUpEditTheme
                 {...popUpEditTheme}
-                settingColors={userProfile?.theme || defaultSettingTheme}
+                settingColors={{ ...defaultSettingTheme, ...userProfile?.theme }}
                 onSave={(data) => handleUpdateTheme(data)}
               />
             </Col>
           </Row>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 const UserStatusDot = ({ status }) => {

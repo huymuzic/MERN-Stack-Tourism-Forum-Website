@@ -6,6 +6,10 @@ const themeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    secondary: {
+      type: String,
+      required: true,
+    },
     headerBgColor: {
       type: String,
     },

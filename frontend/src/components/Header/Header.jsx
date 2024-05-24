@@ -9,6 +9,7 @@ import { pushError, pushSuccess } from "../Toast";
 import { useTheme } from "../../theme/Theme.jsx";
 import { baseUrl, environment } from "../../config/index.js";
 import CircularProgress from "../CircularProgress.jsx";
+import ToggleTheme from "./components/ToggleTheme/index.jsx";
 
 const Header = () => {
   const [logoImage, setLogoImage] = useState();
@@ -127,14 +128,14 @@ const Header = () => {
         <>
           <Navbar
             className="header custom__navbar"
-            style={{ backgroundColor: color.headerBgColor }}
+            // style={{ backgroundColor: color.headerBgColor }}
             expand="lg"
             collapseOnSelect
           >
             <style>
               {`
           .nav__item a {
-            color: ${color.headerTextColor};
+            color: ${color.textPrimary};
           }
           .nav__item a:hover {
             color: ${color.primary};
@@ -183,6 +184,9 @@ const Header = () => {
                   ))}
                 </ul>
               </Navbar.Collapse>
+              <div className="d-flex justify-content-end pe-3 mb-1 toggle-theme">
+                <ToggleTheme />
+              </div>
               {user !== null ? (
                 <li className="nav-item dropdown no-bullet mb-4 nm">
                   <button

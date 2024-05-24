@@ -11,6 +11,7 @@ import {
   ListGroupItem,
   Button,
 } from "react-bootstrap";
+import { useTheme } from "../../../theme/Theme";
 
 const Booking = ({ tour, avgRating }) => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Booking = ({ tour, avgRating }) => {
   const { price, reviews, title } = tour;
   const [peopleValue, setPeopleValue] = useState("01");
   const [totalPrice, setTotalPrice] = useState(price);
+  const {color} = useTheme()
 
   useEffect(() => {
     setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
@@ -113,7 +115,7 @@ const Booking = ({ tour, avgRating }) => {
             </span>
           </div>
           <FormGroup className="d-flex align-items-center gap-3">
-            <input type="date" placeholder="" id="bookTime" />
+            <input type="date" placeholder="" id="bookTime" style={{color: color.textPrimary}}/>
           </FormGroup>
         </Form>
       </div>

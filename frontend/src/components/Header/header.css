@@ -156,12 +156,17 @@ nav button:focus-visible {
     order: 2;
   }
 
-  .login-register-buttons {
+  .toggle-theme {
     order: 3;
+    margin-bottom: 0;
+  }
+
+  .login-register-buttons {
+    order: 4;
   }
 
   .dropdown {
-    order: 3;
+    order: 4;
   }
 
   #navbarSupportedContent {

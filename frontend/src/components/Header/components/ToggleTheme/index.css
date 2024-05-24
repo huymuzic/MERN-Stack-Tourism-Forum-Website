@@ -1,0 +1,75 @@
+
+.toggle-label {
+    width: 80px;
+    height: 40px;
+    position: relative;
+    display: block;
+    background: #ebebeb;
+    border-radius: 200px;
+    box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+}
+
+.toggle-label:after {
+    content: "";
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    border-radius: 180px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-input {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.toggle-input:checked+.toggle-label {
+    background: #242424;
+}
+
+.toggle-input:checked+.toggle-label:after {
+    left: 72px;
+    transform: translateX(-100%);
+    background: linear-gradient(180deg, #777, #3a3a3a);
+}
+
+.toggle-label,
+.toggle-label:after {
+    transition: 0.3s
+}
+
+.toggle-label:active:after {
+    width: 40px;
+}
+
+
+.toggle-label svg {
+    position: absolute;
+    width: 24px;
+    top: 12px;
+    z-index: 100;
+}
+
+.toggle-label svg.sun {
+    left: 8px;
+    fill: #fff;
+    transition: 0.3s;
+}
+
+.toggle-label svg.moon {
+    left: 46px;
+    fill: #7e7e7e;
+    transition: 0.3s;
+}
+
+.toggle-input:checked+.toggle-label svg.sun {
+    fill: #7e7e7e;
+}
+
+.toggle-input:checked+.toggle-label svg.moon {
+    fill: #fff;
+}

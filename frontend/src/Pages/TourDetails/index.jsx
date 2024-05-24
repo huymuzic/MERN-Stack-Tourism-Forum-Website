@@ -25,7 +25,7 @@ const TourDetails = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [avgRating, setAvgRating] = useState("");
   const [totalRating, setTotalRating] = useState(0);
-
+  const { color } = useTheme();
   const { data: tour } = useFetch(`${baseUrl}/api/v1/tours/${id}`);
 
   const { photo, title, price, reviews, country, city, duration, ageRange } =
@@ -125,7 +125,10 @@ const TourDetails = () => {
                   src={environment == "PROD" ? photo : `./src${photo}`}
                   alt={title}
                 />
-                <div className="tour__info">
+                <div
+                  className="tour__info"
+                  style={{ color: color.textPrimary }}
+                >
                   <div className="d-flex flex-column align-items-start justify-content-center tour__extra-details">
                     <h5>Description</h5>
                     <div>
@@ -171,12 +174,16 @@ const TourDetails = () => {
                       ))}
                     </div>
 
-                    <div className="review__input">
+                    <div
+                      className="review__input"
+                      style={{ border: `1px solid ${color.secondary}` }}
+                    >
                       <input
                         type="text"
                         ref={reviewMsgRef}
                         placeholder="Share your thoughts..."
                         required
+                        style={{ backgroundColor: "inherit" }}
                       ></input>
                       <button
                         className="btn primary__btn btn-primary review_submit_btn"
