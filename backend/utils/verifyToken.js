@@ -1,4 +1,4 @@
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
 export const verifyToken = async (req, res, next) => {
@@ -59,12 +59,9 @@ export const verifyUser = async (req, res, next) => {
     });
     const rememberMe = decoded.exp ? true : false;
     const userObject = await User.findOne({ _id: decoded.id });
-    console.log(req.params)
-    if (
-      ( userObject.status == "active") ||
-      userObject.role === "admin"
-    ) {
-      console.log('true')
+    console.log(req.params);
+    if (userObject.status == "active" || userObject.role === "admin") {
+      console.log("true");
       req.user = userObject;
       req.rememberMe = rememberMe;
       next();
@@ -79,13 +76,14 @@ export const verifyUser = async (req, res, next) => {
       success: false,
       message: err.message,
     });
-  } }
+  }
+};
 // export const verifyUser = (req, res, next) => {
 //   verifyToken(req, res, next, () => {
-    // if (
-    //   (req.user.id === req.params.id && req.user.status == "active") ||
-    //   req.user.role === "admin"
-    // ) {
+// if (
+//   (req.user.id === req.params.id && req.user.status == "active") ||
+//   req.user.role === "admin"
+// ) {
 //       next();
 //     } else {
 //       return res.status(401).json({

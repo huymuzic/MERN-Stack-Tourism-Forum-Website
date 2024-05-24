@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Form,
-  Image,
-  Row,
-  Stack,
-} from "react-bootstrap";
+import { Button, Col, Form, Image, Row, Stack } from "react-bootstrap";
 import { pushError, pushSuccess } from "../../components/Toast";
 import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar";
@@ -24,6 +17,7 @@ import { useTheme } from "../../theme/Theme";
 import PopUpEditPassword from "./components/PopUpEditPassword";
 import { baseUrl } from "../../config";
 import color from "../../theme/Color";
+import { useNavigate } from "react-router-dom";
 
 export const defaultSettingTheme = {
   primary: color.primary,
@@ -42,7 +36,7 @@ export default function MyAccount() {
   const popUpEditProfile = usePopUp();
   const popUpEditPassword = usePopUp();
   const popUpEditTheme = usePopUp();
-  const { user } = useUser();
+  const { user, isFetchedUser } = useUser();
   const [loading, setLoading] = useState(false);
   const { fetchTheme } = useTheme();
   const [userProfile, setUserProfile] = useState({
@@ -54,6 +48,7 @@ export default function MyAccount() {
   const userStatus = userStatuses.find(
     (item) => item.Value === userProfile.status
   );
+  const navigate = useNavigate();
 
   const handleChangePassword = async ({ currentPassword, newPassword }) => {
     popUpEditPassword.onClose();
@@ -242,6 +237,11 @@ export default function MyAccount() {
   };
 
   useEffect(() => {
+    if (isFetchedUser) {
+      if (!user) {
+        navigate("/home");
+      }
+    }
     fetchUser();
   }, [user]);
 
@@ -297,8 +297,14 @@ export default function MyAccount() {
             <PopUpBase
               {...popUpActivate}
               onConfirm={onChangeStatus}
-              title={userStatus.Value == "active" ? "Deactivate your account" : "Activate your account"}
-              desc={`Are you sure you want to ${userStatus.Value == "active" ? "deactivate" : "activate"} your account?`}
+              title={
+                userStatus.Value == "active"
+                  ? "Deactivate your account"
+                  : "Activate your account"
+              }
+              desc={`Are you sure you want to ${
+                userStatus.Value == "active" ? "deactivate" : "activate"
+              } your account?`}
             />
           </Stack>
 
@@ -341,8 +347,16 @@ export default function MyAccount() {
               <h6>Password:</h6>
             </Col>
             <Col md={6} xs={12} className="text-left">
-              <div style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", justifyContent: "center" }}>
-                <p className='body-1'>***********</p>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "8px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <p className="body-1">***********</p>
                 <CustomTooltip text="Edit password">
                   <Button
                     variant="outline-primary"
@@ -362,12 +376,11 @@ export default function MyAccount() {
                   }}
                 />
               </div>
-
             </Col>
           </Row>
 
           <Row className=" justify-content-between max-width-500 mx-auto">
-            <Col md={6} xs={12} className='mb-3'>
+            <Col md={6} xs={12} className="mb-3">
               <Button onClick={() => popUpEditProfile.setTrue()}>
                 Edit Profile
               </Button>
@@ -381,7 +394,7 @@ export default function MyAccount() {
                 }}
               />
             </Col>
-            <Col md={6} xs={12} className='mb-3'>
+            <Col md={6} xs={12} className="mb-3">
               <Button
                 variant="outline-primary"
                 onClick={() => popUpEditTheme.setTrue()}
@@ -391,15 +404,17 @@ export default function MyAccount() {
 
               <PopUpEditTheme
                 {...popUpEditTheme}
-                settingColors={{ ...defaultSettingTheme, ...userProfile?.theme }}
+                settingColors={{
+                  ...defaultSettingTheme,
+                  ...userProfile?.theme,
+                }}
                 onSave={(data) => handleUpdateTheme(data)}
               />
             </Col>
           </Row>
         </>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 }
 const UserStatusDot = ({ status }) => {
