@@ -107,7 +107,7 @@ TourItem.propTypes = {
     title: PropTypes.string,
     country: PropTypes.string.isRequired,
     city: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string,
     reviews: PropTypes.array,
   }).isRequired,
   statusFilter: PropTypes.object, // Add statusFilter prop type
