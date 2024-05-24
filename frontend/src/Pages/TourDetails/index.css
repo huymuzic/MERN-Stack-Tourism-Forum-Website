@@ -145,3 +145,13 @@
   vertical-align: bottom;
   color: gold !important;
 }
+@media screen and (max-width: 576px) {
+  .tour__info {
+    padding-right: 2rem !important;
+  }
+
+  .review_submit_btn {
+    width: 7rem;
+    font-size: 0.7rem;
+  }
+}

@@ -1,6 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import "./index.css";
-import { Link, Element, animateScroll as scroll } from "react-scroll";
+import {
+  Link as ScrollLink,
+  Element,
+  animateScroll as scroll,
+} from "react-scroll";
 import { Container, Row, Col, Form, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import calculateAvgRating from "../../utils/avgRating";
@@ -9,8 +13,8 @@ import { pushError, pushSuccess } from "../../components/Toast";
 import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import useFetch from "../../hooks/useFetch.jsx";
-import { baseUrl } from "../../config/index.js";
-import { environment } from "../../config/index.js";
+import { baseUrl, environment } from "../../config/index.js";
+import { Link } from "react-router-dom";
 
 const TourDetails = () => {
   const { user } = useUser();
@@ -75,6 +79,10 @@ const TourDetails = () => {
       });
       if (res.ok) {
         const newReview = await res.json();
+        newReview.data.userId = {
+          ...newReview.data.userId,
+          avatar: user.avatar,
+        };
         pushSuccess("Review submitted successfully");
         setReviewsArray([...reviewsArray, newReview.data]);
         setReviewCount(reviewCount + 1);
@@ -171,7 +179,7 @@ const TourDetails = () => {
                         required
                       ></input>
                       <button
-                        className="btn primary__btn btn-primary"
+                        className="btn primary__btn btn-primary review_submit_btn"
                         type="submit"
                       >
                         Submit
@@ -182,17 +190,18 @@ const TourDetails = () => {
                   <ListGroup className="user__reviews">
                     {reviewsArray.map((review) => (
                       <div className="review__item" key={review._id}>
-                        <img
-                          src={getAvatarUrl(review.userId.avatar, baseUrl)}
-                          alt="User Avatar"
-                          className="rounded-circle"
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            objectFit: "cover",
-                          }}
-                        />
-
+                        <Link to={`/profile/${review.userId._id}`}>
+                          <img
+                            src={getAvatarUrl(review.userId.avatar, baseUrl)}
+                            alt="User Avatar"
+                            className="rounded-circle"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </Link>
                         <div className="w-100">
                           <div className="d-flex align-items-center justify-content-between">
                             <div>
@@ -226,7 +235,7 @@ const TourDetails = () => {
         </Container>
       </section>
       {/* Links to sections */}
-      <Link to="section1" smooth={true} duration={500}></Link>
+      <ScrollLink to="section1" smooth={true} duration={500}></ScrollLink>
     </>
   );
 };
