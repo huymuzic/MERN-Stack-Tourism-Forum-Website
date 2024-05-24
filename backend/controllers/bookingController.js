@@ -1,38 +1,83 @@
 import Booking from "../models/Booking.js";
 
-// create new booking
 export const createBooking = async (req, res) => {
-  const newBooking = new Booking(req.body);
+  const {
+    userId,
+    email,
+    tourId,
+    tourTitle,
+    country,
+    city,
+    photo,
+    date,
+    price,
+    numPeople,
+  } = req.body;
 
   try {
-    const savedBooking = await newBooking.save();
-    res.status(200).json({
-      success: true,
-      message: "Successfully booked",
-      data: savedBooking,
+    const newBooking = new Booking({
+      userId,
+      email,
+      tourId,
+      tourTitle,
+      country,
+      city,
+      photo,
+      date,
+      price,
+      numPeople,
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+
+    await newBooking.save();
+
+    res
+      .status(201)
+      .json({ message: "Booking created successfully", booking: newBooking });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-// fetch bookings of a user
-export const getBookings = async (req, res) => {
-  const id = req.params.id;
+export const getBookingByUserId = async (req, res) => {
+  const { userId } = req.params;
 
   try {
-    const booking = await Booking.findById(id);
+    const booking = await Booking.findOne({ userId }).sort({ date: -1 });
+    if (!booking) {
+      return res
+        .status(404)
+        .json({ message: "No booking found for this user" });
+    }
 
-    res.status(200).json({
-      success: true,
-      message: "Successfully fetched bookings",
-      data: booking,
-    });
-  } catch (err) {
-    res.status(404).json({ success: false, message: "Not found" });
+    res.status(200).json({ booking });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getAllBookingByUserId = async (req, res) => {
+  const { userId } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  try {
+    const bookings = await Booking.find({ userId })
+      .sort({ date: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const totalBookings = await Booking.countDocuments({ userId });
+    const totalPages = Math.ceil(totalBookings / limit);
+
+    if (!bookings.length) {
+      return res
+        .status(404)
+        .json({ message: "No bookings found for this user" });
+    }
+
+    res.status(200).json({ bookings, totalPages });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

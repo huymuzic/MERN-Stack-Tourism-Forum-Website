@@ -14,7 +14,7 @@ const SearchBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { searchHandler } = useSearch();
-  const {color} = useTheme()
+  const { color } = useTheme();
   const [errors] = useState({}); // State for validation errors
   const [query, setQuery] = useState({
     country: "",

@@ -146,7 +146,11 @@ const Header = () => {
           `}
             </style>
             <Container className="header__container bd-gutter">
-              <Link to="/" className="navbar-brand l">
+              <Link
+                to="/"
+                className="navbar-brand l"
+                onClick={handleNavItemClick}
+              >
                 <img
                   alt="Website Logo"
                   height="100"
@@ -184,73 +188,79 @@ const Header = () => {
                 <ToggleTheme />
               </div>
               {user !== null ? (
-                  <li className="nav-item dropdown no-bullet mb-4 nm">
-                    <button
-                      className="btn"
-                      type="button"
-                      id="user"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      {user?.avatar ? (
-                        <img
-                          src={avatarUrl}
-                          alt="User Avatar"
-                          className="rounded-circle"
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        <i className="fa-solid fa-circle-user rounded-circle fa-3x"></i>
-                      )}
-                    </button>
+                <li className="nav-item dropdown no-bullet mb-4 nm">
+                  <button
+                    className="btn"
+                    type="button"
+                    id="user"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {user?.avatar ? (
+                      <img
+                        src={avatarUrl}
+                        alt="User Avatar"
+                        className="rounded-circle"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      <i className="fa-solid fa-circle-user rounded-circle fa-3x"></i>
+                    )}
+                  </button>
 
-                    <ul
-                      className="dropdown-menu user__icon__dropdown"
-                      aria-labelledby="user"
-                    >
-                      <li>
-                        <Link className="dropdown-item" to="/my-account">
-                          My Account
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className="dropdown-item"
-                          to={`/profile/${user._id}`}
-                        >
-                          My Post History
-                        </Link>
-                      </li>
-                      {/* <li>
+                  <ul
+                    className="dropdown-menu user__icon__dropdown"
+                    aria-labelledby="user"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/my-account">
+                        My Account
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to={`/profile/${user._id}`}
+                      >
+                        My Post History
+                      </Link>
+                    </li>
+                    <li>
                       <Link className="dropdown-item" to="/history">
                         Purchased History
                       </Link>
-                    </li> */}
-                      <li>
-                        <hr className="dropdown-divider"></hr>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item" onClick={handleLogout}>
-                          Sign out
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider"></hr>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" onClick={handleLogout}>
+                        Sign out
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
               ) : (
                 <div className="login-register-buttons">
                   <div className="nav__right d-flex align-items-center gap-4">
                     <div className="nav__btns d-flex align-items-center gap-4">
                       <Link to="/login">
-                        <Button className="login__btn big__pad btn-secondary login">
+                        <Button
+                          className="login__btn big__pad btn-secondary login"
+                          onClick={handleNavItemClick}
+                        >
                           Login
                         </Button>
                       </Link>
-                      <Link to="/register" className="d-none d-sm-block">
-                        <Button className="register__btn big__pad btn-primary register">
+                      <Link to="/register">
+                        <Button
+                          className="register__btn big__pad btn-primary register"
+                          onClick={handleNavItemClick}
+                        >
                           Register
                         </Button>
                       </Link>

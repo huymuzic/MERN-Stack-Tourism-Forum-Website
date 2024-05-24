@@ -21,7 +21,6 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
-  const [callAPI, setCallAPI] = useState(false);
   const { user } = useUser();
 
   useEffect(() => {
@@ -47,24 +46,17 @@ function Login() {
 
       const responseBody = await response.json();
       if (!response.ok) {
-        setError("pwd", { type: "server", message: responseBody.message });
-        if (!callAPI) {
-          pushError("Something went wrong. Please try again");
-          setCallAPI(true);
-        }
+        pushError(responseBody.message);
       } else {
         if (!successMsg) {
-          pushSuccess(`Login successfully!`);
+          pushSuccess(responseBody.message);
           setSuccessMsg(true);
         }
         navigate("/");
         window.location.reload();
       }
     } catch (error) {
-      if (!errorMsg) {
-        pushError("Failed to login. Please try again");
-        setErrorMsg(true);
-      }
+      pushError("Something went wrong!");
     }
   };
 

@@ -1,6 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import "./index.css";
-import { Link, Element, animateScroll as scroll } from "react-scroll";
+import {
+  Link as ScrollLink,
+  Element,
+  animateScroll as scroll,
+} from "react-scroll";
 import { Container, Row, Col, Form, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import calculateAvgRating from "../../utils/avgRating";
@@ -9,8 +13,8 @@ import { pushError, pushSuccess } from "../../components/Toast";
 import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import useFetch from "../../hooks/useFetch.jsx";
-import { baseUrl } from "../../config/index.js";
-import { environment } from "../../config/index.js";
+import { baseUrl, environment } from "../../config/index.js";
+import { Link } from "react-router-dom";
 import { useTheme } from "../../theme/Theme.jsx";
 
 const TourDetails = () => {
@@ -22,7 +26,7 @@ const TourDetails = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [avgRating, setAvgRating] = useState("");
   const [totalRating, setTotalRating] = useState(0);
-  const { color } = useTheme()
+  const { color } = useTheme();
   const { data: tour } = useFetch(`${baseUrl}/api/v1/tours/${id}`);
 
   const { photo, title, price, reviews, country, city, duration, ageRange } =
@@ -76,6 +80,10 @@ const TourDetails = () => {
       });
       if (res.ok) {
         const newReview = await res.json();
+        newReview.data.userId = {
+          ...newReview.data.userId,
+          avatar: user.avatar,
+        };
         pushSuccess("Review submitted successfully");
         setReviewsArray([...reviewsArray, newReview.data]);
         setReviewCount(reviewCount + 1);
@@ -118,7 +126,10 @@ const TourDetails = () => {
                   src={environment == "PROD" ? photo : `./src${photo}`}
                   alt={title}
                 />
-                <div className="tour__info" style={{ color: color.textPrimary }}>
+                <div
+                  className="tour__info"
+                  style={{ color: color.textPrimary }}
+                >
                   <div className="d-flex flex-column align-items-start justify-content-center tour__extra-details">
                     <h5>Description</h5>
                     <div>
@@ -156,14 +167,18 @@ const TourDetails = () => {
                       {Array.from({ length: 5 }, (_, i) => (
                         <span key={i} onClick={() => setTourRating(i + 1)}>
                           <i
-                            className={`ri ${i < tourRating ? "ri-star-s-fill" : "ri-star-line"
-                              }`}
+                            className={`ri ${
+                              i < tourRating ? "ri-star-s-fill" : "ri-star-line"
+                            }`}
                           ></i>
                         </span>
                       ))}
                     </div>
 
-                    <div className="review__input" style={{ border: `1px solid ${color.secondary}` }}>
+                    <div
+                      className="review__input"
+                      style={{ border: `1px solid ${color.secondary}` }}
+                    >
                       <input
                         type="text"
                         ref={reviewMsgRef}
@@ -172,7 +187,7 @@ const TourDetails = () => {
                         style={{ backgroundColor: "inherit" }}
                       ></input>
                       <button
-                        className="btn primary__btn btn-primary"
+                        className="btn primary__btn btn-primary review_submit_btn"
                         type="submit"
                       >
                         Submit
@@ -183,17 +198,18 @@ const TourDetails = () => {
                   <ListGroup className="user__reviews">
                     {reviewsArray.map((review) => (
                       <div className="review__item" key={review._id}>
-                        <img
-                          src={getAvatarUrl(review.avatar, baseUrl)}
-                          alt="User Avatar"
-                          className="rounded-circle"
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            objectFit: "cover",
-                          }}
-                        />
-
+                        <Link to={`/profile/${review.userId._id}`}>
+                          <img
+                            src={getAvatarUrl(review.userId.avatar, baseUrl)}
+                            alt="User Avatar"
+                            className="rounded-circle"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </Link>
                         <div className="w-100">
                           <div className="d-flex align-items-center justify-content-between">
                             <div>
@@ -227,7 +243,7 @@ const TourDetails = () => {
         </Container>
       </section>
       {/* Links to sections */}
-      <Link to="section1" smooth={true} duration={500}></Link>
+      <ScrollLink to="section1" smooth={true} duration={500}></ScrollLink>
     </>
   );
 };

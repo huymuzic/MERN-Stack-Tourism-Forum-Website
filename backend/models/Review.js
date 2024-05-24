@@ -7,14 +7,11 @@ const reviewSchema = new mongoose.Schema(
       ref: "Tour",
     },
     userId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     username: {
-      type: String,
-      required: true,
-    },
-    avatar: {
       type: String,
       required: true,
     },
