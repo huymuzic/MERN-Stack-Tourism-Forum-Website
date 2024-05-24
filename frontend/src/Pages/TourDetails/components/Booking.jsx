@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { pushError } from "../../../components/Toast";
 import { useUser } from "../../../utils/UserContext";
 import "./booking.css";
-
 import {
   Form,
   FormGroup,
@@ -14,13 +13,13 @@ import {
 import { useTheme } from "../../../theme/Theme";
 
 const Booking = ({ tour, avgRating }) => {
+  const { color, themeMode } = useTheme();
   const navigate = useNavigate();
   const { user } = useUser();
   const [numPeople, setNumPeople] = useState(1);
   const { price, reviews, title } = tour;
   const [peopleValue, setPeopleValue] = useState("01");
   const [totalPrice, setTotalPrice] = useState(price);
-  const {color} = useTheme()
 
   useEffect(() => {
     setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
@@ -67,12 +66,22 @@ const Booking = ({ tour, avgRating }) => {
   };
 
   return (
-    <div className="booking">
+    <div
+      className="booking"
+      style={{
+        border: themeMode == "light" ? "" : "1px solid #ddd",
+      }}
+    >
       <div className="booking__top d-flex align-items-center justify-content-between">
         <h3>
           ${price} <span>/ adult</span>
         </h3>
-        <span className="tour__rating d-flex align-items-center">
+        <span
+          className="tour__rating d-flex align-items-center"
+          style={{
+            color: themeMode == "light" ? "#0b2727" : "#fff",
+          }}
+        >
           <i className="ri ri-star-s-fill"></i>
           {avgRating === 0 ? null : avgRating} ({reviews?.length})
         </span>
@@ -92,14 +101,25 @@ const Booking = ({ tour, avgRating }) => {
                 type="button"
                 onClick={decrementPeople}
                 aria-label="Decrease number of guests"
+                style={{
+                  backgroundColor: themeMode == "light" ? "#fff" : "#ddd",
+                }}
               >
                 -
               </button>
-              <button className="guests__container">
+              <button
+                className="guests__container"
+                style={{
+                  backgroundColor: themeMode == "light" ? "#fff" : "#ddd",
+                }}
+              >
                 <span
                   className="numberOfGuests"
                   aria-live="polite"
                   aria-atomic="true"
+                  style={{
+                    backgroundColor: themeMode == "light" ? "#fff" : "#ddd",
+                  }}
                 >
                   {peopleValue}
                 </span>
@@ -109,13 +129,21 @@ const Booking = ({ tour, avgRating }) => {
                 type="button"
                 onClick={incrementPeople}
                 aria-label="Increase number of guests"
+                style={{
+                  backgroundColor: themeMode == "light" ? "#fff" : "#ddd",
+                }}
               >
                 +
               </button>
             </span>
           </div>
           <FormGroup className="d-flex align-items-center gap-3">
-            <input type="date" placeholder="" id="bookTime" style={{color: color.textPrimary}}/>
+            <input
+              type="date"
+              placeholder=""
+              id="bookTime"
+              style={{ color: color.textPrimary }}
+            />
           </FormGroup>
         </Form>
       </div>
