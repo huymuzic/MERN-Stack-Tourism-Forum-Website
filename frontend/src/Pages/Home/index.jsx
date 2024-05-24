@@ -23,11 +23,12 @@ import FeaturedTourList from "./components/FeaturedTours/FeaturedTourList";
 import ContactModal from "./components/Contact/ContactModal";
 import CircularProgress from "../../components/CircularProgress";
 import { baseUrl, environment } from "../../config";
+import { useTheme } from "../../theme/Theme";
 
 const Home = () => {
   const [heroImages, setHeroImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const { color } = useTheme()
   const fetchData = async () => {
     const response = await fetch(`${baseUrl}/api/v1/images/`);
     const Images = await response.json();
@@ -82,10 +83,10 @@ const Home = () => {
                     <CircularProgress />
                   ) : (
                     <>
-                      <div className="hero__slide p-5">
-                        <h1>Join the conversation with</h1>
-                        <h1>
-                          <span className="highlight">travelers</span> around
+                      <div className="hero__slide p-5" >
+                        <h1 style={{ color: "#fff" }}>Join the conversation with</h1>
+                        <h1 style={{ color: "#fff" }}>
+                          <span className="highlight" style={{ color: color.secondary }} >travelers</span> around
                           the world today
                         </h1>
                         <p className="homepage__p">

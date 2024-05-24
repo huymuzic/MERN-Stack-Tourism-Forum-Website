@@ -11,7 +11,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function App() {
   const { theme } = useTheme();
-  const { user, setUser } = useUser();
+  const { user, setUser, setIsFetchedUser } = useUser();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -21,20 +21,23 @@ function App() {
           method: "GET",
           credentials: "include",
         });
+        if (!response.ok) {
+          throw new Error("Unauthorized");
+        }
         const resBody = await response.json();
         if (!resBody.rem && localStorage.getItem("loggedInBefore") === "true") {
           localStorage.removeItem("loggedInBefore");
         }
         setUser(response.ok ? { ...resBody.user } : null);
-      } catch (error) {
-        console.error("Error checking login status:", error);
+      } catch (err) {
+        console.error(err.message);
       } finally {
         setIsLoading(false);
+        setIsFetchedUser(true);
       }
     };
-
     checkLoginStatus();
-  }, [setUser]);
+  }, [setUser, setIsFetchedUser]);
 
   useEffect(() => {
     const handlePushSuccess = async () => {

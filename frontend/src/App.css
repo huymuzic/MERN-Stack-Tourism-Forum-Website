@@ -102,7 +102,7 @@ ul {
 }
 
 .section__subtitle {
-  background: var(--secondary-color);
+  /* background: var(--secondary-color); */
   font-family: var(--subtitle-font-name);
   width: max-content !important;
   padding: 0px 0.5rem !important;
@@ -147,7 +147,7 @@ tr th {
   color: rgb(249, 81, 109);
 }
 
-.comment {
+/* .comment {
   color: inherit;
   transition: background-color 0.1s ease;
 }
@@ -155,11 +155,9 @@ tr th {
 .comment:hover {
   background-color: #e8e8e8;
   transition: background-color 0.1s ease;
-}
+} */
 
-.bg-gray {
-  background-color: #efefef;
-}
+
 
 .sel-bd {
   border-color: var(--primary-color) !important;

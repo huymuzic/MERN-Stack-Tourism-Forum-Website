@@ -1,4 +1,4 @@
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
 export const verifyToken = async (req, res, next) => {
@@ -41,9 +41,9 @@ export const verifyStatusChange = async (req, res, next) => {
     if (req.user || req.user.role === "admin") {
       next();
     } else {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
-        message: "You're not authenticated",
+        message: "You're not authenticated to change the status",
       });
     }
   });
@@ -53,9 +53,9 @@ export const verifyUser = async (req, res, next) => {
     if ((req.user && req.user.status === "active" ) || (req.user.role === "admin") ) {
       next();
     } else {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
-        message: "You're not authenticated",
+        message: "Your account is inactive, please active it.",
       });
     }
   });
@@ -65,9 +65,9 @@ export const verifyUser = async (req, res, next) => {
       if (req.user && req.user.role === "admin" && req.user.status === "active") {
         next();
       } else {
-        return res.status(401).json({
+        return res.status(403).json({
           success: false,
-          message: "You're not authorized",
+          message: "You're not authorized to this page, just admin can!",
         });
       }
     });

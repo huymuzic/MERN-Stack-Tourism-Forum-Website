@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import _color from './Color'
 import PropTypes from 'prop-types';
 import tinycolor from "tinycolor2";
-import { pushError } from "../components/Toast";
 import { baseUrl } from "../config";
 
 function createCustomTheme(color) {
@@ -57,12 +56,12 @@ function createCustomTheme(color) {
       .btn.btn-outline-primary.show,
       .btn.btn-outline-primary:first-child:active,
       :not(.btn-check) + .btn.btn-outline-primary:active {
-          background-color: ${color.white};
+        background-color: inherit;
           border-color: ${tinycolor(color.buttonHoverColor).darken(10).toString()};
           color: ${tinycolor(color.buttonHoverColor).darken(10).toString()};
       }
       .btn-outline-primary:hover {
-        background-color: ${color.white};
+        background-color: inherit;
         color: ${color.buttonHoverColor} ;
         border-color: ${color.buttonHoverColor} !important ;
       }
@@ -94,6 +93,10 @@ function createCustomTheme(color) {
 
       .form-check-input:focus{
         border-color: ${color.primary}
+      }
+
+      p,h1,h2,h3,h4,h5,h6 {
+        color: ${color.textPrimary}
       }
       `;
   return theme;
@@ -146,6 +149,7 @@ function generatePrimaryColor(primaryColor) {
 function useThemeContext(userId) {
   const [isLoadingTheme, setIsLoadingTheme] = useState(false)
   const [color, setColor] = useState(_color)
+  const [themeMode, setThemeMode] = useState("light")
 
   const fetchTheme = async () => {
     if (!userId) {
@@ -179,15 +183,60 @@ function useThemeContext(userId) {
       setIsLoadingTheme(false);
     }
   }
+
+  const toggleLightDarkMode = () => {
+    setThemeMode((prev) => (prev === "light" ? "dark" : "light"));
+    localStorage.setItem("themeMode", themeMode === "light" ? "dark" : "light")
+
+  };
+
   useEffect(() => {
     fetchTheme();
   }, [userId]);
+
+  useEffect(() => {
+    const themeModeLocal = localStorage.getItem("themeMode");
+    if (themeModeLocal) {
+      setThemeMode(themeModeLocal);
+    } else {
+      localStorage.setItem("themeMode", "light")
+    }
+  }, []);
+
+  useEffect(() => {
+    setColor((prev) => {
+      return {
+        ...prev,
+        textPrimary: themeMode == "light" ? '#292929' : "#FFFFFF",
+        // headerBgColor:
+        //   (prev.headerBgColor === _color.headerBgColor || prev.headerBgColor === "#212529")
+        //     ? (themeMode === "dark"
+        //       ? "#212529"
+        //       : themeMode === "light"
+        //         ? "#FFFFFF"
+        //         : prev.headerBgColor)
+        //     : prev.headerBgColor,
+        // headerTextColor:
+        //   (prev.headerTextColor === _color.headerTextColor || prev.headerTextColor === "#FFFFFF")
+        //     ? (themeMode === "dark"
+        //       ? "#FFFFFF"
+        //       : themeMode === "light"
+        //         ? _color.headerTextColor
+        //         : prev.headerTextColor)
+        //     : prev.headerTextColor,
+      }
+    })
+    document.documentElement.setAttribute('data-bs-theme', themeMode);
+
+  }, [themeMode])
   const theme = createCustomTheme(color);
   return {
     theme,
     color,
     isLoadingTheme,
-    fetchTheme
+    fetchTheme,
+    toggleLightDarkMode,
+    themeMode
   };
 }
 const ThemeContext = createContext({});

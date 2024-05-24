@@ -113,7 +113,13 @@ export const getSingleTour = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const tour = await Tour.findById(id).populate("reviews");
+    const tour = await Tour.findById(id).populate({
+      path: "reviews",
+      populate: {
+        path: "userId",
+        select: "avatar",
+      },
+    });
 
     res.status(200).json({
       success: true,
@@ -132,7 +138,13 @@ export const getAllTour = async (req, res) => {
   const page = parseInt(req.query.page);
   try {
     const tours = await Tour.find({})
-      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "userId",
+          select: "avatar",
+        },
+      })
       .skip(page * 8)
       .limit(8);
 
@@ -167,7 +179,14 @@ export const getTourBySearch = async (req, res) => {
   }
 
   try {
-    const tours = await Tour.find(query).populate("reviews");
+    const tours = await Tour.find(query).populate({
+      path: "reviews",
+      populate: {
+        path: "userId",
+        select: "avatar",
+      },
+    });
+
     res.status(200).json({
       success: true,
       message: "Successful",
@@ -184,7 +203,13 @@ export const getTourBySearch = async (req, res) => {
 export const getFeaturedTour = async (req, res) => {
   try {
     const tours = await Tour.find({ featured: true })
-      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "userId",
+          select: "avatar",
+        },
+      })
       .limit(8);
 
     res.status(200).json({
@@ -251,7 +276,6 @@ export const getListTour = async (req, res) => {
         ];
       }
     }
-
     const totalCount = await Tour.countDocuments();
     const totalPages = (await Tour.countDocuments(filter)) / limit;
     const tours = await Tour.find(filter)

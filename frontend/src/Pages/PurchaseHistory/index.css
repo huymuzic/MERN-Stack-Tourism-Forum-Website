@@ -1,3 +1,71 @@
-.css {
-    display: flex;
+.purchase-history-page {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--primary-color);
+}
+
+.booking-item {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.booking-item img {
+  width: 40%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.booking-details {
+  display: flex;
+  align-items: center;
+  width: 60%;
+}
+
+.booking-details .details-text {
+  margin-left: 16px;
+}
+
+.booking-details span {
+  display: block;
+}
+
+.booking-details .title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--heading-color);
+}
+
+.title:hover {
+  color: var(--secondary-color);
+}
+
+.booking-info {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  margin-bottom: 0 !important;
+}
+
+.booking-info li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+.booking-info .item_icon {
+  margin-right: 8px;
+}
+
+.history_price {
+  font-size: 1rem;
+  font-weight: 500;
 }

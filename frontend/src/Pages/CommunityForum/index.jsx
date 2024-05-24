@@ -7,6 +7,7 @@ import { getAvatarUrl } from '../../utils/getAvar.js';
 import Editor from "./components/Editor";
 import Post from './components/Post';
 import { baseUrl } from "../../config/index.js";
+import { useTheme } from "../../theme/Theme.jsx";
 
 function CommunityForum() {
     const { user } = useUser();
@@ -15,7 +16,8 @@ function CommunityForum() {
     const [length, setLength] = useState(0);
     const [skip, setSkip] = useState(0);
     const userPfp = getAvatarUrl(user?.avatar, baseUrl)
-
+    const { color, themeMode } = useTheme()
+    console.log('it work')
     const fetchData = async () => {
         try {
             const response = await fetch(`${baseUrl}/api/forum`, {
@@ -41,6 +43,22 @@ function CommunityForum() {
     }, []);
 
     return <>
+        <style>
+            {`
+            .bg-gray {
+                background-color:${themeMode == "light" ? "#efefef" : "#4a4949"} ;
+              }
+            .comment {
+                color: ${color.textPrimary};
+                transition: background-color 0.1s ease;
+              }
+              
+              .comment:hover {
+                background-color: ${themeMode == "light" ? "#e8e8e8" : "#353535"} ;
+                transition: background-color 0.1s ease;
+              }
+            `}
+        </style>
         <InfiniteScroll
             className='container-xl d-flex flex-column align-items-center overflow-hidden gap-3 pt-2'
             dataLength={posts.length}
