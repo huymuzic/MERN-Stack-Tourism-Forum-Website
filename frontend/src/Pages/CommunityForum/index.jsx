@@ -17,7 +17,7 @@ function CommunityForum() {
     const [skip, setSkip] = useState(0);
     const userPfp = getAvatarUrl(user?.avatar, baseUrl)
     const { color, themeMode } = useTheme()
-
+    console.log('it work')
     const fetchData = async () => {
         try {
             const response = await fetch(`${baseUrl}/api/forum`, {

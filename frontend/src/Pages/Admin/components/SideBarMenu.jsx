@@ -14,6 +14,11 @@ const sideBarItems = [
         path: 'forum-posts',
         title: 'Forum Posts',
         icon: <MdForum size={"24px"} />
+    },
+    {
+        path: 'tours',
+        title: 'Tours',
+        icon: <MdForum size={"24px"} />
     }
 ]
 export default function SideBarMenu() {
