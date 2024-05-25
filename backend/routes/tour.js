@@ -11,6 +11,7 @@ import {
   getFeaturedTour,
   getTourCount,
   getTopDestinations,
+  getAllTour,
   getListTour,
    unhideTour, 
    hideTour
