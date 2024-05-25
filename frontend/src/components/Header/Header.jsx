@@ -125,7 +125,9 @@ const Header = () => {
   return (
     <>
       {loading ? (
-        <CircularProgress />
+        <Container className="d-flex justify-content-center">
+          <CircularProgress />
+        </Container>
       ) : (
         <>
           <Navbar
