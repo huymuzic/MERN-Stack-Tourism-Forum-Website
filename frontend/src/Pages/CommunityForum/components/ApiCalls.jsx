@@ -49,7 +49,7 @@ export async function handledelete(postId, setPost) {
    }
 };
 
-export async function replyTopic(id, content, images, nav, close) {
+export async function replyTopic(id, content, images, setPost, nav, close) {
    try {
       const formData = new FormData();
       formData.append('content', content);
@@ -68,7 +68,8 @@ export async function replyTopic(id, content, images, nav, close) {
       }
 
       const responseBody = await response.json();
-      nav(`/forum/p/${responseBody.repId}`, { state: { key: Date.now() } })
+      setPost(responseBody.reply)
+      nav(`/forum/p/${responseBody.reply._id}`)
       close();
       pushSuccess('Replied to post');
    } catch (error) {
@@ -147,7 +148,7 @@ export async function createTopic(title, content, images, nav, close) {
    }
 }
 
-export async function edit(postId, title, content, images, removed, setPost, close) {
+export async function edit(postId, title, content, images, removed, setPost, nav, close) {
    try {
       const formData = new FormData();
       formData.append('title', title);
@@ -174,7 +175,7 @@ export async function edit(postId, title, content, images, removed, setPost, clo
          body.post.images = images;
          setPost(body.post);
       });
-      //setPost()
+      nav(`/forum/p/${postId}`)
       close();
       pushSuccess('Post edited successfully');
    } catch (error) {
