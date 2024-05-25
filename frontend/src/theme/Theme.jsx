@@ -228,7 +228,7 @@ function useThemeContext(userId) {
     })
     document.documentElement.setAttribute('data-bs-theme', themeMode);
 
-  }, [themeMode])
+  }, [themeMode, color])
   const theme = createCustomTheme(color);
   return {
     theme,
