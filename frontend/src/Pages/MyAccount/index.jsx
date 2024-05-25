@@ -71,7 +71,7 @@ export default function MyAccount() {
         );
       }
     } catch (error) {
-     pushError(error);
+      pushError(error);
     }
   };
   const handleActivateConfirm = async () => {
@@ -227,8 +227,8 @@ export default function MyAccount() {
       }
 
       const data = await response.json();
-      setAvatar(getAvatarUrl(data.data.avatar, baseUrl));
-      setUserProfile(data.data);
+      setAvatar(getAvatarUrl(data?.data?.avatar, baseUrl));
+      setUserProfile(data?.data);
     } catch (error) {
       pushError(error);
     } finally {
@@ -246,7 +246,7 @@ export default function MyAccount() {
         navigate("/home");
       }
     }
-  }, [isFetchedUser])
+  }, [isFetchedUser]);
 
   return (
     <div
@@ -305,8 +305,9 @@ export default function MyAccount() {
                   ? "Deactivate your account"
                   : "Activate your account"
               }
-              desc={`Are you sure you want to ${userStatus.Value == "active" ? "deactivate" : "activate"
-                } your account?`}
+              desc={`Are you sure you want to ${
+                userStatus.Value == "active" ? "deactivate" : "activate"
+              } your account?`}
             />
           </Stack>
 

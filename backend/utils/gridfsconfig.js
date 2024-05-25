@@ -1,10 +1,10 @@
 // utils/gridFsConfig.js
-import { GridFSBucket } from 'mongodb';
-import mongoose from 'mongoose';
-import {GridFsStorage} from 'multer-gridfs-storage'
-import crypto from 'crypto';
-import path from 'path';
-import { config } from 'dotenv';
+import { GridFSBucket } from "mongodb";
+import mongoose from "mongoose";
+import { GridFsStorage } from "multer-gridfs-storage";
+import crypto from "crypto";
+import path from "path";
+import { config } from "dotenv";
 
 config();
 
@@ -20,10 +20,12 @@ const storage = new GridFsStorage({
         if (err) {
           return reject(err);
         }
-        const filename = `${buf.toString('hex')}${path.extname(file.originalname)}`;
+        const filename = `${buf.toString("hex")}${path.extname(
+          file.originalname
+        )}`;
         const fileInfo = {
           filename,
-          bucketName: 'avatars', // Collection name
+          bucketName: "avatars", // Collection name
         };
         resolve(fileInfo);
       });
@@ -34,9 +36,13 @@ const storage = new GridFsStorage({
 // Set up GridFSBucket to stream files to/from MongoDB
 let gfs;
 let postGfs;
-mongoose.connection.once('open', () => {
-  gfs = new GridFSBucket(mongoose.connection.db, { bucketName: 'avatars' });
-  postGfs = new GridFSBucket(mongoose.connection.db, { bucketName: 'photos' });
-}); 
+let tourPostGfs;
+mongoose.connection.once("open", () => {
+  gfs = new GridFSBucket(mongoose.connection.db, { bucketName: "avatars" });
+  postGfs = new GridFSBucket(mongoose.connection.db, { bucketName: "photos" });
+  tourPostGfs = new GridFSBucket(mongoose.connection.db, {
+    bucketName: "tourPhotos",
+  });
+});
 
-export { storage, gfs, postGfs };
+export { storage, gfs, postGfs, tourPostGfs };

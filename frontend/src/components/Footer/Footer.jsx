@@ -31,10 +31,6 @@ const quick__links2 = [
     display: "Register",
   },
   {
-    path: "/contact",
-    display: "Contact",
-  },
-  {
     path: "/Sitemap",
     display: "Sitemap",
   },

@@ -72,9 +72,7 @@ const PurchaseHistory = () => {
             >
               <div className="booking-details">
                 <img
-                  src={
-                    environment === "PROD" ? item.photo : `./src${item.photo}`
-                  }
+                  src={`${baseUrl}/api/v1/tours/images/${item.photo}`}
                   alt={item.tourTitle}
                 />
                 <div className="details-text">
