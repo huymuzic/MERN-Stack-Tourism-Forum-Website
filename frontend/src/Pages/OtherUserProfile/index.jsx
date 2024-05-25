@@ -35,10 +35,14 @@ const OtherUserProfile = () => {
   const popUpDeactivate = usePopUp();
   const popUpLock = usePopUp();
   const popUpUnlock = usePopUp();
+  const dropdownRef = useRef(null); // Define the dropdownRef
+
   useEffect(() => {
     fetchOtherUserInfo();
   }, [id, user]); // Note: Be cautious with including state that changes often as dependencies
+
   const elementsRef = useRef([]);
+
   const fetchOtherUserInfo = async () => {
     try {
       const response = await fetch(`${baseUrl}/api/v1/users/${id}`, {
@@ -116,11 +120,10 @@ const OtherUserProfile = () => {
       popUpLock.setTrue();
     }
   };
+
   const handleLockConfirm = async () => {
     try {
-      const url = new URL(
-        `${baseUrl}/api/v1/users/lock/${id}`
-      );
+      const url = new URL(`${baseUrl}/api/v1/users/lock/${id}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -139,11 +142,10 @@ const OtherUserProfile = () => {
 
     popUpLock.onClose();
   };
+
   const handleUnLockConfirm = async () => {
     try {
-      const url = new URL(
-        `${baseUrl}/api/v1/users/unlock/${id}`
-      );
+      const url = new URL(`${baseUrl}/api/v1/users/unlock/${id}`);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -162,21 +164,34 @@ const OtherUserProfile = () => {
 
     popUpUnlock.onClose();
   };
+
+  const handleDropdownToggle = (isOpen) => {
+    if (isOpen) {
+      const rect = dropdownRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      if (rect.bottom > windowHeight) {
+        dropdownRef.current.classList.add('dropup');
+      } else {
+        dropdownRef.current.classList.remove('dropup');
+      }
+    }
+  };
+
   return (
     <Container className="mt-4">
       <Row className="justify-content-center mb-3">
         <Col md={12}>
           <Card className="p-3 user-profile-card">
-            <Row className="align-items-start">
-              <Col xs={12} md={9} className="d-flex align-items-center ">
+            <Row className="align-items-start flex-column flex-md-row">
+              <Col xs={12} md={9} className="d-flex align-items-center flex-column flex-md-row">
                 <img
                   src={getAvatarUrl(otherUserInfo.avatar, baseUrl)}
                   alt="User Avatar"
-                  className="rounded-circle me-3"
+                  className="rounded-circle me-3 mb-3 mb-md-0"
                   width={"200px"}
                   height={"200px"}
                 />
-                <div className="user-info">
+                <div className="user-info text-center text-md-start">
                   <h2>
                     {otherUserInfo.name}{" "}
                     {otherUserInfo.role === "admin" && (
@@ -205,8 +220,12 @@ const OtherUserProfile = () => {
                 </div>
               </Col>
               {(user?.role === "admin" || user?._id === otherUserInfo._id) && (
-                <Col xs="auto" className="align-items-start">
-                  <Dropdown className="ellipsis-dropdown">
+                <Col xs="auto" className="d-flex align-items-center">
+                  <Dropdown
+                    className="ellipsis-dropdown"
+                    ref={dropdownRef}
+                    onToggle={(isOpen) => handleDropdownToggle(isOpen)}
+                  >
                     <Dropdown.Toggle variant="primary" id="dropdown-basic">
                       <span>. . .</span>
                     </Dropdown.Toggle>
