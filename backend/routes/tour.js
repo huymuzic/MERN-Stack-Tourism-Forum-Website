@@ -6,7 +6,6 @@ import {
   createTour,
   updateTour,
   deleteTour,
-  getAllTour,
   getSingleTour,
   getTourBySearch,
   getFeaturedTour,
@@ -19,22 +18,24 @@ import {
 import { verifyAdmin, verifyUser , verifyStatusChange} from "../utils/verifyToken.js";
 import { postGfs } from '../utils/gridfsconfig.js';
 const router = express.Router();
-
+import { uploadAndResizeMiddleware } from "../utils/uploadAndResize.js";
 // Configure multer for file uploads
-router.post("/", verifyAdmin, createTour);
-
-router.put('/:id', verifyAdmin, updateTour);
+router.post("/", verifyAdmin, uploadAndResizeMiddleware, createTour);
+router.put("/:id", verifyAdmin, uploadAndResizeMiddleware, updateTour);
 
 router.delete("/:id", verifyAdmin, deleteTour);
 
 router.get("/:id", getSingleTour);
-router.get('/images/:id', async (req, res) => {
+router.get("/images/:id", async (req, res) => {
+  console.log(req.params.id);
   try {
-      const readStream = postGfs.openDownloadStream(new mongoose.Types.ObjectId(req.params.id));
-      readStream.pipe(res);
+    const readStream = postGfs.openDownloadStream(
+      new mongoose.Types.ObjectId(req.params.id)
+    );
+    readStream.pipe(res);
   } catch (err) {
-      res.status(404).json({ error: err.message });
-  }  
+    res.status(404).json({ error: err.message });
+  }
 });
 
 // router.get("/", getAllTour);

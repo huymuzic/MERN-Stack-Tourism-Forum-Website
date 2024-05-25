@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "./contact-modal.css";
 import { pushError, pushSuccess } from "../../../../components/Toast";
@@ -12,6 +12,16 @@ const ContactModal = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { color, themeMode } = useTheme();
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === "#contact") {
+      const element = document.getElementById("contact");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
 
   const validateForm = () => {
     const errors = [];
@@ -81,7 +91,7 @@ const ContactModal = () => {
   };
 
   return (
-    <div className="contact__modal">
+    <div className="contact__modal" id="contact">
       <form
         className="contact__form"
         style={{
