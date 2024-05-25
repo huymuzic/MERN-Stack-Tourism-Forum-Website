@@ -25,12 +25,16 @@ const quick__links = [
 
 const quick__links2 = [
   {
-    path: "/Login",
+    path: "login",
     display: "Login",
   },
   {
     path: "/register",
     display: "Register",
+  },
+  {
+    path: "/contact",
+    display: "Contact",
   },
   {
     path: "/Sitemap",
@@ -86,15 +90,9 @@ const Footer = () => {
               <ListGroup className="footer__quick-links">
                 {quick__links2.map((item, index) => (
                   <ListGroupItem key={index} className="ps-0 border-0">
-                    {item.path ? (
-                      <Link to={item.path} style={{ color: color.textPrimary }}>
-                        {item.display}
-                      </Link>
-                    ) : (
-                      <span id="contact" className="contact__footer">
-                        {item.display}
-                      </span>
-                    )}
+                    <Link to={item.path} style={{ color: color.textPrimary }}>
+                      {item.display}
+                    </Link>
                   </ListGroupItem>
                 ))}
               </ListGroup>

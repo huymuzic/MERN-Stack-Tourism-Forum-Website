@@ -1,7 +1,6 @@
 import Tour from "../models/Tour.js";
 import Destination from "../models/Destination.js";
-import uploadFiles from "../utils/uploadTourPhoto.js"
-import multer from 'multer';
+
 export const createDestination = async (req, res) => {
   const newDestination = new Destination(req.body);
 
@@ -10,7 +9,7 @@ export const createDestination = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Successfully upload image url",
+      message: "Successfully uploaded image url",
       data: savedDestination,
     });
   } catch (err) {
@@ -21,74 +20,61 @@ export const createDestination = async (req, res) => {
 };
 
 export const createTour = async (req, res) => {
-  uploadFiles(req, res, async (err) => {
-    if (err) {
-      return res.status(500).json({ success: false, message: err.message });
+  try {
+    const { title, country, city, price, ageRange, duration } = req.body;
+    if (!title || !country || !city || !price || !ageRange || !duration) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields" });
     }
 
-    try {
-      const { title, country, city, price, ageRange, duration } = req.body;
-      if (!title || !country || !city || !price || !ageRange || !duration) {
-        return res.status(400).json({ success: false, message: "Missing required fields" });
-      }
+    const newTour = new Tour({
+      title,
+      country,
+      city,
+      price,
+      ageRange,
+      duration,
+      photo: req.file ? req.file.id : null,
+    });
 
-      const newTour = new Tour({
-        title,
-        country,
-        city,
-        price,
-        ageRange,
-        duration,
-        photo: req.file ? req.file.id : null,
-      });
+    await newTour.save();
 
-      await newTour.save();
-
-      res.status(200).json({
-        success: true,
-        message: "Tour created",
-        data: newTour,
-      });
-    } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
-    }
-  });
+    res.status(200).json({
+      success: true,
+      message: "Tour created",
+      data: newTour,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 export const updateTour = async (req, res) => {
   const id = req.params.id;
-  uploadFiles(req, res, async (err) => {
-    if (err) {
-      return res.status(500).json({ success: false, message: "File upload failed" });
-    }
+  const updateData = { ...req.body };
+  if (req.file) {
+    updateData.photo = req.file.id;
+  }
 
-    const updateData = { ...req.body };
-    if (req.file) {
-      updateData.photo = req.file.id;
-      console.log("🚀 ~ uploadFiles ~ updateData:", updateData)
-    }
-    
-    try {
-      const updatedTour = await Tour.findByIdAndUpdate(
-        id,
-        {
-          $set: updateData,
-        },
-        { new: true }
-      );
+  try {
+    const updatedTour = await Tour.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true }
+    );
 
-      res.status(200).json({
-        success: true,
-        message: "Successfully updated",
-        data: updatedTour,
-      });
-    } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: "Failed to update",
-      });
-    }
-  });
+    res.status(200).json({
+      success: true,
+      message: "Successfully updated",
+      data: updatedTour,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update",
+    });
+  }
 };
 
 export const deleteTour = async (req, res) => {
@@ -267,10 +253,9 @@ export const getListTour = async (req, res) => {
         filter.title = { $regex: search, $options: "i" };
       } else if (searchType === "country") {
         filter.country = { $regex: search, $options: "i" };
-      } 
-      else if (searchType === "city") {
-        filter.city = { $regex: search, $options: "i" };}
-        else {
+      } else if (searchType === "city") {
+        filter.city = { $regex: search, $options: "i" };
+      } else {
         filter.$or = [
           { title: { $regex: search, $options: "i" } },
           { country: { $regex: search, $options: "i" } },
