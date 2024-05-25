@@ -1,155 +1,150 @@
 import formatDate from '../components/DateFormat';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useUser } from '../../../utils/UserContext';
 import { getAvatarUrl } from '../../../utils/getAvar.js';
-import { handleLike, populateImages } from './ApiCalls.jsx';
-import { useNavigate } from 'react-router-dom';
+import { populateImages } from './ApiCalls.jsx';
 import CircularProgress from "../../../components/CircularProgress";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { baseUrl } from '../../../config/index.js';
+import Interact from './Interactions.jsx';
+
 import { Navigation } from 'swiper/modules';
-
-function countChildren(post) {
-    if (!post.childrenIds || post.childrenIds.length === 0) {
-        return 0;
-    }
-
-    let count = post.childrenIds.length;
-    for (let child of post.childrenIds) {
-        count += countChildren(child);
-    }
-
-    return count;
-}
+import { baseUrl } from '../../../config/index.js';
 
 function Reply(props) {
-    const { user } = useUser();
-    const { post } = props;
-    const [child, setChild] = useState(props.child);
-    const nav = useNavigate();
+   const { post, direct, threaded } = props;
+   const [child, setChild] = useState(props.child);
+   const [vrHeight, setVrHeight] = useState('0px');
+   const outerDivRef = useRef();
 
-    useEffect(() => {
-        if (child.images && child.images.length > 0) {
-            populateImages(child.images).then((images) => {
-                setChild({ ...child, images: images });
-            });
-        }
-    }, [])
+   useEffect(() => {
+      if (child.images && child.images.length > 0) {
+         populateImages(child.images).then((images) => {
+            setChild({ ...child, images: images });
+         });
+      }
+   }, [])
 
-    return (<div className='col-8 d-flex border-2 border-bottom pt-3 pb-3 comment flex-column'>
-        <div className='d-flex'>
-            <Link className='ps-3' to={`/profile/${child.authorId && child.authorId._id}`}>
-                <img height='45' width='45' className='rounded-5' alt='profile picture'
-                    src={child.authorId ? getAvatarUrl(child.authorId.avatar,baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
-                </img>
-            </Link>
+   useEffect(() => {
+      const updateHeight = () => {
+         if (outerDivRef.current) {
+            const height = window.getComputedStyle(outerDivRef.current).height;
+            setVrHeight(height);
+         }
+      };
 
-            <div className='d-flex align-items-center' name='heading'>
-                <div>
-                    {child.authorId ? (
+      window.addEventListener('resize', updateHeight);
+      updateHeight();
+
+      return () => window.removeEventListener('resize', updateHeight);
+   }, [child, outerDivRef]);
+
+   return (
+      <div ref={outerDivRef} className='col-lg-8 col-md-10 col-sm-12 col-12 d-flex border-2 border-bottom pb-3 pt-3 comment'>
+         <div name='content-area' className='container-xxl d-inline-block'>
+            <div className="d-flex">
+               <Link className='pfp-index' to={`/profile/${child.authorId && post.authorId._id}`} style={{ height: '0%' }}>
+                  <img height='45' width='45'
+                     className='rounded-5'
+                     alt='profile picture'
+                     src={child.authorId ? getAvatarUrl(child.authorId.avatar, baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                  </img>
+               </Link>
+
+               {direct &&
+                  <div className='position-relative low-index'>
+                     <div className='d-flex position-absolute vr' style={{ marginTop: '-16px', width: '3px', left: '-22px' }} />
+                  </div>
+               }
+
+               {threaded &&
+                  <div className='position-relative low-index'>
+                     <div className='d-flex position-absolute vr' style={{ width: '3px', left: '-22px', height: vrHeight }} />
+                  </div>
+               }
+
+               <div className='d-flex flex-column overflow-auto flex-grow-1' name='heading'>
+                  <div>
+                     {child.authorId ? (
                         <>
-                            <strong className='ms-2'>{child.authorId.username}</strong>
-                            <span className={`${child.authorId.role === 'admin' ? 'd-inline-block' : 'd-none'} ps-1`}>
-                                <i className="fa-solid fa-shield-halved"></i>
-                            </span>
-                            <strong className={`${child.authorId._id === post.authorId._id ? 'd-inline-block' : 'd-none'} ps-1 text-primary`}>
-                                OP
-                            </strong>
-                            <strong className="px-2 mb-auto">·</strong>
-                            <p className='ms-2'>@{child.authorId.username}</p>
+                           <div className='d-flex justify-content-between'>
+                              <div>
+                                 <strong className='ms-2'>{child.authorId.username}</strong>
+                                 <span className={`${child.authorId.role === 'admin' ? 'd-inline-block' : 'd-none'} ps-1`}>
+                                    <i className="fa-solid fa-shield-halved"></i>
+                                 </span>
+                                 <strong className={`${child.authorId._id === post.authorId._id ? 'd-inline-block' : 'd-none'} ps-1 text-primary`}>
+                                    OP
+                                 </strong>
+                              </div>
+                              
+                              <div className='d-flex align-items-center'>
+                                 <i className="fa-solid fa-share mt-2 text-secondary pe-2"></i>
+                                 <img height='30' width='30'
+                                    className='rounded-5'
+                                    alt='profile picture'
+                                    src={child.parentId && child.parentId.authorId ? getAvatarUrl(child.parentId.authorId.avatar, baseUrl) : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}>
+                                 </img>
+                                 <p className='m-0 text-secondary ps-2'>{child.parentId && child.parentId.authorId ? child.parentId.authorId.username : 'N/A'}</p>
+                                 <strong className="ps-2 mb-auto d-inline-block ps-2">·</strong>
+                                 <p className='d-inline-block ps-2 m-0'>{formatDate(new Date(child.createdAt))}</p>
+                              </div>
+                           </div>
+
+                           <div>
+                              <p className='ms-2'>@{child.authorId.username}</p>
+                           </div>
                         </>
-                    ) : (<></>)}
-                </div>
+                     ) : (<></>)}
+                  </div>
 
-                <p className='ms-auto mb-auto'>{formatDate(new Date(child.createdAt))}</p>
+                  <div className='ms-2'>
+                     <Link to={`/forum/p/${child._id}`} className='text-reset'>
+                        <div name='content' className='pre-wrap'>
+                           {child.content}
+                        </div>
+
+                        {child.images?.length > 0 &&
+                           <Swiper
+                              style={{ height: '400px', maxWidth: '100%' }}
+                              spaceBetween={30}
+                              centeredSlides={true}
+                              navigation={{
+                                 nextEl: ".image-swiper-button-next",
+                                 prevEl: ".image-swiper-button-prev",
+                                 disabledClass: "swiper-button-disabled"
+                              }}
+                              modules={[Navigation]}
+                              className="mySwiper my-3"
+                              rewind={true}
+                           >
+                              {child.images.map((image, index) =>
+                                 <SwiperSlide key={index}>
+                                    {image.blob instanceof Blob ?
+                                       <img src={URL.createObjectURL(image.blob)} alt={`image-${index}`} className='object-fit-cover img-fluid rounded-2' />
+                                       : <CircularProgress />}
+                                 </SwiperSlide>
+                              )}
+                              <button type='button' className="ctm-btn swiper-button image-swiper-button-prev position-absolute btn-index top-50 start-0">
+                                 <i className="fa-solid fa-arrow-left text-prime p-2 fs-4" />
+                              </button>
+                              <button type='button' className="ctm-btn swiper-button image-swiper-button-next position-absolute btn-index top-50 end-0">
+                                 <i className="fa-solid fa-arrow-right text-prime p-2 fs-4" />
+                              </button>
+                           </Swiper>
+                        }
+                     </Link>
+
+                     <Interact
+                        post={child}
+                        setPost={setChild}
+                     />
+                  </div>
+               </div>
+
             </div>
-        </div>
-
-        <Link to={`/forum/p/${child._id}`} name='content-area' className='container-xxl text-reset'>
-            <div name='content' className='pre-wrap'>
-                {child.content}
-            </div>
-
-            {child.images?.length > 0 &&
-                <Swiper
-                    style={{ height: '400px' }}
-                    spaceBetween={30}
-                    centeredSlides={true}
-                    navigation={{
-                        nextEl: ".image-swiper-button-next",
-                        prevEl: ".image-swiper-button-prev",
-                        disabledClass: "swiper-button-disabled"
-                    }}
-                    modules={[Navigation]}
-                    className="mySwiper my-3 w-75"
-                    rewind={true}
-                >
-                    {child.images.map((image, index) =>
-                        <SwiperSlide key={index}>
-                            {image instanceof Blob ?
-                                <img src={URL.createObjectURL(image)} alt={`image-${index}`} className='object-fit-cover img-fluid rounded-2' />
-                                : <CircularProgress />}
-                        </SwiperSlide>
-                    )}
-                    <button type='button' className="ctm-btn swiper-button image-swiper-button-prev position-absolute btn-index top-50 start-0">
-                        <i className="fa-solid fa-arrow-left text-prime p-2 fs-4" />
-                    </button>
-                    <button type='button' className="ctm-btn swiper-button image-swiper-button-next position-absolute btn-index top-50 end-0">
-                        <i className="fa-solid fa-arrow-right text-prime p-2 fs-4" />
-                    </button>
-                </Swiper>
-            }
-        </Link>
-
-        <div name='interaction' className='d-flex justify-content-end gap-2'>
-            {child.likes ?
-                <button className='d-flex align-items-center gap-3 rounded ctm-btn px-3 py-2 heart'
-                    onClick={() => handleLike(child._id)}>
-                    <span>{child.likes.length}</span>
-                    <i className={`fa-heart ${user && child.likes.includes(user._id) ? 'fa-solid' : 'fa-regular'}`}></i>
-                </button>
-                : <></>}
-
-            <div className='d-flex align-items-center gap-2 rounded px-3 py-2'>
-                <span>{countChildren(child)}</span>
-                <i className="fa-regular fa-comment"></i>
-            </div>
-
-            <button
-                data-bs-toggle={user ? "modal" : ""}
-                data-bs-target={user ? "#replyModal" : ""}
-                className='d-flex align-items-center gap-1 rounded ctm-btn px-3 py-2'
-                onClick={() => {
-                    nav(user ? `/forum/p/${child._id}` : '/login')
-                }}
-            >
-                <i className="fa-solid fa-share"></i>
-                <span>Reply</span>
-            </button>
-
-            {child.authorId && user?._id === child.authorId?._id && (<>
-                <button className='rounded ctm-btn px-3 py-2' data-bs-toggle='dropdown'>
-                    <i className="fa-solid fa-ellipsis"></i>
-                </button>
-
-                <ul className="dropdown-menu">
-                    <li>
-                        <button className="dropdown-item">
-                            <i className="fa-solid fa-pencil pe-2"></i>
-                            <span>Edit</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button className="dropdown-item text-danger">
-                            <i className="fa-solid fa-trash-can pe-2"></i>
-                            <span>Delete</span>
-                        </button>
-                    </li>
-                </ul>
-            </>)}
-        </div>
-    </div>)
+         </div>
+      </div>
+   )
 }
 
 export default Reply;
