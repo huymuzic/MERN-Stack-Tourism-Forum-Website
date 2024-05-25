@@ -105,7 +105,6 @@ function createCustomTheme(color) {
 function generatePrimaryColor(primaryColor) {
   // const primary = new tinycolor(primaryColor);
   const lightness = tinycolor(primaryColor).toHsl().l;
-  console.log("🚀 ~ generatePrimaryColor ~ lightness:", lightness)
   let palette;
 
   if (lightness < 0.2) {
@@ -139,9 +138,6 @@ function generatePrimaryColor(primaryColor) {
       darkPrimary: tinycolor(primaryColor).darken(45).toString(),
     };
   }
-
-  console.log("palette: " + palette.lightPrimary);
-  console.log("palette: " + palette.primary);
   return palette;
 
 }
@@ -176,9 +172,9 @@ function useThemeContext(userId) {
 
       data = await response.json();
       const primaryPalette = generatePrimaryColor(data.theme.primary)
-      setColor({ ...color, ...data.theme, ...primaryPalette })
+      setColor({ ...color, ...data.theme, ...primaryPalette, textPrimary: themeMode == "light" ? '#292929' : "#FFFFFF" })
     } catch (error) {
-      console.log("🚀 ~ fetchUser ~ error:", error);
+      pushError(error);
     } finally {
       setIsLoadingTheme(false);
     }

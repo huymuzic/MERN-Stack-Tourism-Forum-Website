@@ -66,8 +66,6 @@ function UserPosts() {
 
         // Update logged-in user's likes
         updateUserLikes(favorPostIds);
-        console.log(favorPostIds);
-        console.log(postId);
         if (favorPostIds.indexOf(postId) != -1) {
           pushSuccess("You successfully like this post!");
         } else {
@@ -113,7 +111,6 @@ function UserPosts() {
 
   const handleUnLockConfirm = async (userId) => {
     try {
-      console.log("work nì");
       const url = new URL(`${baseUrl}/api/v1/posts/userunhide/${userId}`);
       const response = await fetch(url, {
         method: "PUT",

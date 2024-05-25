@@ -1,39 +1,31 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { FaWrench } from "react-icons/fa";
-import CustomToolTip from "../../../../components/CustomTooltip";
+import { FaEdit, FaLock, FaUnlock } from "react-icons/fa";
+import CustomTooltip from "../../../../components/CustomTooltip";
 import { usePopUp } from "../../../../components/pop-up/usePopup";
+import PopUpBase from "../../../../components/pop-up/PopUpBase";
 import color from "../../../../theme/Color";
 import calculateAvgRating from "../../../../utils/avgRating";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PopUpUpdateTour from "./TourChange";
+import { Form, Stack } from 'react-bootstrap';
 
-const TourItem = ({ tour, statusFilter, handleUpdateTour }) => {
+const TourItem = ({ tour, handleUpdateTour, handleUnhideConfirm, handleHideConfirm }) => {
   const popUpChangeTour = usePopUp();
   const [avgRating, setAvgRating] = useState(calculateAvgRating(tour.reviews));
   const [isEditOpen, setEditOpen] = useState(false);
-
-  // Check if avgRating matches the status filter
-  useEffect(() => {
-    if (statusFilter) {
-      const numericStatus = parseFloat(avgRating.avgRating);
-      const statusMatch = TourRating.find(
-        (item) =>
-          numericStatus >= item.Value[0] &&
-          numericStatus <= item.Value[1] &&
-          item.Name === statusFilter.Name
-      );
-      if (!statusMatch) {
-        // Do not render this tour item if it doesn't match the status filter
-        setAvgRating(null);
-      }
+  const popUpActivate = usePopUp();
+  const TourStatus = TourStatuses.find((item) => item.Value === tour.status);
+  
+  const onChangeStatus = () => {
+    popUpActivate.onClose();
+    if (TourStatus.Value === "unhide") {
+      return handleHideConfirm(tour._id);
+    } else {
+      return handleUnhideConfirm(tour._id);
     }
-  }, [avgRating, statusFilter]);
-
-  if (!avgRating) {
-    return null; // Do not render the component if avgRating is null
-  }
+  };
 
   const handleConfirmUpdate = (data) => {
     handleUpdateTour(data);
@@ -65,24 +57,44 @@ const TourItem = ({ tour, statusFilter, handleUpdateTour }) => {
                 <small className="text-muted">
                   Reviews: {tour?.reviews.length} <br />
                 </small>
-                <small className="text-muted d-flex align-items-center">
-                  Average Score: <i className="ri ri-star-s-fill text-warning ms-1" style={{ fontSize: "1.2em" }}></i>
-                  {tour?.reviews.length == 0 ? 'Dont have review yet' : avgRating.avgRating}
+                <small className="text-muted">
+                  Average Score: <i className="ri ri-star-s-fill text-warning"></i>
+                  {avgRating.avgRating}
                 </small>
               </p>
             </div>
           </div>
           <div className="d-flex flex-column align-items-end">
-            <TourRatingBox status={avgRating.avgRating} />
-            <CustomToolTip text="Change Post" position="top">
-              <button
-                className="btn btn-sm btn-outline-primary mt-2"
-                onClick={() => setEditOpen(true)}
-                data-tip="Change Tour"
-              >
-                <FaWrench size={14} />
-              </button>
-            </CustomToolTip>
+            <div className="d-flex mb-2">
+              <TourRatingBox status={avgRating.avgRating} className="me-2" /> 
+              <TourStatusBox status={tour.status} />
+            </div>
+            <div className="d-flex align-items-center">
+              <CustomTooltip text="Edit Tour" position="top">
+                <button
+                  className="btn btn-sm btn-outline-primary me-2"
+                  onClick={() => setEditOpen(true)}
+                  data-tip="Edit Tour"
+                >
+                  <FaEdit size={14} />
+                </button>
+              </CustomTooltip>
+              <CustomTooltip text={TourStatus.Value === "unhide" ? "Hide" : "Unhide"} position="top">
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => popUpActivate.setTrue()}
+                  data-tip={TourStatus.Value === "unhide" ? "Hide" : "Unhide"}
+                >
+                  {TourStatus.Value === "unhide" ? <FaLock size={14} /> : <FaUnlock size={14} />}
+                </button>
+              </CustomTooltip>
+              <PopUpBase
+                {...popUpActivate}
+                onConfirm={onChangeStatus}
+                title="Change Tour Status Confirmation"
+                desc={`Are you sure you want to ${TourStatus.Value === "unhide" ? "hide" : "unhide"} this tour?`}
+              />
+            </div>
           </div>
         </div>
         <hr />
@@ -107,11 +119,13 @@ TourItem.propTypes = {
     title: PropTypes.string,
     country: PropTypes.string.isRequired,
     city: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string,
     reviews: PropTypes.array,
+    photo: PropTypes.string,
   }).isRequired,
-  statusFilter: PropTypes.object, // Add statusFilter prop type
   handleUpdateTour: PropTypes.func.isRequired,
+  handleUnhideConfirm: PropTypes.func.isRequired,
+  handleHideConfirm: PropTypes.func.isRequired,
 };
 
 export default TourItem;
@@ -127,7 +141,7 @@ export const TourRating = [
   {
     Id: 2,
     Value: [2.5, 4],
-    Name: "Mixed Feedback",
+    Name: "Normal Feedback",
     bgColor: color.grey200,
     color: color.grey400,
   },
@@ -158,4 +172,39 @@ export const TourRatingBox = ({ status }) => {
 
 TourRatingBox.propTypes = {
   status: PropTypes.number.isRequired,
+};
+
+export const TourStatuses = [
+  {
+    Id: 1,
+    Value: "unhide",
+    Name: "Unhide",
+    bgColor: color.successLight,
+    color: color.success,
+  },
+  {
+    Id: 2,
+    Value: "hide",
+    Name: "Hide",
+    bgColor: color.lightDanger,
+    color: color.danger,
+  },
+];
+
+export const TourStatusBox = ({ status }) => {
+  const TourStatus = TourStatuses.find(
+    (item) => status === item.Value
+  );
+  return (
+    <div
+      className="px-2 py-1 rounded"
+      style={{ backgroundColor: TourStatus?.bgColor }}
+    >
+      <p style={{ color: TourStatus?.color, margin: 0 }}>{TourStatus?.Name}</p>
+    </div>
+  );
+};
+
+TourStatusBox.propTypes = {
+  status: PropTypes.string.isRequired,
 };

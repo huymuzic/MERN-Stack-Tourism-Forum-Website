@@ -37,7 +37,11 @@ const tourSchema = new mongoose.Schema(
         ref: "Review",
       },
     ],
-
+    status: {
+      type: String,
+      enum: ["hide", "unhide"],
+      default: "unhide",
+    },
     featured: {
       type: Boolean,
       default: false,

@@ -26,7 +26,7 @@ const TourDetails = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [avgRating, setAvgRating] = useState("");
   const [totalRating, setTotalRating] = useState(0);
-  const { color } = useTheme();
+  const { color, themeMode } = useTheme();
   const { data: tour } = useFetch(`${baseUrl}/api/v1/tours/${id}`);
 
   const { photo, title, price, reviews, country, city, duration, ageRange } =
@@ -108,7 +108,12 @@ const TourDetails = () => {
                 </Element>
 
                 <div className="d-flex align-items-center gap-2">
-                  <span className="tour__rating d-flex align-items-center gap-1">
+                  <span
+                    className="tour__rating d-flex align-items-center gap-1"
+                    style={{
+                      color: themeMode == "light" ? "#0b2727" : "#fff",
+                    }}
+                  >
                     <i className="ri ri-star-s-fill"></i>{" "}
                     {avgRating === 0 ? null : avgRating}
                     {totalRating === 0 ? (
@@ -226,7 +231,13 @@ const TourDetails = () => {
                               <i className="ri ri-star-s-fill"></i>
                             </span>
                           </div>
-                          <h6>{review.reviewText}</h6>
+                          <h6
+                            style={{
+                              color: themeMode == "light" ? "#6e7074" : "#ddd",
+                            }}
+                          >
+                            {review.reviewText}
+                          </h6>
                         </div>
                       </div>
                     ))}
