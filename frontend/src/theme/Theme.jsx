@@ -172,7 +172,7 @@ function useThemeContext(userId) {
 
       data = await response.json();
       const primaryPalette = generatePrimaryColor(data.theme.primary)
-      setColor({ ...color, ...data.theme, ...primaryPalette })
+      setColor({ ...color, ...data.theme, ...primaryPalette, textPrimary: themeMode == "light" ? '#292929' : "#FFFFFF" })
     } catch (error) {
       pushError(error);
     } finally {
@@ -224,7 +224,7 @@ function useThemeContext(userId) {
     })
     document.documentElement.setAttribute('data-bs-theme', themeMode);
 
-  }, [themeMode, color])
+  }, [themeMode])
   const theme = createCustomTheme(color);
   return {
     theme,
