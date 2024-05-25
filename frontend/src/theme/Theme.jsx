@@ -3,6 +3,7 @@ import _color from './Color'
 import PropTypes from 'prop-types';
 import tinycolor from "tinycolor2";
 import { baseUrl } from "../config";
+import { pushError } from "../components/Toast";
 
 function createCustomTheme(color) {
   const theme = `
@@ -149,7 +150,7 @@ function useThemeContext(userId) {
 
   const fetchTheme = async () => {
     if (!userId) {
-      setColor(_color)
+      setColor({ ..._color, textPrimary: themeMode == "light" ? '#292929' : "#FFFFFF" })
     }
     setIsLoadingTheme(true);
     const url = new URL(`${baseUrl}/api/v1/users/theme/${userId}`);
@@ -172,7 +173,12 @@ function useThemeContext(userId) {
 
       data = await response.json();
       const primaryPalette = generatePrimaryColor(data.theme.primary)
-      setColor({ ...color, ...data.theme, ...primaryPalette, textPrimary: themeMode == "light" ? '#292929' : "#FFFFFF" })
+      setColor({
+        ...color,
+        ...data.theme,
+        ...primaryPalette,
+      })
+
     } catch (error) {
       pushError(error);
     } finally {
