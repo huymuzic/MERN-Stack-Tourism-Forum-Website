@@ -58,9 +58,6 @@ const Header = () => {
         pushSuccess("Logged out successfully");
         setUser(null);
         navigate("/");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
       } else {
         pushError("Failed to log out");
       }
