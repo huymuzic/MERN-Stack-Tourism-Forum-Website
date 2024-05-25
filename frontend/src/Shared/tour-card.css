@@ -95,27 +95,3 @@
 .booking__btn a:hover {
   color: #fff;
 }
-
-@media screen and (max-width: 1200px) {
-  .tour__img img {
-    height: 174.08px;
-  }
-}
-
-@media screen and (max-width: 991px) {
-  .tour__img img {
-    height: 144.06px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .tour__img img {
-    height: 164.08px;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .tour__img img {
-    height: 100%;
-  }
-}

@@ -39,7 +39,7 @@ const TourCard = ({ tour }) => {
                 className="ri ri-map-pin-line"
                 style={{ color: color.secondary }}
               ></i>{" "}
-              {country}
+              {city}, {country}
             </span>
             <span className="tour__location d-flex align-items-center gap-1">
               <i className="ri ri-star-fill"></i>{" "}
