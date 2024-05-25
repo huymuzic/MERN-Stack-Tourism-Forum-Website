@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { routesConfig } from './routesConfig';
 import Sitemap from '../Pages/Sitemap';
-import Loading from './Loading';
 
 const loadComponent = (componentPath) => {
   return lazy(() =>
@@ -29,7 +28,7 @@ const generateRoutes = (routes, parentPath = '') => {
 
 const Routers = () => {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense >
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="*" element={<Navigate to="/home" />} />
