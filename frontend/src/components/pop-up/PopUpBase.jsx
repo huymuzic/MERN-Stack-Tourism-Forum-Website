@@ -4,7 +4,7 @@ export default function PopUpBase(props) {
     return (
         <div>
             {props.open && <div className="modal-backdrop fade show"></div>}
-            <div className="modal" style={{ display: props.open ? 'block' : 'none' }}>
+            <div className={`modal element ${props.open ? 'visible' : ''}`}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         {!props.hideTitle && (

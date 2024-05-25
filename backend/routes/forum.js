@@ -6,7 +6,7 @@ import { verifyToken } from "../utils/verifyToken.js";
 import { posts } from "../controllers/forum/postsController.js";
 import { details } from "../controllers/forum/postDetails.js";
 import { create } from "../controllers/forum/createPost.js";
-import { like, reply, deletePost } from "../controllers/forum/interactPost.js";
+import { like, reply, deletePost, edit } from "../controllers/forum/interactPost.js";
 import { searchFilter } from "../controllers/forum/searchFilter.js";
 
 import { postGfs } from '../utils/gridfsconfig.js';
@@ -25,8 +25,11 @@ router.get('/images/:id', async (req, res) => {
     }  
 });
 
+router.put('/p/:id/edit', verifyToken, edit);
+router.put("/p/:id/like", verifyToken, like);
+router.put("/p/:id/deletePost", verifyToken, deletePost);
+
 router.post("/", verifyToken, create);
-router.post("/p/:id/like", verifyToken, like);
 router.post("/p/:id/reply", verifyToken, reply);
-router.post("/p/:id/deletePost", verifyToken, deletePost);
+
 export default router;

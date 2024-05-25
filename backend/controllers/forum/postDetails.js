@@ -2,11 +2,14 @@ import Post from "../../models/Post.js"
 
 async function cursivePopulate(post) {
     if (post.parentId !== null) {
-        await post.populate(['parentId', 'authorId', {
+        const popedPost = await post.populate(['authorId', {
             path: 'childrenIds',
-            populate: [{ path: 'authorId' }, { path: 'parentId'}]
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+        }, {
+            path: 'parentId',
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
         }]);
-        return cursivePopulate(post.parentId); 
+        return cursivePopulate(popedPost.parentId);
     }
 
     return await post.populate(['authorId', {
@@ -21,7 +24,7 @@ export async function details(req, res) {
 
         const post = await Post.findOne({ _id: id, status: 'unarchived' }).populate(['parentId', 'authorId', {
             path: 'childrenIds',
-            populate: [{ path: 'authorId' }, { path: 'parentId'}],
+            populate: [{ path: 'authorId' }, { path: 'parentId', populate: { path: 'authorId' } }],
             options: { sort: { 'updatedAt': -1 } }
         }]);
 
