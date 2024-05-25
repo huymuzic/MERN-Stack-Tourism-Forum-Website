@@ -102,15 +102,14 @@ ul {
 }
 
 .section__subtitle {
-  /* background: var(--secondary-color); */
   font-family: var(--subtitle-font-name);
   width: max-content !important;
   padding: 0px 0.5rem !important;
   padding-right: 1rem !important;
   border-radius: 50px !important;
   font-weight: 500;
-  font-size: 1.7rem !important;
-  color: var(--heading-color) !important;
+  font-size: 1.8rem !important;
+  color: #000000;
 }
 
 tr th {
@@ -156,8 +155,6 @@ tr th {
   background-color: #e8e8e8;
   transition: background-color 0.1s ease;
 } */
-
-
 
 .sel-bd {
   border-color: var(--primary-color) !important;

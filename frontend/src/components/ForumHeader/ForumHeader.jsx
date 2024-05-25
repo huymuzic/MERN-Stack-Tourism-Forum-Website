@@ -7,7 +7,7 @@ import { Dropdown } from "bootstrap";
 import Editor from "../../Pages/CommunityForum/components/Editor";
 import { useTheme } from "../../theme/Theme.jsx";
 import { baseUrl } from "../../config/index.js";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.webp";
 
 const nav_bar = [
   {
