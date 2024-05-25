@@ -59,10 +59,13 @@ export async function like(req, res) {
       }
 
       await post.save();
-      const updatedPost = await Post.findById(postId).populate(['parentId', 'authorId', {
+      const updatedPost = await Post.findById(postId).populate(['authorId', {
          path: 'childrenIds',
-         populate: { path: 'authorId' }
-      }]);
+         populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+     }, {
+         path: 'parentId',
+         populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+     }]);
 
       const updatedUser = await req.user.save();
 
@@ -104,12 +107,15 @@ export async function reply(req, res) {
 
          await post.save();
          const rootPost = await findRootPostId(postId);
-         const updPost = await Post.findById(rootPost).populate(['parentId', 'authorId', {
+         const updPost = await Post.findById(rootPost).populate(['authorId', {
             path: 'childrenIds',
-            populate: { path: 'authorId' }
-         }]);
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+        }, {
+            path: 'parentId',
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+        }]);
 
-         res.status(200).json({ post: updPost, user: updatedUser, repId: reply._id });
+         res.status(200).json({ post: updPost, user: updatedUser, reply: reply });
       } catch (error) {
          res.status(500).json({ message: error.message });
       }
@@ -146,10 +152,13 @@ export async function edit(req, res) {
          post.content = req.body.content;
 
          await post.save();
-         const updPost = await Post.findById(postId).populate(['parentId', 'authorId', {
+         const updPost = await Post.findById(postId).populate(['authorId', {
             path: 'childrenIds',
-            populate: { path: 'authorId' }
-         }]);
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+        }, {
+            path: 'parentId',
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+        }]);
 
          res.status(200).json({ message: 'Successfully edited post', post: updPost });
       } catch (error) {

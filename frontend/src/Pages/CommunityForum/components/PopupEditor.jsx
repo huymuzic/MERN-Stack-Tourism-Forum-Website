@@ -1,5 +1,4 @@
 import PopUpBase from '../../../components/pop-up/PopUpBase'
-import { Stack } from 'react-bootstrap'
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -24,6 +23,8 @@ export default function PopupEditor(props) {
    const isPopulated = useRef(false);
 
    const [selectedImages, setSelectedImages] = useState([]);
+
+   const nav = useNavigate();
 
    const handleDelete = (image) => {
       const newImages = selectedImages.filter(selectedImage => selectedImage !== image);
@@ -55,9 +56,9 @@ export default function PopupEditor(props) {
       const { title, content } = data;
 
       if (status === 'post') {
-         createTopic(title, content, selectedImages, setPost, closePopup);
+         createTopic(title, content, selectedImages, nav, closePopup);
       } else if (status === 'reply') {
-         replyTopic(post._id, content, selectedImages, setPost, closePopup);
+         replyTopic(post._id, content, selectedImages, setPost, nav, closePopup);
       } else if (status === 'edit') {
          if (post.title !== title || post.content !== content || detectImageChanges(post.images, selectedImages)) {
             const newImages = selectedImages
@@ -69,7 +70,7 @@ export default function PopupEditor(props) {
                .filter((image) => !modifiedSelected.includes(image.id))
                .map((image) => image.id);
 
-            edit(post._id, title, content, newImages, removedImages, setPost, closePopup);
+            edit(post._id, title, content, newImages, removedImages, setPost, nav, closePopup);
          } else {
             pushError('No changes detected!');
          }

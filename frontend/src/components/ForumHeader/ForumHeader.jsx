@@ -10,6 +10,7 @@ import logo from "../../assets/images/logo.png";
 
 import { usePopUp } from "../../components/pop-up/usePopup";
 import PopupEditor from "../../Pages/CommunityForum/components/PopupEditor.jsx";
+import ToggleTheme from "../Header/components/ToggleTheme/index.jsx";
 
 const nav_bar = [
    {
@@ -157,6 +158,9 @@ const ForumHeader = ({ children }) => {
                         </li>
                      }
                   })}
+                  <li className="col-lg-10 col-sm-4">
+                     <ToggleTheme className='mx-auto my-0'/>
+                  </li>
                   <li className="mt-3 col-lg-10 col-sm-4">
                      <button
                         type='button'
