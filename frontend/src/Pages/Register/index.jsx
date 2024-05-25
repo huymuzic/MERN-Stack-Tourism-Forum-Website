@@ -1,5 +1,5 @@
 //modules
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
@@ -10,6 +10,7 @@ import "./index.css";
 import { pushError, pushSuccess } from "../../components/Toast";
 
 import ReCAPTCHA from "react-google-recaptcha";
+import TermsPrivacyBanner from "./TermsPrivacyBanner";
 import { baseUrl } from "../../config";
 
 function Register() {
@@ -27,13 +28,12 @@ function Register() {
   const [showConfPassword, setShowConfPassword] = useState(false);
   const recaptchaRef = useRef(null);
   const [successMsg, setSuccessMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(false);
-  const Sitekey = "6Lf5mtApAAAAAF8KWzqQLrZS8-NtQHNhWmS6h_iI"
-  const togglePassword = (e) => {
+  const Sitekey = import.meta.env.VITE_SITE_KEY;
+  const togglePassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const toggleConfPassword = (e) => {
+  const toggleConfPassword = () => {
     setShowConfPassword(!showConfPassword);
   };
 
@@ -58,46 +58,28 @@ function Register() {
     const dataWithToken = { ...dataToSend, token: recaptchaToken };
 
     try {
-      const response = await fetch(
-        `${baseUrl}/api/v1/auth/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataWithToken),
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/v1/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataWithToken),
+      });
 
       const responseBody = await response.json();
       const responseMsg = responseBody.message;
       if (!response.ok) {
-        if (responseMsg === "User already exists") {
-          setError("username", {
-            type: "server",
-            message: "This username is not available.",
-          });
-        } else if (responseMsg === "Email already exists") {
-          setError("email", {
-            type: "server",
-            message: "This email is not available.",
-          });
-        }
+        pushError(responseMsg);
       } else {
         navigate("/login");
-        console.log("Success:", responseMsg);
         if (!successMsg) {
-          pushSuccess("Registration successful!");
           pushSuccess("Please login to continue");
+          pushSuccess(responseMsg);
           setSuccessMsg(true);
         }
       }
     } catch (error) {
-      console.error("Error:", error);
-      if (!errorMsg) {
-        pushError("Failed to register. Please try again");
-        setErrorMsg(true);
-      }
+      pushError("Something went wrong!");
     }
   };
 
@@ -256,10 +238,7 @@ function Register() {
         </div>
 
         <div className="mb-3">
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={Sitekey}
-          />
+          <ReCAPTCHA ref={recaptchaRef} sitekey={Sitekey} />
         </div>
 
         <p>
@@ -274,6 +253,7 @@ function Register() {
           Submit
         </button>
       </form>
+      <TermsPrivacyBanner />
     </>
   );
 }

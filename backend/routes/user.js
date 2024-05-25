@@ -18,7 +18,7 @@ import {
   getTheme
 } from "../controllers/userController.js";
 const router = express.Router();
-import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
+import { verifyAdmin, verifyUser , verifyStatusChange} from "../utils/verifyToken.js";
 import upload from "../utils/Avaupload .js";
 
 // get list users
@@ -61,9 +61,9 @@ router.put("/lock/:id", verifyAdmin, lockUser);
 // Unlock user
 router.put("/unlock/:id", verifyAdmin, activeUser);
 // Active user
-router.put("/active/:id", verifyUser, activeUser);
+router.put("/active/:id", verifyStatusChange, activeUser);
 // Inactive user
-router.put("/inactive/:id", verifyUser, inactiveUser);
+router.put("/inactive/:id", verifyStatusChange, inactiveUser);
 // CreateOrUpdateTheme
 router.post('/theme', verifyUser, createOrUpdateTheme);
 // getTheme

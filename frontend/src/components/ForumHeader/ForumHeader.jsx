@@ -6,7 +6,7 @@ import { getAvatarUrl } from '../../utils/getAvar.js';
 import { Dropdown } from 'bootstrap';
 import { useTheme } from "../../theme/Theme.jsx";
 import { baseUrl } from "../../config/index.js";
-import logo from '../../assets/images/logo.png'
+import logo from "../../assets/images/logo.png";
 
 import { usePopUp } from "../../components/pop-up/usePopup";
 import PopupEditor from "../../Pages/CommunityForum/components/PopupEditor.jsx";

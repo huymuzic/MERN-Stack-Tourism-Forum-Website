@@ -1,6 +1,6 @@
 //modules
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,9 +8,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import { pushError, pushSuccess } from "../../components/Toast";
 import { useUser } from "../../utils/UserContext";
-import CircularProgress from "../../components/CircularProgress";
 import { baseUrl } from "../../config";
-
 
 function Login() {
   const navigate = useNavigate();
@@ -23,53 +21,42 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
-  const [callAPI, setCallAPI] = useState(false);
-  const { user, setUser } = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     if (user) {
       navigate("/");
     }
-  }, [user]);
+  }, [user, navigate]);
 
-  const togglePasswordVisibility = (e) => {
+  const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(
-        `${baseUrl}/api/v1/auth/login`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const responseBody = await response.json();
       if (!response.ok) {
-        setError("pwd", { type: "server", message: responseBody.message });
-        if (!callAPI) {
-          pushError("Something went wrong. Please try again");
-          setCallAPI(true);
-        }
+        pushError(responseBody.message);
       } else {
         if (!successMsg) {
-          pushSuccess(`Login successfully!`);
+          pushSuccess(responseBody.message);
           setSuccessMsg(true);
         }
         navigate("/");
         window.location.reload();
       }
     } catch (error) {
-      if (!errorMsg) {
-        pushError("Failed to login. Please try again");
-        setErrorMsg(true);
-      }
+      pushError("Something went wrong!");
     }
   };
 
@@ -154,7 +141,7 @@ function Login() {
         </div>
 
         <p>
-          Don't have an account? <Link to="/register">Register</Link>
+          Don&apos;t have an account? <Link to="/register">Register</Link>
         </p>
 
         <button

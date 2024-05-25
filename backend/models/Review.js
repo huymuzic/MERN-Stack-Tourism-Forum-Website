@@ -6,11 +6,12 @@ const reviewSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Tour",
     },
-    username: {
-      type: String,
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
       required: true,
     },
-    avatar: {
+    username: {
       type: String,
       required: true,
     },

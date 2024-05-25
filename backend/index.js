@@ -14,6 +14,7 @@ import tourRoute from "./routes/tour.js";
 import reviewRoute from "./routes/review.js";
 import bookingRoute from "./routes/booking.js";
 import imagesRoute from "./routes/images.js";
+import purchaseRoute from "./routes/purchase.js";
 
 dotenv.config();
 const __dirname = path.resolve();
@@ -49,6 +50,7 @@ app.use("/api/v1/tours", tourRoute);
 app.use("/api/v1/reviews", reviewRoute);
 app.use("/api/v1/booking", bookingRoute);
 app.use("/api/v1/images", imagesRoute);
+app.use("api/v1/purchase", purchaseRoute);
 
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 

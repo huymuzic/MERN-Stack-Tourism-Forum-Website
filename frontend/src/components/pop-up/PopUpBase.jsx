@@ -6,7 +6,7 @@ export default function PopUpBase(props) {
             {props.open && <div className="modal-backdrop fade show"></div>}
             <div className={`modal element ${props.open ? 'visible' : ''}`}>
                 <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
+                    <div className="modal-content w-100" >
                         {!props.hideTitle && (
                             <div className="modal-header">
                                 <h5 className="modal-title text-center">{props.title}</h5>

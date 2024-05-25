@@ -8,6 +8,7 @@ import PopupEditor from "./components/PopupEditor.jsx";
 
 import Post from './components/Post';
 import { baseUrl } from "../../config/index.js";
+import { useTheme } from "../../theme/Theme.jsx";
 
 function CommunityForum() {
    const { user } = useUser();

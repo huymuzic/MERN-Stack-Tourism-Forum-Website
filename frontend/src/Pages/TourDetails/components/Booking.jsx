@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { pushError } from "../../../components/Toast";
 import { useUser } from "../../../utils/UserContext";
@@ -11,14 +11,16 @@ import {
   ListGroupItem,
   Button,
 } from "react-bootstrap";
+import { useTheme } from "../../../theme/Theme";
 
 const Booking = ({ tour, avgRating }) => {
   const navigate = useNavigate();
   const { user } = useUser();
   const [numPeople, setNumPeople] = useState(1);
-  const { price, reviews } = tour;
+  const { price, reviews, title } = tour;
   const [peopleValue, setPeopleValue] = useState("01");
   const [totalPrice, setTotalPrice] = useState(price);
+  const {color} = useTheme()
 
   useEffect(() => {
     setPeopleValue(numPeople < 10 ? `0${numPeople}` : numPeople.toString());
@@ -37,14 +39,31 @@ const Booking = ({ tour, avgRating }) => {
     e.preventDefault();
     if (!user) {
       pushError("Please login to book a tour");
+      return;
     }
+
     const bookTime = document.getElementById("bookTime").value;
 
     if (bookTime.trim() === "") {
       pushError("Please choose a date");
       return;
     }
-    navigate("/thank-you");
+
+    const bookingDetails = {
+      userId: user._id,
+      email: user.email,
+      tourId: tour._id,
+      tourTitle: title,
+      country: tour.country,
+      city: tour.city,
+      photo: tour.photo,
+      tourPrice: tour.price,
+      date: bookTime,
+      price: totalPrice,
+      numPeople,
+    };
+
+    navigate("/checkout", { state: { bookingDetails } });
   };
 
   return (
@@ -59,7 +78,6 @@ const Booking = ({ tour, avgRating }) => {
         </span>
       </div>
 
-      {/* ==================== Booking form starts ================== */}
       <div className="booking__form">
         <h5>Information</h5>
         <Form className="booking_info-form d-flex flex-column justify-content-center align-items-flex-start p-3 gap-3">
@@ -97,13 +115,11 @@ const Booking = ({ tour, avgRating }) => {
             </span>
           </div>
           <FormGroup className="d-flex align-items-center gap-3">
-            <input type="date" placeholder="" id="bookTime" />
+            <input type="date" placeholder="" id="bookTime" style={{color: color.textPrimary}}/>
           </FormGroup>
         </Form>
       </div>
-      {/* ==================== Booking form ends ================== */}
 
-      {/* ==================== Booking bottom ================== */}
       <div className="booking__bottom">
         <ListGroup>
           <ListGroupItem className="border-0 px-0 book_form_row">
@@ -123,11 +139,11 @@ const Booking = ({ tour, avgRating }) => {
         </ListGroup>
 
         <Button
-        variant="primary"
+          variant="primary"
           className="btn primary__btn w-100 mt-4 book__btn normal__pad"
           onClick={handleBookFormSubmit}
         >
-          Book Now
+          Proceed to Checkout
         </Button>
       </div>
     </div>

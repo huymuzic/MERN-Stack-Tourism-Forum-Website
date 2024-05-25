@@ -3,6 +3,10 @@ const color = {
     lightPrimary: '#f5cba3',
     darkPrimary: '#c46200',
 
+    secondary: "#faa935",
+    lightSecondary: "#ff9733",
+    darkSecondary: "#faa935",
+    
     textPrimary: '#292929',
 
     danger: '#E01B00',
@@ -20,7 +24,7 @@ const color = {
     grey200: '#EEEEEE',
     grey300: '#DDDDDD',
     grey400: '#C5C5C5',
-    grey600: '#85858A',
+    grey500: '#85858A',
 
     headerBgColor: "#FFFFFF",
     headerTextColor: "#0B2727",

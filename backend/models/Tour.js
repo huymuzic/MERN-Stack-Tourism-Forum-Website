@@ -16,8 +16,8 @@ const tourSchema = new mongoose.Schema(
       required: true,
     },
     photo: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      // required: true,
     },
     price: {
       type: Number,

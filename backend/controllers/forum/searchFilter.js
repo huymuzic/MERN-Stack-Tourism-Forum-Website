@@ -2,7 +2,7 @@ import Post from "../../models/Post.js"
 
 export async function searchFilter(req, res) {
     const { title, keyword, sort } = req.query;
-    let filter = { status: 'unarchived' };
+    let filter = { status: 'unarchived', parentId: null };
 
     if (title) {
         filter.title = { $regex: title, $options: 'i' };
@@ -11,7 +11,6 @@ export async function searchFilter(req, res) {
     if (keyword) {
         filter.content = { $regex: keyword, $options: 'i' };
     }
-
     try {
         const posts = await Post.find(filter)
             .populate(['authorId', 'childrenIds'])
@@ -20,7 +19,6 @@ export async function searchFilter(req, res) {
             .limit(5);
 
         const length = await Post.countDocuments(filter);
-
         res.json({posts: posts, length: length});
     } catch(error) {
         console.error(error);

@@ -6,16 +6,14 @@ export const createReview = async (req, res) => {
   const { reviewText, rating } = req.body;
   const newReview = new Review({
     productId: tourId,
+    userId: req.user._id,
     username: req.user.username,
-    avatar: req.user.avatar,
     reviewText,
     rating,
   });
 
   try {
-    // save new review to reviews collection on db
     const savedReview = await newReview.save();
-    // add new review to review[] in tour collection
     await Tour.findByIdAndUpdate(tourId, {
       $push: { reviews: savedReview._id },
     });

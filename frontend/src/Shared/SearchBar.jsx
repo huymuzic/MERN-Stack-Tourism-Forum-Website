@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./search-bar.css";
 import { Col, Form, FormGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useSearch } from "../utils/SearchContext";
+import { useTheme } from "../theme/Theme";
 const SearchBar = () => {
   // Form validation
   const countryRef = useRef("");
@@ -13,8 +14,8 @@ const SearchBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { searchHandler } = useSearch();
-
-  const [errors, setErrors] = useState({}); // State for validation errors
+  const { color } = useTheme();
+  const [errors] = useState({}); // State for validation errors
   const [query, setQuery] = useState({
     country: "",
     city: "",
@@ -43,7 +44,7 @@ const SearchBar = () => {
   }, [location.search]);
 
   const handleSearch = async (event) => {
-    event.preventDefault();
+    event.preventDefault(event);
     const country = countryRef.current.value;
     const city = cityRef.current.value;
     const price = priceRef.current.value;

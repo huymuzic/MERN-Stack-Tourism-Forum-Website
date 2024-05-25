@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CommonSection from "../../Shared/CommonSection";
-import { Link, Element, animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 
 import "./index.css";
 import TourCard from "../../Shared/TourCard";
@@ -45,9 +45,7 @@ const Tours = () => {
       <section>
         <Container>
           <Row>
-            <Element name="section1">
-              <SearchBar />
-            </Element>
+            <SearchBar />
           </Row>
         </Container>
       </section>
@@ -76,8 +74,6 @@ const Tours = () => {
           </Row>
         </Container>
       </section>
-      {/* Links to sections */}
-      <Link to="section1" smooth={true} duration={500}></Link>
     </>
   );
 };

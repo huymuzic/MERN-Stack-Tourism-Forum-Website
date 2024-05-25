@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 
-import { verifyToken } from "../utils/verifyToken.js";
+import { verifyToken, verifyUser } from "../utils/verifyToken.js";
 
 import { posts } from "../controllers/forum/postsController.js";
 import { details } from "../controllers/forum/postDetails.js";
