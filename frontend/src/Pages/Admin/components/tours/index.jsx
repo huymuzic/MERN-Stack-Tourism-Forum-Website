@@ -75,7 +75,7 @@ export default function ToursList() {
 
   const fetchTours = async () => {
     setLoading(true);
-    const url = new URL(`${baseUrl}/api/v1/tours`);
+    const url = new URL(`${baseUrl}/api/v1/tours/search/admin`);
     url.searchParams.append("page", filter.page);
     url.searchParams.append("limit", pageSize);
     if (filter.status) {

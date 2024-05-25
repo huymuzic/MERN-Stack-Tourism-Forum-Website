@@ -38,7 +38,8 @@ router.get('/images/:id', async (req, res) => {
 });
 
 // router.get("/", getAllTour);
-router.get("/", getListTour);
+router.get("/search/admin", verifyAdmin, getListTour);
+router.get("/", getAllTour);
 router.get("/search/getTourBySearch", getTourBySearch);
 router.get("/search/getFeaturedTours", getFeaturedTour);
 router.get("/search/getTourCount", getTourCount);
