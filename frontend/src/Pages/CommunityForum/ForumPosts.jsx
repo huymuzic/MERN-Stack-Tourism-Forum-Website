@@ -182,7 +182,7 @@ function Post() {
                                     {post.images.map((image, index) =>
                                        <SwiperSlide key={index}>
                                           {image.blob instanceof Blob ?
-                                             <img src={URL.createObjectURL(image.blob)} alt={`image-${index}`} className='object-fit-cover img-fluid rounded-2' />
+                                             <img src={URL.createObjectURL(image.blob)} alt={`image-${index}`} className='object-fit-fill rounded-2' />
                                              : <CircularProgress />}
                                        </SwiperSlide>
                                     )}

@@ -61,9 +61,7 @@ export default function PopupEditor(props) {
          replyTopic(post._id, content, selectedImages, setPost, nav, closePopup);
       } else if (status === 'edit') {
          if (post.title !== title || post.content !== content || detectImageChanges(post.images, selectedImages)) {
-            const newImages = selectedImages
-               .filter((image) => !post.images.map((img) => img.id).includes(image.id))
-               .map((image) => image.blob);
+            const newImages = selectedImages.filter((image) => !image.id)
 
             const modifiedSelected = selectedImages.map((img) => img.id)
             const removedImages = post.images
@@ -174,7 +172,7 @@ export default function PopupEditor(props) {
                         >
                            {selectedImages.map((image, index) => (
                               <SwiperSlide key={index}>
-                                 <img src={image instanceof Blob ? URL.createObjectURL(image) : URL.createObjectURL(image.blob)} alt={`image-${index}`} className='object-fit-cover img-fluid' />
+                                 <img src={image instanceof Blob ? URL.createObjectURL(image) : URL.createObjectURL(image.blob)} alt={`image-${index}`} className='object-fit-fill rounded-2' />
                                  <button type='button' onClick={() => handleDelete(image)} className='ctm-btn rounded-5 position-absolute top-0 end-0 btn-index'>
                                     <i className="fa-solid fa-trash p-2 text-prime" />
                                  </button>

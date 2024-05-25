@@ -1,7 +1,7 @@
 import Post from "../../models/Post.js"
 import uploadFiles from "../../utils/uploadImages.js";
 import { postGfs } from '../../utils/gridfsconfig.js'
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 async function findRootPostId(postId) {
    const post = await Post.findById(postId);
@@ -137,21 +137,25 @@ export async function edit(req, res) {
          }
 
          const removed = JSON.parse(req.body.removed);
-         post.images = post.images
-            .map(image => image.toString())
-            .filter(image => !removed.includes(image));
+         post.images = post.images.filter(image => !removed.includes(image.toString()));
 
-         removed.forEach(id => {
-            postGfs.delete(new mongoose.Types.ObjectId(id));
+         removed.length > 0 && removed.forEach(id => {
+            try {
+               postGfs.delete(new mongoose.Types.ObjectId(id));
+            } catch (error) {
+               console.log(error.message);
+               return;
+            }
          })
-
-         const newImages = req.files.map(file => file.id);
+         
+         const newImages = req.files.map(file => new mongoose.Types.ObjectId(file.id.toString()));
          post.images = [...post.images, ...newImages];
 
          post.title = req.body.title;
          post.content = req.body.content;
 
          await post.save();
+
          const updPost = await Post.findById(postId).populate(['authorId', {
             path: 'childrenIds',
             populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
@@ -162,6 +166,7 @@ export async function edit(req, res) {
 
          res.status(200).json({ message: 'Successfully edited post', post: updPost });
       } catch (error) {
+         console.log(error.message)
          res.status(500).json({ message: error.message });
       }
    });
