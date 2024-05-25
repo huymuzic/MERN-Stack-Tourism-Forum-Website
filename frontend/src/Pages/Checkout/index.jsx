@@ -5,8 +5,10 @@ import { pushError, pushSuccess } from "../../components/Toast";
 import CircularProgress from "../../components/CircularProgress";
 import { baseUrl, environment } from "../../config";
 import "./index.css";
+import { useTheme } from "../../theme/Theme";
 
 const Checkout = () => {
+  const { color, themeMode } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -59,8 +61,19 @@ const Checkout = () => {
       ) : (
         <Container fluid className="checkout-page">
           <Row>
-            <Col md={7} className="form-section">
-              <div className="account-details">
+            <Col
+              md={7}
+              className="form-section"
+              style={{
+                backgroundColor: themeMode == "light" ? "#f5f5f5" : "#333333",
+              }}
+            >
+              <div
+                className="account-details"
+                style={{
+                  backgroundColor: themeMode == "light" ? "#f5f5f5" : "#212529",
+                }}
+              >
                 <h2>Contact Details</h2>
                 <Form>
                   <Row>
@@ -119,8 +132,19 @@ const Checkout = () => {
               </div>
             </Col>
 
-            <Col md={5} className="summary-section">
-              <div className="checkout__container_1">
+            <Col
+              md={5}
+              className="summary-section"
+              style={{
+                backgroundColor: themeMode == "light" ? "#f5f5f5" : "#333333",
+              }}
+            >
+              <div
+                className="checkout__container_1"
+                style={{
+                  backgroundColor: themeMode == "light" ? "#f5f5f5" : "#212529",
+                }}
+              >
                 <div>
                   <div className="checkout__container_2">
                     <div className="header__container">

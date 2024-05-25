@@ -6,9 +6,11 @@ import BasePaginationList from "../../components/BasePaginationList";
 import "./index.css";
 import { baseUrl, environment } from "../../config";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../theme/Theme";
 
 const PurchaseHistory = () => {
   const { user } = useUser();
+  const { color, themeMode } = useTheme();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -44,9 +46,16 @@ const PurchaseHistory = () => {
   }, [user, page]);
 
   return (
-    <Container className="purchase-history-page">
+    <Container
+      className="purchase-history-page"
+      style={{
+        backgroundColor: themeMode == "light" ? "#f5f5f5" : "#212529",
+      }}
+    >
       {loading ? (
-        <CircularProgress />
+        <Container className="d-flex justify-content-center">
+          <CircularProgress />
+        </Container>
       ) : (
         <BasePaginationList
           titleTotal="Total bookings"
@@ -54,7 +63,13 @@ const PurchaseHistory = () => {
           list={bookings}
           totalPages={totalPages}
           renderItem={(item) => (
-            <div key={item._id} className="booking-item">
+            <div
+              key={item._id}
+              className="booking-item"
+              style={{
+                backgroundColor: themeMode == "light" ? "#fff" : "#212529",
+              }}
+            >
               <div className="booking-details">
                 <img
                   src={
@@ -64,7 +79,12 @@ const PurchaseHistory = () => {
                 />
                 <div className="details-text">
                   <Link to={`/tours/${item.tourId}`}>
-                    <span className="title">
+                    <span
+                      className="title"
+                      style={{
+                        color: themeMode == "light" ? "#000000" : "#fff",
+                      }}
+                    >
                       <span className="tour__location d-flex align-items-center gap-1">
                         <i className="ri ri-map-pin-line"></i> {item.city},{" "}
                         {item.country}
@@ -74,7 +94,12 @@ const PurchaseHistory = () => {
                   </Link>
                 </div>
               </div>
-              <ul className="booking-info">
+              <ul
+                className="booking-info"
+                style={{
+                  color: themeMode == "light" ? "#000000" : "#fff",
+                }}
+              >
                 <li>
                   <i className="ri-calendar-line item_icon"></i>
                   <span>{new Date(item.date).toDateString()}</span>

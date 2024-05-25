@@ -182,7 +182,7 @@ export default function UsersList() {
         setPaging(data);
       })
       .catch((error) => {
-        console.log("🚀 ~ fetchUsers ~ error:", error);
+        pushError(error);
         setLoading(false);
       })
       .finally(() => setLoading(false));

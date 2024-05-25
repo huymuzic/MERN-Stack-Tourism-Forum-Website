@@ -41,7 +41,7 @@ const Header = () => {
     fetchData();
   }, []);
 
-  const { color } = useTheme();
+  const { color, themeMode } = useTheme();
   const { user, setUser } = useUser();
   const navigate = useNavigate();
   const avatarUrl = getAvatarUrl(user?.avatar, baseUrl);
@@ -58,8 +58,10 @@ const Header = () => {
         pushSuccess("Logged out successfully");
         setUser(null);
         navigate("/");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
-        // Handle unsuccessful logout
         pushError("Failed to log out");
       }
     } catch (error) {
@@ -164,6 +166,9 @@ const Header = () => {
               <Navbar.Collapse
                 className="navbar-collapse collapse justify-content-end"
                 id="navbarSupportedContent"
+                style={{
+                  backgroundColor: themeMode == "light" ? "#fff" : "#212529",
+                }}
               >
                 <ul
                   className="navbar-nav mb-2 mb-lg-0 gap-5 d-flex justify-content-end text-center margin"
@@ -217,7 +222,11 @@ const Header = () => {
                     aria-labelledby="user"
                   >
                     <li>
-                      <Link className="dropdown-item" to="/my-account">
+                      <Link
+                        className="dropdown-item"
+                        to="/my-account"
+                        onClick={handleNavItemClick}
+                      >
                         My Account
                       </Link>
                     </li>
@@ -230,7 +239,11 @@ const Header = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/history">
+                      <Link
+                        className="dropdown-item"
+                        to="/history"
+                        onClick={handleNavItemClick}
+                      >
                         Purchased History
                       </Link>
                     </li>

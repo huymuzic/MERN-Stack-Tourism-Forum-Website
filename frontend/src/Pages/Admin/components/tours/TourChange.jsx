@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PopUpBase from '../../../../components/pop-up/PopUpBase';
-import { Controller, useForm, useWatch } from 'react-hook-form';
-import { Button, FloatingLabel, Form, Stack, InputGroup } from 'react-bootstrap';
-import { TiDelete } from 'react-icons/ti';
+import { Controller, useForm } from 'react-hook-form';
+import { Button, FloatingLabel, Form, Stack, InputGroup, Row, Col } from 'react-bootstrap';
 import { pushError } from '../../../../components/Toast';
+import { TiDelete } from 'react-icons/ti';
+import { FaUpload } from 'react-icons/fa';
 import { baseUrl } from "../../../../config";
 
 function getSvg(svg) {
@@ -40,8 +41,21 @@ function UploadIcon() {
 }
 
 export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, tour }) {
-  const [avatar, setAvatar] = useState(tour?.photo || '');
+  const [avatar, setAvatar] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState('');
   const [dirtyAvatar, setDirtyAvatar] = useState(false);
+
+  useEffect(() => {
+    if (tour?.photo) {
+      if (tour.photo.startsWith('/assets/')) {
+        setAvatar('');
+        setAvatarPreview('');
+      } else {
+        setAvatar(tour.photo);
+        setAvatarPreview(`${baseUrl}/api/v1/tours/images/${tour.photo}`);
+      }
+    }
+  }, [tour]);
 
   function handleFileChange(e) {
     setDirtyAvatar(true);
@@ -58,20 +72,17 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
       return;
     }
     setAvatar(file);
+    setAvatarPreview(URL.createObjectURL(file));
   }
 
   const {
     handleSubmit,
     reset,
     control,
+    watch,
     formState: { isValid, isDirty },
   } = useForm({
     mode: 'all',
-  });
-
-  const watchedFields = useWatch({
-    control,
-    name: ["title", "country", "city", "price", "ageRangeFrom", "ageRangeTo", "duration"],
   });
 
   const handleConfirm = (data) => {
@@ -81,45 +92,34 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
       country: data.country.trim(),
       city: data.city.trim(),
       price: parseFloat(data.price),
-      ageRange: `${data.ageRangeFrom}-${data.ageRangeTo}`,
+      ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
-      photo: avatar
+      photo: dirtyAvatar ? avatar : tour.photo,
     };
-    
     onConfirm(tourData);
   };
-    
+
   useEffect(() => {
     if (!open) return;
-    const [ageRangeFrom, ageRangeTo] = tour.ageRange.split('-');
+
+    const [ageFrom, ageTo] = tour.ageRange ? tour.ageRange.split('-') : ['', ''];
+
     reset({
       title: tour.title,
       country: tour.country,
       city: tour.city,
       price: tour.price,
-      ageRangeFrom,
-      ageRangeTo,
+      ageFrom,
+      ageTo,
       duration: tour.duration,
     });
-    setAvatar(tour?.photo || '');
     setDirtyAvatar(false);
   }, [open, tour, reset]);
 
-  const isDataUnchanged = () => {
-    const [ageRangeFrom, ageRangeTo] = tour.ageRange.split('-');
-    return (
-      watchedFields.title?.trim() === tour.title &&
-      watchedFields.country?.trim() === tour.country &&
-      watchedFields.city?.trim() === tour.city &&
-      parseFloat(watchedFields.price) === tour.price &&
-      watchedFields.ageRangeFrom === ageRangeFrom &&
-      watchedFields.ageRangeTo === ageRangeTo &&
-      parseInt(watchedFields.duration, 10) === tour.duration &&
-      !dirtyAvatar
-    );
-  };
+  const allFields = watch(['title', 'country', 'city', 'price', 'ageFrom', 'ageTo', 'duration']);
+  const allFieldsFilled = allFields.every(field => field);
 
-  const disabled = !(isValid && (isDirty || dirtyAvatar)) || isDataUnchanged();
+  const disabled = !(isValid && (isDirty || dirtyAvatar) && allFieldsFilled);
 
   return (
     <PopUpBase
@@ -152,11 +152,11 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
         <Stack gap={3}>
           <Stack direction='horizontal' gap={2} style={{ borderRadius: '10px', border: '1px dashed #C5C5C5', padding: '16px', alignItems: "center" }}>
             <Stack>
-              {avatar ? (
-                <img src={typeof avatar === 'string' ? `${baseUrl}/api/v1/tours/images/${avatar}` : URL.createObjectURL(avatar)} alt="" style={{ height: 40, maxHeight: 40 }} />
+              {avatarPreview ? (
+                <img src={avatarPreview} alt="" style={{ height: 40, maxHeight: 40 }} />
               ) : (
                 <div style={{ display: "flex", width: 32, height: 32, borderRadius: '100%', backgroundColor: '#EEEEEE', justifyContent: 'center', alignItems: 'center' }}>
-                  <UploadIcon />
+                  <FaUpload />
                 </div>
               )}
             </Stack>
@@ -166,6 +166,8 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
                   <p className='body-1'>{getSvg(avatar || '').name}</p>
                   <TiDelete fontSize={24} style={{ cursor: "pointer" }} onClick={() => {
                     setAvatar('');
+                    setAvatarPreview('');
+                    setDirtyAvatar(false);
                     const inputElement = document.getElementById('upload-input');
                     if (inputElement) {
                       inputElement.value = '';
@@ -174,32 +176,22 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
                 </Stack>
               ) : (
                 <>
-                  <h6>Upload logo</h6>
+                  <h6>Upload image</h6>
                   <p className="body-2" style={{ color: 'gray' }}>
                     SVG, PNG, JPG, GIF | 10MB max.
                   </p>
                 </>
               )}
             </Stack>
-            <label htmlFor="upload-input">
+            <Button variant="outline-primary" as="label" size="sm" style={{ fontSize: 12, padding: 8 }}>
+              Upload Image
               <input
-                id="upload-input"
                 type="file"
                 accept=".svg, .png, .jpg, .gif"
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
-              <Button
-                variant="outline-primary"
-                as="span"
-                style={{
-                  fontSize: 12,
-                  padding: 8,
-                }}
-              >
-                Upload Avatar
-              </Button>
-            </label>
+            </Button>
           </Stack>
 
           <Controller
@@ -245,87 +237,81 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
             )}
           />
 
-          <Stack direction='horizontal' gap={3}>
-            <InputGroup>
-              <InputGroup.Text>$</InputGroup.Text>
+          <Row>
+            <Col>
+              <InputGroup>
+                <InputGroup.Text>$</InputGroup.Text>
+                <Controller
+                  name="price"
+                  control={control}
+                  rules={{
+                    required: "Price is required",
+                    min: {
+                      value: 0,
+                      message: "Price cannot be negative",
+                    },
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <FloatingLabel label="Price">
+                      <Form.Control {...field} type="number" placeholder="Price" />
+                      {error && <div className="text-danger">{error.message}</div>}
+                    </FloatingLabel>
+                  )}
+                />
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup>
+                <Controller
+                  name="duration"
+                  control={control}
+                  rules={{
+                    required: "Duration is required",
+                    min: {
+                      value: 1,
+                      message: "Duration must be at least 1 day",
+                    },
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <FloatingLabel label="Duration">
+                      <Form.Control {...field} type="number" placeholder="Duration" />
+                      {error && <div className="text-danger">{error.message}</div>}
+                    </FloatingLabel>
+                  )}
+                />
+                <InputGroup.Text>days</InputGroup.Text>
+              </InputGroup>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
               <Controller
-                name="price"
+                name="ageFrom"
                 control={control}
-                rules={{
-                  required: "Price is required",
-                  min: {
-                    value: 0,
-                    message: "Price cannot be negative",
-                  },
-                }}
+                rules={{ required: "From Age is required" }}
                 render={({ field, fieldState: { error } }) => (
-                  <FloatingLabel label="Price">
-                    <Form.Control {...field} type="number" placeholder="Price" />
+                  <FloatingLabel label="From Age">
+                    <Form.Control {...field} type="number" placeholder="From Age" />
                     {error && <div className="text-danger">{error.message}</div>}
                   </FloatingLabel>
                 )}
               />
-            </InputGroup>
-
-            <InputGroup>
+            </Col>
+            <Col>
               <Controller
-                name="duration"
+                name="ageTo"
                 control={control}
-                rules={{
-                  required: "Duration is required",
-                  min: {
-                    value: 1,
-                    message: "Duration must be at least 1 day",
-                  },
-                }}
+                rules={{ required: "To Age is required" }}
                 render={({ field, fieldState: { error } }) => (
-                  <FloatingLabel label="Duration">
-                    <Form.Control {...field} type="number" placeholder="Duration" />
+                  <FloatingLabel label="To Age">
+                    <Form.Control {...field} type="number" placeholder="To Age" />
                     {error && <div className="text-danger">{error.message}</div>}
                   </FloatingLabel>
                 )}
               />
-              <InputGroup.Text>days</InputGroup.Text>
-            </InputGroup>
-          </Stack>
-
-          <Stack direction='horizontal' gap={3}>
-            <Controller
-              name="ageRangeFrom"
-              control={control}
-              rules={{
-                required: "Age Range From is required",
-                min: {
-                  value: 0,
-                  message: "Age Range cannot be negative",
-                },
-              }}
-              render={({ field, fieldState: { error } }) => (
-                <FloatingLabel label="Age Range From">
-                  <Form.Control {...field} type="number" placeholder="From" />
-                  {error && <div className="text-danger">{error.message}</div>}
-                </FloatingLabel>
-              )}
-            />
-
-            <Controller
-              name="ageRangeTo"
-              control={control}
-              rules={{
-                required: "Age Range To is required",
-                min: {
-                  value: 0,
-                  message: "Age Range cannot be negative",
-                },
-              }}
-              render={({ field, fieldState: { error } }) => (
-                <FloatingLabel label="Age Range To">
-                  <Form.Control {...field} type="number" placeholder="To" />
-                  {error && <div className="text-danger">{error.message}</div>}
-                </FloatingLabel>
-              )}
-            />
-          </Stack>
+            </Col>
+          </Row>
         </Stack>
       }
     />

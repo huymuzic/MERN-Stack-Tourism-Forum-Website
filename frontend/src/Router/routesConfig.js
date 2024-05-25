@@ -16,8 +16,8 @@ export const routesConfig = [
     component: 'Admin/index',
     name: 'Admin',
     children: [
-      { path: 'forum-posts', component: 'Admin/components/forum-posts', name: 'Forum Posts' },
       { path: 'users', component: 'Admin/components/users', name: 'Users' },
+      { path: 'forum-posts', component: 'Admin/components/forum-posts', name: 'Forum Posts' },
       { path: 'tours', component: 'Admin/components/tours', name: 'Tours' },
     ],
   },

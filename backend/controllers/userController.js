@@ -34,7 +34,6 @@ export const updateUser = async (req, res) => {
   const id = req.params.id;
   try {
     if (req.body.password) {
-      console.log("??");
       const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
       req.body.password = hashedPassword;
     }

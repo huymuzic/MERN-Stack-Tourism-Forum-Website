@@ -10,7 +10,6 @@ import { getAvatarUrl } from '../../../utils/getAvar';
 
 
 function getSvg(svg) {
-    console.log("🚀 ~ getSvg ~ svg:", svg)
     const _svg = {
         name: '',
         url: '',
@@ -27,13 +26,11 @@ function getSvg(svg) {
     if (_svg.name.length > 18) {
         _svg.name = _svg.name.substring(0, 15) + '...';
     }
-    console.log(_svg.url);
     return _svg;
 }
 
 export default function PopUpUpdateProfile(props) {
     const [avatar, setAvatar] = useState(getAvatarUrl(props.user.avatar, baseUrl));
-    console.log("🚀 ~ PopUpUpdateProfile ~ avatar:", avatar)
     const [dirtyAvatar, setDirtyAvatar] = useState(false);
 
     function handleFileChange(e) {
