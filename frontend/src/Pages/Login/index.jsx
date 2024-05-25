@@ -53,9 +53,7 @@ function Login() {
           setSuccessMsg(true);
         }
         navigate("/");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        window.location.reload();
       }
     } catch (error) {
       pushError("Something went wrong!");

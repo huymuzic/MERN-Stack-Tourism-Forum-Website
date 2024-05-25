@@ -13,11 +13,15 @@ import {
   getTopDestinations,
   getAllTour,
   getListTour,
-   unhideTour, 
-   hideTour
+  unhideTour,
+  hideTour,
 } from "../controllers/tourController.js";
-import { verifyAdmin, verifyUser , verifyStatusChange} from "../utils/verifyToken.js";
-import { postGfs } from '../utils/gridfsconfig.js';
+import {
+  verifyAdmin,
+  verifyUser,
+  verifyStatusChange,
+} from "../utils/verifyToken.js";
+import { postGfs } from "../utils/gridfsconfig.js";
 const router = express.Router();
 import { uploadAndResizeMiddleware } from "../utils/uploadAndResize.js";
 // Configure multer for file uploads
@@ -28,7 +32,6 @@ router.delete("/:id", verifyAdmin, deleteTour);
 
 router.get("/:id", getSingleTour);
 router.get("/images/:id", async (req, res) => {
-  console.log(req.params.id);
   try {
     const readStream = postGfs.openDownloadStream(
       new mongoose.Types.ObjectId(req.params.id)

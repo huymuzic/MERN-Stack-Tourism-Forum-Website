@@ -4,7 +4,7 @@ import Layout from "./components/Layout/Layout";
 import { useUser } from "./utils/UserContext";
 import { pushSuccess } from "./components/Toast";
 import { useTheme } from "./theme/Theme";
-import CookieBanner from "./Pages/Home/components/CookieBanner/index";
+import TermsPrivacyBanner from "./Pages/CookieBanner/TermsPrivacyBanner";
 import { baseUrl } from "./config";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -56,7 +56,7 @@ function App() {
     <>
       <style>{theme}</style>
       <Layout isLoading={isLoading} />
-      <CookieBanner />
+      <TermsPrivacyBanner />
     </>
   );
 }
