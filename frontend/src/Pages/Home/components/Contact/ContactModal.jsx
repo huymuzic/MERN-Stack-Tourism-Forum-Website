@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "./contact-modal.css";
 import { pushError, pushSuccess } from "../../../../components/Toast";
@@ -12,16 +12,6 @@ const ContactModal = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { color, themeMode } = useTheme();
-
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash === "#contact") {
-      const element = document.getElementById("contact");
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, []);
 
   const validateForm = () => {
     const errors = [];
