@@ -25,7 +25,6 @@ router.delete("/:id", verifyAdmin, deleteTour);
 
 router.get("/:id", getSingleTour);
 router.get("/images/:id", async (req, res) => {
-  console.log(req.params.id);
   try {
     const readStream = postGfs.openDownloadStream(
       new mongoose.Types.ObjectId(req.params.id)

@@ -24,7 +24,6 @@ export const uploadAndResizeMiddleware = async (req, res, next) => {
       if (!req.file) {
         return next(); // No file uploaded, skip resizing
       }
-      console.log(req.file.buffer);
       try {
         // Resize the uploaded image using Sharp
         const buffer = await sharp(req.file.buffer)

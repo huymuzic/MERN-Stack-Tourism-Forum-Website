@@ -34,7 +34,6 @@ export const updateUser = async (req, res) => {
   const id = req.params.id;
   try {
     if (req.body.password) {
-      console.log("??");
       const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
       req.body.password = hashedPassword;
     }
@@ -137,8 +136,6 @@ async function updateMissingAvatars() {
 
       await user.save(); // Save the updated user document
     }
-
-    console.log("Successfully updated missing avatars and names.");
   } catch (err) {
     console.warn("Error updating missing avatars:", err);
   }
@@ -178,8 +175,8 @@ export const getAllUser = async (req, res) => {
 };
 
 export const checkPassword = async (req, res) => {
-  const { password } = req.body; 
-  const userId = req.user.id; 
+  const { password } = req.body;
+  const userId = req.user.id;
 
   try {
     const user = await User.findById(userId);
