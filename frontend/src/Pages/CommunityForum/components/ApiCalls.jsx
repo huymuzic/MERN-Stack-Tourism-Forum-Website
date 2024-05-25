@@ -18,7 +18,10 @@ export async function handleLike(postId, setPost, userId) {
 
       const responseBody = await response.json();
 
-      setPost(responseBody.post);
+      populateImages(responseBody.post.images).then((images) => {
+         responseBody.post.images = images;
+         setPost(responseBody.post);
+      });
       pushSuccess(`Post ${responseBody.post.likes.includes(userId) ? '' : 'un'}liked`)
    } catch (error) {
       pushError('Unable to like post')
@@ -68,8 +71,11 @@ export async function replyTopic(id, content, images, setPost, nav, close) {
       }
 
       const responseBody = await response.json();
-      setPost(responseBody.reply)
       nav(`/forum/p/${responseBody.reply._id}`)
+      populateImages(responseBody.reply.images).then((images) => {
+         responseBody.reply.images = images;
+         setPost(responseBody.reply);
+      });
       close();
       pushSuccess('Replied to post');
    } catch (error) {
