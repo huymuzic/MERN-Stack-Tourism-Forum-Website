@@ -8,7 +8,6 @@ import { getAvatarUrl } from "../../utils/getAvar.js";
 import { pushError, pushSuccess } from "../Toast";
 import { useTheme } from "../../theme/Theme.jsx";
 import { baseUrl, environment } from "../../config/index.js";
-import CircularProgress from "../CircularProgress.jsx";
 import ToggleTheme from "./components/ToggleTheme/index.jsx";
 
 const Header = () => {
@@ -122,7 +121,7 @@ const Header = () => {
   return (
     <>
       {loading ? (
-        <CircularProgress />
+        <></>
       ) : (
         <>
           <Navbar

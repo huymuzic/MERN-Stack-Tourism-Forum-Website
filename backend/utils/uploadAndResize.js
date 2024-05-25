@@ -6,27 +6,22 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Use memory storage for multer
 const storage = multer.memoryStorage();
 
-// Configure for single file upload with field name "photo"
 const upload = multer({ storage: storage }).single("photo");
 
-// Middleware to upload and resize image
 export const uploadAndResizeMiddleware = async (req, res, next) => {
   try {
-    // Upload the file using multer
     await upload(req, res, async (err) => {
       if (err) {
-        return next(err); // Propagate upload errors
+        return next(err);
       }
 
       if (!req.file) {
-        return next(); // No file uploaded, skip resizing
+        return next();
       }
       console.log(req.file.buffer);
       try {
-        // Resize the uploaded image using Sharp
         const buffer = await sharp(req.file.buffer)
           .resize({ width: 1000, height: 667, fit: "contain" })
           .toBuffer();
@@ -44,19 +39,19 @@ export const uploadAndResizeMiddleware = async (req, res, next) => {
         uploadStream.end(buffer);
 
         uploadStream.on("finish", () => {
-          req.file.id = uploadStream.id; // Store the file ID in the request object
-          next(); // Proceed to the next middleware
+          req.file.id = uploadStream.id.toString();
+          next();
         });
 
         uploadStream.on("error", (error) => {
-          next(error); // Propagate errors
+          next(error);
         });
       } catch (err) {
         console.error(err);
-        return next(err); // Propagate resize errors
+        return next(err);
       }
     });
   } catch (err) {
-    next(err); // Propagate other errors
+    next(err);
   }
 };

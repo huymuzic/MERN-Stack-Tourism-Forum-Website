@@ -1,0 +1,40 @@
+.accept__btn {
+  color: #fff;
+  background-color: var(--primary-color) !important;
+  font-weight: 500 !important;
+  width: 100% !important;
+}
+
+.accept__btn:hover {
+  background-color: var(--dark-primary-color) !important;
+}
+
+.terms-privacy_p {
+  margin: 0;
+  color: var(--heading-color);
+  font-size: 1rem !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .terms-privacy_p {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .terms-privacy_p {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .terms-privacy_p {
+    font-size: 0.8rem !important;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .terms-privacy_p {
+    font-size: 0.7rem !important;
+  }
+}
