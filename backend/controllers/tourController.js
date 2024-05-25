@@ -65,7 +65,6 @@ export const updateTour = async (req, res) => {
     const updateData = { ...req.body };
     if (req.file) {
       updateData.photo = req.file.id;
-      console.log("🚀 ~ uploadFiles ~ updateData:", updateData)
     }
     
     try {

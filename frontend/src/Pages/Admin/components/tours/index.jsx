@@ -84,8 +84,6 @@ export default function ToursList() {
     url.searchParams.append("search", filter.searchValue);
     url.searchParams.append("searchType", filter.searchType);
 
-    console.log(url.toString()); // Log the URL to check query parameters
-
     try {
       const response = await fetch(url, {
         credentials: "include",
@@ -124,13 +122,11 @@ export default function ToursList() {
       formData.append("ageRange", partialTourUpdate.ageRange);
       formData.append("duration", partialTourUpdate.duration);
       if (partialTourUpdate.photo) {
-        console.log(true);
         formData.append("photo", partialTourUpdate.photo);
       }
       for (let pair of formData.entries()) {
         console.log(`${pair[0]}, ${pair[1]}`);
       }
-      console.log("🚀 ~ handleUpdateTour ~ formData:", formData);
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
@@ -145,7 +141,7 @@ export default function ToursList() {
         throw new Error("Failed to edit tour");
       }
     } catch (error) {
-      console.log("🚀 ~ handleUpdateTour ~ error:", error);
+      pushError(error)
       pushError("Failed to edit tour");
     }
   };

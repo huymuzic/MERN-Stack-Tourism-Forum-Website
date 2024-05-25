@@ -98,9 +98,6 @@ const ForumHeader = ({ children }) => {
         method: "GET",
         credentials: "include",
       });
-
-      console.log("Logout response:", response);
-
       if (response.ok) {
         pushSuccess("Logged out successfully");
         localStorage.removeItem("accessToken");

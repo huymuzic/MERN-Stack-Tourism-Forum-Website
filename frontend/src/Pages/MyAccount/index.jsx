@@ -71,7 +71,7 @@ export default function MyAccount() {
         );
       }
     } catch (error) {
-      console.log("🚀 ~ handleVerifyPassword ~ error:", error);
+     pushError(error);
     }
   };
   const handleActivateConfirm = async () => {
@@ -230,7 +230,7 @@ export default function MyAccount() {
       setAvatar(getAvatarUrl(data.data.avatar, baseUrl));
       setUserProfile(data.data);
     } catch (error) {
-      console.log("🚀 ~ fetchUser ~ error:", error);
+      pushError(error);
     } finally {
       setLoading(false);
     }
