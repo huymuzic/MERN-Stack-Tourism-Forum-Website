@@ -121,18 +121,17 @@ export default function ToursList() {
       formData.append("price", partialTourUpdate.price);
       formData.append("ageRange", partialTourUpdate.ageRange);
       formData.append("duration", partialTourUpdate.duration);
+      formData.append("featured", partialTourUpdate.featured); // Include featured field
       if (partialTourUpdate.photo) {
         formData.append("photo", partialTourUpdate.photo);
       }
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}, ${pair[1]}`);
-      }
+  
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
         body: formData,
       });
-
+  
       if (response.ok) {
         fetchTours();
         pushSuccess("Edit tour successfully");
@@ -141,10 +140,10 @@ export default function ToursList() {
         throw new Error("Failed to edit tour");
       }
     } catch (error) {
-      pushError(error)
       pushError("Failed to edit tour");
     }
   };
+  
 
   const handleAddTour = async ({ tour, avatar }) => {
     try {
@@ -155,16 +154,17 @@ export default function ToursList() {
       formData.append("price", tour.price);
       formData.append("ageRange", tour.ageRange);
       formData.append("duration", tour.duration);
+      formData.append("featured", tour.featured);
       if (avatar) {
         formData.append("photo", avatar);
       }
-
+  
       const response = await fetch(`${baseUrl}/api/v1/tours`, {
         method: "POST",
         credentials: "include",
         body: formData,
       });
-
+  
       if (response.ok) {
         fetchTours(); // Refresh the tour list after successful addition
         pushSuccess("Added new tour successfully");
