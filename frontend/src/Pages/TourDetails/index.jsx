@@ -13,7 +13,7 @@ import { pushError, pushSuccess } from "../../components/Toast";
 import { useUser } from "../../utils/UserContext";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import useFetch from "../../hooks/useFetch.jsx";
-import { baseUrl, environment } from "../../config/index.js";
+import { baseUrl } from "../../config/index.js";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../theme/Theme.jsx";
 
@@ -54,7 +54,6 @@ const TourDetails = () => {
   // format date
   const options = { day: "numeric", month: "long", year: "numeric" };
 
-  // submit request to the server
   const submitHandler = async (e) => {
     e.preventDefault();
     const reviewText = reviewMsgRef.current.value;
@@ -88,6 +87,7 @@ const TourDetails = () => {
         setReviewsArray([...reviewsArray, newReview.data]);
         setReviewCount(reviewCount + 1);
         setTourRating(null);
+        reviewMsgRef.current.value = "";
       } else {
         throw new Error("Failed to submit review");
       }
