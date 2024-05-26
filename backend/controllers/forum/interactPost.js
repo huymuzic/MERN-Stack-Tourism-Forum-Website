@@ -139,7 +139,8 @@ export async function edit(req, res) {
          const removed = JSON.parse(req.body.removed);
          post.images = post.images.filter(image => !removed.includes(image.toString()));
 
-         removed.length > 0 && removed.forEach(id => {
+         removed.forEach(id => {
+            if (id === null) return;
             try {
                postGfs.delete(new mongoose.Types.ObjectId(id));
             } catch (error) {
