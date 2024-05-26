@@ -71,10 +71,10 @@ export async function replyTopic(id, content, images, setPost, nav, close) {
       }
 
       const responseBody = await response.json();
-      nav(`/forum/p/${responseBody.reply._id}`)
-      populateImages(responseBody.reply.images).then((images) => {
-         responseBody.reply.images = images;
-         setPost(responseBody.reply);
+      nav(`/forum/p/${responseBody.repId}`)
+      populateImages(responseBody.parentPost.images).then((images) => {
+         responseBody.parentPost.images = images;
+         setPost(responseBody.parentPost);
       });
       close();
       pushSuccess('Replied to post');
