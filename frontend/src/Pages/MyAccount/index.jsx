@@ -18,6 +18,7 @@ import PopUpEditPassword from "./components/PopUpEditPassword";
 import { baseUrl } from "../../config";
 import color from "../../theme/Color";
 import { useNavigate } from "react-router-dom";
+import { set } from "mongoose";
 
 export const defaultSettingTheme = {
   primary: color.primary,
@@ -49,6 +50,15 @@ export default function MyAccount() {
     (item) => item.Value === userProfile.status
   );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
+
+    if (!hasReloaded) {
+      sessionStorage.setItem("hasReloaded", "true");
+      window.location.reload();
+    }
+  }, []);
 
   const handleChangePassword = async ({ currentPassword, newPassword }) => {
     popUpEditPassword.onClose();
@@ -222,7 +232,6 @@ export default function MyAccount() {
 
       if (!response.ok) {
         pushError("Failed to get user");
-        setLoading(false);
         return;
       }
 

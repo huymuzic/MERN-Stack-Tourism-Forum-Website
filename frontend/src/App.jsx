@@ -41,7 +41,7 @@ function App() {
 
   useEffect(() => {
     const handlePushSuccess = async () => {
-      if (user && !localStorage.getItem("loggedInBefore")) {
+      if (user && user.name && !localStorage.getItem("loggedInBefore")) {
         if (!isLoading) {
           pushSuccess(`Welcome back, ${user.name}!`);
           localStorage.setItem("loggedInBefore", "true");
@@ -50,7 +50,7 @@ function App() {
     };
 
     handlePushSuccess();
-  }, [user]);
+  }, [user, isLoading]);
 
   return (
     <>
