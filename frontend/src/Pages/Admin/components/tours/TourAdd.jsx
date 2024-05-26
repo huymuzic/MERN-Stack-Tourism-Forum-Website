@@ -267,19 +267,25 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                     },
                   }}
                   render={({ field, fieldState: { error } }) => (
-                    <FloatingLabel label="Price">
-                      <Form.Control
-                        {...field}
-                        type="number"
-                        placeholder="Price"
-                      />
-                      {error && (
-                        <div className="text-danger">{error.message}</div>
-                      )}
-                    </FloatingLabel>
+                    <>
+                      <FloatingLabel label="Price">
+                        <Form.Control
+                          {...field}
+                          type="number"
+                          placeholder="Price"
+                        />
+                      </FloatingLabel>
+                    </>
                   )}
                 />
               </InputGroup>
+              <Controller
+                name="price"
+                control={control}
+                render={({ fieldState: { error } }) =>
+                  error && <div className="text-danger">{error.message}</div>
+                }
+              />
             </Col>
             <Col>
               <InputGroup>
@@ -294,20 +300,26 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                     },
                   }}
                   render={({ field, fieldState: { error } }) => (
-                    <FloatingLabel label="Duration">
-                      <Form.Control
-                        {...field}
-                        type="number"
-                        placeholder="Duration"
-                      />
-                      {error && (
-                        <div className="text-danger">{error.message}</div>
-                      )}
-                    </FloatingLabel>
+                    <>
+                      <FloatingLabel label="Duration">
+                        <Form.Control
+                          {...field}
+                          type="number"
+                          placeholder="Duration"
+                        />
+                      </FloatingLabel>
+                      <InputGroup.Text>days</InputGroup.Text>
+                    </>
                   )}
                 />
-                <InputGroup.Text>days</InputGroup.Text>
               </InputGroup>
+              <Controller
+                name="duration"
+                control={control}
+                render={({ fieldState: { error } }) =>
+                  error && <div className="text-danger">{error.message}</div>
+                }
+              />
             </Col>
           </Row>
 
