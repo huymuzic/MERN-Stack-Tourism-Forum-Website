@@ -10,7 +10,6 @@ import "./index.css";
 import { pushError, pushSuccess } from "../../components/Toast";
 
 import ReCAPTCHA from "react-google-recaptcha";
-import TermsPrivacyBanner from "./TermsPrivacyBanner";
 import { baseUrl } from "../../config";
 
 function Register() {
@@ -253,7 +252,6 @@ function Register() {
           Submit
         </button>
       </form>
-      <TermsPrivacyBanner />
     </>
   );
 }

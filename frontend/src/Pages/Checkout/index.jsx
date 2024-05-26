@@ -153,11 +153,7 @@ const Checkout = () => {
                         height="60"
                         alt={bookingDetails.tourTitle}
                         className="image__E6xL"
-                        src={
-                          environment == "PROD"
-                            ? bookingDetails.photo
-                            : `./src${bookingDetails.photo}`
-                        }
+                        src={`${baseUrl}/api/v1/tours/images/${bookingDetails.photo}`}
                       />
                       <div className="title__container">
                         <span className="title_1">
