@@ -1,15 +1,23 @@
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import PopUpBase from '../../../../components/pop-up/PopUpBase';
-import { Controller, useForm } from 'react-hook-form';
-import { Button, FloatingLabel, Form, Stack, InputGroup, Row, Col } from 'react-bootstrap';
-import { pushError } from '../../../../components/Toast';
-import { TiDelete } from 'react-icons/ti';
-import { FaUpload } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import PopUpBase from "../../../../components/pop-up/PopUpBase";
+import { Controller, useForm } from "react-hook-form";
+import {
+  Button,
+  FloatingLabel,
+  Form,
+  Stack,
+  InputGroup,
+  Row,
+  Col,
+} from "react-bootstrap";
+import { pushError } from "../../../../components/Toast";
+import { TiDelete } from "react-icons/ti";
+import { FaUpload } from "react-icons/fa";
 
 export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
-  const [avatar, setAvatar] = useState('');
-  const [avatarPreview, setAvatarPreview] = useState('');
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState("");
   const [dirtyAvatar, setDirtyAvatar] = useState(false);
 
   function handleFileChange(e) {
@@ -18,15 +26,15 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
 
     if (!file) return;
     if (!file.type.match(/svg|png|jpeg|jpg|gif/)) {
-      pushError('File type is not supported');
+      pushError("File type is not supported");
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      pushError('Maximum file size is 10MB');
+      pushError("Maximum file size is 10MB");
       return;
     }
-    
+
     setAvatar(file);
     setAvatarPreview(URL.createObjectURL(file));
   }
@@ -36,9 +44,13 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
     reset,
     control,
     watch,
+    setValue,
     formState: { isValid, isDirty },
   } = useForm({
-    mode: 'all',
+    mode: "all",
+    defaultValues: {
+      featured: false, // Set default value for featured to false
+    },
   });
 
   const handleConfirm = (data) => {
@@ -49,6 +61,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       price: parseFloat(data.price),
       ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
+      featured: data.featured, // Include featured field
     };
 
     onConfirm({ tour, avatar: dirtyAvatar ? avatar : null });
@@ -57,21 +70,30 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
   useEffect(() => {
     if (!open) return;
     reset({
-      title: '',
-      country: '',
-      city: '',
-      price: '',
-      ageFrom: '',
-      ageTo: '',
-      duration: '',
+      title: "",
+      country: "",
+      city: "",
+      price: "",
+      ageFrom: "",
+      ageTo: "",
+      duration: "",
+      featured: false, // Reset featured to false
     });
-    setAvatar('');
-    setAvatarPreview('');
+    setAvatar("");
+    setAvatarPreview("");
     setDirtyAvatar(false);
   }, [open, reset]);
 
-  const allFields = watch(['title', 'country', 'city', 'price', 'ageFrom', 'ageTo', 'duration']);
-  const allFieldsFilled = allFields.every(field => field);
+  const allFields = watch([
+    "title",
+    "country",
+    "city",
+    "price",
+    "ageFrom",
+    "ageTo",
+    "duration",
+  ]);
+  const allFieldsFilled = allFields.every((field) => field);
 
   const disabled = !(isValid && (isDirty || dirtyAvatar) && allFieldsFilled);
 
@@ -87,8 +109,12 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       hideClose
       hideConfirm
       customActions={
-        <Stack direction='horizontal' className="w-100 justify-content-between">
-          <Button style={{ width: "150px" }} variant="secondary" onClick={onClose}>
+        <Stack direction="horizontal" className="w-100 justify-content-between">
+          <Button
+            style={{ width: "150px" }}
+            variant="secondary"
+            onClick={onClose}
+          >
             Cancel
           </Button>
 
@@ -103,31 +129,55 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
         </Stack>
       }
       desc={
-        <Stack gap={3}>
-          <Stack direction='horizontal' gap={2} style={{ borderRadius: '10px', border: '1px dashed #C5C5C5', padding: '16px', alignItems: "center" }}>
+        <Stack gap={2}>
+          <Stack
+            direction="horizontal"
+            gap={2}
+            style={{
+              borderRadius: "10px",
+              border: "1px dashed #C5C5C5",
+              padding: "16px",
+              alignItems: "center",
+            }}
+          >
             <Stack>
               {avatarPreview ? (
-                <img src={avatarPreview} alt="" style={{ height: 40, maxHeight: 40 }} />
+                <img
+                  src={avatarPreview}
+                  alt=""
+                  style={{ height: 40, maxHeight: 40 }}
+                />
               ) : (
-                <div style={{ display: "flex", width: 32, height: 32, borderRadius: '100%', backgroundColor: '#EEEEEE', justifyContent: 'center', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    width: 32,
+                    height: 32,
+                    borderRadius: "100%",
+                    backgroundColor: "#EEEEEE",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <FaUpload />
                 </div>
               )}
             </Stack>
             <Stack flex={1} height={40} justifyContent="center" maxHeight={40}>
               {avatar ? (
-                <Stack direction='horizontal' gap={1}>
-                  <p className='body-1'>{avatar.name}</p>
+                <Stack direction="horizontal" gap={1}>
+                  <p className="body-1">{avatar.name}</p>
                   <Button
                     variant="outline-danger"
                     size="sm"
                     onClick={() => {
-                      setAvatar('');
-                      setAvatarPreview('');
+                      setAvatar("");
+                      setAvatarPreview("");
                       setDirtyAvatar(false);
-                      const inputElement = document.getElementById('upload-input');
+                      const inputElement =
+                        document.getElementById("upload-input");
                       if (inputElement) {
-                        inputElement.value = '';
+                        inputElement.value = "";
                       }
                     }}
                   >
@@ -137,18 +187,23 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
               ) : (
                 <>
                   <h6>Upload logo</h6>
-                  <p className="body-2" style={{ color: 'gray' }}>
+                  <p className="body-2" style={{ color: "gray" }}>
                     SVG, PNG, JPG, GIF | 10MB max.
                   </p>
                 </>
               )}
             </Stack>
-            <Button variant="outline-primary" as="label" size="sm" style={{ fontSize: 12, padding: 8 }}>
+            <Button
+              variant="outline-primary"
+              as="label"
+              size="sm"
+              style={{ fontSize: 12, padding: 8 }}
+            >
               Upload Avatar
               <input
                 type="file"
                 accept=".svg, .png, .jpg, .gif"
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
                 onChange={handleFileChange}
               />
             </Button>
@@ -213,8 +268,14 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <FloatingLabel label="Price">
-                      <Form.Control {...field} type="number" placeholder="Price" />
-                      {error && <div className="text-danger">{error.message}</div>}
+                      <Form.Control
+                        {...field}
+                        type="number"
+                        placeholder="Price"
+                      />
+                      {error && (
+                        <div className="text-danger">{error.message}</div>
+                      )}
                     </FloatingLabel>
                   )}
                 />
@@ -234,8 +295,14 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <FloatingLabel label="Duration">
-                      <Form.Control {...field} type="number" placeholder="Duration" />
-                      {error && <div className="text-danger">{error.message}</div>}
+                      <Form.Control
+                        {...field}
+                        type="number"
+                        placeholder="Duration"
+                      />
+                      {error && (
+                        <div className="text-danger">{error.message}</div>
+                      )}
                     </FloatingLabel>
                   )}
                 />
@@ -252,8 +319,14 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                 rules={{ required: "From Age is required" }}
                 render={({ field, fieldState: { error } }) => (
                   <FloatingLabel label="From Age">
-                    <Form.Control {...field} type="number" placeholder="From Age" />
-                    {error && <div className="text-danger">{error.message}</div>}
+                    <Form.Control
+                      {...field}
+                      type="number"
+                      placeholder="From Age"
+                    />
+                    {error && (
+                      <div className="text-danger">{error.message}</div>
+                    )}
                   </FloatingLabel>
                 )}
               />
@@ -265,13 +338,35 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                 rules={{ required: "To Age is required" }}
                 render={({ field, fieldState: { error } }) => (
                   <FloatingLabel label="To Age">
-                    <Form.Control {...field} type="number" placeholder="To Age" />
-                    {error && <div className="text-danger">{error.message}</div>}
+                    <Form.Control
+                      {...field}
+                      type="number"
+                      placeholder="To Age"
+                    />
+                    {error && (
+                      <div className="text-danger">{error.message}</div>
+                    )}
                   </FloatingLabel>
                 )}
               />
             </Col>
           </Row>
+
+          <Controller
+            name="featured"
+            control={control}
+            render={({ field }) => (
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  label="Featured"
+                  {...field}
+                  checked={field.value}
+                  disabled={!isValid} // Disable the checkbox if the form is not valid
+                />
+              </Form.Group>
+            )}
+          />
         </Stack>
       }
     />

@@ -18,10 +18,9 @@ export const createDestination = async (req, res) => {
       .json({ success: false, message: "Failed to create. Try again" });
   }
 };
-
 export const createTour = async (req, res) => {
   try {
-    const { title, country, city, price, ageRange, duration } = req.body;
+    const { title, country, city, price, ageRange, duration, featured } = req.body;
     if (!title || !country || !city || !price || !ageRange || !duration) {
       return res
         .status(400)
@@ -35,6 +34,7 @@ export const createTour = async (req, res) => {
       price,
       ageRange,
       duration,
+      featured: featured || false,
       photo: req.file ? req.file.id : null,
     });
 
@@ -49,7 +49,6 @@ export const createTour = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 export const updateTour = async (req, res) => {
   const id = req.params.id;
   const updateData = { ...req.body };
