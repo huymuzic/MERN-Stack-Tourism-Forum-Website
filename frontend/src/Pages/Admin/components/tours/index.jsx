@@ -11,7 +11,7 @@ import CustomAutocomplete from "../../../../components/CustomAutocomplete/Custom
 import { baseUrl } from "../../../../config";
 import PopUpAddTour from "./TourAdd";
 
-const forumPostSearchType = [
+const tourSearchType = [
   {
     id: 1,
     name: "TourName",
@@ -34,7 +34,7 @@ export default function ToursList() {
   const [filter, setFilter] = useState({
     page: 1,
     searchValue: "",
-    searchType: forumPostSearchType[0].value, // Initialize searchType
+    searchType: tourSearchType[0].value, // Initialize searchType
     status: undefined,
   });
   const [paging, setPaging] = useState({
@@ -50,7 +50,7 @@ export default function ToursList() {
   const handleResetFilter = () => {
     setFilter({
       searchValue: "",
-      searchType: forumPostSearchType[0].value,
+      searchType: tourSearchType[0].value,
       page: 1,
       status: undefined,
     });
@@ -93,7 +93,7 @@ export default function ToursList() {
       });
 
       if (!response.ok) {
-        pushError("Failed to get list user");
+        pushError("Failed to get list tours");
         return;
       }
 
@@ -118,14 +118,12 @@ export default function ToursList() {
       formData.append("title", partialTourUpdate.title);
       formData.append("country", partialTourUpdate.country);
       formData.append("city", partialTourUpdate.city);
+      formData.append("description", partialTourUpdate.description);
       formData.append("price", partialTourUpdate.price);
       formData.append("ageRange", partialTourUpdate.ageRange);
       formData.append("duration", partialTourUpdate.duration);
       if (partialTourUpdate.photo) {
         formData.append("photo", partialTourUpdate.photo);
-      }
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}, ${pair[1]}`);
       }
       const response = await fetch(url, {
         method: "PUT",
@@ -141,7 +139,7 @@ export default function ToursList() {
         throw new Error("Failed to edit tour");
       }
     } catch (error) {
-      pushError(error)
+      pushError(error);
       pushError("Failed to edit tour");
     }
   };
@@ -152,6 +150,7 @@ export default function ToursList() {
       formData.append("title", tour.title);
       formData.append("country", tour.country);
       formData.append("city", tour.city);
+      formData.append("description", tour.description);
       formData.append("price", tour.price);
       formData.append("ageRange", tour.ageRange);
       formData.append("duration", tour.duration);
@@ -245,7 +244,7 @@ export default function ToursList() {
                 setFilter((prev) => ({ ...prev, searchType: e.target.value }));
               }}
             >
-              {forumPostSearchType.map((type) => (
+              {tourSearchType.map((type) => (
                 <option key={type.value} value={type.value}>
                   {type.name}
                 </option>

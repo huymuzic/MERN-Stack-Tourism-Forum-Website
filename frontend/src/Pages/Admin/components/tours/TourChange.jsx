@@ -1,21 +1,29 @@
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import PopUpBase from '../../../../components/pop-up/PopUpBase';
-import { Controller, useForm } from 'react-hook-form';
-import { Button, FloatingLabel, Form, Stack, InputGroup, Row, Col } from 'react-bootstrap';
-import { pushError } from '../../../../components/Toast';
-import { TiDelete } from 'react-icons/ti';
-import { FaUpload } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import PopUpBase from "../../../../components/pop-up/PopUpBase";
+import { Controller, useForm } from "react-hook-form";
+import {
+  Button,
+  FloatingLabel,
+  Form,
+  Stack,
+  InputGroup,
+  Row,
+  Col,
+} from "react-bootstrap";
+import { pushError } from "../../../../components/Toast";
+import { TiDelete } from "react-icons/ti";
+import { FaUpload } from "react-icons/fa";
 import { baseUrl } from "../../../../config";
 
 function getSvg(svg) {
   const _svg = {
-    name: '',
-    url: '',
+    name: "",
+    url: "",
   };
 
-  if (typeof svg === 'string') {
-    _svg.name = svg.split('/').pop() ?? '';
+  if (typeof svg === "string") {
+    _svg.name = svg.split("/").pop() ?? "";
     _svg.url = svg;
   } else {
     _svg.name = svg.name;
@@ -27,7 +35,13 @@ function getSvg(svg) {
 
 function UploadIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="none" viewBox="0 0 16 15">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="15"
+      fill="none"
+      viewBox="0 0 16 15"
+    >
       <path
         fill="currentColor"
         d="M4 5.833a3.667 3.667 0 017.272-.676.667.667 0 00.445.511 3.335 3.335 0 01-1.05 6.498.667.667 0 000 1.334 4.667 4.667 0 001.83-8.96 5.002 5.002 0 00-9.826 1.493A4 4 0 004.667 13.5a.667.667 0 000-1.334 2.667 2.667 0 01-1.034-5.125.667.667 0 00.401-.705A3.704 3.704 0 014 5.833z"
@@ -40,16 +54,22 @@ function UploadIcon() {
   );
 }
 
-export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, tour }) {
-  const [avatar, setAvatar] = useState('');
-  const [avatarPreview, setAvatarPreview] = useState('');
+export default function PopUpUpdateTour({
+  open,
+  onClose,
+  onConfirm,
+  isLoading,
+  tour,
+}) {
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState("");
   const [dirtyAvatar, setDirtyAvatar] = useState(false);
 
   useEffect(() => {
     if (tour?.photo) {
-      if (tour.photo.startsWith('/assets/')) {
-        setAvatar('');
-        setAvatarPreview('');
+      if (tour.photo.startsWith("/assets/")) {
+        setAvatar("");
+        setAvatarPreview("");
       } else {
         setAvatar(tour.photo);
         setAvatarPreview(`${baseUrl}/api/v1/tours/images/${tour.photo}`);
@@ -63,12 +83,12 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
 
     if (!file) return;
     if (!file.type.match(/svg|png|jpeg|jpg|gif/)) {
-      pushError('File type is not supported');
+      pushError("File type is not supported");
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      pushError('Maximum file size is 10MB');
+      pushError("Maximum file size is 10MB");
       return;
     }
     setAvatar(file);
@@ -82,7 +102,7 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
     watch,
     formState: { isValid, isDirty },
   } = useForm({
-    mode: 'all',
+    mode: "all",
   });
 
   const handleConfirm = (data) => {
@@ -91,6 +111,7 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
       title: data.title.trim(),
       country: data.country.trim(),
       city: data.city.trim(),
+      description: data.description.trim(),
       price: parseFloat(data.price),
       ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
@@ -102,12 +123,15 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
   useEffect(() => {
     if (!open) return;
 
-    const [ageFrom, ageTo] = tour.ageRange ? tour.ageRange.split('-') : ['', ''];
+    const [ageFrom, ageTo] = tour.ageRange
+      ? tour.ageRange.split("-")
+      : ["", ""];
 
     reset({
       title: tour.title,
       country: tour.country,
       city: tour.city,
+      description: tour.description,
       price: tour.price,
       ageFrom,
       ageTo,
@@ -116,8 +140,17 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
     setDirtyAvatar(false);
   }, [open, tour, reset]);
 
-  const allFields = watch(['title', 'country', 'city', 'price', 'ageFrom', 'ageTo', 'duration']);
-  const allFieldsFilled = allFields.every(field => field);
+  const allFields = watch([
+    "title",
+    "country",
+    "city",
+    "description",
+    "price",
+    "ageFrom",
+    "ageTo",
+    "duration",
+  ]);
+  const allFieldsFilled = allFields.every((field) => field);
 
   const disabled = !(isValid && (isDirty || dirtyAvatar) && allFieldsFilled);
 
@@ -133,8 +166,12 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
       hideClose
       hideConfirm
       customActions={
-        <Stack direction='horizontal' className="w-100 justify-content-between">
-          <Button style={{ width: "150px" }} variant="secondary" onClick={onClose}>
+        <Stack direction="horizontal" className="w-100 justify-content-between">
+          <Button
+            style={{ width: "150px" }}
+            variant="secondary"
+            onClick={onClose}
+          >
             Cancel
           </Button>
 
@@ -150,45 +187,78 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
       }
       desc={
         <Stack gap={3}>
-          <Stack direction='horizontal' gap={2} style={{ borderRadius: '10px', border: '1px dashed #C5C5C5', padding: '16px', alignItems: "center" }}>
+          <Stack
+            direction="horizontal"
+            gap={2}
+            style={{
+              borderRadius: "10px",
+              border: "1px dashed #C5C5C5",
+              padding: "16px",
+              alignItems: "center",
+            }}
+          >
             <Stack>
               {avatarPreview ? (
-                <img src={avatarPreview} alt="" style={{ height: 40, maxHeight: 40 }} />
+                <img
+                  src={avatarPreview}
+                  alt=""
+                  style={{ height: 40, maxHeight: 40 }}
+                />
               ) : (
-                <div style={{ display: "flex", width: 32, height: 32, borderRadius: '100%', backgroundColor: '#EEEEEE', justifyContent: 'center', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    width: 32,
+                    height: 32,
+                    borderRadius: "100%",
+                    backgroundColor: "#EEEEEE",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <FaUpload />
                 </div>
               )}
             </Stack>
             <Stack flex={1} height={40} justifyContent="center" maxHeight={40}>
               {avatar ? (
-                <Stack direction='horizontal' gap={1}>
-                  <p className='body-1'>{getSvg(avatar || '').name}</p>
-                  <TiDelete fontSize={24} style={{ cursor: "pointer" }} onClick={() => {
-                    setAvatar('');
-                    setAvatarPreview('');
-                    setDirtyAvatar(false);
-                    const inputElement = document.getElementById('upload-input');
-                    if (inputElement) {
-                      inputElement.value = '';
-                    }
-                  }} />
+                <Stack direction="horizontal" gap={1}>
+                  <p className="body-1">{getSvg(avatar || "").name}</p>
+                  <TiDelete
+                    fontSize={24}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setAvatar("");
+                      setAvatarPreview("");
+                      setDirtyAvatar(false);
+                      const inputElement =
+                        document.getElementById("upload-input");
+                      if (inputElement) {
+                        inputElement.value = "";
+                      }
+                    }}
+                  />
                 </Stack>
               ) : (
                 <>
                   <h6>Upload image</h6>
-                  <p className="body-2" style={{ color: 'gray' }}>
+                  <p className="body-2" style={{ color: "gray" }}>
                     SVG, PNG, JPG, GIF | 10MB max.
                   </p>
                 </>
               )}
             </Stack>
-            <Button variant="outline-primary" as="label" size="sm" style={{ fontSize: 12, padding: 8 }}>
+            <Button
+              variant="outline-primary"
+              as="label"
+              size="sm"
+              style={{ fontSize: 12, padding: 8 }}
+            >
               Upload Image
               <input
                 type="file"
                 accept=".svg, .png, .jpg, .gif"
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
                 onChange={handleFileChange}
               />
             </Button>
@@ -237,6 +307,24 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
             )}
           />
 
+          <Controller
+            name="description"
+            control={control}
+            rules={{
+              required: "Description is required",
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <FloatingLabel label="Description">
+                <Form.Control
+                  {...field}
+                  type="text"
+                  placeholder="Description"
+                />
+                {error && <div className="text-danger">{error.message}</div>}
+              </FloatingLabel>
+            )}
+          />
+
           <Row>
             <Col>
               <InputGroup>
@@ -253,8 +341,14 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <FloatingLabel label="Price">
-                      <Form.Control {...field} type="number" placeholder="Price" />
-                      {error && <div className="text-danger">{error.message}</div>}
+                      <Form.Control
+                        {...field}
+                        type="number"
+                        placeholder="Price"
+                      />
+                      {error && (
+                        <div className="text-danger">{error.message}</div>
+                      )}
                     </FloatingLabel>
                   )}
                 />
@@ -274,8 +368,14 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <FloatingLabel label="Duration">
-                      <Form.Control {...field} type="number" placeholder="Duration" />
-                      {error && <div className="text-danger">{error.message}</div>}
+                      <Form.Control
+                        {...field}
+                        type="number"
+                        placeholder="Duration"
+                      />
+                      {error && (
+                        <div className="text-danger">{error.message}</div>
+                      )}
                     </FloatingLabel>
                   )}
                 />
@@ -292,8 +392,14 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
                 rules={{ required: "From Age is required" }}
                 render={({ field, fieldState: { error } }) => (
                   <FloatingLabel label="From Age">
-                    <Form.Control {...field} type="number" placeholder="From Age" />
-                    {error && <div className="text-danger">{error.message}</div>}
+                    <Form.Control
+                      {...field}
+                      type="number"
+                      placeholder="From Age"
+                    />
+                    {error && (
+                      <div className="text-danger">{error.message}</div>
+                    )}
                   </FloatingLabel>
                 )}
               />
@@ -305,8 +411,14 @@ export default function PopUpUpdateTour({ open, onClose, onConfirm, isLoading, t
                 rules={{ required: "To Age is required" }}
                 render={({ field, fieldState: { error } }) => (
                   <FloatingLabel label="To Age">
-                    <Form.Control {...field} type="number" placeholder="To Age" />
-                    {error && <div className="text-danger">{error.message}</div>}
+                    <Form.Control
+                      {...field}
+                      type="number"
+                      placeholder="To Age"
+                    />
+                    {error && (
+                      <div className="text-danger">{error.message}</div>
+                    )}
                   </FloatingLabel>
                 )}
               />
@@ -327,6 +439,7 @@ PopUpUpdateTour.propTypes = {
     title: PropTypes.string.isRequired,
     country: PropTypes.string.isRequired,
     city: PropTypes.string,
+    description: PropTypes.string.isRequired,
     price: PropTypes.number,
     ageRange: PropTypes.string,
     duration: PropTypes.number,

@@ -21,8 +21,17 @@ export const createDestination = async (req, res) => {
 
 export const createTour = async (req, res) => {
   try {
-    const { title, country, city, price, ageRange, duration } = req.body;
-    if (!title || !country || !city || !price || !ageRange || !duration) {
+    const { title, country, city, description, price, ageRange, duration } =
+      req.body;
+    if (
+      !title ||
+      !country ||
+      !city ||
+      !description ||
+      !price ||
+      !ageRange ||
+      !duration
+    ) {
       return res
         .status(400)
         .json({ success: false, message: "Missing required fields" });
@@ -32,6 +41,7 @@ export const createTour = async (req, res) => {
       title,
       country,
       city,
+      description,
       price,
       ageRange,
       duration,

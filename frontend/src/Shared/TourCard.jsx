@@ -6,7 +6,7 @@ import { baseUrl } from "../config/index.js";
 import { useTheme } from "../theme/Theme";
 
 const TourCard = ({ tour }) => {
-  const { _id, title, country, city, price, photo, featured, reviews } = tour;
+  const { _id, title, country, price, photo, featured, reviews } = tour;
   const { color } = useTheme();
   const { totalRating, avgRating } = calculateAvgRating(reviews);
 

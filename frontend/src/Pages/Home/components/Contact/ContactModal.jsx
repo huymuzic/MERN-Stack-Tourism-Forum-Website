@@ -89,7 +89,7 @@ const ContactModal = () => {
         }}
         onSubmit={handleSubmit}
       >
-        <h3>GET IN TOUCH</h3>
+        <h3 tabIndex="0">GET IN TOUCH</h3>
         <FloatingLabel label="Full Name">
           <Form.Control
             type="text"
@@ -125,7 +125,12 @@ const ContactModal = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="How can we help you?"
         />
-        <button type="submit" disabled={loading} className="btn-primary">
+        <button
+          type="submit"
+          disabled={loading}
+          className="btn-primary"
+          tabIndex="0"
+        >
           {loading ? "Sending..." : "Send"}
         </button>
       </form>
