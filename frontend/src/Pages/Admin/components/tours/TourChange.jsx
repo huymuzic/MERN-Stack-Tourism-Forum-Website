@@ -111,11 +111,12 @@ export default function PopUpUpdateTour({
       title: data.title.trim(),
       country: data.country.trim(),
       city: data.city.trim(),
+      description: data.description.trim(),
       price: parseFloat(data.price),
       ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
       photo: dirtyAvatar ? avatar : tour.photo,
-      featured: data.featured || false, // Ensure featured is set correctly
+      featured: data.featured,
     };
     onConfirm(tourData);
   };
@@ -131,11 +132,12 @@ export default function PopUpUpdateTour({
       title: tour.title,
       country: tour.country,
       city: tour.city,
+      description: tour.description,
       price: tour.price,
       ageFrom,
       ageTo,
       duration: tour.duration,
-      featured: tour.featured || false, // Set featured field
+      featured: tour.featured,
     });
     setDirtyAvatar(false);
   }, [open, tour, reset]);
@@ -144,6 +146,7 @@ export default function PopUpUpdateTour({
     "title",
     "country",
     "city",
+    "description",
     "price",
     "ageFrom",
     "ageTo",
@@ -306,6 +309,24 @@ export default function PopUpUpdateTour({
             )}
           />
 
+          <Controller
+            name="description"
+            control={control}
+            rules={{
+              required: "Description is required",
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <FloatingLabel label="Description">
+                <Form.Control
+                  {...field}
+                  type="text"
+                  placeholder="Description"
+                />
+                {error && <div className="text-danger">{error.message}</div>}
+              </FloatingLabel>
+            )}
+          />
+
           <Row>
             <Col>
               <InputGroup>
@@ -416,7 +437,6 @@ export default function PopUpUpdateTour({
                   label="Featured"
                   {...field}
                   checked={field.value}
-                  disabled={!isValid} // Disable the checkbox if the form is not valid
                 />
               </Form.Group>
             )}
@@ -436,11 +456,12 @@ PopUpUpdateTour.propTypes = {
     title: PropTypes.string.isRequired,
     country: PropTypes.string.isRequired,
     city: PropTypes.string,
+    description: PropTypes.string.isRequired,
     price: PropTypes.number,
     ageRange: PropTypes.string,
     duration: PropTypes.number,
     photo: PropTypes.string,
-    featured: PropTypes.bool, // Add featured to PropTypes
+    featured: PropTypes.bool,
   }).isRequired,
   isLoading: PropTypes.bool,
 };

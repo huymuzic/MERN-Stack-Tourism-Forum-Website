@@ -9,15 +9,20 @@ import color from "../../../../theme/Color";
 import calculateAvgRating from "../../../../utils/avgRating";
 import { useState } from "react";
 import PopUpUpdateTour from "./TourChange";
-import { Form, Stack } from 'react-bootstrap';
+import { Form, Stack } from "react-bootstrap";
 
-const TourItem = ({ tour, handleUpdateTour, handleUnhideConfirm, handleHideConfirm }) => {
+const TourItem = ({
+  tour,
+  handleUpdateTour,
+  handleUnhideConfirm,
+  handleHideConfirm,
+}) => {
   const popUpChangeTour = usePopUp();
   const [avgRating, setAvgRating] = useState(calculateAvgRating(tour.reviews));
   const [isEditOpen, setEditOpen] = useState(false);
   const popUpActivate = usePopUp();
   const TourStatus = TourStatuses.find((item) => item.Value === tour.status);
-  
+
   const onChangeStatus = () => {
     popUpActivate.onClose();
     if (TourStatus.Value === "unhide") {
@@ -38,7 +43,9 @@ const TourItem = ({ tour, handleUpdateTour, handleUnhideConfirm, handleHideConfi
         <div className="d-flex justify-content-between align-items-start">
           <div>
             <Link to={`/tours/${tour._id}`} className="text-decoration-none">
-              <h5 className="card-title text-primary">{tour.title || "No title"}</h5>
+              <h5 className="card-title text-primary">
+                {tour.title || "No title"}
+              </h5>
             </Link>
             <div className="d-flex flex-column mt-2">
               <div className="d-flex flex-row align-items-center mb-2">
@@ -58,7 +65,8 @@ const TourItem = ({ tour, handleUpdateTour, handleUnhideConfirm, handleHideConfi
                   Reviews: {tour?.reviews.length} <br />
                 </small>
                 <small className="text-muted">
-                  Average Score: <i className="ri ri-star-s-fill text-warning"></i>
+                  Average Score:{" "}
+                  <i className="ri ri-star-s-fill text-warning"></i>
                   {avgRating.avgRating}
                 </small>
               </p>
@@ -66,7 +74,7 @@ const TourItem = ({ tour, handleUpdateTour, handleUnhideConfirm, handleHideConfi
           </div>
           <div className="d-flex flex-column align-items-end">
             <div className="d-flex mb-2">
-              <TourRatingBox status={avgRating.avgRating} className="me-2" /> 
+              <TourRatingBox status={avgRating.avgRating} className="me-2" />
               <TourStatusBox status={tour.status} />
             </div>
             <div className="d-flex align-items-center">
@@ -79,26 +87,38 @@ const TourItem = ({ tour, handleUpdateTour, handleUnhideConfirm, handleHideConfi
                   <FaEdit size={14} />
                 </button>
               </CustomTooltip>
-              <CustomTooltip text={TourStatus.Value === "unhide" ? "Hide" : "Unhide"} position="top">
+              <CustomTooltip
+                text={TourStatus.Value === "unhide" ? "Hide" : "Unhide"}
+                position="top"
+              >
                 <button
                   className="btn btn-sm btn-outline-secondary"
                   onClick={() => popUpActivate.setTrue()}
                   data-tip={TourStatus.Value === "unhide" ? "Hide" : "Unhide"}
                 >
-                  {TourStatus.Value === "unhide" ? <FaLock size={14} /> : <FaUnlock size={14} />}
+                  {TourStatus.Value === "unhide" ? (
+                    <FaLock size={14} />
+                  ) : (
+                    <FaUnlock size={14} />
+                  )}
                 </button>
               </CustomTooltip>
               <PopUpBase
                 {...popUpActivate}
                 onConfirm={onChangeStatus}
                 title="Change Tour Status Confirmation"
-                desc={`Are you sure you want to ${TourStatus.Value === "unhide" ? "hide" : "unhide"} this tour?`}
+                desc={`Are you sure you want to ${
+                  TourStatus.Value === "unhide" ? "hide" : "unhide"
+                } this tour?`}
               />
             </div>
           </div>
         </div>
         <hr />
-        <Link to={`/tours/${tour._id}`} className="btn btn-sm btn-outline-secondary">
+        <Link
+          to={`/tours/${tour._id}`}
+          className="btn btn-sm btn-outline-secondary"
+        >
           Read More...
         </Link>
 
@@ -192,9 +212,7 @@ export const TourStatuses = [
 ];
 
 export const TourStatusBox = ({ status }) => {
-  const TourStatus = TourStatuses.find(
-    (item) => status === item.Value
-  );
+  const TourStatus = TourStatuses.find((item) => status === item.Value);
   return (
     <div
       className="px-2 py-1 rounded"

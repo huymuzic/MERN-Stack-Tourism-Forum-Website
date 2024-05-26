@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { pushError, pushSuccess } from "../../components/Toast";
 import CircularProgress from "../../components/CircularProgress";
-import { baseUrl, environment } from "../../config";
+import { baseUrl } from "../../config";
 import "./index.css";
 import { useTheme } from "../../theme/Theme";
 
@@ -71,7 +71,7 @@ const Checkout = () => {
               <div
                 className="account-details"
                 style={{
-                  backgroundColor: themeMode == "light" ? "#f5f5f5" : "#212529",
+                  backgroundColor: themeMode == "light" ? "#fff" : "#212529",
                 }}
               >
                 <h2>Contact Details</h2>
@@ -124,7 +124,7 @@ const Checkout = () => {
                     <Form.Label>Special requirements</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="e.g wheel chair with nitro turbo"
+                      placeholder=""
                       name="specialRequirements"
                     />
                   </Form.Group>
@@ -142,7 +142,7 @@ const Checkout = () => {
               <div
                 className="checkout__container_1"
                 style={{
-                  backgroundColor: themeMode == "light" ? "#f5f5f5" : "#212529",
+                  backgroundColor: themeMode == "light" ? "#fff" : "#212529",
                 }}
               >
                 <div>
