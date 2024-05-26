@@ -125,7 +125,6 @@ export default function ToursList() {
       if (partialTourUpdate.photo) {
         formData.append("photo", partialTourUpdate.photo);
       }
-
       const response = await fetch(url, {
         method: "PUT",
         credentials: "include",
