@@ -19,21 +19,14 @@ export const uploadAndResizeMiddleware = async (req, res, next) => {
         return next();
       }
 
-      console.log("File uploaded:", req.file.originalname);
-
       try {
         const resizedBuffer = await sharp(req.file.buffer)
           .resize({ width: 1000, height: 667, fit: "contain" })
           .toBuffer();
 
-        console.log("Buffer length:", resizedBuffer.length);
-
-        const mongoClient = await MongoClient6.connect(
-          "mongodb+srv://huymarky05:testpass@backenddb.xy1qasp.mongodb.net/travel-forum?retryWrites=true&w=majority&appName=BackendDB"
-        );
+        const mongoClient = await MongoClient6.connect(process.env.MONGO_URI);
 
         const db = mongoClient.db();
-        console.log("Connected to MongoDB");
 
         const bucket = new GridFSBucket(db, {
           bucketName: "tourPhotos",
@@ -43,12 +36,9 @@ export const uploadAndResizeMiddleware = async (req, res, next) => {
           contentType: req.file.mimetype,
         });
 
-        console.log("Uploading file to GridFS...");
-
         uploadStream.end(resizedBuffer);
 
         uploadStream.on("finish", async () => {
-          console.log("Upload finished, file ID:", uploadStream.id.toString());
           req.file.id = uploadStream.id.toString();
           await mongoClient.close();
           next();

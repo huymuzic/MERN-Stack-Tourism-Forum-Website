@@ -116,6 +116,7 @@ export default function PopUpUpdateTour({
       ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
       photo: dirtyAvatar ? avatar : tour.photo,
+      featured: data.featured,
     };
     onConfirm(tourData);
   };
@@ -136,6 +137,7 @@ export default function PopUpUpdateTour({
       ageFrom,
       ageTo,
       duration: tour.duration,
+      featured: tour.featured,
     });
     setDirtyAvatar(false);
   }, [open, tour, reset]);
@@ -186,7 +188,7 @@ export default function PopUpUpdateTour({
         </Stack>
       }
       desc={
-        <Stack gap={3}>
+        <Stack gap={2}>
           <Stack
             direction="horizontal"
             gap={2}
@@ -424,6 +426,21 @@ export default function PopUpUpdateTour({
               />
             </Col>
           </Row>
+
+          <Controller
+            name="featured"
+            control={control}
+            render={({ field }) => (
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  label="Featured"
+                  {...field}
+                  checked={field.value}
+                />
+              </Form.Group>
+            )}
+          />
         </Stack>
       }
     />
@@ -444,6 +461,7 @@ PopUpUpdateTour.propTypes = {
     ageRange: PropTypes.string,
     duration: PropTypes.number,
     photo: PropTypes.string,
+    featured: PropTypes.bool,
   }).isRequired,
   isLoading: PropTypes.bool,
 };

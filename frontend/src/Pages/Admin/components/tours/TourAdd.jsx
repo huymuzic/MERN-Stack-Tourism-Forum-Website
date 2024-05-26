@@ -43,6 +43,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
     reset,
     control,
     watch,
+    setValue,
     formState: { isValid, isDirty },
   } = useForm({
     mode: "all",
@@ -57,6 +58,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       price: parseFloat(data.price),
       ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
+      featured: data.featured,
     };
 
     onConfirm({ tour, avatar: dirtyAvatar ? avatar : null });
@@ -73,6 +75,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       ageFrom: "",
       ageTo: "",
       duration: "",
+      featured: false,
     });
     setAvatar("");
     setAvatarPreview("");
@@ -125,7 +128,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
         </Stack>
       }
       desc={
-        <Stack gap={3}>
+        <Stack gap={2}>
           <Stack
             direction="horizontal"
             gap={2}
@@ -365,6 +368,21 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
               />
             </Col>
           </Row>
+
+          <Controller
+            name="featured"
+            control={control}
+            render={({ field }) => (
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  label="Featured"
+                  {...field}
+                  checked={field.value}
+                />
+              </Form.Group>
+            )}
+          />
         </Stack>
       }
     />

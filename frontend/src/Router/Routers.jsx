@@ -1,42 +1,25 @@
-import React, { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { routesConfig } from './routesConfig';
-import Sitemap from '../Pages/Sitemap';
+// src/Router/Routers.jsx
 
-const loadComponent = (componentPath) => {
-  return lazy(() =>
-    import(`../Pages/${componentPath}`).catch(() => import(`../Pages/${componentPath}`))
-  );
-};
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import routesConfig from "./routesConfig";
 
-const generateRoutes = (routes, parentPath = '') => {
+const generateRoutes = (routes, basePath = "") => {
   return routes.map((route, index) => {
-    const fullPath = parentPath ? `${parentPath}/${route.path}` : route.path;
-    const Component = loadComponent(route.component);
-
+    const fullPath = `${basePath}${route.path}`.replace("//", "/");
     if (route.children) {
       return (
-        <Route key={index} path={route.path} element={<Component />}>
-          <Route index element={<Navigate to={`${route.path}/${route.children[0].path}`} />} />
-          {generateRoutes(route.children, route.path)}
+        <Route path={fullPath} element={route.element} key={index}>
+          {generateRoutes(route.children, `${fullPath}/`)}
         </Route>
       );
     }
-    return <Route key={index} path={fullPath} element={<Component />} />;
+    return <Route path={fullPath} element={route.element} key={index} />;
   });
 };
 
 const Routers = () => {
-  return (
-    <Suspense >
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="*" element={<Navigate to="/home" />} />
-        {generateRoutes(routesConfig)}
-        <Route path="/sitemap" element={<Sitemap />} />
-      </Routes>
-    </Suspense>
-  );
+  return <Routes>{generateRoutes(routesConfig)}</Routes>;
 };
 
 export default Routers;
