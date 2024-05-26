@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 import CircularProgress from "../../components/CircularProgress";
 import BasePaginationList from "../../components/BasePaginationList";
 import "./index.css";
-import { baseUrl, environment } from "../../config";
+import { baseUrl } from "../../config";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../theme/Theme";
 
@@ -80,12 +80,17 @@ const PurchaseHistory = () => {
                     <span
                       className="title"
                       style={{
-                        color: themeMode == "light" ? "#000000" : "#fff",
+                        color: themeMode == "light" ? "#444444" : "#fff",
                       }}
                     >
                       <span className="tour__location d-flex align-items-center gap-1">
-                        <i className="ri ri-map-pin-line"></i> {item.city},{" "}
-                        {item.country}
+                        <i
+                          className="ri ri-map-pin-line"
+                          style={{
+                            color: themeMode == "light" ? "#faa935" : "#fff",
+                          }}
+                        ></i>{" "}
+                        {item.city}, {item.country}
                       </span>
                       {item.tourTitle}
                     </span>

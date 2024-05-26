@@ -12,7 +12,6 @@ import {
   Col,
 } from "react-bootstrap";
 import { pushError } from "../../../../components/Toast";
-import { TiDelete } from "react-icons/ti";
 import { FaUpload } from "react-icons/fa";
 
 export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
@@ -48,9 +47,6 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
     formState: { isValid, isDirty },
   } = useForm({
     mode: "all",
-    defaultValues: {
-      featured: false, // Set default value for featured to false
-    },
   });
 
   const handleConfirm = (data) => {
@@ -58,10 +54,11 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       title: data.title.trim(),
       country: data.country.trim(),
       city: data.city.trim(),
+      description: data.description.trim(),
       price: parseFloat(data.price),
       ageRange: `${data.ageFrom}-${data.ageTo}`,
       duration: parseInt(data.duration, 10),
-      featured: data.featured, // Include featured field
+      featured: data.featured,
     };
 
     onConfirm({ tour, avatar: dirtyAvatar ? avatar : null });
@@ -73,11 +70,12 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
       title: "",
       country: "",
       city: "",
+      description: "",
       price: "",
       ageFrom: "",
       ageTo: "",
       duration: "",
-      featured: false, // Reset featured to false
+      featured: false,
     });
     setAvatar("");
     setAvatarPreview("");
@@ -88,6 +86,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
     "title",
     "country",
     "city",
+    "description",
     "price",
     "ageFrom",
     "ageTo",
@@ -186,7 +185,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                 </Stack>
               ) : (
                 <>
-                  <h6>Upload logo</h6>
+                  <h6>Upload tour image</h6>
                   <p className="body-2" style={{ color: "gray" }}>
                     SVG, PNG, JPG, GIF | 10MB max.
                   </p>
@@ -199,7 +198,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
               size="sm"
               style={{ fontSize: 12, padding: 8 }}
             >
-              Upload Avatar
+              Upload Image
               <input
                 type="file"
                 accept=".svg, .png, .jpg, .gif"
@@ -247,6 +246,24 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
             render={({ field, fieldState: { error } }) => (
               <FloatingLabel label="City">
                 <Form.Control {...field} type="text" placeholder="City" />
+                {error && <div className="text-danger">{error.message}</div>}
+              </FloatingLabel>
+            )}
+          />
+
+          <Controller
+            name="description"
+            control={control}
+            rules={{
+              required: "Description is required",
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <FloatingLabel label="Description">
+                <Form.Control
+                  {...field}
+                  type="text"
+                  placeholder="Description"
+                />
                 {error && <div className="text-danger">{error.message}</div>}
               </FloatingLabel>
             )}
@@ -374,7 +391,6 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                   label="Featured"
                   {...field}
                   checked={field.value}
-                  disabled={!isValid} // Disable the checkbox if the form is not valid
                 />
               </Form.Group>
             )}

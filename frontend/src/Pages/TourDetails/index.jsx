@@ -29,8 +29,17 @@ const TourDetails = () => {
   const { color, themeMode } = useTheme();
   const { data: tour } = useFetch(`${baseUrl}/api/v1/tours/${id}`);
 
-  const { photo, title, price, reviews, country, city, duration, ageRange } =
-    tour || {};
+  const {
+    photo,
+    title,
+    price,
+    description,
+    reviews,
+    country,
+    city,
+    duration,
+    ageRange,
+  } = tour || {};
 
   useEffect(() => {
     if (tour && reviews) {
@@ -138,9 +147,7 @@ const TourDetails = () => {
                   <div className="d-flex flex-column align-items-start justify-content-center tour__extra-details">
                     <h5>Description</h5>
                     <div>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Corrupti ipsam dolorem provident ex earum quis, corporis
-                      quisquam eius quasi exercitationem.
+                      <p>{description}</p>
                     </div>
                     <span>
                       <i className="ri-money-dollar-circle-line "></i>from $
