@@ -342,19 +342,25 @@ export default function PopUpUpdateTour({
                     },
                   }}
                   render={({ field, fieldState: { error } }) => (
-                    <FloatingLabel label="Price">
-                      <Form.Control
-                        {...field}
-                        type="number"
-                        placeholder="Price"
-                      />
-                      {error && (
-                        <div className="text-danger">{error.message}</div>
-                      )}
-                    </FloatingLabel>
+                    <>
+                      <FloatingLabel label="Price">
+                        <Form.Control
+                          {...field}
+                          type="number"
+                          placeholder="Price"
+                        />
+                      </FloatingLabel>
+                    </>
                   )}
                 />
               </InputGroup>
+              <Controller
+                name="price"
+                control={control}
+                render={({ fieldState: { error } }) =>
+                  error && <div className="text-danger">{error.message}</div>
+                }
+              />
             </Col>
             <Col>
               <InputGroup>
@@ -369,20 +375,26 @@ export default function PopUpUpdateTour({
                     },
                   }}
                   render={({ field, fieldState: { error } }) => (
-                    <FloatingLabel label="Duration">
-                      <Form.Control
-                        {...field}
-                        type="number"
-                        placeholder="Duration"
-                      />
-                      {error && (
-                        <div className="text-danger">{error.message}</div>
-                      )}
-                    </FloatingLabel>
+                    <>
+                      <FloatingLabel label="Duration">
+                        <Form.Control
+                          {...field}
+                          type="number"
+                          placeholder="Duration"
+                        />
+                      </FloatingLabel>
+                      <InputGroup.Text>days</InputGroup.Text>
+                    </>
                   )}
                 />
-                <InputGroup.Text>days</InputGroup.Text>
               </InputGroup>
+              <Controller
+                name="duration"
+                control={control}
+                render={({ fieldState: { error } }) =>
+                  error && <div className="text-danger">{error.message}</div>
+                }
+              />
             </Col>
           </Row>
 
@@ -393,16 +405,18 @@ export default function PopUpUpdateTour({
                 control={control}
                 rules={{ required: "From Age is required" }}
                 render={({ field, fieldState: { error } }) => (
-                  <FloatingLabel label="From Age">
-                    <Form.Control
-                      {...field}
-                      type="number"
-                      placeholder="From Age"
-                    />
+                  <>
+                    <FloatingLabel label="From Age">
+                      <Form.Control
+                        {...field}
+                        type="number"
+                        placeholder="From Age"
+                      />
+                    </FloatingLabel>
                     {error && (
                       <div className="text-danger">{error.message}</div>
                     )}
-                  </FloatingLabel>
+                  </>
                 )}
               />
             </Col>
@@ -412,16 +426,18 @@ export default function PopUpUpdateTour({
                 control={control}
                 rules={{ required: "To Age is required" }}
                 render={({ field, fieldState: { error } }) => (
-                  <FloatingLabel label="To Age">
-                    <Form.Control
-                      {...field}
-                      type="number"
-                      placeholder="To Age"
-                    />
+                  <>
+                    <FloatingLabel label="To Age">
+                      <Form.Control
+                        {...field}
+                        type="number"
+                        placeholder="To Age"
+                      />
+                    </FloatingLabel>
                     {error && (
                       <div className="text-danger">{error.message}</div>
                     )}
-                  </FloatingLabel>
+                  </>
                 )}
               />
             </Col>
