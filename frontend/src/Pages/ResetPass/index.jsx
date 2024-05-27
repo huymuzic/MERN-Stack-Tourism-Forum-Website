@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState } from "react";
 import NotificationCard from "./NotificationCard";
 import { getAvatarUrl } from "../../utils/getAvar.js";
 import CircularProgress from "../../components/CircularProgress";
@@ -24,14 +24,11 @@ const ResetPassword = () => {
   const handleEmailSubmit = async () => {
     // API call to backend to send OTP
     setLoading(true);
-    const response = await fetch(
-      `${baseUrl}/api/v1/users/check`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier: email }),
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/v1/users/check`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identifier: email }),
+    });
     const check = await response.json();
     setLoading(false);
     const data = check.data;
@@ -49,14 +46,11 @@ const ResetPassword = () => {
 
   const handleVerifyOTP = async () => {
     // API call to backend to verify OTP
-    const response = await fetch(
-      `${baseUrl}/api/v1/users/otpChecking`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/v1/users/otpChecking`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    });
     const data = await response.json();
     if (data.success) {
       setCurrentStep(4);
@@ -75,14 +69,11 @@ const ResetPassword = () => {
       return;
     }
     // API call to reset the password
-    const response = await fetch(
-      `${baseUrl}/api/v1/users/reset-password`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, newPassword }),
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/v1/users/reset-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, newPassword }),
+    });
     const data = await response.json();
     if (data.success) {
       setCurrentStep(5);

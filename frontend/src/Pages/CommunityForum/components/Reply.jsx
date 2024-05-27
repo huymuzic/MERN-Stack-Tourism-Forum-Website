@@ -38,6 +38,10 @@ function Reply(props) {
       return () => window.removeEventListener('resize', updateHeight);
    }, [child, outerDivRef]);
 
+   if (child.status !== 'unarchived') {
+      return;
+   }
+
    return (
       <div ref={outerDivRef} className='col-lg-8 col-md-10 col-sm-12 col-12 d-flex border-2 border-bottom pb-3 pt-3 comment'>
          <div name='content-area' className='container-xxl d-inline-block'>
@@ -120,7 +124,7 @@ function Reply(props) {
                               {child.images.map((image, index) =>
                                  <SwiperSlide key={index}>
                                     {image.blob instanceof Blob ?
-                                       <img src={URL.createObjectURL(image.blob)} alt={`image-${index}`} className='object-fit-fill rounded-2' />
+                                       <img src={URL.createObjectURL(image.blob)} alt={`image-${index}`} width={'100%'} className='object-fit-cover rounded-2' />
                                        : <CircularProgress />}
                                  </SwiperSlide>
                               )}
