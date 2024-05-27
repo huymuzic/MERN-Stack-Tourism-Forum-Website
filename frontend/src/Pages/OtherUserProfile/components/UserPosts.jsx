@@ -1,4 +1,3 @@
-// components/UserPosts/UserPosts.js
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
@@ -63,8 +62,6 @@ function UserPosts() {
         if (setFavoritePosts) {
           setFavoritePosts(favoritePosts);
         }
-
-        // Update logged-in user's likes
         updateUserLikes(favorPostIds);
         if (favorPostIds.indexOf(postId) != -1) {
           pushSuccess("You successfully like this post!");
@@ -87,7 +84,7 @@ function UserPosts() {
   };
 
   const handleToggleLike = (postId) => {
-    toggleLike(postId, user._id, setUserPosts); // Update posts after toggling like
+    toggleLike(postId, user._id, setUserPosts);
   };
   const handleLockConfirm = async (userId) => {
     try {
@@ -150,7 +147,7 @@ function UserPosts() {
     }
 };
   const fetchData = async () => {
-    const posts = await fetchPostsByUser(id); // Replace USER_ID with actual user ID
+    const posts = await fetchPostsByUser(id);
     setUserPosts(posts);
   };
   useEffect(() => {

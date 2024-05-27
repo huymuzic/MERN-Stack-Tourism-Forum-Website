@@ -34,7 +34,7 @@ const TourItem = ({
 
   const handleConfirmUpdate = (data) => {
     handleUpdateTour(data);
-    setEditOpen(false); // Close the popup after updating
+    setEditOpen(false); 
   };
 
   return (
