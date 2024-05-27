@@ -1,21 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import "./search-bar.css";
 import { Col, Form, FormGroup } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useSearch } from "../utils/SearchContext";
-import { useTheme } from "../theme/Theme";
 const SearchBar = () => {
-  // Form validation
   const countryRef = useRef("");
   const cityRef = useRef("");
   const priceRef = useRef(0);
   const tourPeriodRef = useRef(0);
-  const navigate = useNavigate();
   const location = useLocation();
   const { searchHandler } = useSearch();
-  const { color } = useTheme();
-  const [errors] = useState({}); // State for validation errors
+  const [errors] = useState({});
   const [query, setQuery] = useState({
     country: "",
     city: "",
@@ -148,7 +143,7 @@ const SearchBar = () => {
             className="search__icon"
             type="submit"
             onClick={handleSearch}
-            tabindex="0"
+            tabIndex="0"
           >
             <i className="ri-search-line"></i>
           </span>

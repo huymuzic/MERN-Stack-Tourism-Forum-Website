@@ -3,9 +3,11 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
+import { useTheme } from "../../theme/Theme";
 
 const TermsPrivacyBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
+  const { themeMode } = useTheme();
 
   useEffect(() => {
     const termsPrivacyConsent = localStorage.getItem("terms_privacy_consent");
@@ -23,11 +25,26 @@ const TermsPrivacyBanner = () => {
     <>
       {showBanner && (
         <>
-          <div style={bannerStyle}>
+          <div
+            style={{
+              ...bannerStyle,
+              backgroundColor: themeMode == "light" ? "#fff" : "#111111",
+              borderTop:
+                themeMode == "light"
+                  ? "1px solid #cccccc"
+                  : "1px solid #111111",
+            }}
+          >
             <Container>
               <Row className="align-items-center">
                 <Col md={10}>
-                  <p className="terms-privacy__p" style={textStyle}>
+                  <p
+                    className="terms-privacy__p"
+                    style={{
+                      ...textStyle,
+                      color: themeMode == "light" ? "#0b2727" : "#ddd",
+                    }}
+                  >
                     By using our website, you agree to our{" "}
                     <Link
                       to="/terms-of-service"
@@ -55,7 +72,7 @@ const TermsPrivacyBanner = () => {
                     className="normal__pad accept__btn"
                     onClick={handleAccept}
                   >
-                    I Accept
+                    I Understand
                   </Button>
                 </Col>
               </Row>
@@ -71,8 +88,6 @@ const bannerStyle = {
   position: "fixed",
   bottom: 0,
   width: "100%",
-  backgroundColor: "#ffffff",
-  borderTop: "1px solid #cccccc",
   padding: "10px 0",
   zIndex: 10000,
 };

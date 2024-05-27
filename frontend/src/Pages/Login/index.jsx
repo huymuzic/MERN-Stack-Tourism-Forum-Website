@@ -16,11 +16,9 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors, dirtyFields, isSubmitting },
-    setError,
   } = useForm({ mode: "onChange" });
   const [showPassword, setShowPassword] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(false);
   const { user } = useUser();
 
   useEffect(() => {

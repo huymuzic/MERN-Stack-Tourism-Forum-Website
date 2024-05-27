@@ -1,3 +1,4 @@
+import Proptypes from "prop-types";
 import { useState, useEffect } from "react";
 import "./common-section.css";
 
@@ -47,6 +48,10 @@ const CommonSection = ({ title }) => {
       </Container>
     </section>
   );
+};
+
+CommonSection.propTypes = {
+  title: Proptypes.string.isRequired,
 };
 
 export default CommonSection;
