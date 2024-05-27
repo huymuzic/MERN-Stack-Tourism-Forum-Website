@@ -21,6 +21,7 @@ export default function PopupEditor(props) {
 
    const inputRef = useRef(null);
    const isPopulated = useRef(false);
+   const swiperRef = useRef(null);
 
    const [selectedImages, setSelectedImages] = useState([]);
 
@@ -89,7 +90,7 @@ export default function PopupEditor(props) {
          const fileSizeInMB = files[i].size / (1024 * 1024);
 
          if (fileSizeInMB > 1) {
-            pushError('Image file is too large!');
+            pushError('Image file is too large! Must be under 1MB!');
             continue;
          }
 
@@ -97,6 +98,9 @@ export default function PopupEditor(props) {
       }
 
       setSelectedImages(images);
+      if (swiperRef.current) {
+         swiperRef.current.swiper.slideTo(images.length + 1);
+      }
       e.target.value = null;
    }
 
@@ -158,6 +162,7 @@ export default function PopupEditor(props) {
                      {errors.content && <div className="d-block invalid-feedback mb-1">{errors.content.message}</div>}
                      {selectedImages.length > 0 &&
                         <Swiper
+                           ref={swiperRef}
                            style={{ height: '400px', maxWidth: '100%' }}
                            spaceBetween={30}
                            centeredSlides={true}
@@ -172,7 +177,7 @@ export default function PopupEditor(props) {
                         >
                            {selectedImages.map((image, index) => (
                               <SwiperSlide key={index}>
-                                 <img src={image instanceof Blob ? URL.createObjectURL(image) : URL.createObjectURL(image.blob)} alt={`image-${index}`} className='object-fit-fill rounded-2' />
+                                 <img src={image instanceof Blob ? URL.createObjectURL(image) : URL.createObjectURL(image.blob)} width={'100%'} alt={`image-${index}`} className='object-fit-fill rounded-2' />
                                  <button type='button' onClick={() => handleDelete(image)} className='ctm-btn rounded-5 position-absolute top-0 end-0 btn-index'>
                                     <i className="fa-solid fa-trash p-2 text-prime" />
                                  </button>

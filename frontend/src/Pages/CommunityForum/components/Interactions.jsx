@@ -26,6 +26,18 @@ const Interact = ({ post, setPost }) => {
    const popUpEdit = usePopUp();
    const popUpReply = usePopUp();
 
+   const findOwnership = (post) => {
+      if (post && post.parentId === null) {
+         return post.authorId?._id === user?._id;
+      }
+   
+      if (post && post.authorId?._id === user?._id) {
+         return true;
+      }
+   
+      return post ? findOwnership(post.parentId) : false;
+   }
+
    const onDeleteConfirm = async () => {
       popUpDelete.onClose();
       handledelete(post._id, setPost);
@@ -82,26 +94,26 @@ const Interact = ({ post, setPost }) => {
                   </button>
                </li>
                {user && post.authorId && user?._id === post.authorId._id && (
-                  <>
-                     <li>
-                        <button
-                           className="dropdown-item"
-                           onClick={popUpEdit.setTrue}
-                        >
-                           <i className="fa-solid fa-pencil pe-2"></i>
-                           <span>Edit</span>
-                        </button>
-                     </li>
-                     <li>
-                        <button
-                           className="dropdown-item text-danger"
-                           onClick={popUpDelete.setTrue}
-                        >
-                           <i className="fa-solid fa-trash-can pe-2"></i>
-                           <span>Delete</span>
-                        </button>
-                     </li>
-                  </>
+                  <li>
+                     <button
+                        className="dropdown-item"
+                        onClick={popUpEdit.setTrue}
+                     >
+                        <i className="fa-solid fa-pencil pe-2"></i>
+                        <span>Edit</span>
+                     </button>
+                  </li>
+               )}
+               {user && ((post.authorId && user?._id === post.authorId._id) || findOwnership(post)) && (
+                  <li>
+                     <button
+                        className="dropdown-item text-danger"
+                        onClick={popUpDelete.setTrue}
+                     >
+                        <i className="fa-solid fa-trash-can pe-2"></i>
+                        <span>Delete</span>
+                     </button>
+                  </li>   
                )}
                {user?.role === "admin" && (
                   <li>

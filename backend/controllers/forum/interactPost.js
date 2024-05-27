@@ -106,6 +106,14 @@ export async function reply(req, res) {
          post.childrenIds.push(reply._id);
 
          await post.save();
+         const parentPost = await Post.findById(postId).populate(['authorId', {
+            path: 'childrenIds',
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+        }, {
+            path: 'parentId',
+            populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
+        }]);
+        
          const rootPost = await findRootPostId(postId);
          const updPost = await Post.findById(rootPost).populate(['authorId', {
             path: 'childrenIds',
@@ -115,7 +123,7 @@ export async function reply(req, res) {
             populate: [{ path: 'authorId' }, { path: 'parentId' , populate: { path: 'authorId' } }]
         }]);
 
-         res.status(200).json({ post: updPost, user: updatedUser, reply: reply });
+         res.status(200).json({ post: updPost, user: updatedUser, repId: reply._id, parentPost: parentPost });
       } catch (error) {
          res.status(500).json({ message: error.message });
       }
@@ -139,7 +147,8 @@ export async function edit(req, res) {
          const removed = JSON.parse(req.body.removed);
          post.images = post.images.filter(image => !removed.includes(image.toString()));
 
-         removed.length > 0 && removed.forEach(id => {
+         removed.forEach(id => {
+            if (id === null) return;
             try {
                postGfs.delete(new mongoose.Types.ObjectId(id));
             } catch (error) {
