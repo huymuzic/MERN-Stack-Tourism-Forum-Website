@@ -26,12 +26,18 @@ const Booking = ({ tour, avgRating }) => {
     setTotalPrice(price * numPeople + 10 * numPeople);
   }, [numPeople, price]);
 
-  const incrementPeople = () => {
+  const incrementPeople = (e) => {
+    e.preventDefault();
     setNumPeople((prevNumPeople) => Math.min(prevNumPeople + 1, 10));
   };
 
-  const decrementPeople = () => {
+  const decrementPeople = (e) => {
+    e.preventDefault();
     setNumPeople((prevNumPeople) => Math.max(prevNumPeople - 1, 1));
+  };
+
+  const preventDefaultSpanClick = (e) => {
+    e.preventDefault();
   };
 
   const handleBookFormSubmit = (e) => {
@@ -111,7 +117,9 @@ const Booking = ({ tour, avgRating }) => {
                 className="guests__container"
                 style={{
                   backgroundColor: themeMode == "light" ? "#fff" : "#ddd",
+                  cursor: "default",
                 }}
+                onClick={preventDefaultSpanClick}
               >
                 <span
                   className="numberOfGuests"
@@ -143,6 +151,7 @@ const Booking = ({ tour, avgRating }) => {
               placeholder=""
               id="bookTime"
               style={{ color: color.textPrimary }}
+              tabIndex="0"
             />
           </FormGroup>
         </Form>

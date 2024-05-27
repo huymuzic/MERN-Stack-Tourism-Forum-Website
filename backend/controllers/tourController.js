@@ -18,11 +18,28 @@ export const createDestination = async (req, res) => {
       .json({ success: false, message: "Failed to create. Try again" });
   }
 };
-
 export const createTour = async (req, res) => {
   try {
-    const { title, country, city, price, ageRange, duration } = req.body;
-    if (!title || !country || !city || !price || !ageRange || !duration) {
+    const {
+      title,
+      country,
+      city,
+      description,
+      price,
+      ageRange,
+      duration,
+      featured,
+    } = req.body;
+    if (
+      !title ||
+      !country ||
+      !city ||
+      !description ||
+      !price ||
+      !ageRange ||
+      !duration ||
+      !featured
+    ) {
       return res
         .status(400)
         .json({ success: false, message: "Missing required fields" });
@@ -32,9 +49,11 @@ export const createTour = async (req, res) => {
       title,
       country,
       city,
+      description,
       price,
       ageRange,
       duration,
+      featured: featured || false,
       photo: req.file ? req.file.id : null,
     });
 
@@ -49,7 +68,6 @@ export const createTour = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 export const updateTour = async (req, res) => {
   const id = req.params.id;
   const updateData = { ...req.body };
@@ -123,7 +141,7 @@ export const getSingleTour = async (req, res) => {
 export const getAllTour = async (req, res) => {
   const page = parseInt(req.query.page);
   try {
-    const tours = await Tour.find({})
+    const tours = await Tour.find({status: "unhide"})
       .populate({
         path: "reviews",
         populate: {
@@ -149,7 +167,7 @@ export const getAllTour = async (req, res) => {
 };
 
 export const getTourBySearch = async (req, res) => {
-  let query = {};
+  let query = { status: "unhide" };
 
   if (req.query.country) {
     query.country = new RegExp(req.query.country, "i");

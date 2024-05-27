@@ -149,9 +149,7 @@ const ForumHeader = ({ children }) => {
   return (
     <>
       {loading ? (
-        <Container className="d-flex justify-content-center">
-          <CircularProgress />
-        </Container>
+        <></>
       ) : (
         <>
           <PopupEditor

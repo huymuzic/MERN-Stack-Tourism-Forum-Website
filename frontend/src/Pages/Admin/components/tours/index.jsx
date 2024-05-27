@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import BasePaginationList from "../../../../components/BasePaginationList";
 import WrapperFilter from "../WrapperFilter";
 import { pushError, pushSuccess } from "../../../../components/Toast";
-import { headers } from "../../helper";
 import TourItem, { TourStatuses } from "./TourItem";
 import NoData from "../NoData";
 import debounce from "../../../../helper";
@@ -11,7 +10,7 @@ import CustomAutocomplete from "../../../../components/CustomAutocomplete/Custom
 import { baseUrl } from "../../../../config";
 import PopUpAddTour from "./TourAdd";
 
-const forumPostSearchType = [
+const tourSearchType = [
   {
     id: 1,
     name: "TourName",
@@ -34,7 +33,7 @@ export default function ToursList() {
   const [filter, setFilter] = useState({
     page: 1,
     searchValue: "",
-    searchType: forumPostSearchType[0].value, // Initialize searchType
+    searchType: tourSearchType[0].value,
     status: undefined,
   });
   const [paging, setPaging] = useState({
@@ -43,14 +42,14 @@ export default function ToursList() {
     totalPages: 0,
   });
   const [loading, setLoading] = useState(false);
-  const [isAddOpen, setAddOpen] = useState(false); // State to manage add tour popup
+  const [isAddOpen, setAddOpen] = useState(false);
   const searchRef = useRef(null);
   const searchTypeRef = useRef(null);
 
   const handleResetFilter = () => {
     setFilter({
       searchValue: "",
-      searchType: forumPostSearchType[0].value,
+      searchType: tourSearchType[0].value,
       page: 1,
       status: undefined,
     });
@@ -79,7 +78,7 @@ export default function ToursList() {
     url.searchParams.append("page", filter.page);
     url.searchParams.append("limit", pageSize);
     if (filter.status) {
-      url.searchParams.append("status", filter.status.Value); // Use filter.status.Value for rating range
+      url.searchParams.append("status", filter.status.Value);
     }
     url.searchParams.append("search", filter.searchValue);
     url.searchParams.append("searchType", filter.searchType);
@@ -93,7 +92,7 @@ export default function ToursList() {
       });
 
       if (!response.ok) {
-        pushError("Failed to get list user");
+        pushError("Failed to get list tours");
         return;
       }
 
@@ -118,14 +117,13 @@ export default function ToursList() {
       formData.append("title", partialTourUpdate.title);
       formData.append("country", partialTourUpdate.country);
       formData.append("city", partialTourUpdate.city);
+      formData.append("description", partialTourUpdate.description);
       formData.append("price", partialTourUpdate.price);
       formData.append("ageRange", partialTourUpdate.ageRange);
       formData.append("duration", partialTourUpdate.duration);
+      formData.append("featured", partialTourUpdate.featured); // Include featured field
       if (partialTourUpdate.photo) {
         formData.append("photo", partialTourUpdate.photo);
-      }
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}, ${pair[1]}`);
       }
       const response = await fetch(url, {
         method: "PUT",
@@ -141,7 +139,6 @@ export default function ToursList() {
         throw new Error("Failed to edit tour");
       }
     } catch (error) {
-      pushError(error)
       pushError("Failed to edit tour");
     }
   };
@@ -152,9 +149,11 @@ export default function ToursList() {
       formData.append("title", tour.title);
       formData.append("country", tour.country);
       formData.append("city", tour.city);
+      formData.append("description", tour.description);
       formData.append("price", tour.price);
       formData.append("ageRange", tour.ageRange);
       formData.append("duration", tour.duration);
+      formData.append("featured", tour.featured);
       if (avatar) {
         formData.append("photo", avatar);
       }
@@ -245,7 +244,7 @@ export default function ToursList() {
                 setFilter((prev) => ({ ...prev, searchType: e.target.value }));
               }}
             >
-              {forumPostSearchType.map((type) => (
+              {tourSearchType.map((type) => (
                 <option key={type.value} value={type.value}>
                   {type.name}
                 </option>
