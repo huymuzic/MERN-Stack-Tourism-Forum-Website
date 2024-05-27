@@ -41,13 +41,15 @@ export default function UserItem({
   };
 
   return (
-<div className="card mb-3">
+    <div className="card mb-3" tabIndex="0" aria-label={`User card for ${user.username}`}>
       <div className="card-body">
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
           <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center">
             <Link
               to={`/profile/${user._id}`}
               className="d-flex align-items-end text-decoration-none mb-2 mb-md-0"
+              tabIndex="0"
+              aria-label={`View profile of ${user.username}`}
             >
               <h5 className="card-title mb-0" style={{ cursor: 'pointer' }}>
                 {user.username}
@@ -70,6 +72,8 @@ export default function UserItem({
                           id="custom-switch"
                           checked={userStatus.Value === "active"}
                           onClick={() => popUpActivate.setTrue()}
+                          aria-label={`Toggle user status for ${user.username}`}
+                          tabIndex="0"
                         />
                       </Form>
                     </CustomTooltip>
@@ -89,6 +93,8 @@ export default function UserItem({
                       <button
                         className="btn btn-sm btn-outline-warning"
                         onClick={() => popUpUnLock.setTrue()}
+                        aria-label="Unlock user"
+                        tabIndex="0"
                       >
                         <FaLock color="inherit" size={14} />
                       </button>
@@ -106,7 +112,8 @@ export default function UserItem({
                       <button
                         className="btn btn-sm btn-outline-danger"
                         onClick={() => popUpLock.setTrue()}
-                        data-tip="Lock User"
+                        aria-label="Lock user"
+                        tabIndex="0"
                       >
                         <FaUnlock color="inherit" size={14} />
                       </button>
@@ -125,22 +132,22 @@ export default function UserItem({
         </div>
         <hr />
         <div className="d-flex flex-column flex-md-row">
-          <p className="card-text me-0 me-md-3 mb-1 mb-md-0">
+          <p className="card-text me-0 me-md-3 mb-1 mb-md-0" tabIndex="0" aria-label={`Email: ${user.email}`}>
             <strong className="text-muted">{`Email: ${user.email}`}</strong>
           </p>
-          <p className="card-text mb-1 mb-md-0">
+          <p className="card-text mb-1 mb-md-0" tabIndex="0" aria-label={`Role: ${getUserRoleName(user.role)}`}>
             <strong className="text-muted">
               {`Role: ${getUserRoleName(user.role)}`}
             </strong>
           </p>
         </div>
         <div className="d-flex flex-column flex-md-row">
-          <p className="card-text me-0 me-md-3 mb-1 mb-md-0">
+          <p className="card-text me-0 me-md-3 mb-1 mb-md-0" tabIndex="0" aria-label={`Created at: ${moment(user.createdAt).format("YYYY-MM-DD HH:mm:ss")}`}>
             <small className="text-muted">
               {`Created At: ${moment(user.createdAt).format("YYYY-MM-DD HH:mm:ss")}`}
             </small>
           </p>
-          <p className="card-text mb-0">
+          <p className="card-text mb-0" tabIndex="0" aria-label={`Updated at: ${moment(user.updatedAt).format("YYYY-MM-DD HH:mm:ss")}`}>
             <small className="text-muted">
               {`Updated At: ${moment(user.updatedAt).format("YYYY-MM-DD HH:mm:ss")}`}
             </small>
@@ -149,7 +156,7 @@ export default function UserItem({
       </div>
     </div>
   );
-};
+}
 
 UserItem.propTypes = {
   user: PropTypes.shape({
@@ -158,8 +165,8 @@ UserItem.propTypes = {
     email: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    createdAt: PropTypes.instanceOf(Date).isRequired,
-    updatedAt: PropTypes.instanceOf(Date).isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
   }).isRequired,
   handleLockConfirm: PropTypes.func.isRequired,
   handleUnLockConfirm: PropTypes.func.isRequired, 
@@ -182,7 +189,7 @@ export const userStatuses = [
     bgColor: color.warningLight,
     color: color.warning,
   },
-  { Id: 3, Value: "locked", Name: "Disabled", bgColor: color.grey200, color: color.grey400 },
+  { Id: 3, Value: "locked", Name: "Locked", bgColor: color.grey200, color: color.grey400 },
 ];
 
 export const userRoles = [
@@ -194,7 +201,7 @@ export const UserStatusBox = ({ status }) => {
   const userStatus = userStatuses.find((item) => item.Value === status);
 
   return (
-    <div className="px-2 py-1 rounded" style={{ backgroundColor: userStatus?.bgColor }}>
+    <div className="px-2 py-1 rounded" style={{ backgroundColor: userStatus?.bgColor }} tabIndex="0" aria-label={`User status: ${userStatus?.Name}`}>
       <p style={{ color: userStatus?.color, margin: 0 }}>{userStatus?.Name}</p>
     </div>
   );
