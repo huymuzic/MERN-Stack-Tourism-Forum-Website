@@ -141,7 +141,7 @@ export const getSingleTour = async (req, res) => {
 export const getAllTour = async (req, res) => {
   const page = parseInt(req.query.page);
   try {
-    const tours = await Tour.find({})
+    const tours = await Tour.find({status: "unhide"})
       .populate({
         path: "reviews",
         populate: {
@@ -167,7 +167,7 @@ export const getAllTour = async (req, res) => {
 };
 
 export const getTourBySearch = async (req, res) => {
-  let query = {};
+  let query = { status: "unhide" };
 
   if (req.query.country) {
     query.country = new RegExp(req.query.country, "i");
