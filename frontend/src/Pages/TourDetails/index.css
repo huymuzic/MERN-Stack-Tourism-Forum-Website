@@ -145,6 +145,7 @@
   vertical-align: bottom;
   color: gold !important;
 }
+
 @media screen and (max-width: 576px) {
   .tour__info {
     padding-right: 2rem !important;
