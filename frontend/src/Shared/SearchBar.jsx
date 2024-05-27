@@ -1,21 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import "./search-bar.css";
 import { Col, Form, FormGroup } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useSearch } from "../utils/SearchContext";
-import { useTheme } from "../theme/Theme";
 const SearchBar = () => {
-  // Form validation
   const countryRef = useRef("");
   const cityRef = useRef("");
   const priceRef = useRef(0);
   const tourPeriodRef = useRef(0);
-  const navigate = useNavigate();
   const location = useLocation();
   const { searchHandler } = useSearch();
-  const { color } = useTheme();
-  const [errors] = useState({}); // State for validation errors
+  const [errors] = useState({});
   const [query, setQuery] = useState({
     country: "",
     city: "",
@@ -65,7 +60,7 @@ const SearchBar = () => {
             <span>
               <i className="ri ri-map-pin-line"></i>
             </span>
-            <div>
+            <div className="search_bar_input">
               <h6 className="l6">Country</h6>
               <input
                 type="text"
@@ -87,7 +82,7 @@ const SearchBar = () => {
               <i className="ri ri-building-line"></i>
             </span>
             <div>
-              <h6>City</h6>
+              <h6 className="l6">City</h6>
               <input
                 type="text"
                 placeholder="Where are you going?"
@@ -108,7 +103,7 @@ const SearchBar = () => {
               <i className="ri ri-money-dollar-circle-line"></i>
             </span>
             <div>
-              <h6>Price</h6>
+              <h6 className="l6">Price</h6>
               <input
                 id="price"
                 type="number"
@@ -130,7 +125,7 @@ const SearchBar = () => {
               <i className="ri ri-map-pin-time-line"></i>
             </span>
             <div>
-              <h6>Duration</h6>
+              <h6 className="l6">Duration</h6>
               <input
                 id="tourPeriod"
                 type="number"
@@ -148,7 +143,7 @@ const SearchBar = () => {
             className="search__icon"
             type="submit"
             onClick={handleSearch}
-            tabindex="0"
+            tabIndex="0"
           >
             <i className="ri-search-line"></i>
           </span>

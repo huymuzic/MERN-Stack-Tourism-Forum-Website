@@ -1,3 +1,4 @@
+import Proptypes from "prop-types";
 import { Card, CardBody } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import calculateAvgRating from "../utils/avgRating";
@@ -73,6 +74,10 @@ const TourCard = ({ tour }) => {
       </Card>
     </div>
   );
+};
+
+TourCard.propTypes = {
+  tour: Proptypes.object.isRequired,
 };
 
 export default TourCard;

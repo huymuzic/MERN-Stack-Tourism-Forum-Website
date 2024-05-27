@@ -10,7 +10,7 @@ import { useTheme } from "../../theme/Theme";
 
 const PurchaseHistory = () => {
   const { user } = useUser();
-  const { color, themeMode } = useTheme();
+  const { themeMode } = useTheme();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
