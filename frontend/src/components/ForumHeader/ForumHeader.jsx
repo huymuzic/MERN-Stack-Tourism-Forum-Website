@@ -249,7 +249,7 @@ const ForumHeader = ({ children }) => {
                   >
                     <li>
                       <Link className="dropdown-item" to="/my-account">
-                        Dashboard
+                        My Account
                       </Link>
                     </li>
                     <li>
