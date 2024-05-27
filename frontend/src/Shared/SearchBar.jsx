@@ -65,7 +65,7 @@ const SearchBar = () => {
             <span>
               <i className="ri ri-map-pin-line"></i>
             </span>
-            <div>
+            <div className="search_bar_input">
               <h6 className="l6">Country</h6>
               <input
                 type="text"
@@ -87,7 +87,7 @@ const SearchBar = () => {
               <i className="ri ri-building-line"></i>
             </span>
             <div>
-              <h6>City</h6>
+              <h6 className="l6">City</h6>
               <input
                 type="text"
                 placeholder="Where are you going?"
@@ -108,7 +108,7 @@ const SearchBar = () => {
               <i className="ri ri-money-dollar-circle-line"></i>
             </span>
             <div>
-              <h6>Price</h6>
+              <h6 className="l6">Price</h6>
               <input
                 id="price"
                 type="number"
@@ -130,7 +130,7 @@ const SearchBar = () => {
               <i className="ri ri-map-pin-time-line"></i>
             </span>
             <div>
-              <h6>Duration</h6>
+              <h6 className="l6">Duration</h6>
               <input
                 id="tourPeriod"
                 type="number"

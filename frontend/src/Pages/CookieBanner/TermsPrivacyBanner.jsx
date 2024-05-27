@@ -34,8 +34,9 @@ const TermsPrivacyBanner = () => {
                       target="_blank"
                       style={linkStyle}
                     >
-                      Terms of Service,
-                    </Link>{" "}
+                      Terms of Service
+                    </Link>
+                    ,{" "}
                     <Link
                       to="/privacy-policy"
                       target="_blank"

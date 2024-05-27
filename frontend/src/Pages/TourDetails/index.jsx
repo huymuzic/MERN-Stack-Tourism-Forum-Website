@@ -74,6 +74,10 @@ const TourDetails = () => {
       pushError("Please rate the tour");
       return;
     }
+    if (reviewMsgRef.current.value.trim() === "") {
+      pushError("Review can't be empty");
+      return;
+    }
     try {
       const res = await fetch(`${baseUrl}/api/v1/reviews/${id}`, {
         method: "POST",
@@ -195,7 +199,6 @@ const TourDetails = () => {
                         type="text"
                         ref={reviewMsgRef}
                         placeholder="Share your thoughts..."
-                        required
                         style={{ backgroundColor: "inherit" }}
                       ></input>
                       <button
