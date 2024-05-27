@@ -38,6 +38,10 @@ function Reply(props) {
       return () => window.removeEventListener('resize', updateHeight);
    }, [child, outerDivRef]);
 
+   if (child.status !== 'unarchived') {
+      return;
+   }
+
    return (
       <div ref={outerDivRef} className='col-lg-8 col-md-10 col-sm-12 col-12 d-flex border-2 border-bottom pb-3 pt-3 comment'>
          <div name='content-area' className='container-xxl d-inline-block'>
