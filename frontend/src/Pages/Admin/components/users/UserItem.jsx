@@ -156,7 +156,7 @@ export default function UserItem({
       </div>
     </div>
   );
-}
+};
 
 UserItem.propTypes = {
   user: PropTypes.shape({

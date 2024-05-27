@@ -138,7 +138,6 @@ const TourItem = ({
     </div>
   );
 };
-
 TourItem.propTypes = {
   tour: PropTypes.shape({
     _id: PropTypes.string.isRequired,
