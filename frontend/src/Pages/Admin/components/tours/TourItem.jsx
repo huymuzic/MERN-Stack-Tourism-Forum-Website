@@ -40,7 +40,7 @@ const TourItem = ({
   return (
     <div className="card mb-3 shadow-sm rounded border-0">
       <div className="card-body">
-        <div className="d-flex justify-content-between align-items-start">
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start">
           <div>
             <Link to={`/tours/${tour._id}`} className="text-decoration-none">
               <h5 className="card-title text-primary">
@@ -48,19 +48,19 @@ const TourItem = ({
               </h5>
             </Link>
             <div className="d-flex flex-column mt-2">
-              <div className="d-flex flex-row align-items-center mb-2">
-                <p className="card-text me-3 mb-0">
+              <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center mb-2">
+                <p className="card-text me-0 me-md-3 mb-1 mb-md-0">
                   <strong className="text-muted">
                     Location: {`${tour.city}, ${tour.country}` || "None"}
                   </strong>
                 </p>
               </div>
-              <p className="card-text mb-0">
+              <p className="card-text mb-1">
                 <small className="text-muted">
                   Posted: {moment(tour.updatedAt).format("YYYY-MM-DD HH:mm:ss")}
                 </small>
               </p>
-              <p className="card-text mb-0">
+              <p className="card-text mb-1">
                 <small className="text-muted">
                   Reviews: {tour?.reviews.length} <br />
                 </small>
@@ -72,7 +72,7 @@ const TourItem = ({
               </p>
             </div>
           </div>
-          <div className="d-flex flex-column align-items-end">
+          <div className="d-flex flex-column align-items-end mt-3 mt-md-0">
             <div className="d-flex mb-2">
               <TourRatingBox status={avgRating.avgRating} className="me-2" />
               <TourStatusBox status={tour.status} />
@@ -132,7 +132,6 @@ const TourItem = ({
     </div>
   );
 };
-
 TourItem.propTypes = {
   tour: PropTypes.shape({
     _id: PropTypes.string.isRequired,
