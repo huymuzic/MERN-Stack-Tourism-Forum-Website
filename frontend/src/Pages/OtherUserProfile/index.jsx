@@ -35,11 +35,11 @@ const OtherUserProfile = () => {
   const popUpDeactivate = usePopUp();
   const popUpLock = usePopUp();
   const popUpUnlock = usePopUp();
-  const dropdownRef = useRef(null); // Define the dropdownRef
+  const dropdownRef = useRef(null); 
 
   useEffect(() => {
     fetchOtherUserInfo();
-  }, [id, user]); // Note: Be cautious with including state that changes often as dependencies
+  }, [id, user]);
 
   const elementsRef = useRef([]);
 
@@ -190,16 +190,17 @@ const OtherUserProfile = () => {
                   className="rounded-circle me-3 mb-3 mb-md-0"
                   width={"200px"}
                   height={"200px"}
+                  tabIndex="0"
                 />
                 <div className="user-info text-center text-md-start">
-                  <h2>
+                  <h2 tabIndex="0">
                     {otherUserInfo.name}{" "}
                     {otherUserInfo.role === "admin" && (
-                      <i className="fa fa-shield-alt"></i>
+                      <i className="fa fa-shield-alt" aria-label="Admin" tabIndex="0"></i>
                     )}
                   </h2>
-                  <p>@{otherUserInfo.username}</p>
-                  <p>
+                  <p tabIndex="0">@{otherUserInfo.username}</p>
+                  <p tabIndex="0">
                     Joined:{" "}
                     {new Date(otherUserInfo?.createdAt).toLocaleDateString()}
                   </p>
@@ -208,11 +209,18 @@ const OtherUserProfile = () => {
                       variant="outline-primary"
                       size="sm"
                       className="me-2"
+                      tabIndex="0"
+                      aria-label={`Posts: ${otherUserInfo.posts ? otherUserInfo.posts.length : 0}`}
                     >
                       Posts:{" "}
                       {otherUserInfo.posts ? otherUserInfo.posts.length : 0}
                     </Button>
-                    <Button variant="outline-success" size="sm">
+                    <Button
+                      variant="outline-success"
+                      size="sm"
+                      tabIndex="0"
+                      aria-label={`Favorites: ${otherUserInfo.likes ? otherUserInfo.likes.length : 0}`}
+                    >
                       Favorites:{" "}
                       {otherUserInfo.likes ? otherUserInfo.likes.length : 0}
                     </Button>
@@ -230,11 +238,11 @@ const OtherUserProfile = () => {
                       <span>. . .</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={handleToggleStatus}>
+                      <Dropdown.Item onClick={handleToggleStatus} tabIndex="0">
                         Toggle Status
                       </Dropdown.Item>
                       {user?._id === otherUserInfo._id && (
-                        <Dropdown.Item onClick={() => navigate("/my-account")}>
+                        <Dropdown.Item onClick={() => navigate("/my-account")} tabIndex="0">
                           Edit Profile
                         </Dropdown.Item>
                       )}
@@ -242,8 +250,9 @@ const OtherUserProfile = () => {
                         <Dropdown.Item
                           onClick={onChangeStatus}
                           className="text-danger"
+                          tabIndex="0"
                         >
-                          {otherUserInfo.status == "locked"
+                          {otherUserInfo.status === "locked"
                             ? "Unlock Account"
                             : "Lock Account"}
                         </Dropdown.Item>
@@ -258,11 +267,15 @@ const OtherUserProfile = () => {
               activeKey={activeNav}
               onSelect={(selectedKey) => setActiveNav(selectedKey)}
               className="mt-3"
+              role="tablist"
             >
               <Nav.Item>
                 <Nav.Link
                   eventKey="Posts"
                   className={activeNav === "Posts" ? "btn-primary" : ""}
+                  tabIndex="0"
+                  aria-selected={activeNav === "Posts"}
+                  role="tab"
                 >
                   Posts
                 </Nav.Link>
@@ -271,6 +284,9 @@ const OtherUserProfile = () => {
                 <Nav.Link
                   eventKey="Favorites"
                   className={activeNav === "Favorites" ? "btn-primary" : ""}
+                  tabIndex="0"
+                  aria-selected={activeNav === "Favorites"}
+                  role="tab"
                 >
                   Favorites
                 </Nav.Link>
@@ -282,12 +298,12 @@ const OtherUserProfile = () => {
       <Row className="justify-content-center mb-3">
         <Col md={10} className="align-items-center">
           {otherUserInfo.status === "active" ? (
-            <ActiveComponent className="text-center align-items-center" />
+            <ActiveComponent className="text-center align-items-center" tabIndex="0" />
           ) : (
             <Card className="text-center align-items-center">
               <Card.Body>
-                <Card.Title>Account Inactive</Card.Title>
-                <p>
+                <Card.Title tabIndex="0">Account Inactive</Card.Title>
+                <p tabIndex="0">
                   Your Account is inactive right now! Please reactivate it to
                   perform any actions.
                 </p>

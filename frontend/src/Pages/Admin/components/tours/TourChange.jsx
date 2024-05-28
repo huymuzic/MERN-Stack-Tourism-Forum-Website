@@ -340,6 +340,10 @@ export default function PopUpUpdateTour({
                       value: 0,
                       message: "Price cannot be negative",
                     },
+                    max: {
+                      value: 100000,
+                      message: "Price cannot be more than 100000$!!",
+                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <>
@@ -373,6 +377,10 @@ export default function PopUpUpdateTour({
                       value: 1,
                       message: "Duration must be at least 1 day",
                     },
+                    max: {
+                      value: 100,
+                      message: "Duration must be under 100 day!",
+                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <>
@@ -403,7 +411,15 @@ export default function PopUpUpdateTour({
               <Controller
                 name="ageFrom"
                 control={control}
-                rules={{ required: "From Age is required" }}
+                rules={{ required: "From Age is required" ,
+                min: {
+                  value: 0,
+                  message: "Age must be at least 0",
+                },
+                max: {
+                  value: 100,
+                  message: "Age must be under 100!",
+                }}}
                 render={({ field, fieldState: { error } }) => (
                   <>
                     <FloatingLabel label="From Age">
@@ -424,7 +440,15 @@ export default function PopUpUpdateTour({
               <Controller
                 name="ageTo"
                 control={control}
-                rules={{ required: "To Age is required" }}
+                rules={{ required: "To Age is required",
+                min: {
+                  value: 0,
+                  message: "Age must be at least 0",
+                },
+                max: {
+                  value: 100,
+                  message: "Age must be under 100!",
+                } }}
                 render={({ field, fieldState: { error } }) => (
                   <>
                     <FloatingLabel label="To Age">

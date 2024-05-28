@@ -1,4 +1,3 @@
-// components/Favorites/Favorites.js
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
@@ -25,10 +24,8 @@ function Favorites() {
       const result = await response.json();
       if (response.ok) {
         if (userId === id) {
-          // Return all posts if it's the user's own favorites
           return result;
         } else {
-          // Filter results to include only posts with 'unarchived' status for others
           const filteredPosts = result.filter(
             (post) => post.status === "unarchived"
           );
@@ -71,7 +68,6 @@ function Favorites() {
         if (setFavoritePosts) {
           setFavoritePosts(favoritePosts);
         }
-        // Update logged-in user's likes
         updateUserLikes(favorPostIds);
         if (favorPostIds.indexOf(postId) != -1) {
           pushSuccess("You successfully like this post!");
@@ -153,7 +149,7 @@ function Favorites() {
     }
 };
   const handleToggleLike = (postId) => {
-    toggleLike(postId, user._id, null, null); // Update favorite posts after toggling like
+    toggleLike(postId, user._id, null, null);
   };
   
   const fetchData = async () => {

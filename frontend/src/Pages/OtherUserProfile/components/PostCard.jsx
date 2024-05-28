@@ -5,7 +5,7 @@ import { FaHeart, FaRegHeart, FaComment } from "react-icons/fa";
 import { useUser } from "../../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../theme/Theme.jsx";
-import { pushError, pushSuccess } from "../../../components/Toast";
+import { pushError } from "../../../components/Toast";
 import { usePopUp } from "../../../components/pop-up/usePopup";
 import PopUpBase from "../../../components/pop-up/PopUpBase";
 import './PostCard.css';  // Import custom CSS
@@ -78,13 +78,15 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm, 
     <Container>
       <Row className="justify-content-center mb-3">
         <Col xs={12} md={10} lg={8}>
-          <Card className="mb-4">
+          <Card className="mb-4 shadow-sm" role="article" tabIndex="0" aria-labelledby={`post-title-${post._id}`}>
             <Card.Body>
               <Row className="align-items-center">
                 <Col xs={9}>
-                  <Card.Title><strong>{post.title}</strong></Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">@{post.authorId?.username}</Card.Subtitle>
-                  <Card.Text><small>{new Date(post.createdAt).toLocaleString()}</small></Card.Text>
+                  <Card.Title as="h2" id={`post-title-${post._id}`} tabIndex="0"><strong>{post.title}</strong></Card.Title>
+                  <Card.Subtitle as="h3" className="mb-2 text-muted" aria-label={`Posted by @${post.authorId?.username}`} tabIndex="0">@{post.authorId?.username}</Card.Subtitle>
+                  <Card.Text as="time" dateTime={new Date(post.createdAt).toISOString()} tabIndex="0" aria-label={`Posted on ${new Date(post.createdAt).toLocaleString()}`}>
+                    <small>{new Date(post.createdAt).toLocaleString()}</small>
+                  </Card.Text>
                 </Col>
                 {(post.authorId?._id === user?._id || user?.role === 'admin') && (
                   <Col xs={3}>
@@ -94,40 +96,54 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm, 
                         className="p-0"
                         id="dropdown-basic"
                         onClick={toggleOptions}
+                        aria-haspopup="true"
+                        aria-expanded={showOptions}
+                        aria-label="Options"
                       >
                         <SlShare size={24} alt="Options" />
                       </Dropdown.Toggle>
                       <Dropdown.Menu align="end">
-                        <Dropdown.Item onClick={handleEdit}>Edit Post</Dropdown.Item>
-                        <Dropdown.Item onClick={handleButtonClick}>
+                        <Dropdown.Item onClick={handleEdit} tabIndex="0">Edit Post</Dropdown.Item>
+                        <Dropdown.Item onClick={handleButtonClick} tabIndex="0">
                           {post.status === "unarchived" ? "Hide Post" : "Unhide Post"}
                         </Dropdown.Item>
-                        <Dropdown.Item onClick={() => popUpDelete.setTrue()}>Delete Post</Dropdown.Item>
+                        <Dropdown.Item onClick={() => popUpDelete.setTrue()} tabIndex="0">Delete Post</Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                   </Col>
                 )}
               </Row>
-              <Card.Text dangerouslySetInnerHTML={{ __html: post.content }} />
+              <Card.Text as="div" dangerouslySetInnerHTML={{ __html: post.content }} tabIndex="0" />
               {post.image && (
-                <Image src={post.image} alt="Post content" fluid rounded className="mt-3" />
+                <Image src={post.image} alt="Post content" fluid rounded className="mt-3" tabIndex="0" />
               )}
+              <Row className="mt-3 align-items-center">
+                <Col xs={12} className="mb-2 mb-sm-0" tabIndex="0" aria-label={`Liked by ${post.likes.length} users and contains ${post.childrenIds.length} comments`}>
+                  <span className="d-block"><strong>Liked:</strong> {post.likes.length}</span>
+                  <span className="d-block"><strong>Comments:</strong> {post.childrenIds.length}</span>
+                </Col>
+              </Row>
               <Row className="mt-3 align-items-center">
                 <Col xs={12} sm={6} className="mb-2 mb-sm-0">
                   <Button
                     variant={isLiked ? "danger" : "outline-danger"}
                     onClick={handleLike}
                     className="me-2"
+                    aria-pressed={isLiked}
+                    aria-label={isLiked ? "Unlike" : "Like"}
                   >
                     {isLiked ? <FaHeart /> : <FaRegHeart />} {isLiked ? "Liked" : "Like"}
                   </Button>
-                  <Button variant="outline-primary" onClick={handleCommentsClick}>
+                </Col>
+                <Col xs={12} sm={6} className="text-sm-end mt-3 mt-sm-0">
+                  <Button
+                    variant="outline-primary"
+                    onClick={handleCommentsClick}
+                    aria-label="Comments"
+                    className="me-2"
+                  >
                     <FaComment /> {post.childrenIds.length || 0} Comments
                   </Button>
-                </Col>
-                <Col xs={12} sm={6} className="text-sm-end">
-                  <span className="d-block d-sm-inline"><strong>Liked:</strong> {post.likes.length}</span>
-                  <span className="d-block d-sm-inline ms-0 ms-sm-3"><strong>Comments:</strong> {post.childrenIds.length}</span>
                 </Col>
               </Row>
             </Card.Body>
