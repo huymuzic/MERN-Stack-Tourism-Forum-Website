@@ -32,6 +32,11 @@ function createCustomTheme(color) {
       .btn-primary:hover {
         background-color: ${color.buttonHoverColor};
       }
+      .btn-primary:focus-visible {
+        background-color: ${color.buttonHoverColor};
+        border: none;
+        box-shadow: 0 0 0 3px ${tinycolor(color.primary).lighten(30).toString()}
+      }
       .btn-secondary {
         background-color: ${color.grey300};
         border: none ;
@@ -66,6 +71,13 @@ function createCustomTheme(color) {
         color: ${color.buttonHoverColor} ;
         border-color: ${color.buttonHoverColor} !important ;
       }
+      .btn-outline-primary:focus-visible {
+        background-color: inherit;
+        border: none;
+        box-shadow: 0 0 0 3px ${tinycolor(color.primary).lighten(30).toString()};
+        color: ${color.buttonHoverColor} ;
+
+      }
       .btn-outline-danger {
         border-color: ${color.danger} ;
         color: ${color.danger} ;
@@ -98,6 +110,11 @@ function createCustomTheme(color) {
 
       p,h1,h2,h3,h4,h5,h6 {
         color: ${color.textPrimary}
+      }
+
+      :focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px ${tinycolor(color.primary).lighten(30).toString()};
       }
       `;
   return theme;

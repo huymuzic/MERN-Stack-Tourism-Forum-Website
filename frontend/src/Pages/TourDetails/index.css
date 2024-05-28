@@ -1,5 +1,5 @@
 .ri {
-  color: var(--secondary-color) !important;
+  color: var(--secondary-color);
   font-size: 3rem;
 }
 
@@ -14,10 +14,6 @@
   border-radius: 0.5rem;
   border: 1px solid rgb(229, 231, 235);
   padding: 2rem;
-}
-
-.tour__info {
-  padding-right: 40%;
 }
 
 .tour__info h2 {
@@ -54,6 +50,19 @@
   font-size: 1.4rem;
 }
 
+.tour_description {
+  padding-right: 10%;
+}
+
+.tour_description_pad {
+  padding-right: 40%;
+}
+
+.tour_hr {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 .rating__group span {
   position: relative;
   font-size: 1.1rem;

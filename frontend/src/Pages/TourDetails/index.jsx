@@ -149,15 +149,15 @@ const TourDetails = () => {
                   style={{ color: color.textPrimary }}
                 >
                   <div className="d-flex flex-column align-items-start justify-content-center tour__extra-details">
-                    <h5>Description</h5>
+                    <h5 className="tour_description">Description</h5>
                     <div>
-                      <p>{description}</p>
+                      <p className="tour_description">{description}</p>
                     </div>
                     <span>
                       <i className="ri-money-dollar-circle-line "></i>from $
                       {price} / adult
                     </span>
-                    <hr className="col-12 mx-auto custom-hr"></hr>
+                    <hr className="col-6 custom-hr tour_hr"></hr>
                     <span>
                       <i className="ri-group-line"></i>Age {ageRange}
                     </span>
@@ -168,9 +168,9 @@ const TourDetails = () => {
                       <i className="fa-light fa-bed-front"></i>Accommodation
                       included
                     </span>
-                    <hr className="col-12 mx-auto custom-hr"></hr>
+                    <hr className="col-6 custom-hr tour_hr"></hr>
                     <span>FAQ</span>
-                    <hr className="col-12 mx-auto custom-hr"></hr>
+                    <hr className="col-6 custom-hr tour_hr"></hr>
                   </div>
                 </div>
 

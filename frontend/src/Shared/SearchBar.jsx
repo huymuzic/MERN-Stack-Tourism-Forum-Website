@@ -3,7 +3,9 @@ import "./search-bar.css";
 import { Col, Form, FormGroup } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { useSearch } from "../utils/SearchContext";
+import { useTheme } from "../theme/Theme";
 const SearchBar = () => {
+  const { color } = useTheme();
   const countryRef = useRef("");
   const cityRef = useRef("");
   const priceRef = useRef(0);
@@ -49,6 +51,13 @@ const SearchBar = () => {
     searchHandler(searchParams);
   };
 
+  const handleEnter = (event) => {
+    event.preventDefault();
+    if (event.key === "Enter") {
+      handleSearch(event);
+    }
+  };
+
   return (
     <Col lg="12">
       <div className="search__bar">
@@ -58,10 +67,15 @@ const SearchBar = () => {
             onClick={() => countryRef.current.focus()}
           >
             <span>
-              <i className="ri ri-map-pin-line"></i>
+              <i
+                className="search__bar__icon ri-map-pin-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div className="search_bar_input">
-              <h6 className="l6">Country</h6>
+              <h6 tabIndex="0" className="l6">
+                Country
+              </h6>
               <input
                 type="text"
                 placeholder="Where are you going?"
@@ -79,10 +93,15 @@ const SearchBar = () => {
             onClick={() => cityRef.current.focus()}
           >
             <span>
-              <i className="ri ri-building-line"></i>
+              <i
+                className="search__bar__icon ri-building-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div>
-              <h6 className="l6">City</h6>
+              <h6 tabIndex="0" className="l6">
+                City
+              </h6>
               <input
                 type="text"
                 placeholder="Where are you going?"
@@ -100,10 +119,15 @@ const SearchBar = () => {
             onClick={() => priceRef.current.focus()}
           >
             <span>
-              <i className="ri ri-money-dollar-circle-line"></i>
+              <i
+                className="search__bar__icon ri-money-dollar-circle-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div>
-              <h6 className="l6">Price</h6>
+              <h6 tabIndex="0" className="l6">
+                Price
+              </h6>
               <input
                 id="price"
                 type="number"
@@ -122,10 +146,15 @@ const SearchBar = () => {
             onClick={() => tourPeriodRef.current.focus()}
           >
             <span>
-              <i className="ri ri-map-pin-time-line"></i>
+              <i
+                className="search__bar__icon ri-map-pin-time-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div>
-              <h6 className="l6">Duration</h6>
+              <h6 tabIndex="0" className="l6">
+                Duration
+              </h6>
               <input
                 id="tourPeriod"
                 type="number"
@@ -143,6 +172,7 @@ const SearchBar = () => {
             className="search__icon"
             type="submit"
             onClick={handleSearch}
+            onKeyDown={handleEnter}
             tabIndex="0"
           >
             <i className="ri-search-line"></i>

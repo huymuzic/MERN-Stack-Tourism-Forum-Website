@@ -61,9 +61,11 @@ export const register = async (req, res) => {
 
 // user login
 export const login = async (req, res) => {
-  const { email, pwd, rem } = req.body;
+  const { identifier, pwd, rem } = req.body;
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({
+      $or: [{ email: identifier }, { username: identifier }],
+    });
     // if no user is found
     if (!user) {
       return res
@@ -84,7 +86,10 @@ export const login = async (req, res) => {
     if (!checkCorrectPassword) {
       return res
         .status(401)
-        .json({ success: false, message: "Incorrect email or password" });
+        .json({
+          success: false,
+          message: "Incorrect username/email or password",
+        });
     }
 
     const { password, role, ...rest } = user._doc;
