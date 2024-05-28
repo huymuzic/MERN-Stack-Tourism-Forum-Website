@@ -85,7 +85,9 @@ const Footer = () => {
                   </div>
                 </Col>
                 <Col lg="3">
-                  <h5 className="footer__link-title l5">Discover</h5>
+                  <h5 tabIndex="0" className="footer__link-title l5">
+                    Discover
+                  </h5>
                   <ListGroup className="footer__quick-links">
                     {quick__links.map((item, index) => (
                       <ListGroupItem key={index} className="ps-0 border-0">
@@ -100,7 +102,9 @@ const Footer = () => {
                   </ListGroup>
                 </Col>
                 <Col lg="3">
-                  <h5 className="footer__link-title l5">Quick Links</h5>
+                  <h5 tabIndex="0" className="footer__link-title l5">
+                    Quick Links
+                  </h5>
                   <ListGroup className="footer__quick-links">
                     {quick__links2.map((item, index) => (
                       <ListGroupItem key={index} className="ps-0 border-0">
@@ -115,10 +119,15 @@ const Footer = () => {
                   </ListGroup>
                 </Col>
                 <Col lg="3">
-                  <h5 className="footer__link-title l5">Contact</h5>
+                  <h5 tabIndex="0" className="footer__link-title l5">
+                    Contact
+                  </h5>
                   <ListGroup className="footer__quick-links">
                     <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
-                      <h6 className="mb-0 d-flex align-items-center gap-2 l6">
+                      <h6
+                        tabIndex="0"
+                        className="mb-0 d-flex align-items-center gap-2 l6"
+                      >
                         <span>
                           <i className="ri-map-pin-line"></i>
                         </span>
@@ -131,23 +140,33 @@ const Footer = () => {
                       </Link>
                     </ListGroupItem>
                     <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
-                      <h6 className="mb-0 d-flex align-items-center gap-2 l6">
+                      <h6
+                        tabIndex="0"
+                        className="mb-0 d-flex align-items-center gap-2 l6"
+                      >
                         <span>
                           <i className="ri-mail-line"></i>
                         </span>
                         Email:
                       </h6>
-                      <p className="mb-0">cosmictravel123@gmail.com</p>
+                      <p tabIndex="0" className="mb-0">
+                        cosmictravel123@gmail.com
+                      </p>
                     </ListGroupItem>
                     <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
-                      <h6 className="mb-0 d-flex align-items-center gap-2 l6">
+                      <h6
+                        tabIndex="0"
+                        className="mb-0 d-flex align-items-center gap-2 l6"
+                      >
                         <span>
                           <i className="ri-phone-fill"></i>
                         </span>
                         Phone:
                       </h6>
 
-                      <p className="mb-0">+(84) 123 456 789</p>
+                      <p tabIndex="0" className="mb-0">
+                        +(84) 123 456 789
+                      </p>
                     </ListGroupItem>
                   </ListGroup>
                 </Col>
@@ -159,7 +178,7 @@ const Footer = () => {
 
           <div className="col-10 mx-auto">
             <ul className="list-unstyled d-flex flex-row gap-3 justify-content-evenly">
-              <li>&copy; 2024 Cosmic Travel</li>
+              <li tabIndex="0">&copy; 2024 Cosmic Travel</li>
               <li>
                 <Link
                   to="/terms-of-service"

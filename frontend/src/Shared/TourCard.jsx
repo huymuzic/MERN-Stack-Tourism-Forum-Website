@@ -28,21 +28,29 @@ const TourCard = ({ tour }) => {
           <Link to={`/tours/${_id} `}>
             <img src={`${baseUrl}/api/v1/tours/images/${photo}`} alt={title} />
             {featured && (
-              <span style={{ backgroundColor: color.primary }}>Featured</span>
+              <span tabIndex="0" style={{ backgroundColor: color.primary }}>
+                Featured
+              </span>
             )}
           </Link>
         </div>
 
         <CardBody>
           <div className="card__top d-flex align-items-center justify-content-between">
-            <span className="tour__location d-flex align-items-center gap-1">
+            <span
+              tabIndex="0"
+              className="tour__location d-flex align-items-center gap-1"
+            >
               <i
                 className="ri ri-map-pin-line"
                 style={{ color: color.secondary }}
               ></i>{" "}
               {country}
             </span>
-            <span className="tour__location d-flex align-items-center gap-1">
+            <span
+              tabIndex="0"
+              className="tour__location d-flex align-items-center gap-1"
+            >
               <i className="ri ri-star-fill"></i>{" "}
               {avgRating === 0 ? null : avgRating}
               {totalRating === 0 ? (
@@ -61,7 +69,7 @@ const TourCard = ({ tour }) => {
             className="card__bottom d-flex align-items-center justify-content-between mt-3"
             style={{ color: color.secondary }}
           >
-            <h5>
+            <h5 tabIndex="0">
               ${price} <span> /person</span>
             </h5>
             <Link to={`/tours/${_id} `}>

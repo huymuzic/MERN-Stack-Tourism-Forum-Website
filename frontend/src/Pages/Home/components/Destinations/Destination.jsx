@@ -20,14 +20,23 @@ const Destination = ({ item }) => {
     searchHandler({ city: item.title });
   };
 
+  const handleKeyDown = (event) => {
+    event.preventDefault();
+    if (event.key === "Enter") {
+      handleDestinationClick();
+    }
+  };
+
   const { photo, title } = item;
   return (
     <div>
       <div
+        tabIndex="0"
         className="containerz"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleDestinationClick}
+        onKeyDown={handleKeyDown}
       >
         <img
           className="images"

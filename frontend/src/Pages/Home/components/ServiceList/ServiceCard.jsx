@@ -13,8 +13,10 @@ const ServiceCard = ({ item }) => {
       >
         <img src={photo} alt={type} />
       </div>
-      <h5>{title}</h5>
-      <p className="service__p">{desc}</p>
+      <h5 tabIndex="0">{title}</h5>
+      <p tabIndex="0" className="service__p">
+        {desc}
+      </p>
     </div>
   );
 };

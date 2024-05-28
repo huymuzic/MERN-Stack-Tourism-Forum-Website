@@ -16,10 +16,6 @@
   padding: 2rem;
 }
 
-.tour__info {
-  padding-right: 40%;
-}
-
 .tour__info h2 {
   font-size: 1.7rem;
 }
@@ -54,6 +50,19 @@
   font-size: 1.4rem;
 }
 
+.tour_description {
+  padding-right: 10%;
+}
+
+.tour_description_pad {
+  padding-right: 40%;
+}
+
+.tour_hr {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 .rating__group span {
   position: relative;
   font-size: 1.1rem;
