@@ -63,6 +63,12 @@ const TourDetails = () => {
   // format date
   const options = { day: "numeric", month: "long", year: "numeric" };
 
+  const handleStarRating = (e) => {
+    if (e.key === "Enter") {
+      e.target.click();
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const reviewText = reviewMsgRef.current.value;
@@ -117,11 +123,12 @@ const TourDetails = () => {
             <Col lg="8">
               <div className="tour__content">
                 <Element name="section1">
-                  <h2>{title}</h2>
+                  <h2 tabIndex="0">{title}</h2>
                 </Element>
 
                 <div className="d-flex align-items-center gap-2">
                   <span
+                    tabIndex="0"
                     className="tour__rating d-flex align-items-center gap-1"
                     style={{
                       color: themeMode == "light" ? "#0b2727" : "#fff",
@@ -136,7 +143,7 @@ const TourDetails = () => {
                     )}
                   </span>
                   <span>|</span>
-                  <span>
+                  <span tabIndex="0">
                     <i className="ri-map-pin-2-line"></i> {city}, {country}
                   </span>
                 </div>
@@ -149,39 +156,48 @@ const TourDetails = () => {
                   style={{ color: color.textPrimary }}
                 >
                   <div className="d-flex flex-column align-items-start justify-content-center tour__extra-details">
-                    <h5 className="tour_description">Description</h5>
+                    <h5 tabIndex="0" className="tour_description">
+                      Description
+                    </h5>
                     <div>
-                      <p className="tour_description">{description}</p>
+                      <p tabIndex="0" className="tour_description">
+                        {description}
+                      </p>
                     </div>
-                    <span>
+                    <span tabIndex="0">
                       <i className="ri-money-dollar-circle-line "></i>from $
                       {price} / adult
                     </span>
                     <hr className="col-6 custom-hr tour_hr"></hr>
-                    <span>
+                    <span tabIndex="0">
                       <i className="ri-group-line"></i>Age {ageRange}
                     </span>
-                    <span>
+                    <span tabIndex="0">
                       <i className="ri-time-line"></i>Duration: {duration} days
                     </span>
-                    <span>
+                    <span tabIndex="0">
                       <i className="fa-light fa-bed-front"></i>Accommodation
                       included
                     </span>
                     <hr className="col-6 custom-hr tour_hr"></hr>
-                    <span>FAQ</span>
+                    <span tabIndex="0">FAQ</span>
                     <hr className="col-6 custom-hr tour_hr"></hr>
                   </div>
                 </div>
 
                 {/* ============ tour reviews section ================= */}
                 <div className="tour__reviews mt-4">
-                  <h4>Reviews ({reviewCount} reviews)</h4>
+                  <h4 tabIndex="0">Reviews ({reviewCount} reviews)</h4>
 
                   <Form onSubmit={submitHandler}>
                     <div className="d-flex align-items-center justify-content-end gap-3 mb-4 rating__group">
                       {Array.from({ length: 5 }, (_, i) => (
-                        <span key={i} onClick={() => setTourRating(i + 1)}>
+                        <span
+                          tabIndex="0"
+                          key={i}
+                          onClick={() => setTourRating(i + 1)}
+                          onKeyDown={handleStarRating}
+                        >
                           <i
                             className={`ri ${
                               i < tourRating ? "ri-star-s-fill" : "ri-star-line"
@@ -228,20 +244,24 @@ const TourDetails = () => {
                         <div className="w-100">
                           <div className="d-flex align-items-center justify-content-between">
                             <div>
-                              <h5>{review.username}</h5>
-                              <p>
+                              <h5 tabIndex="0">{review.username}</h5>
+                              <p tabIndex="0">
                                 {new Date(review.createdAt).toLocaleDateString(
                                   "en-US",
                                   options
                                 )}
                               </p>
                             </div>
-                            <span className="d-flex align-items-center">
+                            <span
+                              tabIndex="0"
+                              className="d-flex align-items-center"
+                            >
                               {review.rating}
                               <i className="ri ri-star-s-fill"></i>
                             </span>
                           </div>
                           <h6
+                            tabIndex="0"
                             style={{
                               color: themeMode == "light" ? "#6e7074" : "#ddd",
                             }}
