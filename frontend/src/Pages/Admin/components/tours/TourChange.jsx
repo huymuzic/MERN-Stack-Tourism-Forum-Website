@@ -381,6 +381,8 @@ export default function PopUpUpdateTour({
                       value: 100,
                       message: "Duration must be under 100 day!",
                     },
+                    
+
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <>
@@ -419,6 +421,13 @@ export default function PopUpUpdateTour({
                 max: {
                   value: 100,
                   message: "Age must be under 100!",
+                },  
+                validate: (value) => {
+                  const ageTo = watch("ageTo");
+                  return (
+                    parseInt(value, 10) < parseInt(ageTo, 10) ||
+                    "The minimum age must be lower than the maximum age"
+                  );
                 }}}
                 render={({ field, fieldState: { error } }) => (
                   <>
@@ -448,7 +457,14 @@ export default function PopUpUpdateTour({
                 max: {
                   value: 100,
                   message: "Age must be under 100!",
-                } }}
+                } ,
+                validate: (value) => {
+                  const ageFrom = watch("ageFrom");
+                  return (
+                    parseInt(value, 10) > parseInt(ageFrom, 10) ||
+                    "The maximum age must be greater than the minimum age"
+                  );
+                },}}
                 render={({ field, fieldState: { error } }) => (
                   <>
                     <FloatingLabel label="To Age">

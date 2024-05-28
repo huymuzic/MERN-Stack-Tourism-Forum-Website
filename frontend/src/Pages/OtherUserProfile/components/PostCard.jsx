@@ -105,7 +105,7 @@ function PostCard({ post, onToggleLike, handleLockConfirm, handleUnLockConfirm, 
                       <Dropdown.Menu align="end">
                         <Dropdown.Item onClick={handleEdit} tabIndex="0">Edit Post</Dropdown.Item>
                         <Dropdown.Item onClick={handleButtonClick} tabIndex="0">
-                          {post.status === "unarchived" ? "Hide Post" : "Unhide Post"}
+                          {post.status === "unarchived" ? "Archive Post" : "Unarchive Post"}
                         </Dropdown.Item>
                         <Dropdown.Item onClick={() => popUpDelete.setTrue()} tabIndex="0">Delete Post</Dropdown.Item>
                       </Dropdown.Menu>
