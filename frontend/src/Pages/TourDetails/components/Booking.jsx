@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { pushError } from "../../../components/Toast";
 import { useUser } from "../../../utils/UserContext";
@@ -79,10 +80,11 @@ const Booking = ({ tour, avgRating }) => {
       }}
     >
       <div className="booking__top d-flex align-items-center justify-content-between">
-        <h3>
+        <h3 tabIndex="0">
           ${price} <span>/ adult</span>
         </h3>
         <span
+          tabIndex="0"
           className="tour__rating d-flex align-items-center"
           style={{
             color: themeMode == "light" ? "#0b2727" : "#fff",
@@ -94,7 +96,7 @@ const Booking = ({ tour, avgRating }) => {
       </div>
 
       <div className="booking__form">
-        <h5>Information</h5>
+        <h5 tabIndex="0">Information</h5>
         <Form className="booking_info-form d-flex flex-column justify-content-center align-items-flex-start p-3 gap-3">
           <div className="booking_first_container">
             <span tabIndex="0">People</span>
@@ -160,18 +162,18 @@ const Booking = ({ tour, avgRating }) => {
       <div className="booking__bottom">
         <ListGroup>
           <ListGroupItem className="border-0 px-0 book_form_row">
-            <h5 className="d-flex align-items-center gap-1">
+            <h5 tabIndex="0" className="d-flex align-items-center gap-1">
               ${price} <i className="ri-close-line"></i> {numPeople} person(s)
             </h5>
-            <span> ${price * numPeople}</span>
+            <span tabIndex="0"> ${price * numPeople}</span>
           </ListGroupItem>
           <ListGroupItem className="border-0 px-0 book_form_row">
-            <h5>Service charge</h5>
-            <span> ${10 * numPeople}</span>
+            <h5 tabIndex="0">Service charge</h5>
+            <span tabIndex="0"> ${10 * numPeople}</span>
           </ListGroupItem>
           <ListGroupItem className="border-0 px-0 total book_form_row">
-            <h5>Total</h5>
-            <span> ${totalPrice}</span>
+            <h5 tabIndex="0">Total</h5>
+            <span tabIndex="0"> ${totalPrice}</span>
           </ListGroupItem>
         </ListGroup>
 
@@ -185,6 +187,19 @@ const Booking = ({ tour, avgRating }) => {
       </div>
     </div>
   );
+};
+
+Booking.propTypes = {
+  tour: PropTypes.shape({
+    price: PropTypes.number.isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.object),
+    title: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    photo: PropTypes.string.isRequired,
+  }).isRequired,
+  avgRating: PropTypes.number.isRequired,
 };
 
 export default Booking;
