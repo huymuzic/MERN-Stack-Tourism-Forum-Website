@@ -3,7 +3,9 @@ import "./search-bar.css";
 import { Col, Form, FormGroup } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { useSearch } from "../utils/SearchContext";
+import { useTheme } from "../theme/Theme";
 const SearchBar = () => {
+  const { color } = useTheme();
   const countryRef = useRef("");
   const cityRef = useRef("");
   const priceRef = useRef(0);
@@ -65,7 +67,10 @@ const SearchBar = () => {
             onClick={() => countryRef.current.focus()}
           >
             <span>
-              <i className="ri ri-map-pin-line"></i>
+              <i
+                className="search__bar__icon ri-map-pin-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div className="search_bar_input">
               <h6 tabIndex="0" className="l6">
@@ -88,7 +93,10 @@ const SearchBar = () => {
             onClick={() => cityRef.current.focus()}
           >
             <span>
-              <i className="ri ri-building-line"></i>
+              <i
+                className="search__bar__icon ri-building-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div>
               <h6 tabIndex="0" className="l6">
@@ -111,7 +119,10 @@ const SearchBar = () => {
             onClick={() => priceRef.current.focus()}
           >
             <span>
-              <i className="ri ri-money-dollar-circle-line"></i>
+              <i
+                className="search__bar__icon ri-money-dollar-circle-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div>
               <h6 tabIndex="0" className="l6">
@@ -135,7 +146,10 @@ const SearchBar = () => {
             onClick={() => tourPeriodRef.current.focus()}
           >
             <span>
-              <i className="ri ri-map-pin-time-line"></i>
+              <i
+                className="search__bar__icon ri-map-pin-time-line"
+                style={{ color: color.secondary }}
+              ></i>
             </span>
             <div>
               <h6 tabIndex="0" className="l6">
