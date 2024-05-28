@@ -64,9 +64,9 @@ function UserPosts() {
         }
         updateUserLikes(favorPostIds);
         if (favorPostIds.indexOf(postId) != -1) {
-          pushSuccess("Post liked");
+          pushSuccess("You successfully like this post!");
         } else {
-          pushSuccess("Post unliked");
+          pushError("You successfully unlike this post!");
         }
       } else {
         throw new Error(result.message || "Failed to toggle like");
@@ -97,11 +97,11 @@ function UserPosts() {
         },
       });
       if (response.ok) {
-        pushSuccess("Post archive successfully");
+        pushError("Hide post successfully");
         fetchData();
       } else {
-        pushError("Failed to archive post");
-        throw new Error("Failed to archive post");
+        pushError("Failed to hide post");
+        throw new Error("Failed to lock user");
       }
     } catch (error) {}
   };
@@ -117,11 +117,11 @@ function UserPosts() {
         },
       });
       if (response.ok) {
-        pushSuccess("Unarchive post successfully");
+        pushSuccess("Unhide post successfully");
         fetchData();
       } else {
-        pushError("Failed to unarchive post");
-        throw new Error("Failed to unarchive post");
+        pushError("Failed to unhide post");
+        throw new Error("Failed to unlock user");
       }
     } catch (error) {}
   };
@@ -141,7 +141,7 @@ function UserPosts() {
 
         const responseBody = await response.json();
         fetchData();
-        pushSuccess('Deleted post successfully');
+        pushSuccess('Deleted post');
     } catch (error) {
         console.error(error);
     }

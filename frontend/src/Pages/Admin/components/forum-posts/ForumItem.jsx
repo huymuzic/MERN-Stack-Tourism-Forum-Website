@@ -78,11 +78,11 @@ const ForumItem = ({ post, handleLockConfirm, handleUnLockConfirm }) => {
             {post.status !== "deleted" &&
               (post.status === "unarchived" ? (
                 <>
-                  <CustomToolTip text="Archived post" position={"top"}>
+                  <CustomToolTip text="Hide post" position={"top"}>
                     <button
                       className="btn btn-sm btn-outline-warning"
                       onClick={handleButtonClick}
-                      aria-label="Archived post"
+                      aria-label="Hide post"
                       tabIndex="0"
                     >
                       <FaUnlock color="inherit" size={14} />
@@ -91,17 +91,17 @@ const ForumItem = ({ post, handleLockConfirm, handleUnLockConfirm }) => {
                   <PopUpBase
                     {...popUpUnLock}
                     onConfirm={onUnLockConfirm}
-                    title="Archived post Confirmation"
-                    desc={`Are you sure you want to archived this post?`}
+                    title="Hide post Confirmation"
+                    desc={`Are you sure you want to hide this post?`}
                   />
                 </>
               ) : (
                 <>
-                  <CustomToolTip text="Unarchived post" position={"top"}>
+                  <CustomToolTip text="Unhide post" position={"top"}>
                     <button
                       className="btn btn-sm btn-outline-danger"
                       onClick={handleButtonClick}
-                      aria-label="Unarchived post"
+                      aria-label="Unhide post"
                       tabIndex="0"
                     >
                       <FaLock color="inherit" size={14} />
@@ -110,8 +110,8 @@ const ForumItem = ({ post, handleLockConfirm, handleUnLockConfirm }) => {
                   <PopUpBase
                     {...popUpLock}
                     onConfirm={onLockConfirm}
-                    title="Unarchived post Confirmation"
-                    desc={`Are you sure you want to unarchived this post?`}
+                    title="Unhide post Confirmation"
+                    desc={`Are you sure you want to unhide this post?`}
                   />
                 </>
               ))}
