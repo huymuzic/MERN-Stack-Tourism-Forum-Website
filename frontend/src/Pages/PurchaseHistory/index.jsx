@@ -56,6 +56,12 @@ const PurchaseHistory = () => {
         <Container className="d-flex justify-content-center">
           <CircularProgress />
         </Container>
+      ) : bookings.length === 0 ? (
+        <Container className="d-flex justify-content-center">
+          <h5 style={{ color: themeMode == "light" ? "#000" : "#fff" }}>
+            You have not purchased any tour
+          </h5>
+        </Container>
       ) : (
         <BasePaginationList
           titleTotal="Total bookings"

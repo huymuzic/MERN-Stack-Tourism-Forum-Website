@@ -40,8 +40,8 @@
   cursor: pointer;
 }
 
-.ri {
-  color: var(--secondary-color);
+.search__bar__icon {
+  font-size: 3rem;
 }
 
 .error-message {
