@@ -20,7 +20,11 @@ export default function ToggleTheme() {
       </style>
       <input type="checkbox" id='darkmode-toggle' className='toggle-input' checked={(themeMode != "light")} onChange={toggleLightDarkMode}
       />
-      <label className='toggle-label' htmlFor="darkmode-toggle">
+      <label className='toggle-label' htmlFor="darkmode-toggle" tabIndex={0} onKeyDown={(event) => {
+        if (event.key === 'Enter') {
+          toggleLightDarkMode();
+        }
+      }}>
         <FaRegSun className='sun' />
         <FaMoon className='moon' />
       </label>
