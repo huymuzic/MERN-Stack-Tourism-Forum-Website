@@ -28,7 +28,7 @@ import { useTheme } from "../../theme/Theme";
 const Home = () => {
   const [heroImages, setHeroImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { color } = useTheme()
+  const { color } = useTheme();
   const fetchData = async () => {
     const response = await fetch(`${baseUrl}/api/v1/images/`);
     const Images = await response.json();
@@ -83,13 +83,20 @@ const Home = () => {
                     <CircularProgress />
                   ) : (
                     <>
-                      <div className="hero__slide p-5" >
-                        <h1 style={{ color: "#fff" }}>Join the conversation with</h1>
-                        <h1 style={{ color: "#fff" }}>
-                          <span className="highlight" style={{ color: color.secondary }} >travelers</span> around
-                          the world today
+                      <div className="hero__slide p-5">
+                        <h1 tabIndex="0" style={{ color: "#fff" }}>
+                          Join the conversation with
                         </h1>
-                        <p className="homepage__p">
+                        <h1 tabIndex="0" style={{ color: "#fff" }}>
+                          <span
+                            className="highlight"
+                            style={{ color: color.secondary }}
+                          >
+                            travelers
+                          </span>{" "}
+                          around the world today
+                        </h1>
+                        <p tabIndex="0" className="homepage__p">
                           Dive into a world of discovery with our curated
                           selection of tours designed to immerse you in the
                           beauty of each destination
@@ -118,8 +125,12 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="3">
-              <h5 className="services__subtitle">What we serve</h5>
-              <h2 className="services__title">We offer our best services</h2>
+              <h5 tabIndex="0" className="services__subtitle">
+                What we serve
+              </h5>
+              <h2 tabIndex="0" className="services__title">
+                We offer our best services
+              </h2>
             </Col>
             <ServiceList />
           </Row>
@@ -132,8 +143,10 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="12" className="mb-5">
-              <Subtitle subtitle={"Explore"} />
-              <h2 className="featured__tour-title l2">Our featured tours</h2>
+              <Subtitle tabIndex="0" subtitle={"Explore"} />
+              <h2 tabIndex="0" className="featured__tour-title l2">
+                Our featured tours
+              </h2>
             </Col>
             <FeaturedTourList />
           </Row>
@@ -147,7 +160,9 @@ const Home = () => {
           <Row>
             <Col lg="12">
               <div className="d-flex align-items-center justify-content-center">
-                <h2 className="l2">Top Destinations</h2>
+                <h2 tabIndex="0" className="l2">
+                  Top Destinations
+                </h2>
               </div>
             </Col>
             <div className="container image-container">

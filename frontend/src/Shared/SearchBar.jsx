@@ -49,6 +49,13 @@ const SearchBar = () => {
     searchHandler(searchParams);
   };
 
+  const handleEnter = (event) => {
+    event.preventDefault();
+    if (event.key === "Enter") {
+      handleSearch(event);
+    }
+  };
+
   return (
     <Col lg="12">
       <div className="search__bar">
@@ -61,7 +68,9 @@ const SearchBar = () => {
               <i className="ri ri-map-pin-line"></i>
             </span>
             <div className="search_bar_input">
-              <h6 className="l6">Country</h6>
+              <h6 tabIndex="0" className="l6">
+                Country
+              </h6>
               <input
                 type="text"
                 placeholder="Where are you going?"
@@ -82,7 +91,9 @@ const SearchBar = () => {
               <i className="ri ri-building-line"></i>
             </span>
             <div>
-              <h6 className="l6">City</h6>
+              <h6 tabIndex="0" className="l6">
+                City
+              </h6>
               <input
                 type="text"
                 placeholder="Where are you going?"
@@ -103,7 +114,9 @@ const SearchBar = () => {
               <i className="ri ri-money-dollar-circle-line"></i>
             </span>
             <div>
-              <h6 className="l6">Price</h6>
+              <h6 tabIndex="0" className="l6">
+                Price
+              </h6>
               <input
                 id="price"
                 type="number"
@@ -125,7 +138,9 @@ const SearchBar = () => {
               <i className="ri ri-map-pin-time-line"></i>
             </span>
             <div>
-              <h6 className="l6">Duration</h6>
+              <h6 tabIndex="0" className="l6">
+                Duration
+              </h6>
               <input
                 id="tourPeriod"
                 type="number"
@@ -143,6 +158,7 @@ const SearchBar = () => {
             className="search__icon"
             type="submit"
             onClick={handleSearch}
+            onKeyDown={handleEnter}
             tabIndex="0"
           >
             <i className="ri-search-line"></i>
