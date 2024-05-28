@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '../../theme/Theme';
 
 function AutocompleteOption(props) {
-    const {color, themeMode} = useTheme()
+    const { color, themeMode } = useTheme()
     const [backgroundColor, setBackgroundColor] = useState(props.select ? color.lightPrimary : 'inherit');
 
     useEffect(() => {
@@ -11,7 +11,7 @@ function AutocompleteOption(props) {
     }, [props.select]);
 
     const handleMouseEnter = () => {
-        setBackgroundColor(props.select ? color.lightPrimary : (themeMode == "light" ? '#eeeeee' : "#353535") );
+        setBackgroundColor(props.select ? color.lightPrimary : (themeMode == "light" ? '#eeeeee' : "#353535"));
     };
 
     const handleMouseLeave = () => {
@@ -25,7 +25,11 @@ function AutocompleteOption(props) {
     };
 
     return (
-        <div className="cursor-pointer" onClick={handleClick}>
+        <div className="cursor-pointer" onClick={handleClick} tabIndex={0} onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+                handleClick(event);
+            }
+        }}>
             <div
                 className="p-2 rounded-3 cursor-pointer"
                 style={{
