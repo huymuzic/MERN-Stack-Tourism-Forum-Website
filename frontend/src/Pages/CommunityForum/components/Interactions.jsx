@@ -10,9 +10,6 @@ function countChildren(post) {
    }
 
    let count = post.childrenIds.length;
-   for (let child of post.childrenIds) {
-      count += countChildren(child);
-   }
 
    return count;
 }
