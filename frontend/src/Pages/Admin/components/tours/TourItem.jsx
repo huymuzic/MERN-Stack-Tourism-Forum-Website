@@ -34,37 +34,37 @@ const TourItem = ({
 
   const handleConfirmUpdate = (data) => {
     handleUpdateTour(data);
-    setEditOpen(false); // Close the popup after updating
+    setEditOpen(false); 
   };
 
   return (
-    <div className="card mb-3 shadow-sm rounded border-0">
+    <div className="card mb-3 shadow-sm rounded border-0" tabIndex="0">
       <div className="card-body">
-        <div className="d-flex justify-content-between align-items-start">
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start">
           <div>
-            <Link to={`/tours/${tour._id}`} className="text-decoration-none">
+            <Link to={`/tours/${tour._id}`} className="text-decoration-none" tabIndex="0" aria-label={`View details for tour titled ${tour.title || "No title"}`}>
               <h5 className="card-title text-primary">
                 {tour.title || "No title"}
               </h5>
             </Link>
             <div className="d-flex flex-column mt-2">
-              <div className="d-flex flex-row align-items-center mb-2">
-                <p className="card-text me-3 mb-0">
+              <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center mb-2">
+                <p className="card-text me-0 me-md-3 mb-1 mb-md-0" tabIndex="0" aria-label={`Location: ${tour.city}, ${tour.country}`}>
                   <strong className="text-muted">
                     Location: {`${tour.city}, ${tour.country}` || "None"}
                   </strong>
                 </p>
               </div>
-              <p className="card-text mb-0">
+              <p className="card-text mb-1" tabIndex="0" aria-label={`Posted on ${moment(tour.updatedAt).format("YYYY-MM-DD HH:mm:ss")}`}>
                 <small className="text-muted">
                   Posted: {moment(tour.updatedAt).format("YYYY-MM-DD HH:mm:ss")}
                 </small>
               </p>
-              <p className="card-text mb-0">
-                <small className="text-muted">
+              <p className="card-text mb-1">
+                <small className="text-muted" tabIndex="0" aria-label={`Reviews: ${tour?.reviews.length}`}>
                   Reviews: {tour?.reviews.length} <br />
                 </small>
-                <small className="text-muted">
+                <small className="text-muted" tabIndex="0" aria-label={`Average Score: ${avgRating.avgRating}`}>
                   Average Score:{" "}
                   <i className="ri ri-star-s-fill text-warning"></i>
                   {avgRating.avgRating}
@@ -72,7 +72,7 @@ const TourItem = ({
               </p>
             </div>
           </div>
-          <div className="d-flex flex-column align-items-end">
+          <div className="d-flex flex-column align-items-end mt-3 mt-md-0">
             <div className="d-flex mb-2">
               <TourRatingBox status={avgRating.avgRating} className="me-2" />
               <TourStatusBox status={tour.status} />
@@ -83,6 +83,8 @@ const TourItem = ({
                   className="btn btn-sm btn-outline-primary me-2"
                   onClick={() => setEditOpen(true)}
                   data-tip="Edit Tour"
+                  tabIndex="0"
+                  aria-label="Edit Tour"
                 >
                   <FaEdit size={14} />
                 </button>
@@ -95,6 +97,8 @@ const TourItem = ({
                   className="btn btn-sm btn-outline-secondary"
                   onClick={() => popUpActivate.setTrue()}
                   data-tip={TourStatus.Value === "unhide" ? "Hide" : "Unhide"}
+                  tabIndex="0"
+                  aria-label={TourStatus.Value === "unhide" ? "Hide Tour" : "Unhide Tour"}
                 >
                   {TourStatus.Value === "unhide" ? (
                     <FaLock size={14} />
@@ -118,6 +122,8 @@ const TourItem = ({
         <Link
           to={`/tours/${tour._id}`}
           className="btn btn-sm btn-outline-secondary"
+          tabIndex="0"
+          aria-label="Read more about this tour"
         >
           Read More...
         </Link>
@@ -132,7 +138,6 @@ const TourItem = ({
     </div>
   );
 };
-
 TourItem.propTypes = {
   tour: PropTypes.shape({
     _id: PropTypes.string.isRequired,
@@ -184,6 +189,8 @@ export const TourRatingBox = ({ status }) => {
     <div
       className="px-2 py-1 rounded"
       style={{ backgroundColor: TourRate?.bgColor }}
+      tabIndex="0"
+      aria-label={`Rating: ${TourRate?.Name}`}
     >
       <p style={{ color: TourRate?.color, margin: 0 }}>{TourRate?.Name}</p>
     </div>
@@ -217,6 +224,8 @@ export const TourStatusBox = ({ status }) => {
     <div
       className="px-2 py-1 rounded"
       style={{ backgroundColor: TourStatus?.bgColor }}
+      tabIndex="0"
+      aria-label={`Status: ${TourStatus?.Name}`}
     >
       <p style={{ color: TourStatus?.color, margin: 0 }}>{TourStatus?.Name}</p>
     </div>

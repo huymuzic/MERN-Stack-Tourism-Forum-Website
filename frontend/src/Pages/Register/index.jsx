@@ -20,7 +20,6 @@ function Register() {
     watch,
     trigger,
     formState: { errors, dirtyFields, isSubmitting },
-    setError,
   } = useForm({ mode: "onChange", criteriaMode: "all" });
   const password = watch("pwd");
   const [showPassword, setShowPassword] = useState(false);

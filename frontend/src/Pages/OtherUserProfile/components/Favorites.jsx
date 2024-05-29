@@ -1,4 +1,3 @@
-// components/Favorites/Favorites.js
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostCard from "./PostCard";
@@ -25,10 +24,8 @@ function Favorites() {
       const result = await response.json();
       if (response.ok) {
         if (userId === id) {
-          // Return all posts if it's the user's own favorites
           return result;
         } else {
-          // Filter results to include only posts with 'unarchived' status for others
           const filteredPosts = result.filter(
             (post) => post.status === "unarchived"
           );
@@ -71,12 +68,11 @@ function Favorites() {
         if (setFavoritePosts) {
           setFavoritePosts(favoritePosts);
         }
-        // Update logged-in user's likes
         updateUserLikes(favorPostIds);
         if (favorPostIds.indexOf(postId) != -1) {
-          pushSuccess("You successfully like this post!");
+          pushSuccess("Post liked");
         } else {
-          pushError("You successfully unlike this post!");
+          pushSuccess("Post unliked");
         }
       } else {
         throw new Error(result.message || "Failed to toggle like");
@@ -97,11 +93,11 @@ function Favorites() {
         },
       });
       if (response.ok) {
-        pushError("Hide post successfully");
+        pushSuccess("Archive post successfully");
         fetchData();
       } else {
-        pushError("Failed to hide post");
-        throw new Error("Failed to lock user");
+        pushError("Failed to archive post");
+        throw new Error("Failed to archive post");
       }
     } catch (error) {}
   };
@@ -117,11 +113,11 @@ function Favorites() {
         },
       });
       if (response.ok) {
-        pushSuccess("Unhide post successfully");
+        pushSuccess("Unarchive post successfully");
         fetchData();
       } else {
-        pushError("Failed to unhide post");
-        throw new Error("Failed to unlock user");
+        pushError("Failed to unarchive post");
+        throw new Error("Failed to unarchive post");
       }
     } catch (error) {}
   };
@@ -153,7 +149,7 @@ function Favorites() {
     }
 };
   const handleToggleLike = (postId) => {
-    toggleLike(postId, user._id, null, null); // Update favorite posts after toggling like
+    toggleLike(postId, user._id, null, null);
   };
   
   const fetchData = async () => {

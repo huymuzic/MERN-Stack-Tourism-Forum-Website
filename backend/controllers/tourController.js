@@ -141,7 +141,7 @@ export const getSingleTour = async (req, res) => {
 export const getAllTour = async (req, res) => {
   const page = parseInt(req.query.page);
   try {
-    const tours = await Tour.find({status: "unhide"})
+    const tours = await Tour.find({ status: "unhide" })
       .populate({
         path: "reviews",
         populate: {
@@ -231,7 +231,7 @@ export const getFeaturedTour = async (req, res) => {
 
 export const getTourCount = async (req, res) => {
   try {
-    const tourCount = await Tour.estimatedDocumentCount();
+    const tourCount = await Tour.countDocuments({ status: "unhide" });
 
     res.status(200).json({ success: true, data: tourCount });
   } catch (err) {

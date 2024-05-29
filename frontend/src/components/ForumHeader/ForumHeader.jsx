@@ -6,11 +6,9 @@ import { getAvatarUrl } from "../../utils/getAvar.js";
 import { Dropdown } from "bootstrap";
 import { useTheme } from "../../theme/Theme.jsx";
 import { baseUrl, environment } from "../../config/index.js";
-import CircularProgress from "../CircularProgress.jsx";
 import { usePopUp } from "../../components/pop-up/usePopup";
 import PopupEditor from "../../Pages/CommunityForum/components/PopupEditor.jsx";
 import ToggleTheme from "../Header/components/ToggleTheme/index.jsx";
-import { Container } from "react-bootstrap";
 
 const nav_bar = [
   {
@@ -248,6 +246,14 @@ const ForumHeader = ({ children }) => {
                     <li>
                       <Link className="dropdown-item" to="/my-account">
                         My Account
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to={`/profile/${user?._id}`}
+                      >
+                        My Post History
                       </Link>
                     </li>
                     <li>

@@ -16,11 +16,9 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors, dirtyFields, isSubmitting },
-    setError,
   } = useForm({ mode: "onChange" });
   const [showPassword, setShowPassword] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(false);
   const { user } = useUser();
 
   useEffect(() => {
@@ -71,27 +69,23 @@ function Login() {
         </strong>
 
         <div className="mb-3 col-8">
-          <label htmlFor="emailInput" className="form-label">
-            Email address
+          <label htmlFor="identifierInput" className="form-label">
+            Username or Email address
           </label>
           <input
-            type="email"
-            className={`form-control ${errors.email ? "is-invalid" : ""}${
-              dirtyFields.email && !errors.email ? "is-valid" : ""
+            type="text"
+            className={`form-control ${errors.identifier ? "is-invalid" : ""}${
+              dirtyFields.identifier && !errors.identifier ? "is-valid" : ""
             }`}
-            id="emailInput"
-            aria-describedby="emailInput"
-            placeholder="Enter your email"
-            {...register("email", {
-              required: "Email cannot be empty.",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Email address must be valid.",
-              },
+            id="identifierInput"
+            aria-describedby="identifierInput"
+            placeholder="Enter your username or email"
+            {...register("identifier", {
+              required: "Username or Email cannot be empty.",
             })}
           />
-          {errors.email && (
-            <div className="invalid-feedback">{errors.email.message}</div>
+          {errors.identifier && (
+            <div className="invalid-feedback">{errors.identifier.message}</div>
           )}
         </div>
 

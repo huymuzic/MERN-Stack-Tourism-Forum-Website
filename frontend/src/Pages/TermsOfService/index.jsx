@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link, Element, animateScroll as scroll } from "react-scroll";
 
@@ -66,9 +66,9 @@ const TermsOfService = () => {
               <h2>4. Limitation of Liability</h2>
               <br />
               <p>
-                Our platform is provided "as is" without any warranties, express
-                or implied. We do not guarantee that our site will be available
-                at all times or that it will be free from errors.
+                Our platform is provided without any warranties, express or
+                implied. We do not guarantee that our site will be available at
+                all times or that it will be free from errors.
               </p>
               <br />
               <p>

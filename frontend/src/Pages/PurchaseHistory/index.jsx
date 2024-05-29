@@ -10,7 +10,7 @@ import { useTheme } from "../../theme/Theme";
 
 const PurchaseHistory = () => {
   const { user } = useUser();
-  const { color, themeMode } = useTheme();
+  const { themeMode } = useTheme();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -55,6 +55,12 @@ const PurchaseHistory = () => {
       {loading ? (
         <Container className="d-flex justify-content-center">
           <CircularProgress />
+        </Container>
+      ) : bookings.length === 0 ? (
+        <Container className="d-flex justify-content-center">
+          <h5 style={{ color: themeMode == "light" ? "#000" : "#fff" }}>
+            You have not purchased any tour
+          </h5>
         </Container>
       ) : (
         <BasePaginationList
