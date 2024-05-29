@@ -50,7 +50,7 @@ export const verifyStatusChange = async (req, res, next) => {
 };
 export const verifyUser = async (req, res, next) => {
   await verifyToken(req, res, async () => {
-    if ((req.user && req.user.status === "active" ) || (req.user.role === "admin") ) {
+    if ((req.user && req.user.status === "active" ) || (req.user.role === "admin" && req.user.status === "active") ) {
       next();
     } else {
       return res.status(403).json({
