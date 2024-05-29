@@ -203,7 +203,7 @@ export default function PopUpUpdateTour({
               {avatarPreview ? (
                 <img
                   src={avatarPreview}
-                  alt=""
+                  alt="tour-image"
                   style={{ height: 40, maxHeight: 40 }}
                 />
               ) : (
@@ -381,8 +381,6 @@ export default function PopUpUpdateTour({
                       value: 100,
                       message: "Duration must be under 100 day!",
                     },
-                    
-
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <>
@@ -413,22 +411,24 @@ export default function PopUpUpdateTour({
               <Controller
                 name="ageFrom"
                 control={control}
-                rules={{ required: "From Age is required" ,
-                min: {
-                  value: 0,
-                  message: "Age must be at least 0",
-                },
-                max: {
-                  value: 100,
-                  message: "Age must be under 100!",
-                },  
-                validate: (value) => {
-                  const ageTo = watch("ageTo");
-                  return (
-                    parseInt(value, 10) < parseInt(ageTo, 10) ||
-                    "The minimum age must be lower than the maximum age"
-                  );
-                }}}
+                rules={{
+                  required: "From Age is required",
+                  min: {
+                    value: 0,
+                    message: "Age must be at least 0",
+                  },
+                  max: {
+                    value: 100,
+                    message: "Age must be under 100!",
+                  },
+                  validate: (value) => {
+                    const ageTo = watch("ageTo");
+                    return (
+                      parseInt(value, 10) < parseInt(ageTo, 10) ||
+                      "The minimum age must be lower than the maximum age"
+                    );
+                  },
+                }}
                 render={({ field, fieldState: { error } }) => (
                   <>
                     <FloatingLabel label="From Age">
@@ -449,22 +449,24 @@ export default function PopUpUpdateTour({
               <Controller
                 name="ageTo"
                 control={control}
-                rules={{ required: "To Age is required",
-                min: {
-                  value: 0,
-                  message: "Age must be at least 0",
-                },
-                max: {
-                  value: 100,
-                  message: "Age must be under 100!",
-                } ,
-                validate: (value) => {
-                  const ageFrom = watch("ageFrom");
-                  return (
-                    parseInt(value, 10) > parseInt(ageFrom, 10) ||
-                    "The maximum age must be greater than the minimum age"
-                  );
-                },}}
+                rules={{
+                  required: "To Age is required",
+                  min: {
+                    value: 0,
+                    message: "Age must be at least 0",
+                  },
+                  max: {
+                    value: 100,
+                    message: "Age must be under 100!",
+                  },
+                  validate: (value) => {
+                    const ageFrom = watch("ageFrom");
+                    return (
+                      parseInt(value, 10) > parseInt(ageFrom, 10) ||
+                      "The maximum age must be greater than the minimum age"
+                    );
+                  },
+                }}
                 render={({ field, fieldState: { error } }) => (
                   <>
                     <FloatingLabel label="To Age">

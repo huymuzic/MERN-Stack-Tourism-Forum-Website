@@ -94,6 +94,7 @@ const ContactModal = () => {
           <Form.Control
             type="text"
             name="fullName"
+            id="fullName"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="Full Name"
@@ -103,6 +104,7 @@ const ContactModal = () => {
           <Form.Control
             type="email"
             name="email"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
@@ -112,6 +114,7 @@ const ContactModal = () => {
           <Form.Control
             type="text"
             name="phoneNumber"
+            id="phoneNumber"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="Phone Number"
@@ -120,6 +123,7 @@ const ContactModal = () => {
         <Form.Control
           as="textarea"
           name="message"
+          id="message"
           rows="4"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
