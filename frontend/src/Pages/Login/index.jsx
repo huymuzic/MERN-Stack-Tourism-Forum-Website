@@ -79,7 +79,7 @@ function Login() {
             }`}
             id="identifierInput"
             aria-describedby="identifierInput"
-            placeholder="Enter your username or email"
+            placeholder="Username or email"
             {...register("identifier", {
               required: "Username or Email cannot be empty.",
             })}
@@ -99,7 +99,7 @@ function Login() {
               dirtyFields.pwd && !errors.pwd ? "is-valid" : ""
             }`}
             id="pwdInput"
-            placeholder="Enter your password"
+            placeholder="Your password"
             aria-describedby="pwdInput"
             {...register("pwd", {
               required: "Password cannot be empty.",
