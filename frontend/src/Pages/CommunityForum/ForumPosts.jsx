@@ -145,7 +145,7 @@ function Post() {
                            <div>
                               {post.authorId ? (
                                  <>
-                                    <strong className='ms-2'>{post.authorId.username}</strong>
+                                    <strong className='ms-2' aria-label={`Posted by ${post.authorId.username}`}>{post.authorId.username}</strong>
                                     <span className={`${post.authorId.role === 'admin' ? 'd-inline-block' : 'd-none'} ps-1`}>
                                        <i className="fa-solid fa-shield-halved"></i>
                                     </span>
@@ -157,11 +157,11 @@ function Post() {
                            </div>
 
                            <div className='ms-2'>
-                              <div name='title'>
+                              <div name='title' tabIndex={0}>
                                  <h5>{post.title}</h5>
                               </div>
 
-                              <div name='content' className='pre-wrap'>
+                              <div name='content' tabIndex={0} className='pre-wrap'>
                                  {post.content}
                               </div>
 
@@ -182,7 +182,7 @@ function Post() {
                                     {post.images.map((image, index) =>
                                        <SwiperSlide key={index}>
                                           {image.blob instanceof Blob ?
-                                             <img src={URL.createObjectURL(image.blob)} alt={`image-${index}`} width={'100%'} className='object-fit-fill rounded-2' />
+                                             <img tabIndex={0} src={URL.createObjectURL(image.blob)} alt={`image-${index}`} width={'100%'} className='object-fit-fill rounded-2' />
                                              : <CircularProgress />}
                                        </SwiperSlide>
                                     )}

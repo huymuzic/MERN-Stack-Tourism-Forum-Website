@@ -363,6 +363,13 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                     value: 100,
                     message: "Age must be under 100!",
                   },
+                  validate: (value) => {
+                    const ageTo = watch("ageTo");
+                    return (
+                      parseInt(value, 10) < parseInt(ageTo, 10) ||
+                      "The minimum age must be lower than the maximum age"
+                    );
+                  }
                 }}
                 render={({ field, fieldState: { error } }) => (
                   <FloatingLabel label="From Age">

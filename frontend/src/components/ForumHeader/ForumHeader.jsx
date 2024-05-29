@@ -251,7 +251,7 @@ const ForumHeader = ({ children }) => {
                     <li>
                       <Link
                         className="dropdown-item"
-                        to={`/profile/${user._id}`}
+                        to={`/profile/${user?._id}`}
                       >
                         My Post History
                       </Link>
