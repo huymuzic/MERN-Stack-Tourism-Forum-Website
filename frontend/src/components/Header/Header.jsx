@@ -157,7 +157,10 @@ const Header = () => {
                 ></img>
               </Link>
               <div className="d lg-none hbg">
-                <Navbar.Toggle aria-controls="navbarSupportedContent" />
+                <Navbar.Toggle
+                  aria-controls="navbarSupportedContent"
+                  aria-label="Toggle navigation"
+                />
               </div>
               <Navbar.Collapse
                 className="navbar-collapse collapse justify-content-end"

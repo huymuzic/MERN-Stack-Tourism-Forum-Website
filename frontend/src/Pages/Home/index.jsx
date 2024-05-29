@@ -97,9 +97,9 @@ const Home = () => {
                           around the world today
                         </h1>
                         <p tabIndex="0" className="homepage__p">
-                          Dive into a world of discovery with our curated
-                          selection of tours designed to immerse you in the
-                          beauty of each destination
+                          Dive into a world of discovery with our selection of
+                          tours designed to immerse you in the beauty of each
+                          destination
                         </p>
                         <Link to="/forum">
                           <Button className="primary__btn big__pad btn-primary join__now">

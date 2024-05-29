@@ -143,7 +143,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
               {avatarPreview ? (
                 <img
                   src={avatarPreview}
-                  alt=""
+                  alt="tour-image"
                   style={{ height: 40, maxHeight: 40 }}
                 />
               ) : (
@@ -369,7 +369,7 @@ export default function PopUpAddTour({ open, onClose, onConfirm, isLoading }) {
                       parseInt(value, 10) < parseInt(ageTo, 10) ||
                       "The minimum age must be lower than the maximum age"
                     );
-                  }
+                  },
                 }}
                 render={({ field, fieldState: { error } }) => (
                   <FloatingLabel label="From Age">

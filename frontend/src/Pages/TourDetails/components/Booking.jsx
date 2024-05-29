@@ -29,7 +29,7 @@ const Booking = ({ tour, avgRating }) => {
 
   const incrementPeople = (e) => {
     e.preventDefault();
-    setNumPeople((prevNumPeople) => Math.min(prevNumPeople + 1, 10));
+    setNumPeople((prevNumPeople) => Math.min(prevNumPeople + 1, 100));
   };
 
   const decrementPeople = (e) => {
