@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { FaRegSun } from "react-icons/fa";
 import { FaMoon } from "react-icons/fa";
 import { useTheme } from "../../../../theme/Theme";
@@ -6,21 +6,21 @@ import "./index.css";
 
 export default function ToggleTheme() {
   const { themeMode, toggleLightDarkMode, color } = useTheme();
-  const [audio, setAudio] = useState(null);
+  // const [audio, setAudio] = useState(null);
 
-  useEffect(() => {
-    const audioFile = new Audio("./src/assets/audio/bigshaq.mp3");
-    setAudio(audioFile);
-  }, []);
+  // useEffect(() => {
+  //   const audioFile = new Audio("./src/assets/audio/bigshaq.mp3");
+  //   setAudio(audioFile);
+  // }, []);
 
-  const handleClick = () => {
-    if (themeMode === "light") {
-      audio.play();
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  };
+  // const handleClick = () => {
+  //   if (themeMode === "light") {
+  //     audio.play();
+  //   } else {
+  //     audio.pause();
+  //     audio.currentTime = 0;
+  //   }
+  // };
 
   return (
     <>
@@ -37,7 +37,7 @@ export default function ToggleTheme() {
         className="toggle-input"
         checked={themeMode != "light"}
         onChange={toggleLightDarkMode}
-        onClick={handleClick}
+        // onClick={handleClick}
       />
       <label
         className="toggle-label"
