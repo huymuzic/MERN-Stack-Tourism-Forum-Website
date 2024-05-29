@@ -72,7 +72,7 @@ function Reply(props) {
                         <>
                            <div className='d-flex justify-content-between'>
                               <div>
-                                 <strong className='ms-2'>{child.authorId.username}</strong>
+                                 <strong className='ms-2' aria-label={`Posted by ${child.authorId.username}`}>{child.authorId.username}</strong>
                                  <span className={`${child.authorId.role === 'admin' ? 'd-inline-block' : 'd-none'} ps-1`}>
                                     <i className="fa-solid fa-shield-halved"></i>
                                  </span>
@@ -102,7 +102,7 @@ function Reply(props) {
                   </div>
 
                   <div className='ms-2'>
-                     <Link to={`/forum/p/${child._id}`} className='text-reset'>
+                     <Link to={`/forum/p/${child._id}`} tabIndex={0} className='text-reset'>
                         <div name='content' className='pre-wrap'>
                            {child.content}
                         </div>
@@ -124,7 +124,7 @@ function Reply(props) {
                               {child.images.map((image, index) =>
                                  <SwiperSlide key={index}>
                                     {image.blob instanceof Blob ?
-                                       <img src={URL.createObjectURL(image.blob)} alt={`image-${index}`} width={'100%'} className='object-fit-cover rounded-2' />
+                                       <img tabIndex={0} src={URL.createObjectURL(image.blob)} alt={`image-${index}`} width={'100%'} className='object-fit-cover rounded-2' />
                                        : <CircularProgress />}
                                  </SwiperSlide>
                               )}
