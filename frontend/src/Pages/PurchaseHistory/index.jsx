@@ -47,15 +47,14 @@ const PurchaseHistory = () => {
 
   return (
     <Container
+      fluid="md"
       className="purchase-history-page"
       style={{
         backgroundColor: themeMode == "light" ? "#f5f5f5" : "#212529",
       }}
     >
       {loading ? (
-        <Container className="d-flex justify-content-center">
-          <CircularProgress />
-        </Container>
+        <CircularProgress />
       ) : bookings.length === 0 ? (
         <Container className="d-flex justify-content-center">
           <h5 style={{ color: themeMode == "light" ? "#000" : "#fff" }}>
