@@ -13,7 +13,9 @@ export async function handleLike(postId, setPost, userId) {
       });
 
       if (!response.ok) {
-         throw new Error('Failed to like post');
+         const errorData = await response.json();
+         pushError(errorData.message); 
+         return;
       }
 
       const responseBody = await response.json();
@@ -40,7 +42,9 @@ export async function handledelete(postId, setPost) {
       });
 
       if (!response.ok) {
-         throw new Error('Failed to delete post');
+         const errorData = await response.json();
+         pushError(errorData.message); 
+         return;
       }
 
       const responseBody = await response.json();
@@ -67,6 +71,8 @@ export async function replyTopic(id, content, images, setPost, nav, close) {
       });
 
       if (!response.ok) {
+         const errorData = await response.json();
+         pushError(errorData.message); 
          return;
       }
 
@@ -139,10 +145,12 @@ export async function createTopic(title, content, images, nav, close) {
          body: formData,
       });
 
-      if (!response.ok) {
-         //throw new Error(`HTTP error! message: ${response.status}`);
+      if (!response.ok) { 
+         const errorData = await response.json();
+         pushError(errorData.message); 
          return;
       }
+
 
       const data = await response.json();
       nav(`/forum/p/${data.postId}`)
@@ -173,7 +181,8 @@ export async function edit(postId, title, content, images, removed, setPost, nav
       const body = await response.json();
 
       if (!response.ok) {
-         console.log(body.message)
+         const errorData = await response.json();
+         pushError(errorData.message); 
          return
       }
       
@@ -203,7 +212,11 @@ export async function archive(id, setPost) {
             "Content-Type": "application/json",
          },
       });
-
+      if (!response.ok) {
+         const errorData = await response.json();
+         pushError(errorData.message); 
+         return
+      }
       if (response.ok) {
          const data = await response.json();
          pushSuccess("Post archived successfully");

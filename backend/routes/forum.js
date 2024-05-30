@@ -25,11 +25,11 @@ router.get('/images/:id', async (req, res) => {
     }  
 });
 
-router.put('/p/:id/edit', verifyToken, edit);
-router.put("/p/:id/like", verifyToken, like);
-router.put("/p/:id/deletePost", verifyToken, deletePost);
+router.put('/p/:id/edit', verifyUser, edit);
+router.put("/p/:id/like", verifyUser, like);
+router.put("/p/:id/deletePost", verifyUser, deletePost);
 
-router.post("/", verifyToken, create);
-router.post("/p/:id/reply", verifyToken, reply);
+router.post("/", verifyUser, create);
+router.post("/p/:id/reply", verifyUser, reply);
 
 export default router;

@@ -322,41 +322,41 @@ export default function MyAccount() {
 
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
             <Col md={6} xs={12} className="text-right">
-              <h6>Email:</h6>
+              <h6 tabIndex={0}>Email:</h6>
             </Col>
             <Col md={6} xs={12} className="text-left">
-              <p className="body-1">{userProfile?.email}</p>
+              <p className="body-1" tabIndex={0}>{userProfile?.email}</p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
             <Col md={6} xs={12} className="text-right">
-              <h6>Username:</h6>
+              <h6 tabIndex={0}>Username:</h6>
             </Col>
             <Col md={6} xs={12} className="text-left">
-              <p className="body-1">{userProfile?.username}</p>
+              <p className="body-1" tabIndex={0}>{userProfile?.username}</p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
             <Col md={6} xs={12} className="text-right">
-              <h6>Name:</h6>
+              <h6 tabIndex={0}>Name:</h6>
             </Col>
             <Col md={6} xs={12} className="text-left">
-              <p className="body-1">{userProfile?.name}</p>
+              <p className="body-1" tabIndex={0}>{userProfile?.name}</p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
             <Col md={6} xs={12} className="text-right">
-              <h6>Joined at:</h6>
+              <h6 tabIndex={0}>Joined at:</h6>
             </Col>
             <Col md={6} xs={12} className="text-left">
-              <p className="body-1">
+              <p className="body-1" tabIndex={0}>
                 {moment(userProfile?.createdAt).format("YYYY-MM-DD HH:mm:ss")}
               </p>
             </Col>
           </Row>
           <Row className="mb-3 justify-content-between max-width-500 mx-auto">
             <Col md={6} xs={12} className="text-right">
-              <h6>Password:</h6>
+              <h6 tabIndex={0}>Password:</h6>
             </Col>
             <Col md={6} xs={12} className="text-left">
               <div
@@ -446,7 +446,7 @@ const UserStatusDot = ({ status }) => {
           backgroundColor: userStatus?.color,
         }}
       ></div>
-      <p className="body-1">{userStatus?.Name}</p>
+      <p className="body-1" tabIndex={0}>{userStatus?.Name}</p>
     </Stack>
   );
 };
