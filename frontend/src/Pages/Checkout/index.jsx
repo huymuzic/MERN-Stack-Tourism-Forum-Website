@@ -152,7 +152,7 @@ const Checkout = () => {
                         width="60"
                         height="60"
                         alt={bookingDetails.tourTitle}
-                        className="image__E6xL"
+                        className="checkout_image"
                         src={`${baseUrl}/api/v1/tours/images/${bookingDetails.photo}`}
                       />
                       <div className="title__container">
@@ -188,9 +188,7 @@ const Checkout = () => {
                   <div className="total__price">
                     Total price
                     <div className="total__value">
-                      <span className="moneyView__3N21 defaultColor__1boI">
-                        ${bookingDetails.price}
-                      </span>
+                      <span>${bookingDetails.price}</span>
                     </div>
                   </div>
                   <Button

@@ -69,7 +69,7 @@
   font-size: 1.2rem;
 }
 
-.image__E6xL {
+.checkout_image {
   border-radius: 0.25rem;
   object-fit: cover;
 }
@@ -90,11 +90,8 @@
 
 .tour_price {
   margin-left: 1rem;
-}
-
-.price__f3Od {
   line-height: 1.5rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .list__1 {

@@ -58,6 +58,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  text-align: left;
   margin-bottom: 8px;
 }
 
@@ -68,4 +69,145 @@
 .history_price {
   font-size: 1rem;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .tour__location {
+    font-size: 13px;
+  }
+
+  .booking-item img {
+    width: 30%;
+    margin-bottom: 16px;
+  }
+
+  .booking-details {
+    width: 60%;
+  }
+
+  .details-text {
+    font-size: 16px;
+  }
+
+  .booking-details .title {
+    font-size: 16px;
+  }
+
+  .booking-info {
+    align-items: flex-start;
+  }
+
+  .booking-info li {
+    justify-content: flex-start;
+    font-size: 14px;
+  }
+
+  .booking-info li i {
+    font-size: 14px;
+  }
+
+  .history_price {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .booking-item img {
+    width: 30%;
+    margin-bottom: 0px;
+  }
+
+  .booking-details {
+    width: 60%;
+  }
+
+  .details-text {
+    font-size: 12px;
+  }
+
+  .booking-details .title {
+    font-size: 14px;
+  }
+
+  .booking-info li {
+    font-size: 12px;
+  }
+
+  .booking-info li i {
+    font-size: 12px;
+  }
+
+  .purchase-history-page {
+    padding: 10px;
+  }
+
+  .booking-item {
+    padding: 12px;
+  }
+
+  .booking-details .details-text {
+    margin-left: 8px;
+  }
+
+  .history_price {
+    font-size: 0.75rem;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 470px) {
+  .tour__location {
+    font-size: 11px;
+  }
+
+  .booking-item img {
+    width: 30%;
+  }
+
+  .booking-details {
+    width: 60%;
+  }
+
+  .details-text {
+    font-size: 10px;
+  }
+
+  .booking-details .title {
+    font-size: 12px;
+  }
+
+  .booking-info ul {
+    padding-left: 0 !important;
+  }
+  .booking-info li {
+    font-size: 11px;
+  }
+
+  .booking-info li i {
+    font-size: 11px;
+  }
+
+  .purchase-history-page {
+    padding: 5px;
+  }
+
+  .booking-item {
+    padding: 8px;
+  }
+
+  .booking-details .details-text {
+    margin-left: 4px;
+  }
+
+  .history_price {
+    font-size: 0.7rem;
+  }
+
+  .title {
+    font-size: 13px;
+    margin-left: 8px;
+  }
 }
