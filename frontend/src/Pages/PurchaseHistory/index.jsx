@@ -54,10 +54,15 @@ const PurchaseHistory = () => {
       }}
     >
       {loading ? (
-        <CircularProgress />
+        <Container className="d-flex justify-content-center">
+          <CircularProgress />
+        </Container>
       ) : bookings.length === 0 ? (
         <Container className="d-flex justify-content-center">
-          <h5 style={{ color: themeMode == "light" ? "#000" : "#fff" }}>
+          <h5
+            tabIndex="0"
+            style={{ color: themeMode == "light" ? "#000" : "#fff" }}
+          >
             You have not purchased any tour
           </h5>
         </Container>
@@ -77,18 +82,23 @@ const PurchaseHistory = () => {
             >
               <div className="booking-details">
                 <img
+                  tabIndex="0"
                   src={`${baseUrl}/api/v1/tours/images/${item.photo}`}
                   alt={item.tourTitle}
                 />
                 <div className="details-text">
                   <Link to={`/tours/${item.tourId}`}>
                     <span
+                      tabIndex="0"
                       className="title"
                       style={{
                         color: themeMode == "light" ? "#444444" : "#fff",
                       }}
                     >
-                      <span className="tour__location d-flex align-items-center gap-1">
+                      <span
+                        tabIndex="0"
+                        className="tour__location d-flex align-items-center gap-1"
+                      >
                         <i
                           className="ri ri-map-pin-line"
                           style={{
@@ -110,14 +120,16 @@ const PurchaseHistory = () => {
               >
                 <li>
                   <i className="ri-calendar-line item_icon"></i>
-                  <span>{new Date(item.date).toDateString()}</span>
+                  <span tabIndex="0">{new Date(item.date).toDateString()}</span>
                 </li>
                 <li>
                   <i className="fa-duotone fa-user-group item_icon"></i>
-                  <span>{item.numPeople} People</span>
+                  <span tabIndex="0">{item.numPeople} People</span>
                 </li>
                 <li>
-                  <span className="history_price">${item.price}</span>
+                  <span tabIndex="0" className="history_price">
+                    ${item.price}
+                  </span>
                 </li>
               </ul>
             </div>

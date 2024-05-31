@@ -38,10 +38,6 @@
   align-items: center;
 }
 
-.total__value {
-  color: black;
-}
-
 .checkout__container_1 {
   background: white;
   border-radius: 0.5rem;
@@ -113,10 +109,6 @@
 .row__1 > :first-child {
   margin-right: 1rem;
   min-width: 1rem;
-}
-
-.icon__3e6C {
-  margin-right: 10px;
 }
 
 .mt-3 {

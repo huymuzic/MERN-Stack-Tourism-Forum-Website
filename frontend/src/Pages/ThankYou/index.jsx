@@ -12,10 +12,14 @@ const ThankYou = () => {
               <span>
                 <i className="ri-checkbox-circle-line"></i>
               </span>
-              <h1 className="mb-3 fw-semibold">Thank You</h1>
-              <h3 className="mb-4">Your tour is booked</h3>
+              <h1 className="mb-3 fw-semibold" tabIndex="0">
+                Thank You
+              </h1>
+              <h3 className="mb-4" tabIndex="0">
+                Your tour is booked
+              </h3>
               <Link to="/history">
-                <Button className="btn primary__btn w-25">
+                <Button className="btn primary__btn responsive__btn">
                   Your Purchased History
                 </Button>
               </Link>
