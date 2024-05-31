@@ -35,7 +35,7 @@ For smoothly running the project, please make sure to install nodeJs in your dev
 
 ```
 **Please clone branch "main" for running our local website and our last merge branch is "
-Merge pull request #96 from RMIT-Vietnam-Teaching/features/admin-tours[https://github.com/RMIT-Vietnam-Teaching/group-project-cosc3060-2024a-works-on-my-computer/commit/79cb225eb944d5637f86004fb3a6d5d4b2747a42](url)"**
+Merge pull request #98 from RMIT-Vietnam-Teaching/features/admin-tours[https://github.com/RMIT-Vietnam-Teaching/group-project-cosc3060-2024a-works-on-my-computer/pull/98](url)"**
 
 ```
 
