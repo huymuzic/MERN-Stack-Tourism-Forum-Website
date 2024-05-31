@@ -74,12 +74,12 @@ const Checkout = () => {
                   backgroundColor: themeMode == "light" ? "#fff" : "#212529",
                 }}
               >
-                <h2>Contact Details</h2>
+                <h2 tabIndex="0">Contact Details</h2>
                 <Form>
                   <Row>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>First Name</Form.Label>
+                        <Form.Label tabIndex="0">First Name</Form.Label>
                         <Form.Control
                           type="text"
                           placeholder="Enter your first name"
@@ -89,7 +89,7 @@ const Checkout = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Last Name</Form.Label>
+                        <Form.Label tabIndex="0">Last Name</Form.Label>
                         <Form.Control
                           type="text"
                           placeholder="Enter your last name"
@@ -100,7 +100,7 @@ const Checkout = () => {
                   </Row>
 
                   <Form.Group className="mt-3">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label tabIndex="0">Email</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="Enter your email"
@@ -111,7 +111,7 @@ const Checkout = () => {
                   </Form.Group>
 
                   <Form.Group className="mt-3">
-                    <Form.Label>Number of People</Form.Label>
+                    <Form.Label tabIndex="0">Number of People</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Enter number of people"
@@ -121,7 +121,7 @@ const Checkout = () => {
                     />
                   </Form.Group>
                   <Form.Group className="mt-3">
-                    <Form.Label>Special requirements</Form.Label>
+                    <Form.Label tabIndex="0">Special requirements</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder=""
@@ -149,6 +149,7 @@ const Checkout = () => {
                   <div className="checkout__container_2">
                     <div className="header__container">
                       <img
+                        tabIndex="0"
                         width="60"
                         height="60"
                         alt={bookingDetails.tourTitle}
@@ -156,11 +157,11 @@ const Checkout = () => {
                         src={`${baseUrl}/api/v1/tours/images/${bookingDetails.photo}`}
                       />
                       <div className="title__container">
-                        <span className="title_1">
+                        <span tabIndex="0" className="title_1">
                           {bookingDetails.tourTitle} {bookingDetails.city},{" "}
                           {bookingDetails.country}
                         </span>
-                        <span className="title_1 tour_price">
+                        <span tabIndex="0" className="title_1 tour_price">
                           ${bookingDetails.tourPrice}
                         </span>
                       </div>
@@ -170,14 +171,14 @@ const Checkout = () => {
                         <span>
                           <i className="fa-duotone fa-user-group item_icon"></i>
                         </span>
-                        <span className="book__details">
+                        <span tabIndex="0" className="book__details">
                           {bookingDetails.numPeople} Adults
                         </span>
                       </li>
                       <li className="row__1">
                         <i className="ri-calendar-line item_icon"></i>
                         <span className="book__details checkout_date">
-                          <span>
+                          <span tabIndex="0">
                             {new Date(bookingDetails.date).toDateString()}
                           </span>
                         </span>
@@ -185,10 +186,18 @@ const Checkout = () => {
                     </ul>
                   </div>
                   <hr className="checkout_hr" />
-                  <div className="total__price">
+                  <div tabIndex="0" className="total__price">
                     Total price
                     <div className="total__value">
-                      <span>${bookingDetails.price}</span>
+                      <span
+                        tabIndex="0"
+                        style={{
+                          backgroundColor:
+                            themeMode == "light" ? "#fff" : "#212529",
+                        }}
+                      >
+                        ${bookingDetails.price}
+                      </span>
                     </div>
                   </div>
                   <Button

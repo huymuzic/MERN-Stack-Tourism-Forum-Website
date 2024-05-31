@@ -172,14 +172,18 @@
   }
 
   .details-text {
-    font-size: 10px;
+    font-size: 10px !important;
   }
 
   .booking-details .title {
-    font-size: 12px;
+    font-size: 12px !important;
   }
 
-  .booking-info ul {
+  .title {
+    margin-left: 8px;
+  }
+
+  .booking-info {
     padding-left: 0 !important;
   }
   .booking-info li {
@@ -206,8 +210,7 @@
     font-size: 0.7rem;
   }
 
-  .title {
-    font-size: 13px;
-    margin-left: 8px;
+  .tour__location {
+    font-size: 10px !important;
   }
 }
